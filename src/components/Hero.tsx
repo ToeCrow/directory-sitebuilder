@@ -1,8 +1,18 @@
 import { siteConfig } from "@/config/active-site";
+import { cn } from "@/lib/cn";
 
-export function Hero() {
+type HeroProps = {
+  className?: string;
+};
+
+export function Hero({ className }: HeroProps) {
   return (
-    <section className="border-b border-slate-200 bg-slate-50 py-16 md:py-24">
+    <section
+      className={cn(
+        "border-b border-slate-200 bg-slate-50 py-16 md:py-24",
+        className,
+      )}
+    >
       <div className="mx-auto max-w-6xl px-4 text-center">
         <p className="mb-4 text-sm font-medium uppercase tracking-wide text-blue-600">
           Independent comparison guide

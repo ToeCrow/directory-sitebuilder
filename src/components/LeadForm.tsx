@@ -2,11 +2,16 @@
 
 import { useState, type FormEvent } from "react";
 import { siteConfig } from "@/config/active-site";
+import { cn } from "@/lib/cn";
 
 // Future: POST to /api/newsletter backed by PostgreSQL (pg + Flyway migrations).
 // Store leads in a `newsletter_subscribers` table and connect to your email provider.
 
-export function LeadForm() {
+type LeadFormProps = {
+  className?: string;
+};
+
+export function LeadForm({ className }: LeadFormProps) {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
@@ -19,7 +24,7 @@ export function LeadForm() {
   return (
     <section
       id="newsletter"
-      className="py-16 md:py-20"
+      className={cn("py-16 md:py-20", className)}
       aria-labelledby="newsletter-heading"
     >
       <div className="mx-auto max-w-xl px-4 text-center">

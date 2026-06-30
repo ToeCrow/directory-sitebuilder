@@ -1,12 +1,20 @@
 import { siteConfig } from "@/config/active-site";
 import { getTopProducts } from "@/data/active-products";
 import { ProductCard } from "@/components/ProductCard";
+import { cn } from "@/lib/cn";
 
-export function ProductGrid() {
+type ProductGridProps = {
+  className?: string;
+};
+
+export function ProductGrid({ className }: ProductGridProps) {
   const topProducts = getTopProducts(3);
 
   return (
-    <section className="py-16 md:py-20" aria-labelledby="top-picks-heading">
+    <section
+      className={cn("py-16 md:py-20", className)}
+      aria-labelledby="top-picks-heading"
+    >
       <div className="mx-auto max-w-6xl px-4">
         <h2
           id="top-picks-heading"

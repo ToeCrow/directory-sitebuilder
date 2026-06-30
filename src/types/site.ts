@@ -25,4 +25,12 @@ export type SiteConfig = {
     buttonText: string;
     successMessage: string;
   };
+  ads?: {
+    slots: {
+      primary: string;
+      secondary: string;
+    };
+  };
 };
+
+export type AdSlotId = "primary" | "secondary";

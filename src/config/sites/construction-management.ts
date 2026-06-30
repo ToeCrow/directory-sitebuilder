@@ -71,4 +71,11 @@ export const constructionManagementSite: SiteConfig = {
     buttonText: "Get the guide",
     successMessage: "Thanks! Check your inbox for the guide.",
   },
+
+  ads: {
+    slots: {
+      primary: "",
+      secondary: "",
+    },
+  },
 };

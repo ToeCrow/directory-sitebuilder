@@ -1,11 +1,19 @@
 import { siteConfig } from "@/config/active-site";
 import { products, productHasFeature } from "@/data/active-products";
+import { cn } from "@/lib/cn";
 
-export function ComparisonTable() {
+type ComparisonTableProps = {
+  className?: string;
+};
+
+export function ComparisonTable({ className }: ComparisonTableProps) {
   return (
     <section
       id="compare"
-      className="border-y border-slate-200 bg-slate-50 py-16 md:py-20"
+      className={cn(
+        "border-y border-slate-200 bg-slate-50 py-16 md:py-20",
+        className,
+      )}
       aria-labelledby="compare-heading"
     >
       <div className="mx-auto max-w-6xl px-4">

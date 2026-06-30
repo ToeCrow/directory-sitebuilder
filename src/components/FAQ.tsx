@@ -1,8 +1,17 @@
 import { siteConfig } from "@/config/active-site";
+import { cn } from "@/lib/cn";
 
-export function FAQ() {
+type FAQProps = {
+  className?: string;
+};
+
+export function FAQ({ className }: FAQProps) {
   return (
-    <section id="faq" className="py-16 md:py-20" aria-labelledby="faq-heading">
+    <section
+      id="faq"
+      className={cn("py-16 md:py-20", className)}
+      aria-labelledby="faq-heading"
+    >
       <div className="mx-auto max-w-3xl px-4">
         <h2
           id="faq-heading"

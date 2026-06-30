@@ -1,9 +1,17 @@
 import { siteConfig } from "@/config/active-site";
+import { cn } from "@/lib/cn";
 
-export function AffiliateDisclosure() {
+type AffiliateDisclosureProps = {
+  className?: string;
+};
+
+export function AffiliateDisclosure({ className }: AffiliateDisclosureProps) {
   return (
     <aside
-      className="border-y border-amber-200 bg-amber-50 py-8"
+      className={cn(
+        "border-y border-amber-200 bg-amber-50 py-8",
+        className,
+      )}
       aria-label="Affiliate disclosure"
     >
       <div className="mx-auto max-w-3xl px-4">
