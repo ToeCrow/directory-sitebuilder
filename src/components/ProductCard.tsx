@@ -1,21 +1,6 @@
 import Link from "next/link";
 import type { Product } from "@/types/product";
-
-function Rating({ rating }: { rating: number }) {
-  const fullStars = Math.floor(rating);
-  const hasHalf = rating % 1 >= 0.5;
-
-  return (
-    <div className="flex items-center gap-1.5" aria-label={`Rating: ${rating} out of 5`}>
-      <span className="text-amber-500" aria-hidden="true">
-        {"★".repeat(fullStars)}
-        {hasHalf ? "½" : ""}
-        {"☆".repeat(5 - fullStars - (hasHalf ? 1 : 0))}
-      </span>
-      <span className="text-sm font-medium text-slate-700">{rating}/5</span>
-    </div>
-  );
-}
+import { StarRating } from "@/components/StarRating";
 
 export function ProductCard({ product }: { product: Product }) {
   return (
@@ -29,7 +14,7 @@ export function ProductCard({ product }: { product: Product }) {
             {product.name}
           </Link>
         </h3>
-        <Rating rating={product.rating} />
+        <StarRating rating={product.rating} />
       </div>
 
       <p className="mb-4 flex-1 text-sm leading-relaxed text-slate-600">
