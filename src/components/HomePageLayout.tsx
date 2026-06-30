@@ -1,3 +1,4 @@
+import type { SiteId } from "@/config/sites";
 import { Hero } from "@/components/Hero";
 import { ProductGrid } from "@/components/ProductGrid";
 import { ComparisonTable } from "@/components/ComparisonTable";
@@ -6,16 +7,20 @@ import { AffiliateDisclosure } from "@/components/AffiliateDisclosure";
 import { LeadForm } from "@/components/LeadForm";
 import { AdSlot } from "@/components/AdSlot";
 
-export function HomePageLayout() {
+type HomePageLayoutProps = {
+  siteSlug: SiteId;
+};
+
+export function HomePageLayout({ siteSlug }: HomePageLayoutProps) {
   return (
     <>
-      <Hero />
-      <ProductGrid />
+      <Hero siteSlug={siteSlug} />
+      <ProductGrid siteSlug={siteSlug} />
       <AdSlot slotId="primary" />
-      <ComparisonTable />
+      <ComparisonTable siteSlug={siteSlug} />
       <AdSlot slotId="secondary" />
-      <FAQ />
-      <AffiliateDisclosure />
+      <FAQ siteSlug={siteSlug} />
+      <AffiliateDisclosure siteSlug={siteSlug} />
       <LeadForm />
     </>
   );

@@ -1,22 +1,39 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getProductBySlug, products } from "@/data/active-products";
-import { siteConfig } from "@/config/active-site";
+import { siteIds } from "@/config/sites";
+import type { SiteId } from "@/config/sites";
+import {
+  getProductBySlug,
+  getProducts,
+  getSiteConfig,
+  isValidSiteSlug,
+} from "@/lib/site";
 
 type ProductPageProps = {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ siteSlug: string; slug: string }>;
 };
 
 export function generateStaticParams() {
-  return products.map((product) => ({ slug: product.slug }));
+  return siteIds.flatMap((siteSlug) =>
+    getProducts(siteSlug).map((product) => ({
+      siteSlug,
+      slug: product.slug,
+    })),
+  );
 }
 
 export async function generateMetadata({
   params,
 }: ProductPageProps): Promise<Metadata> {
-  const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const { siteSlug, slug } = await params;
+
+  if (!isValidSiteSlug(siteSlug)) {
+    return { title: "Product not found" };
+  }
+
+  const product = getProductBySlug(siteSlug, slug);
+  const siteConfig = getSiteConfig(siteSlug);
 
   if (!product) {
     return { title: "Product not found" };
@@ -29,8 +46,13 @@ export async function generateMetadata({
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
-  const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const { siteSlug, slug } = await params;
+
+  if (!isValidSiteSlug(siteSlug)) {
+    notFound();
+  }
+
+  const product = getProductBySlug(siteSlug, slug);
 
   if (!product) {
     notFound();
@@ -40,7 +62,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     <main className="py-12 md:py-16">
       <article className="mx-auto max-w-3xl px-4">
         <Link
-          href="/"
+          href={`/${siteSlug}`}
           className="text-sm font-medium text-blue-600 hover:text-blue-700"
         >
           ← Back to comparison
@@ -85,10 +107,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </h2>
             <ul className="mt-4 space-y-2">
               {product.pros.map((pro) => (
-                <li
-                  key={pro}
-                  className="flex gap-2 text-sm text-slate-600"
-                >
+                <li key={pro} className="flex gap-2 text-sm text-slate-600">
                   <span className="text-green-600" aria-hidden="true">
                     ✓
                   </span>
@@ -107,10 +126,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </h2>
             <ul className="mt-4 space-y-2">
               {product.cons.map((con) => (
-                <li
-                  key={con}
-                  className="flex gap-2 text-sm text-slate-600"
-                >
+                <li key={con} className="flex gap-2 text-sm text-slate-600">
                   <span className="text-red-500" aria-hidden="true">
                     ✗
                   </span>

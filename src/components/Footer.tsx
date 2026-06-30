@@ -1,7 +1,10 @@
+"use client";
+
 import Link from "next/link";
-import { siteConfig } from "@/config/active-site";
+import { useSiteContext } from "@/context/SiteContext";
 
 export function Footer() {
+  const { siteSlug, siteConfig } = useSiteContext();
   const year = new Date().getFullYear();
 
   return (
@@ -34,7 +37,7 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <Link href="/" className="hover:text-white">
+                <Link href={`/${siteSlug}`} className="hover:text-white">
                   Home
                 </Link>
               </li>

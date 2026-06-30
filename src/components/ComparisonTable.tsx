@@ -1,12 +1,16 @@
-import { siteConfig } from "@/config/active-site";
-import { products, productHasFeature } from "@/data/active-products";
+import type { SiteId } from "@/config/sites";
+import { getSiteConfig, getProducts, productHasFeature } from "@/lib/site";
 import { cn } from "@/lib/cn";
 
 type ComparisonTableProps = {
+  siteSlug: SiteId;
   className?: string;
 };
 
-export function ComparisonTable({ className }: ComparisonTableProps) {
+export function ComparisonTable({ siteSlug, className }: ComparisonTableProps) {
+  const siteConfig = getSiteConfig(siteSlug);
+  const products = getProducts(siteSlug);
+
   return (
     <section
       id="compare"
@@ -61,7 +65,11 @@ export function ComparisonTable({ className }: ComparisonTableProps) {
                     {feature}
                   </th>
                   {products.map((product) => {
-                    const supported = productHasFeature(product, feature);
+                    const supported = productHasFeature(
+                      siteSlug,
+                      product,
+                      feature,
+                    );
                     return (
                       <td key={product.slug} className="px-4 py-3">
                         <span
@@ -69,7 +77,9 @@ export function ComparisonTable({ className }: ComparisonTableProps) {
                             supported ? "text-green-600" : "text-slate-300"
                           }
                           aria-label={
-                            supported ? `${product.name} supports ${feature}` : `${product.name} does not support ${feature}`
+                            supported
+                              ? `${product.name} supports ${feature}`
+                              : `${product.name} does not support ${feature}`
                           }
                         >
                           {supported ? "✓" : "—"}

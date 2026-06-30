@@ -1,7 +1,7 @@
 import type { SiteConfig } from "@/types/site";
 
-export const constructionManagementSite: SiteConfig = {
-  id: "construction-management",
+export const constructionSoftwareSite: SiteConfig = {
+  id: "construction-software",
   name: "BuildCompare",
   niche: "construction-management",
   url: "https://example.com",

@@ -2,13 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { siteConfig } from "@/config/active-site";
-
-const navLinks = [
-  { href: "#compare", label: "Compare" },
-  { href: "#faq", label: "FAQ" },
-  { href: "#newsletter", label: "Newsletter" },
-];
+import { useSiteContext } from "@/context/SiteContext";
 
 function MenuIcon({ open }: { open: boolean }) {
   return (
@@ -34,7 +28,14 @@ function MenuIcon({ open }: { open: boolean }) {
 }
 
 export function Header() {
+  const { siteSlug, siteConfig } = useSiteContext();
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const navLinks = [
+    { href: "#compare", label: "Compare" },
+    { href: "#faq", label: "FAQ" },
+    { href: "#newsletter", label: "Newsletter" },
+  ];
 
   function closeMenu() {
     setMenuOpen(false);
@@ -44,7 +45,7 @@ export function Header() {
     <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4">
         <Link
-          href="/"
+          href={`/${siteSlug}`}
           className="min-w-0 truncate text-lg font-semibold text-slate-900"
         >
           {siteConfig.name}

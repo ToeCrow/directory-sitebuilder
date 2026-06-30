@@ -1,11 +1,15 @@
-import { siteConfig } from "@/config/active-site";
+import type { SiteId } from "@/config/sites";
+import { getSiteConfig } from "@/lib/site";
 import { cn } from "@/lib/cn";
 
 type FAQProps = {
+  siteSlug: SiteId;
   className?: string;
 };
 
-export function FAQ({ className }: FAQProps) {
+export function FAQ({ siteSlug, className }: FAQProps) {
+  const siteConfig = getSiteConfig(siteSlug);
+
   return (
     <section
       id="faq"

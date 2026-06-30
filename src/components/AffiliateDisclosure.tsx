@@ -1,11 +1,18 @@
-import { siteConfig } from "@/config/active-site";
+import type { SiteId } from "@/config/sites";
+import { getSiteConfig } from "@/lib/site";
 import { cn } from "@/lib/cn";
 
 type AffiliateDisclosureProps = {
+  siteSlug: SiteId;
   className?: string;
 };
 
-export function AffiliateDisclosure({ className }: AffiliateDisclosureProps) {
+export function AffiliateDisclosure({
+  siteSlug,
+  className,
+}: AffiliateDisclosureProps) {
+  const siteConfig = getSiteConfig(siteSlug);
+
   return (
     <aside
       className={cn(

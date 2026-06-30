@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { siteConfig } from "@/config/active-site";
+import { useSiteConfig } from "@/context/SiteContext";
 import { cn } from "@/lib/cn";
 
 // Future: POST to /api/newsletter backed by PostgreSQL (pg + Flyway migrations).
@@ -12,12 +12,12 @@ type LeadFormProps = {
 };
 
 export function LeadForm({ className }: LeadFormProps) {
+  const siteConfig = useSiteConfig();
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    // UI-only for now — no backend call yet
     setSubmitted(true);
   }
 

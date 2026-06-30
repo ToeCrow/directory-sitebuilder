@@ -1,14 +1,16 @@
-import { siteConfig } from "@/config/active-site";
-import { getTopProducts } from "@/data/active-products";
+import type { SiteId } from "@/config/sites";
+import { getSiteConfig, getTopProducts } from "@/lib/site";
 import { ProductCard } from "@/components/ProductCard";
 import { cn } from "@/lib/cn";
 
 type ProductGridProps = {
+  siteSlug: SiteId;
   className?: string;
 };
 
-export function ProductGrid({ className }: ProductGridProps) {
-  const topProducts = getTopProducts(3);
+export function ProductGrid({ siteSlug, className }: ProductGridProps) {
+  const siteConfig = getSiteConfig(siteSlug);
+  const topProducts = getTopProducts(siteSlug, 3);
 
   return (
     <section
@@ -27,7 +29,11 @@ export function ProductGrid({ className }: ProductGridProps) {
         </p>
         <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {topProducts.map((product) => (
-            <ProductCard key={product.slug} product={product} />
+            <ProductCard
+              key={product.slug}
+              siteSlug={siteSlug}
+              product={product}
+            />
           ))}
         </div>
       </div>

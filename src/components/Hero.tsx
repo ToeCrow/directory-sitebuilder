@@ -1,11 +1,15 @@
-import { siteConfig } from "@/config/active-site";
+import type { SiteId } from "@/config/sites";
+import { getSiteConfig } from "@/lib/site";
 import { cn } from "@/lib/cn";
 
 type HeroProps = {
+  siteSlug: SiteId;
   className?: string;
 };
 
-export function Hero({ className }: HeroProps) {
+export function Hero({ siteSlug, className }: HeroProps) {
+  const siteConfig = getSiteConfig(siteSlug);
+
   return (
     <section
       className={cn(
