@@ -1,18 +1,17 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { useSiteConfig } from "@/context/SiteContext";
+import { useSiteData } from "@/context/SiteContext";
 import { cn } from "@/lib/cn";
 
 // Future: POST to /api/newsletter backed by PostgreSQL (pg + Flyway migrations).
-// Store leads in a `newsletter_subscribers` table and connect to your email provider.
 
 type LeadFormProps = {
   className?: string;
 };
 
 export function LeadForm({ className }: LeadFormProps) {
-  const siteConfig = useSiteConfig();
+  const siteData = useSiteData();
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
@@ -32,16 +31,16 @@ export function LeadForm({ className }: LeadFormProps) {
           id="newsletter-heading"
           className="text-2xl font-bold tracking-tight text-slate-900 md:text-3xl"
         >
-          {siteConfig.newsletter.title}
+          {siteData.newsletter.title}
         </h2>
-        <p className="mt-3 text-slate-600">{siteConfig.newsletter.description}</p>
+        <p className="mt-3 text-slate-600">{siteData.newsletter.description}</p>
 
         {submitted ? (
           <p
             className="mt-8 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm font-medium text-green-800"
             role="status"
           >
-            {siteConfig.newsletter.successMessage}
+            {siteData.newsletter.successMessage}
           </p>
         ) : (
           <form
@@ -64,7 +63,7 @@ export function LeadForm({ className }: LeadFormProps) {
               type="submit"
               className="rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
             >
-              {siteConfig.newsletter.buttonText}
+              {siteData.newsletter.buttonText}
             </button>
           </form>
         )}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useSiteConfig } from "@/context/SiteContext";
+import { useSiteData } from "@/context/SiteContext";
 import { cn } from "@/lib/cn";
 import type { AdSlotId } from "@/types/site";
 
@@ -13,8 +13,8 @@ type AdSlotProps = {
 const clientId = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
 
 export function AdSlot({ slotId, className }: AdSlotProps) {
-  const siteConfig = useSiteConfig();
-  const adUnitId = siteConfig.ads?.slots[slotId];
+  const siteData = useSiteData();
+  const adUnitId = siteData.ads?.slots[slotId];
   const isConfigured = Boolean(clientId && adUnitId);
 
   useEffect(() => {

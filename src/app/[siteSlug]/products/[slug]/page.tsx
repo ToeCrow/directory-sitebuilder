@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { siteIds } from "@/config/sites";
-import type { SiteId } from "@/config/sites";
+import { siteSlugs } from "@/data/sites";
 import {
   getProductBySlug,
   getProducts,
-  getSiteConfig,
+  getSiteBySlug,
   isValidSiteSlug,
 } from "@/lib/site";
 
@@ -15,7 +14,7 @@ type ProductPageProps = {
 };
 
 export function generateStaticParams() {
-  return siteIds.flatMap((siteSlug) =>
+  return siteSlugs.flatMap((siteSlug) =>
     getProducts(siteSlug).map((product) => ({
       siteSlug,
       slug: product.slug,
@@ -33,15 +32,15 @@ export async function generateMetadata({
   }
 
   const product = getProductBySlug(siteSlug, slug);
-  const siteConfig = getSiteConfig(siteSlug);
+  const siteData = getSiteBySlug(siteSlug);
 
-  if (!product) {
+  if (!product || !siteData) {
     return { title: "Product not found" };
   }
 
   return {
-    title: `${product.name} Review — ${siteConfig.name}`,
-    description: product.description,
+    title: `${product.name} Review — ${siteData.title}`,
+    description: product.shortDescription,
   };
 }
 
@@ -53,8 +52,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
   }
 
   const product = getProductBySlug(siteSlug, slug);
+  const siteData = getSiteBySlug(siteSlug);
 
-  if (!product) {
+  if (!product || !siteData) {
     notFound();
   }
 
@@ -69,14 +69,20 @@ export default async function ProductPage({ params }: ProductPageProps) {
         </Link>
 
         <header className="mt-6 border-b border-slate-200 pb-8">
+          {product.badge && (
+            <span className="mb-3 inline-block rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700">
+              {product.badge}
+            </span>
+          )}
           <h1 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
             {product.name}
           </h1>
           <p className="mt-2 text-sm font-medium text-slate-500">
-            Rating: {product.rating}/5 · From {product.priceFrom}
+            Rating: {product.rating}/{siteData.ratingScale} · From{" "}
+            {product.priceFrom}
           </p>
           <p className="mt-4 text-lg leading-relaxed text-slate-600">
-            {product.description}
+            {product.shortDescription}
           </p>
           <p className="mt-4 text-sm text-slate-700">
             <span className="font-medium">Best for:</span> {product.bestFor}
@@ -139,8 +145,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
         <div className="mt-10 rounded-xl border border-slate-200 bg-slate-50 p-6">
           <p className="text-sm text-slate-600">
-            Ready to try {product.name}? Visit the official site to start a
-            free trial or request a demo.
+            Ready to try {product.name}? Visit the official site to learn more
+            or request a demo.
           </p>
           <a
             href={product.affiliateUrl}

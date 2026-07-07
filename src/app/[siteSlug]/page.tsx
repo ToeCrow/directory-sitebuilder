@@ -1,13 +1,13 @@
-import { siteIds } from "@/config/sites";
+import { siteSlugs } from "@/data/sites";
 import { HomePageLayout } from "@/components/HomePageLayout";
-import type { SiteId } from "@/config/sites";
+import type { SiteSlug } from "@/data/sites";
 
 type SitePageProps = {
   params: Promise<{ siteSlug: string }>;
 };
 
 export function generateStaticParams() {
-  return siteIds.map((siteSlug) => ({ siteSlug }));
+  return siteSlugs.map((siteSlug) => ({ siteSlug }));
 }
 
 export default async function SitePage({ params }: SitePageProps) {
@@ -15,7 +15,7 @@ export default async function SitePage({ params }: SitePageProps) {
 
   return (
     <main>
-      <HomePageLayout siteSlug={siteSlug as SiteId} />
+      <HomePageLayout siteSlug={siteSlug as SiteSlug} />
     </main>
   );
 }

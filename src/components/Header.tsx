@@ -4,6 +4,13 @@ import { useState } from "react";
 import Link from "next/link";
 import { useSiteContext } from "@/context/SiteContext";
 
+const navLinks = [
+  { href: "#compare", label: "Compare" },
+  { href: "#buying-guide", label: "Buying Guide" },
+  { href: "#faq", label: "FAQ" },
+  { href: "#newsletter", label: "Newsletter" },
+];
+
 function MenuIcon({ open }: { open: boolean }) {
   return (
     <svg
@@ -28,14 +35,8 @@ function MenuIcon({ open }: { open: boolean }) {
 }
 
 export function Header() {
-  const { siteSlug, siteConfig } = useSiteContext();
+  const { siteSlug, siteData } = useSiteContext();
   const [menuOpen, setMenuOpen] = useState(false);
-
-  const navLinks = [
-    { href: "#compare", label: "Compare" },
-    { href: "#faq", label: "FAQ" },
-    { href: "#newsletter", label: "Newsletter" },
-  ];
 
   function closeMenu() {
     setMenuOpen(false);
@@ -48,7 +49,7 @@ export function Header() {
           href={`/${siteSlug}`}
           className="min-w-0 truncate text-lg font-semibold text-slate-900"
         >
-          {siteConfig.name}
+          {siteData.title}
         </Link>
 
         <nav aria-label="Main navigation" className="hidden md:block">

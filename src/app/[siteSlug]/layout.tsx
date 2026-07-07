@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import type { SiteId } from "@/config/sites";
+import type { SiteSlug } from "@/data/sites";
+import { siteSlugs } from "@/data/sites";
 import { SiteProvider } from "@/context/SiteContext";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { AdSenseScript } from "@/components/AdSenseScript";
-import { getSiteConfig, isValidSiteSlug } from "@/lib/site";
+import { getSiteBySlug, isValidSiteSlug } from "@/lib/site";
 
 type SiteLayoutProps = {
   children: React.ReactNode;
@@ -16,17 +17,16 @@ export async function generateMetadata({
   params,
 }: SiteLayoutProps): Promise<Metadata> {
   const { siteSlug } = await params;
+  const siteData = getSiteBySlug(siteSlug);
 
-  if (!isValidSiteSlug(siteSlug)) {
+  if (!siteData) {
     return {};
   }
 
-  const siteConfig = getSiteConfig(siteSlug);
-
   return {
-    title: siteConfig.metadata.title,
-    description: siteConfig.metadata.description,
-    metadataBase: new URL(siteConfig.url),
+    title: siteData.metaTitle,
+    description: siteData.metaDescription,
+    metadataBase: new URL(siteData.siteUrl),
   };
 }
 
@@ -38,7 +38,7 @@ export default async function SiteLayout({ children, params }: SiteLayoutProps) 
   }
 
   return (
-    <SiteProvider siteSlug={siteSlug as SiteId}>
+    <SiteProvider siteSlug={siteSlug as SiteSlug}>
       <AdSenseScript />
       <Header />
       {children}

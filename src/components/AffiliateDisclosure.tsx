@@ -1,9 +1,9 @@
-import type { SiteId } from "@/config/sites";
-import { getSiteConfig } from "@/lib/site";
+import type { SiteSlug } from "@/data/sites";
+import { getSiteData } from "@/lib/site";
 import { cn } from "@/lib/cn";
 
 type AffiliateDisclosureProps = {
-  siteSlug: SiteId;
+  siteSlug: SiteSlug;
   className?: string;
 };
 
@@ -11,7 +11,7 @@ export function AffiliateDisclosure({
   siteSlug,
   className,
 }: AffiliateDisclosureProps) {
-  const siteConfig = getSiteConfig(siteSlug);
+  const siteData = getSiteData(siteSlug);
 
   return (
     <aside
@@ -23,7 +23,7 @@ export function AffiliateDisclosure({
     >
       <div className="mx-auto max-w-3xl px-4">
         <p className="text-sm leading-relaxed text-amber-900">
-          {siteConfig.affiliateDisclosure}
+          {siteData.affiliateDisclosure}
         </p>
       </div>
     </aside>

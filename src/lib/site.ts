@@ -1,49 +1,38 @@
-import { sites, type SiteId } from "@/config/sites";
-import { productModules } from "@/data/sites";
-import type { Product } from "@/types/product";
-import type { SiteConfig } from "@/types/site";
+import {
+  getSiteBySlug,
+  isValidSiteSlug,
+  type SiteSlug,
+} from "@/data/sites";
+import type { Product } from "@/types/site";
 
-export function isValidSiteSlug(slug: string): slug is SiteId {
-  return slug in sites;
+export { getSiteBySlug, isValidSiteSlug, siteSlugs, getAllSites } from "@/data/sites";
+export type { SiteSlug } from "@/data/sites";
+
+export function getSiteData(siteSlug: SiteSlug) {
+  return getSiteBySlug(siteSlug)!;
 }
 
-export function getSiteConfig(siteSlug: SiteId): SiteConfig {
-  return sites[siteSlug];
-}
-
-export function getSiteConfigOrUndefined(
-  siteSlug: string,
-): SiteConfig | undefined {
-  if (!isValidSiteSlug(siteSlug)) {
-    return undefined;
-  }
-
-  return sites[siteSlug];
-}
-
-function getProductModule(siteSlug: SiteId) {
-  return productModules[siteSlug];
-}
-
-export function getProducts(siteSlug: SiteId): Product[] {
-  return getProductModule(siteSlug).products;
+export function getProducts(siteSlug: SiteSlug): Product[] {
+  return getSiteData(siteSlug).products;
 }
 
 export function getProductBySlug(
-  siteSlug: SiteId,
+  siteSlug: SiteSlug,
   slug: string,
 ): Product | undefined {
-  return getProductModule(siteSlug).getProductBySlug(slug);
+  return getProducts(siteSlug).find((product) => product.slug === slug);
 }
 
-export function getTopProducts(siteSlug: SiteId, limit = 3): Product[] {
-  return getProductModule(siteSlug).getTopProducts(limit);
+export function getTopPickProducts(siteSlug: SiteSlug): Product[] {
+  const site = getSiteData(siteSlug);
+  return site.topPicks.picks
+    .map((pick) => getProductBySlug(siteSlug, pick.productSlug))
+    .filter((product): product is Product => product !== undefined);
 }
 
-export function productHasFeature(
-  siteSlug: SiteId,
+export function getComparisonValue(
   product: Product,
-  feature: string,
-): boolean {
-  return getProductModule(siteSlug).productHasFeature(product, feature);
+  rowKey: string,
+): string | boolean | undefined {
+  return product.comparison[rowKey];
 }

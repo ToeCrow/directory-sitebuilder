@@ -1,29 +1,74 @@
-export type SiteConfig = {
-  id: string;
+export type FAQ = { question: string; answer: string };
+
+export type Article = { title: string; slug: string; excerpt?: string };
+
+export type BuyingGuideSection = { title: string; content: string };
+
+export type ComparisonRow = {
+  key: string;
+  label: string;
+  type?: "text" | "boolean";
+};
+
+export type Product = {
   name: string;
+  slug: string;
+  shortDescription: string;
+  bestFor: string;
+  priceFrom: string;
+  features: string[];
+  pros: string[];
+  cons: string[];
+  affiliateUrl: string;
+  rating: number;
+  badge?: string;
+  comparison: Record<string, string | boolean>;
+};
+
+export type SiteData = {
+  slug: string;
+  title: string;
+  metaTitle: string;
+  metaDescription: string;
   niche: string;
-  url: string;
-  metadata: {
-    title: string;
-    description: string;
-  };
+  siteUrl: string;
+  ratingScale: 5 | 10;
   hero: {
+    eyebrow?: string;
     headline: string;
     subheadline: string;
-    ctaText: string;
+    primaryCta: string;
+    secondaryCta?: string;
+    secondaryCtaHref?: string;
   };
-  productGrid: {
+  topPicks: {
     title: string;
-    description: string;
+    description?: string;
+    picks: { productSlug: string; label: string }[];
   };
-  comparisonFeatures: readonly string[];
-  faq: readonly { question: string; answer: string }[];
-  affiliateDisclosure: string;
+  products: Product[];
+  comparisonTable: {
+    title: string;
+    description?: string;
+    rowHeaderLabel?: string;
+    rows: ComparisonRow[];
+  };
+  buyingGuide: {
+    title: string;
+    sections: BuyingGuideSection[];
+  };
+  faqs: FAQ[];
+  articles: Article[];
   newsletter: {
     title: string;
     description: string;
     buttonText: string;
     successMessage: string;
+  };
+  affiliateDisclosure: string;
+  footer: {
+    tagline?: string;
+    links: { label: string; href: string }[];
   };
   ads?: {
     slots: {

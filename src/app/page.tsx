@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { platformConfig } from "@/config/platform";
-import { siteIds, sites } from "@/config/sites";
+import { getAllSites } from "@/data/sites";
 
 export default function PlatformHomePage() {
+  const sites = getAllSites();
+
   return (
     <main className="flex flex-1 flex-col">
       <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col justify-center px-4 py-16">
@@ -34,26 +36,23 @@ export default function PlatformHomePage() {
             Published directory sites
           </h2>
           <ul className="mt-6 divide-y divide-slate-200 rounded-xl border border-slate-200 bg-white">
-            {siteIds.map((siteSlug) => {
-              const site = sites[siteSlug];
-              return (
-                <li
-                  key={siteSlug}
-                  className="flex flex-col gap-2 px-5 py-4 sm:flex-row sm:items-center sm:justify-between"
+            {sites.map((site) => (
+              <li
+                key={site.slug}
+                className="flex flex-col gap-2 px-5 py-4 sm:flex-row sm:items-center sm:justify-between"
+              >
+                <div>
+                  <p className="font-medium text-slate-900">{site.title}</p>
+                  <p className="text-sm text-slate-500">/{site.slug}</p>
+                </div>
+                <Link
+                  href={`/${site.slug}`}
+                  className="text-sm font-medium text-blue-600 hover:text-blue-700"
                 >
-                  <div>
-                    <p className="font-medium text-slate-900">{site.name}</p>
-                    <p className="text-sm text-slate-500">/{siteSlug}</p>
-                  </div>
-                  <Link
-                    href={`/${siteSlug}`}
-                    className="text-sm font-medium text-blue-600 hover:text-blue-700"
-                  >
-                    View site →
-                  </Link>
-                </li>
-              );
-            })}
+                  View site →
+                </Link>
+              </li>
+            ))}
           </ul>
         </section>
       </div>

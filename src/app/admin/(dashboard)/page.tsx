@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { siteIds, sites } from "@/config/sites";
+import { getAllSites } from "@/data/sites";
 
 const placeholderSections = [
   { href: "/admin/products", title: "Products", description: "Manage product listings across sites." },
@@ -8,6 +8,8 @@ const placeholderSections = [
 ];
 
 export default function AdminDashboardPage() {
+  const sites = getAllSites();
+
   return (
     <div>
       <h1 className="text-3xl font-bold tracking-tight text-slate-900">
@@ -30,24 +32,21 @@ export default function AdminDashboardPage() {
           </Link>
         </div>
         <ul className="mt-4 grid gap-4 sm:grid-cols-2">
-          {siteIds.map((siteSlug) => {
-            const site = sites[siteSlug];
-            return (
-              <li
-                key={siteSlug}
-                className="rounded-xl border border-slate-200 bg-white p-5"
+          {sites.map((site) => (
+            <li
+              key={site.slug}
+              className="rounded-xl border border-slate-200 bg-white p-5"
+            >
+              <p className="font-medium text-slate-900">{site.title}</p>
+              <p className="mt-1 text-sm text-slate-500">/{site.slug}</p>
+              <Link
+                href={`/${site.slug}`}
+                className="mt-4 inline-block text-sm font-medium text-blue-600 hover:text-blue-700"
               >
-                <p className="font-medium text-slate-900">{site.name}</p>
-                <p className="mt-1 text-sm text-slate-500">/{siteSlug}</p>
-                <Link
-                  href={`/${siteSlug}`}
-                  className="mt-4 inline-block text-sm font-medium text-blue-600 hover:text-blue-700"
-                >
-                  View public site →
-                </Link>
-              </li>
-            );
-          })}
+                View public site →
+              </Link>
+            </li>
+          ))}
         </ul>
       </section>
 

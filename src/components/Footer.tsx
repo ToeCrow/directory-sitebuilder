@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useSiteContext } from "@/context/SiteContext";
 
 export function Footer() {
-  const { siteSlug, siteConfig } = useSiteContext();
+  const { siteSlug, siteData } = useSiteContext();
   const year = new Date().getFullYear();
 
   return (
@@ -13,29 +13,21 @@ export function Footer() {
         <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
           <div>
             <p className="text-base font-semibold text-white">
-              {siteConfig.name}
+              {siteData.title}
             </p>
-            <p className="mt-1 text-sm">
-              Independent software comparisons for contractors.
-            </p>
+            {siteData.footer.tagline && (
+              <p className="mt-1 text-sm">{siteData.footer.tagline}</p>
+            )}
           </div>
           <nav aria-label="Footer navigation">
             <ul className="flex flex-wrap gap-6 text-sm">
-              <li>
-                <a href="#compare" className="hover:text-white">
-                  Compare
-                </a>
-              </li>
-              <li>
-                <a href="#faq" className="hover:text-white">
-                  FAQ
-                </a>
-              </li>
-              <li>
-                <a href="#newsletter" className="hover:text-white">
-                  Newsletter
-                </a>
-              </li>
+              {siteData.footer.links.map((link) => (
+                <li key={link.label}>
+                  <a href={link.href} className="hover:text-white">
+                    {link.label}
+                  </a>
+                </li>
+              ))}
               <li>
                 <Link href={`/${siteSlug}`} className="hover:text-white">
                   Home
@@ -44,8 +36,11 @@ export function Footer() {
             </ul>
           </nav>
         </div>
-        <p className="mt-8 border-t border-slate-800 pt-6 text-xs leading-relaxed">
-          © {year} {siteConfig.name}. {siteConfig.affiliateDisclosure}
+        <p
+          id="affiliate-disclosure"
+          className="mt-8 border-t border-slate-800 pt-6 text-xs leading-relaxed"
+        >
+          © {year} {siteData.title}. {siteData.affiliateDisclosure}
         </p>
       </div>
     </footer>

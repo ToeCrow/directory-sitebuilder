@@ -1,16 +1,19 @@
-import type { SiteId } from "@/config/sites";
-import { getSiteConfig, getTopProducts } from "@/lib/site";
+import type { SiteSlug } from "@/data/sites";
+import { getSiteData, getTopPickProducts } from "@/lib/site";
 import { ProductCard } from "@/components/ProductCard";
 import { cn } from "@/lib/cn";
 
 type ProductGridProps = {
-  siteSlug: SiteId;
+  siteSlug: SiteSlug;
   className?: string;
 };
 
 export function ProductGrid({ siteSlug, className }: ProductGridProps) {
-  const siteConfig = getSiteConfig(siteSlug);
-  const topProducts = getTopProducts(siteSlug, 3);
+  const siteData = getSiteData(siteSlug);
+  const topProducts = getTopPickProducts(siteSlug);
+  const pickLabels = Object.fromEntries(
+    siteData.topPicks.picks.map((pick) => [pick.productSlug, pick.label]),
+  );
 
   return (
     <section
@@ -22,17 +25,20 @@ export function ProductGrid({ siteSlug, className }: ProductGridProps) {
           id="top-picks-heading"
           className="text-2xl font-bold tracking-tight text-slate-900 md:text-3xl"
         >
-          {siteConfig.productGrid.title}
+          {siteData.topPicks.title}
         </h2>
-        <p className="mt-2 max-w-2xl text-slate-600">
-          {siteConfig.productGrid.description}
-        </p>
+        {siteData.topPicks.description && (
+          <p className="mt-2 max-w-2xl text-slate-600">
+            {siteData.topPicks.description}
+          </p>
+        )}
         <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {topProducts.map((product) => (
             <ProductCard
               key={product.slug}
               siteSlug={siteSlug}
               product={product}
+              pickLabel={pickLabels[product.slug]}
             />
           ))}
         </div>

@@ -1,14 +1,14 @@
-import type { SiteId } from "@/config/sites";
-import { getSiteConfig } from "@/lib/site";
+import type { SiteSlug } from "@/data/sites";
+import { getSiteData } from "@/lib/site";
 import { cn } from "@/lib/cn";
 
 type FAQProps = {
-  siteSlug: SiteId;
+  siteSlug: SiteSlug;
   className?: string;
 };
 
 export function FAQ({ siteSlug, className }: FAQProps) {
-  const siteConfig = getSiteConfig(siteSlug);
+  const siteData = getSiteData(siteSlug);
 
   return (
     <section
@@ -24,7 +24,7 @@ export function FAQ({ siteSlug, className }: FAQProps) {
           Frequently asked questions
         </h2>
         <dl className="mt-10 space-y-4">
-          {siteConfig.faq.map((item) => (
+          {siteData.faqs.map((item) => (
             <details
               key={item.question}
               className="group rounded-lg border border-slate-200 bg-white"
