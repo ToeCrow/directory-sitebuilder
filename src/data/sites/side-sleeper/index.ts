@@ -15,8 +15,8 @@ const comparisonRows = [
 ];
 
 export const siteData: SiteData = {
-  slug: "side-sleeper-mattresses",
-  title: "Side Sleeper Mattress Guide",
+  slug: "side-sleeper",
+  title: "Side Sleeper Guide",
   metaTitle: "Best Mattresses for Side Sleepers (2026)",
   metaDescription:
     "Compare the best mattresses for side sleepers based on pressure relief, cooling, spinal alignment, trial periods, warranty and value.",
@@ -38,11 +38,11 @@ export const siteData: SiteData = {
     title: "Top picks",
     description:
       "Our highest-rated mattresses for side sleepers, tested for pressure relief and spinal alignment.",
-    picks: [
-      { productSlug: "winkbed", label: "Best Overall" },
-      { productSlug: "saatva-classic", label: "Luxury Pick" },
-      { productSlug: "helix-midnight-luxe", label: "Best Cooling" },
-    ],
+  },
+
+  productDirectory: {
+    title: "Browse Our Complete Side Sleeper Directory",
+    description: "Compare every product we've reviewed for side sleepers.",
   },
 
   products: [
@@ -73,6 +73,9 @@ export const siteData: SiteData = {
       ],
       affiliateUrl: "https://example.com/affiliate/winkbed",
       rating: 9.6,
+      featuredRank: 1,
+      comparisonRank: 1,
+      directoryOrder: 1,
       comparison: {
         brand: "WinkBed",
         rating: "9.6/10",
@@ -112,6 +115,9 @@ export const siteData: SiteData = {
       ],
       affiliateUrl: "https://example.com/affiliate/saatva-classic",
       rating: 9.4,
+      featuredRank: 2,
+      comparisonRank: 2,
+      directoryOrder: 2,
       comparison: {
         brand: "Saatva Classic",
         rating: "9.4/10",
@@ -151,6 +157,9 @@ export const siteData: SiteData = {
       ],
       affiliateUrl: "https://example.com/affiliate/helix-midnight-luxe",
       rating: 9.3,
+      featuredRank: 3,
+      comparisonRank: 3,
+      directoryOrder: 3,
       comparison: {
         brand: "Helix Midnight Luxe",
         rating: "9.3/10",
@@ -190,6 +199,9 @@ export const siteData: SiteData = {
       ],
       affiliateUrl: "https://example.com/affiliate/nolah-natural",
       rating: 9.1,
+      featuredRank: null,
+      comparisonRank: 4,
+      directoryOrder: 4,
       comparison: {
         brand: "Nolah Natural",
         rating: "9.1/10",
@@ -229,6 +241,9 @@ export const siteData: SiteData = {
       ],
       affiliateUrl: "https://example.com/affiliate/bear-elite-hybrid",
       rating: 9.2,
+      featuredRank: null,
+      comparisonRank: 5,
+      directoryOrder: 5,
       comparison: {
         brand: "Bear Elite Hybrid",
         rating: "9.2/10",
@@ -268,6 +283,9 @@ export const siteData: SiteData = {
       ],
       affiliateUrl: "https://example.com/affiliate/leesa-sapira",
       rating: 9.0,
+      featuredRank: null,
+      comparisonRank: 6,
+      directoryOrder: 6,
       comparison: {
         brand: "Leesa Sapira",
         rating: "9.0/10",
@@ -307,6 +325,9 @@ export const siteData: SiteData = {
       ],
       affiliateUrl: "https://example.com/affiliate/brooklyn-bedding-aurora-luxe",
       rating: 9.0,
+      featuredRank: null,
+      comparisonRank: 7,
+      directoryOrder: 7,
       comparison: {
         brand: "Brooklyn Bedding Aurora Luxe",
         rating: "9.0/10",
@@ -346,6 +367,9 @@ export const siteData: SiteData = {
       ],
       affiliateUrl: "https://example.com/affiliate/nectar-premier",
       rating: 8.8,
+      featuredRank: null,
+      comparisonRank: 8,
+      directoryOrder: 8,
       comparison: {
         brand: "Nectar Premier",
         rating: "8.8/10",
@@ -385,6 +409,9 @@ export const siteData: SiteData = {
       ],
       affiliateUrl: "https://example.com/affiliate/dreamcloud-premier",
       rating: 8.9,
+      featuredRank: null,
+      comparisonRank: 9,
+      directoryOrder: 9,
       comparison: {
         brand: "DreamCloud Premier",
         rating: "8.9/10",
@@ -424,6 +451,9 @@ export const siteData: SiteData = {
       ],
       affiliateUrl: "https://example.com/affiliate/avocado-green",
       rating: 8.7,
+      featuredRank: null,
+      comparisonRank: 10,
+      directoryOrder: 10,
       comparison: {
         brand: "Avocado Green",
         rating: "8.7/10",

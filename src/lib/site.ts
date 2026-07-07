@@ -23,11 +23,26 @@ export function getProductBySlug(
   return getProducts(siteSlug).find((product) => product.slug === slug);
 }
 
-export function getTopPickProducts(siteSlug: SiteSlug): Product[] {
-  const site = getSiteData(siteSlug);
-  return site.topPicks.picks
-    .map((pick) => getProductBySlug(siteSlug, pick.productSlug))
-    .filter((product): product is Product => product !== undefined);
+// TODO: add filtering by category, search query, and price range.
+// TODO: add pagination support for large product catalogs.
+// TODO: replace static queries with PostgreSQL (see src/lib/db.ts).
+
+export function getFeaturedProducts(siteSlug: SiteSlug): Product[] {
+  return getProducts(siteSlug)
+    .filter((product) => product.featuredRank !== null)
+    .sort((a, b) => a.featuredRank! - b.featuredRank!);
+}
+
+export function getComparisonProducts(siteSlug: SiteSlug): Product[] {
+  return [...getProducts(siteSlug)].sort(
+    (a, b) => a.comparisonRank - b.comparisonRank,
+  );
+}
+
+export function getDirectoryProducts(siteSlug: SiteSlug): Product[] {
+  return [...getProducts(siteSlug)].sort(
+    (a, b) => a.directoryOrder - b.directoryOrder,
+  );
 }
 
 export function getComparisonValue(

@@ -3,28 +3,43 @@ import type { SiteSlug } from "@/data/sites";
 import { getSiteData } from "@/lib/site";
 import type { Product } from "@/types/site";
 import { StarRating } from "@/components/StarRating";
+import { cn } from "@/lib/cn";
 
 type ProductCardProps = {
   siteSlug: SiteSlug;
   product: Product;
-  pickLabel?: string;
+  variant?: "featured" | "directory";
 };
 
-export function ProductCard({ siteSlug, product, pickLabel }: ProductCardProps) {
+export function ProductCard({
+  siteSlug,
+  product,
+  variant = "featured",
+}: ProductCardProps) {
   const siteData = getSiteData(siteSlug);
   const productHref = `/${siteSlug}/products/${product.slug}`;
-  const badge = pickLabel ?? product.badge;
+  const isDirectory = variant === "directory";
 
   return (
-    <article className="flex flex-col rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
+    <article
+      className={cn(
+        "flex flex-col rounded-xl border border-slate-200 bg-white shadow-sm transition-shadow hover:shadow-md",
+        isDirectory ? "p-4" : "p-6",
+      )}
+    >
       <div className="mb-3 flex items-start justify-between gap-4">
         <div className="min-w-0">
-          {badge && (
+          {product.badge && (
             <span className="mb-2 inline-block rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700">
-              {badge}
+              {product.badge}
             </span>
           )}
-          <h3 className="text-xl font-semibold text-slate-900">
+          <h3
+            className={cn(
+              "font-semibold text-slate-900",
+              isDirectory ? "text-lg" : "text-xl",
+            )}
+          >
             <Link href={productHref} className="hover:text-blue-600">
               {product.name}
             </Link>

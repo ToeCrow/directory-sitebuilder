@@ -10,6 +10,9 @@ export type ComparisonRow = {
   type?: "text" | "boolean";
 };
 
+// TODO: add optional category field (mattress | pillow | topper) for multi-category directories.
+// TODO: load products from PostgreSQL via admin/CMS instead of static site data.
+
 export type Product = {
   name: string;
   slug: string;
@@ -22,6 +25,9 @@ export type Product = {
   affiliateUrl: string;
   rating: number;
   badge?: string;
+  featuredRank: number | null;
+  comparisonRank: number;
+  directoryOrder: number;
   comparison: Record<string, string | boolean>;
 };
 
@@ -44,9 +50,12 @@ export type SiteData = {
   topPicks: {
     title: string;
     description?: string;
-    picks: { productSlug: string; label: string }[];
   };
   products: Product[];
+  productDirectory: {
+    title: string;
+    description?: string;
+  };
   comparisonTable: {
     title: string;
     description?: string;

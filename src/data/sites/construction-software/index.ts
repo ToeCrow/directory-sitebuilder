@@ -36,11 +36,11 @@ export const siteData: SiteData = {
     title: "Top picks",
     description:
       "Our highest-rated construction management tools for small contractors and field teams.",
-    picks: [
-      { productSlug: "procore", label: "Best Overall" },
-      { productSlug: "fieldwire", label: "Best for Field Teams" },
-      { productSlug: "buildertrend", label: "Best for Residential" },
-    ],
+  },
+
+  productDirectory: {
+    title: "Browse Construction Software",
+    description: "Compare every tool we've reviewed for small contractors.",
   },
 
   products: [
@@ -73,6 +73,9 @@ export const siteData: SiteData = {
       ],
       affiliateUrl: "https://example.com/affiliate/procore",
       rating: 4.6,
+      featuredRank: 1,
+      comparisonRank: 1,
+      directoryOrder: 1,
       comparison: {
         "mobile-app": true,
         estimating: true,
@@ -111,6 +114,9 @@ export const siteData: SiteData = {
       ],
       affiliateUrl: "https://example.com/affiliate/fieldwire",
       rating: 4.5,
+      featuredRank: 2,
+      comparisonRank: 2,
+      directoryOrder: 2,
       comparison: {
         "mobile-app": true,
         estimating: false,
@@ -150,6 +156,9 @@ export const siteData: SiteData = {
       ],
       affiliateUrl: "https://example.com/affiliate/buildertrend",
       rating: 4.4,
+      featuredRank: 3,
+      comparisonRank: 3,
+      directoryOrder: 3,
       comparison: {
         "mobile-app": true,
         estimating: true,
@@ -187,6 +196,9 @@ export const siteData: SiteData = {
       ],
       affiliateUrl: "https://example.com/affiliate/buildxact",
       rating: 4.3,
+      featuredRank: null,
+      comparisonRank: 4,
+      directoryOrder: 4,
       comparison: {
         "mobile-app": true,
         estimating: true,
@@ -225,6 +237,9 @@ export const siteData: SiteData = {
       ],
       affiliateUrl: "https://example.com/affiliate/contractor-foreman",
       rating: 4.2,
+      featuredRank: null,
+      comparisonRank: 5,
+      directoryOrder: 5,
       comparison: {
         "mobile-app": true,
         estimating: true,

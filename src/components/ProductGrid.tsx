@@ -1,5 +1,5 @@
 import type { SiteSlug } from "@/data/sites";
-import { getSiteData, getTopPickProducts } from "@/lib/site";
+import { getFeaturedProducts, getSiteData } from "@/lib/site";
 import { ProductCard } from "@/components/ProductCard";
 import { cn } from "@/lib/cn";
 
@@ -10,10 +10,7 @@ type ProductGridProps = {
 
 export function ProductGrid({ siteSlug, className }: ProductGridProps) {
   const siteData = getSiteData(siteSlug);
-  const topProducts = getTopPickProducts(siteSlug);
-  const pickLabels = Object.fromEntries(
-    siteData.topPicks.picks.map((pick) => [pick.productSlug, pick.label]),
-  );
+  const featuredProducts = getFeaturedProducts(siteSlug);
 
   return (
     <section
@@ -33,12 +30,12 @@ export function ProductGrid({ siteSlug, className }: ProductGridProps) {
           </p>
         )}
         <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {topProducts.map((product) => (
+          {featuredProducts.map((product) => (
             <ProductCard
               key={product.slug}
               siteSlug={siteSlug}
               product={product}
-              pickLabel={pickLabels[product.slug]}
+              variant="featured"
             />
           ))}
         </div>

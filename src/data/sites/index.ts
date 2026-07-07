@@ -1,12 +1,12 @@
 // Future: replace static imports with PostgreSQL query via pg + Flyway migrations.
 
 import { siteData as constructionSoftware } from "./construction-software";
-import { siteData as sideSleeperMattresses } from "./side-sleeper-mattresses";
+import { siteData as sideSleeper } from "./side-sleeper";
 import type { SiteData } from "@/types/site";
 
 const sites = {
   "construction-software": constructionSoftware,
-  "side-sleeper-mattresses": sideSleeperMattresses,
+  "side-sleeper": sideSleeper,
 } as const;
 
 export type SiteSlug = keyof typeof sites;

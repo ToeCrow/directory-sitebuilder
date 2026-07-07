@@ -1,5 +1,5 @@
 import type { SiteSlug } from "@/data/sites";
-import { getComparisonValue, getProducts, getSiteData } from "@/lib/site";
+import { getComparisonProducts, getComparisonValue, getSiteData } from "@/lib/site";
 import { cn } from "@/lib/cn";
 
 type ComparisonTableProps = {
@@ -9,7 +9,7 @@ type ComparisonTableProps = {
 
 export function ComparisonTable({ siteSlug, className }: ComparisonTableProps) {
   const siteData = getSiteData(siteSlug);
-  const products = getProducts(siteSlug);
+  const products = getComparisonProducts(siteSlug);
   const { comparisonTable } = siteData;
 
   return (
