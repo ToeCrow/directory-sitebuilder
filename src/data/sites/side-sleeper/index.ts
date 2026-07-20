@@ -516,52 +516,52 @@ export const siteData: SiteData = {
     {
       question: "What mattress firmness is best for side sleepers?",
       answer:
-        "Most side sleepers prefer medium to medium-soft firmness. This allows shoulders and hips to sink in enough for pressure relief while keeping the spine aligned. Heavier sleepers may need medium-firm.",
+        "Most side sleepers sleep best on a medium to medium-soft mattress, typically rated between 4 and 6.5 out of 10 on the firmness scale. A mattress that is too firm can create painful pressure on the shoulders and hips, while one that is too soft may allow the spine to fall out of alignment. The ideal firmness also depends on your body weight. Lightweight sleepers usually prefer softer mattresses, while heavier individuals often need slightly firmer support to maintain healthy spinal alignment without sacrificing pressure relief.",
     },
     {
       question: "Are hybrid mattresses better for side sleepers?",
       answer:
-        "Hybrids are a strong choice because they combine pressure-relieving foam with supportive coils. They sleep cooler than all-foam beds and offer better edge support, though memory foam can provide deeper contouring.",
+        "Hybrid mattresses are often considered one of the best options for side sleepers because they combine supportive pocket coils with pressure-relieving foam layers. This combination helps cushion the shoulders and hips while keeping the spine properly aligned throughout the night. Compared to traditional memory foam mattresses, hybrids usually sleep cooler, offer stronger edge support, and make it easier to change sleeping positions. However, the best mattress always depends on your body type, sleeping habits, and personal comfort preferences.",
     },
     {
       question: "Is memory foam good for side sleepers?",
       answer:
-        "Yes. Memory foam contours closely to your body, which reduces pressure on shoulders and hips. Look for gel-infused or open-cell foam if you tend to sleep hot.",
+        "Yes, memory foam can be an excellent choice for side sleepers because it contours closely to the body's natural curves. This helps reduce pressure on the shoulders and hips, which are common pain points when sleeping on your side. Memory foam also minimizes motion transfer, making it a popular option for couples. The main downside is that some memory foam mattresses retain heat. Fortunately, many modern models include cooling gel, breathable covers, or hybrid coil systems to improve airflow and temperature regulation.",
     },
     {
-      question: "Can a mattress reduce shoulder pain?",
+      question: "Can the wrong mattress cause shoulder pain?",
       answer:
-        "A mattress with adequate cushioning at the shoulder can reduce pressure-point pain for side sleepers. If your mattress is too firm, adding a soft topper or switching to a softer model often helps.",
+        "Yes. A mattress that is too firm may place excessive pressure on your shoulder, while a mattress that is too soft can allow your body to sink unevenly, causing poor spinal alignment. Both situations may contribute to shoulder discomfort or make existing pain worse. Side sleepers usually benefit from mattresses that provide enough cushioning for the shoulder while still supporting the rest of the body. Choosing the right pillow height is equally important for reducing pressure and keeping the neck aligned.",
     },
     {
-      question: "Can a mattress reduce hip pain?",
+      question: "Can the wrong mattress cause hip pain?",
       answer:
-        "Side sleepers with hip pain benefit from softer comfort layers that distribute weight away from the hip joint. Zoned support that is firmer at the torso and softer at extremities can also help.",
+        "Yes. Hip pain is a common complaint among side sleepers using a mattress that doesn't provide adequate support or pressure relief. A mattress that is too firm can create painful pressure points around the hips, while one that is too soft may cause the hips to sink too deeply, putting stress on the lower back. Medium or medium-soft mattresses with high-quality comfort layers often provide the best balance between pressure relief and spinal support for most side sleepers.",
+    },
+    {
+      question: "Why do my arms go numb when sleeping on my side?",
+      answer:
+        "Arm numbness while sleeping on your side is often caused by excessive pressure on the shoulder, which can temporarily compress nerves and reduce blood flow. A mattress that is too firm may increase this pressure, while a pillow that is too low or too high can place additional strain on the neck and shoulder. Choosing a mattress with good pressure relief and a pillow that keeps your head and neck properly aligned may help reduce numbness and improve overall sleep comfort.",
     },
     {
       question: "What is the best cooling mattress for side sleepers?",
       answer:
-        "Hybrids with cooling covers and breathable coil layers tend to sleep coolest. Models like the Helix Midnight Luxe and Brooklyn Bedding Aurora Luxe are designed specifically for hot sleepers.",
-    },
-    {
-      question: "How long should a mattress last?",
-      answer:
-        "A quality hybrid or latex mattress typically lasts 8–10 years. Memory foam mattresses may last 7–8 years. Rotate your mattress every 3–6 months to extend its life.",
-    },
-    {
-      question: "Is a soft mattress always better for side sleepers?",
-      answer:
-        "Not always. While side sleepers need cushioning, too soft a surface lets the torso sink excessively and misaligns the spine. The right firmness depends on your body weight and preference.",
+        "The best cooling mattress for side sleepers combines effective pressure relief with excellent airflow. Hybrid mattresses are often the preferred choice because their pocket coil systems allow heat to escape more easily than all-foam mattresses. Features such as breathable covers, gel-infused memory foam, natural latex, and phase-change materials can further improve temperature regulation. If you frequently sleep hot, look for mattresses specifically designed with cooling technology rather than relying on standard foam alone.",
     },
     {
       question: "Do heavier side sleepers need a firmer mattress?",
       answer:
-        "Generally yes. Heavier sleepers exert more force on comfort layers and need firmer support to prevent bottoming out, while still needing enough cushioning at the shoulders and hips.",
+        "In most cases, yes. Heavier side sleepers generally benefit from a slightly firmer mattress because additional body weight compresses the comfort layers more deeply. A firmer support system helps maintain proper spinal alignment while still allowing enough cushioning for the shoulders and hips. Many mattress manufacturers also offer reinforced or plus-sized models designed specifically for sleepers over 230 lbs (105 kg), providing better durability and long-term support.",
     },
     {
-      question: "How do we compare mattresses?",
+      question: "How long should a mattress last?",
       answer:
-        "We assess pressure relief, cooling, spinal alignment for side sleeping, trial periods, warranty coverage, and price. Our ratings prioritize performance for side sleepers specifically.",
+        "Most quality mattresses last between 7 and 10 years, although the lifespan depends on the materials, construction, and how the mattress is used. Premium latex and hybrid mattresses often last longer than lower-quality foam models. If your mattress develops noticeable sagging, body impressions, increased aches and pains, or no longer provides restful sleep, it may be time for a replacement—even if the warranty is still active.",
+    },
+    {
+      question: "Should side sleepers use a mattress topper?",
+      answer:
+        "A mattress topper can be a great solution if your current mattress feels too firm but is otherwise in good condition. Adding a high-quality memory foam or latex topper can improve pressure relief around the shoulders and hips without the cost of replacing the entire mattress. However, a topper cannot fix a mattress that is worn out, sagging, or lacks proper support. If your mattress is old or damaged, replacing it is usually the better long-term solution.",
     },
   ],
 
