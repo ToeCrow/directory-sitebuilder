@@ -3,7 +3,7 @@ import {
   isValidSiteSlug,
   type SiteSlug,
 } from "@/data/sites";
-import type { Product } from "@/types/site";
+import type { Article, Product } from "@/types/site";
 
 export { getSiteBySlug, isValidSiteSlug, siteSlugs, getAllSites } from "@/data/sites";
 export type { SiteSlug } from "@/data/sites";
@@ -21,6 +21,17 @@ export function getProductBySlug(
   slug: string,
 ): Product | undefined {
   return getProducts(siteSlug).find((product) => product.slug === slug);
+}
+
+export function getArticles(siteSlug: SiteSlug): Article[] {
+  return getSiteData(siteSlug).articles;
+}
+
+export function getArticleBySlug(
+  siteSlug: SiteSlug,
+  slug: string,
+): Article | undefined {
+  return getArticles(siteSlug).find((article) => article.slug === slug);
 }
 
 // TODO: add filtering by category, search query, and price range.

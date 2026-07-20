@@ -329,31 +329,75 @@ export const siteData: SiteData = {
       title: "Best Software for Small General Contractors",
       slug: "best-software-small-contractors",
       excerpt: "What to look for when choosing your first platform.",
+      intro: ["What to look for when choosing your first platform."],
+      researchNote: {
+        title: "How we do our research",
+        content:
+          "We evaluate construction software based on feature breadth, ease of use for small teams, pricing transparency, and contractor feedback.",
+      },
+      products: [],
     },
     {
       title: "Procore vs Buildertrend",
       slug: "procore-vs-buildertrend",
       excerpt: "How two popular tools compare for different contractor types.",
+      intro: [
+        "How two popular tools compare for different contractor types.",
+      ],
+      researchNote: {
+        title: "How we do our research",
+        content:
+          "We evaluate construction software based on feature breadth, ease of use for small teams, pricing transparency, and contractor feedback.",
+      },
+      products: [],
     },
     {
       title: "Field Management Apps Compared",
       slug: "field-management-apps",
       excerpt: "Top picks for superintendents and foremen on site.",
+      intro: ["Top picks for superintendents and foremen on site."],
+      researchNote: {
+        title: "How we do our research",
+        content:
+          "We evaluate construction software based on feature breadth, ease of use for small teams, pricing transparency, and contractor feedback.",
+      },
+      products: [],
     },
     {
       title: "Construction Estimating Software Guide",
       slug: "estimating-software-guide",
       excerpt: "Tools that help you bid faster and more accurately.",
+      intro: ["Tools that help you bid faster and more accurately."],
+      researchNote: {
+        title: "How we do our research",
+        content:
+          "We evaluate construction software based on feature breadth, ease of use for small teams, pricing transparency, and contractor feedback.",
+      },
+      products: [],
     },
     {
       title: "Software for Residential Builders",
       slug: "residential-builder-software",
       excerpt: "Platforms built for remodelers and custom home builders.",
+      intro: ["Platforms built for remodelers and custom home builders."],
+      researchNote: {
+        title: "How we do our research",
+        content:
+          "We evaluate construction software based on feature breadth, ease of use for small teams, pricing transparency, and contractor feedback.",
+      },
+      products: [],
     },
     {
       title: "How to Choose Contractor Software",
       slug: "how-to-choose-contractor-software",
       excerpt: "A step-by-step checklist for evaluating your options.",
+      intro: ["A step-by-step checklist for evaluating your options."],
+      researchNote: {
+        title: "How we do our research",
+        content:
+          "We evaluate construction software based on feature breadth, ease of use for small teams, pricing transparency, and contractor feedback.",
+      },
+      products: [],
     },
   ],
 

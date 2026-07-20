@@ -26,7 +26,7 @@ export const siteData: SiteData = {
 
   hero: {
     eyebrow: "Independent mattress comparison",
-    headline: "Best Mattresses for Side Sleepers (2026)",
+    headline: "Best Mattresses for Side Sleepers",
     subheadline:
       "We compare the best mattresses for side sleepers based on pressure relief, cooling, spinal alignment, trial periods, warranty and value.",
     primaryCta: "Compare Mattresses",
@@ -567,34 +567,195 @@ export const siteData: SiteData = {
 
   articles: [
     {
-      title: "Best Mattress for Shoulder Pain",
-      slug: "best-mattress-shoulder-pain",
-      excerpt: "Top picks that cushion your shoulder without sacrificing support.",
+      title: "The Three Best Mattresses for Side Sleepers: Pros and Cons",
+      slug: "best-mattresses-for-side-sleepers",
+      excerpt:
+        "Unbiased pros and cons for Helix Midnight Luxe, WinkBeds, and Saatva Classic.",
+      intro: [
+        "The internet is ripe with blog posts and articles on what's supposed to be the best mattresses for side sleepers. The problem is that it's hard to separate unbiased reviews from paid marketing in this space. That's why we do our own research.",
+        "When we checked out three of the mattresses that get recommended the most, we wanted to know what the people actually sleeping in the mattresses think. This is what we got:",
+      ],
+      researchNote: {
+        title: "How we do our research",
+        content:
+          "First we exclude everything coming from influencers and bloggers. Then we sift through hundreds of product reviews on social media and ecommerce pages like Amazon, Ebay, Target and the like. Do the customer experience match the marketing? Lastly we aggregate the information into honest, unbiased product reviews.",
+      },
+      products: [
+        {
+          heading:
+            "Helix Midnight Luxe: A Good Mattress for Side Sleepers, But Ignore the Hype Machine",
+          intro:
+            'The Helix Midnight Luxe shows up on nearly every "best of" list for side sleepers, backed by an army of affiliate marketers and even a Helix employee defending it in Reddit comments. Impressive. Slightly suspicious. Here\'s what\'s actually under the cover.',
+          image: {
+            src: "/sites/side-sleeper/pic1.png",
+            alt: "Helix Midnight Luxe mattress layer diagram",
+          },
+          whatItIs:
+            "A medium-feel (6/10) hybrid built for side sleepers and tossers-and-turners. Helix pairs dense SupremeSupport memory foam with a zoned coil system, up to 1,000 individually wrapped coils reinforced under the hips and perimeter, to cradle shoulders and hips without letting your spine fold like a taco. Add-ons include a GlacioTex cooling cover and an ErgoAlign layer for lower back pain. Expect around $1,900 for a queen: R&D pricing, not budget pricing.",
+          whyItEarnsASpot: [
+            "Real engineering for side sleepers, not just a label: reinforced hip coils and zoned lumbar support are deliberate design choices.",
+            "Low-risk trial: 120 nights (30-night minimum break-in) plus a Limited Lifetime Warranty.",
+            "Genuine long-term fans report real sleep improvements well past the honeymoon phase.",
+          ],
+          whereItFallsShort: [
+            "Durability complaints surface repeatedly: sagging after months to a couple years, sometimes with returning back pain.",
+            "Showroom testing undersells it, per multiple shoppers, yet real comfort reportedly takes real nights to judge.",
+            "Helix's own Elite tier, with swappable, denser comfort layers, may outlast the Luxe.",
+          ],
+          bestFor:
+            "Side sleepers wanting targeted hip and shoulder relief, fine with a medium feel and a real break-in period.",
+          skipIf:
+            "You want firm support, judge mattresses by showroom feel alone, or prioritize durability over day-one plushness.",
+        },
+        {
+          heading:
+            'WinkBeds: A "Best Mattresses for Side Sleepers" Pick, With an Asterisk',
+          intro:
+            "WinkBeds shows up everywhere — Wirecutter's #1 innerspring pick seven years running, NapLab's Best Overall and Best for Side-Sleepers badge included. Reddit, as usual, has feelings about that.",
+          image: {
+            src: "/sites/side-sleeper/pic2.png",
+            alt: "WinkBed mattress in a bedroom setting",
+          },
+          whatItIs:
+            "A hybrid mattress with individually wrapped coils, a gel-infused Euro pillow top, a Tencel cover, and a 3-Step Back-Relief lumbar system with reinforced Extra-Edge perimeter support. It comes in four firmness levels (Softer, Luxury Firm, Firmer, and Plus for heavier sleepers), so it's built to flex across body types and sleep positions rather than one specific position. Queen runs around $1,500 to $1,800 depending on the sale, with a 120-night trial and lifetime warranty.",
+          whyItEarnsASpot: [
+            "Firmness options for everyone, including a Plus tier specifically for heavier sleepers who often get shortchanged elsewhere.",
+            "A genuine long track record: multiple owners report 2 to 5+ years of solid performance, no sagging.",
+            'Third-party validation as a side sleeper pick specifically, not just a general "good mattress" nod.',
+          ],
+          whereItFallsShort: [
+            "At least one credible owner claims the lumbar support is really tuned for stomach and back sleepers, not side sleepers.",
+            "Durability complaints cluster around the 1 to 3 year mark for a notable minority: sagging, softening, even quality-control changes between production runs.",
+            "Warranty and trial fine print has tripped people up, including a one-trial-per-lifetime policy.",
+          ],
+          bestFor:
+            "Shoppers who want a firmness option for their specific body type and are comfortable trusting a home trial over a showroom test.",
+          skipIf:
+            "You're a dedicated side sleeper chasing hip and shoulder pressure relief specifically, or you want ironclad odds against sagging.",
+        },
+        {
+          heading:
+            "Saatva Classic (Luxury Firm): A Contender With a Firmness Catch",
+          intro:
+            'Saatva markets the Luxury Firm as its most popular pick, "ideal for all sleep positions." Real side sleepers on Reddit have some notes on that claim.',
+          image: {
+            src: "/sites/side-sleeper/pic3.png",
+            alt: "Saatva Classic mattress on a platform bed",
+          },
+          whatItIs:
+            'An innerspring hybrid with a 3" Euro pillow top, over 1,000 tempered steel coils, and patented, chiropractor-approved Lumbar Zone Technology for spinal alignment. It comes in three firmness levels: Plush Soft (which Saatva itself markets specifically for side sleepers), Luxury Firm (5-7/10, the "everyone" option), and Firm (for stomach sleepers and heavier bodies). A queen Luxury Firm runs around $1,900 to $2,200, with a 365-night trial and lifetime warranty.',
+          whyItEarnsASpot: [
+            "Genuinely plush top layer that several owners describe as hotel-quality on arrival.",
+            "Long trial window, among the most generous in the category, to test real side-sleeping comfort.",
+            "Strong long-term fans exist, including multi-year owners reporting sound, cool sleep.",
+          ],
+          whereItFallsShort: [
+            "Runs firmer than advertised, per multiple side-sleeping owners, some needing an added topper just to sleep comfortably on their side.",
+            'Saatva\'s own site steers side sleepers toward Plush Soft, not Luxury Firm, undercutting the "ideal for all positions" pitch.',
+            "Sagging complaints cluster around year two to three, with several owners saying the warranty only offers a discount, not a real fix.",
+          ],
+          bestFor:
+            "Side sleepers set on trying Saatva who lean toward Plush Soft, or Luxury Firm buyers willing to add a topper if needed.",
+          skipIf:
+            "You want guaranteed pressure relief on day one without adjustments, or zero risk of firmness surprises.",
+        },
+      ],
     },
     {
-      title: "Best Mattress for Heavy Side Sleepers",
-      slug: "best-mattress-heavy-side-sleepers",
-      excerpt: "Durable options with firm support and pressure relief.",
-    },
-    {
-      title: "Best Cooling Mattress",
-      slug: "best-cooling-mattress",
-      excerpt: "Stay comfortable if you sleep hot on your side.",
-    },
-    {
-      title: "Hybrid vs Memory Foam",
-      slug: "hybrid-vs-memory-foam",
-      excerpt: "Which construction type suits side sleepers best?",
-    },
-    {
-      title: "Mattress Buying Guide",
-      slug: "mattress-buying-guide",
-      excerpt: "Everything to consider before you buy.",
-    },
-    {
-      title: "Best Mattress Under $1000",
-      slug: "best-mattress-under-1000",
-      excerpt: "Quality side-sleeper mattresses that won't break the bank.",
+      title: "The Three Best Pillows for Side Sleepers: Pros and Cons",
+      slug: "best-pillows-for-side-sleepers",
+      excerpt:
+        "Unbiased pros and cons for Coop, Eli & Elm, and Beckham Hotel Collection.",
+      intro: [
+        "There are lots and lots of blog posts and articles on what's supposed to be the best pillow for side sleepers. The problem is that it's hard to separate unbiased reviews from paid marketing in this space. That's why we do our own research.",
+        "When we checked out three of the pillows that get recommended the most, we wanted to know what the people actually using them think. This is what we got:",
+      ],
+      researchNote: {
+        title: "How we do our research",
+        content:
+          "First we exclude everything coming from influencers and bloggers. Then we sift through hundreds of product reviews on social media and ecommerce pages like Amazon, Ebay, Target and the like. Do the customer experience match the marketing? Lastly we aggregate the information into honest, unbiased product reviews.",
+      },
+      products: [
+        {
+          heading:
+            "Coop Home Goods Original Adjustable Pillow: A Pick You Have to Build Yourself",
+          intro:
+            'Coop\'s pitch is simple: one pillow, endless customization. Reddit\'s verdict is more like "great idea, if you\'re willing to fuss with it."',
+          image: {
+            src: "/sites/side-sleeper/pic4.png",
+            alt: "Coop Home Goods Original Adjustable Pillow",
+          },
+          whatItIs:
+            "A shredded cross-cut memory foam and microfiber blend (Coop calls it Oomph fill) inside a breathable Lulltra cover, rated medium-firm (around 6.5/10). You unzip it and add or remove fill, plus an extra half-pound bag comes included, to dial in loft for side, back, or stomach sleeping. It's CertiPUR-US and GREENGUARD Gold certified, machine washable, and backed by a 100-night trial. Coop also sells a Crescent-shaped version built specifically for side sleepers, which several owners preferred over the standard Original. The Original Adjustable Pillow will set you back $89.",
+          whyItEarnsASpot: [
+            "Real neck pain relief for many long-term users, some reporting years of improvement after switching.",
+            "Genuinely adjustable, letting side sleepers dial in the loft their shoulders actually need.",
+            "Strong return policy softens the risk of an imperfect first fit.",
+          ],
+          whereItFallsShort: [
+            'Fill migrates over time for some users, turning "adjustable" into ongoing maintenance rather than one-and-done comfort.',
+            "Runs warmer than the cooling marketing suggests, per multiple owners.",
+            "Initial synthetic smell bothers some buyers, and a few found it simply lumpy for side sleeping.",
+          ],
+          bestFor:
+            "Side sleepers willing to spend a week or two fine-tuning fill level, or who go straight for the Crescent shape.",
+          skipIf:
+            "You want a pillow that works perfectly right out of the box with zero adjusting.",
+        },
+        {
+          heading:
+            "Eli & Elm Side Sleeper Pillow: Built for the Job, Priced Like It Knows It",
+          intro:
+            'Unlike most "works for everyone" pillows on this list, Eli & Elm actually built theirs around one job: being the best pillow for side sleepers, full stop. Reddit has mixed feelings about how well that promise holds up.',
+          image: {
+            src: "/sites/side-sleeper/pic5.png",
+            alt: "Eli & Elm side sleeper pillow with adjustable fill",
+          },
+          whatItIs:
+            "A U-shaped, ergonomic pillow with a cutout designed to fill the gap between shoulder and mattress, keeping the neck level with the spine. It's adjustable — unzip the cover and add or remove fill — and available in Latex Noodle (firmer, cooler, rated 10+ years durability) or Shredded Memory Foam (softer, more contouring, rated 5+ years). Currently $114.99 on Eli & Elm's site (list price $134.99), with a 45-night trial and 5-year warranty. Note: Reddit users report the price has swung wildly over the years, so check the live price before buying.",
+          whyItEarnsASpot: [
+            "Purpose-built shape, not a general pillow repurposed for side sleeping.",
+            "Fill choice matters: latex for firmer, longer-lasting support; memory foam for softer contouring.",
+            "Genuine pain relief reported by multiple long-term users, including fast improvement within a week.",
+          ],
+          whereItFallsShort: [
+            "Fill migration complaints, similar to other adjustable pillows: latex noodle fill can shift to the sides, leaving the head under-supported.",
+            "Inconsistent firmness reports: some found it too flat despite marketing calling it firm and sturdy.",
+            "Relief isn't universal or always lasting: at least one user saw tension return after initial improvement.",
+          ],
+          bestFor:
+            "Side sleepers who want a shape engineered specifically for that position and are willing to pick the right fill type.",
+          skipIf:
+            "You've had migration issues with shredded-fill pillows before, or want guaranteed firmness without any settling.",
+        },
+        {
+          heading:
+            "Beckham Hotel Collection Pillows: The Budget Pick for the Best Pillow for Side Sleepers List",
+          intro:
+            "Over 250,000 Amazon reviews and a 4.3+ star average is either a red flag or a genuine budget win. Turns out it's mostly the latter, with one predictable catch.",
+          image: {
+            src: "/sites/side-sleeper/pic6.png",
+            alt: "Beckham Hotel Collection pillow pair",
+          },
+          whatItIs:
+            'A down-alternative pillow pair (queen/standard, $59.99 for two on Amazon) with a 250-thread-count cotton cover and 1,050g of hollow-fiber fill per pillow, landing around 8" of loft at medium-firm. It\'s OEKO-TEX certified and machine washable. No sleep trial or brand warranty, just Amazon\'s standard 30-day return window.',
+          whyItEarnsASpot: [
+            "Comfortable from day one for most buyers, with several reviewers reporting less neck pain than pillows they'd previously tried.",
+            "Exceptional value, often dropping well below full price during sales, cheap enough to replace rather than fuss over.",
+            "Holds its shape reasonably well for a budget pillow, according to multiple 4-star reviewers.",
+          ],
+          whereItFallsShort: [
+            "Softer and less firm than expected for some buyers, with one needing to double up with a second pillow underneath for real support.",
+            "Can't fully hold firmness through the night, per at least one reviewer, and a few found it noticeably under-stuffed compared to pricier alternatives.",
+            "Batch consistency is a real concern: one long-time repeat buyer reported a recent order arriving more compressed than earlier ones and never properly fluffing back out.",
+            "Fussier care than expected: instructions call for washing pillows one at a time (awkward for a washer) and air-drying only, no tumble dry.",
+          ],
+          bestFor:
+            "Side sleepers on a budget who want a soft, huggable pillow and don't need maximum firmness.",
+          skipIf:
+            "You want guaranteed firm support, consistent quality order to order, or low-maintenance washing.",
+        },
+      ],
     },
   ],
 

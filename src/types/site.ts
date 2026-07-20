@@ -1,6 +1,24 @@
 export type FAQ = { question: string; answer: string };
 
-export type Article = { title: string; slug: string; excerpt?: string };
+export type ArticleProductSection = {
+  heading: string;
+  intro?: string;
+  image?: { src: string; alt: string };
+  whatItIs: string;
+  whyItEarnsASpot: string[];
+  whereItFallsShort: string[];
+  bestFor: string;
+  skipIf: string;
+};
+
+export type Article = {
+  title: string;
+  slug: string;
+  excerpt?: string;
+  intro: string[];
+  researchNote: { title: string; content: string };
+  products: ArticleProductSection[];
+};
 
 export type BuyingGuideSection = { title: string; content: string };
 
