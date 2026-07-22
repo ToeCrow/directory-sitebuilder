@@ -39,10 +39,10 @@ export default async function SiteLayout({ children, params }: SiteLayoutProps) 
 
   return (
     <SiteProvider siteSlug={siteSlug as SiteSlug}>
+      {/* Fallback when not on custom domain; root layout places it early for Impact. */}
       {siteSlug === "side-sleeper" && (
         <meta
           name="impact-site-verification"
-          // Impact verifies via the non-standard `value` attribute (not content).
           {...{ value: "55f30b2b-1340-482b-8e3b-1c531ba4b4ef" }}
         />
       )}
