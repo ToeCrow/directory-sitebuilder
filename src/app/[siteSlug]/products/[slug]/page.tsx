@@ -38,9 +38,27 @@ export async function generateMetadata({
     return { title: "Product not found" };
   }
 
+  const title = `${product.name} Review`;
+  const description = product.shortDescription;
+  const path = `/${siteSlug}/products/${slug}`;
+
   return {
-    title: `${product.name} Review — ${siteData.title}`,
-    description: product.shortDescription,
+    title,
+    description,
+    alternates: {
+      canonical: path,
+    },
+    openGraph: {
+      type: "article",
+      title: `${title} — ${siteData.title}`,
+      description,
+      url: path,
+    },
+    twitter: {
+      card: "summary",
+      title: `${title} — ${siteData.title}`,
+      description,
+    },
   };
 }
 

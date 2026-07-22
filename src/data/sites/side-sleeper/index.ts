@@ -21,7 +21,7 @@ export const siteData: SiteData = {
   metaDescription:
     "Compare the best mattresses for side sleepers based on pressure relief, cooling, spinal alignment, trial periods, warranty and value.",
   niche: "mattresses",
-  siteUrl: "https://example.com",
+  siteUrl: "https://side-sleepers.com",
   ratingScale: 10,
 
   hero: {

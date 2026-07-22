@@ -39,9 +39,26 @@ export async function generateMetadata({
     return { title: "Article not found" };
   }
 
+  const description = article.excerpt ?? article.intro[0];
+  const path = `/${siteSlug}/articles/${slug}`;
+
   return {
-    title: `${article.title} — ${siteData.title}`,
-    description: article.excerpt ?? article.intro[0],
+    title: article.title,
+    description,
+    alternates: {
+      canonical: path,
+    },
+    openGraph: {
+      type: "article",
+      title: article.title,
+      description,
+      url: path,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: article.title,
+      description,
+    },
   };
 }
 
