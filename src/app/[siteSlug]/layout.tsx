@@ -43,7 +43,7 @@ export default async function SiteLayout({ children, params }: SiteLayoutProps) 
         <meta
           name="impact-site-verification"
           // Impact verifies via the non-standard `value` attribute (not content).
-          {...{ value: "467c5442-60b8-4869-99d2-9b43fb937fb5" }}
+          {...{ value: "55f30b2b-1340-482b-8e3b-1c531ba4b4ef" }}
         />
       )}
       <AdSenseScript />
