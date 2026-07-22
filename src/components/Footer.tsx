@@ -45,7 +45,7 @@ export function Footer() {
         {/* Temporary: remove after Impact verifies ownership */}
         {siteSlug === "side-sleeper" && (
           <p className="mt-4 text-xs text-slate-600">
-            Impact-Site-Verification: 55f30b2b-1340-482b-8e3b-1c531ba4b4ef
+            Impact-Site-Verification: c17e92c6-4169-4ac8-bd57-bb59d8f651fa
           </p>
         )}
       </div>
