@@ -587,7 +587,7 @@ export const siteData: SiteData = {
           intro:
             'The Helix Midnight Luxe shows up on nearly every "best of" list for side sleepers, backed by an army of affiliate marketers and even a Helix employee defending it in Reddit comments. Impressive. Slightly suspicious. Here\'s what\'s actually under the cover.',
           image: {
-            src: "/sites/side-sleeper/pic1.png",
+            src: "/sites/side-sleeper/articles/best-mattresses-for-side-sleepers/helix-midnight-luxe.png",
             alt: "Helix Midnight Luxe mattress layer diagram",
           },
           whatItIs:
@@ -613,7 +613,7 @@ export const siteData: SiteData = {
           intro:
             "WinkBeds shows up everywhere — Wirecutter's #1 innerspring pick seven years running, NapLab's Best Overall and Best for Side-Sleepers badge included. Reddit, as usual, has feelings about that.",
           image: {
-            src: "/sites/side-sleeper/pic2.png",
+            src: "/sites/side-sleeper/articles/best-mattresses-for-side-sleepers/winkbed.png",
             alt: "WinkBed mattress in a bedroom setting",
           },
           whatItIs:
@@ -639,7 +639,7 @@ export const siteData: SiteData = {
           intro:
             'Saatva markets the Luxury Firm as its most popular pick, "ideal for all sleep positions." Real side sleepers on Reddit have some notes on that claim.',
           image: {
-            src: "/sites/side-sleeper/pic3.png",
+            src: "/sites/side-sleeper/articles/best-mattresses-for-side-sleepers/saatva-classic.png",
             alt: "Saatva Classic mattress on a platform bed",
           },
           whatItIs:
@@ -682,7 +682,7 @@ export const siteData: SiteData = {
           intro:
             'Coop\'s pitch is simple: one pillow, endless customization. Reddit\'s verdict is more like "great idea, if you\'re willing to fuss with it."',
           image: {
-            src: "/sites/side-sleeper/pic4.png",
+            src: "/sites/side-sleeper/articles/best-pillows-for-side-sleepers/coop-original-adjustable.png",
             alt: "Coop Home Goods Original Adjustable Pillow",
           },
           whatItIs:
@@ -708,7 +708,7 @@ export const siteData: SiteData = {
           intro:
             'Unlike most "works for everyone" pillows on this list, Eli & Elm actually built theirs around one job: being the best pillow for side sleepers, full stop. Reddit has mixed feelings about how well that promise holds up.',
           image: {
-            src: "/sites/side-sleeper/pic5.png",
+            src: "/sites/side-sleeper/articles/best-pillows-for-side-sleepers/eli-elm-side-sleeper.png",
             alt: "Eli & Elm side sleeper pillow with adjustable fill",
           },
           whatItIs:
@@ -734,7 +734,7 @@ export const siteData: SiteData = {
           intro:
             "Over 250,000 Amazon reviews and a 4.3+ star average is either a red flag or a genuine budget win. Turns out it's mostly the latter, with one predictable catch.",
           image: {
-            src: "/sites/side-sleeper/pic6.png",
+            src: "/sites/side-sleeper/articles/best-pillows-for-side-sleepers/beckham-hotel-collection.png",
             alt: "Beckham Hotel Collection pillow pair",
           },
           whatItIs:
@@ -754,6 +754,94 @@ export const siteData: SiteData = {
             "Side sleepers on a budget who want a soft, huggable pillow and don't need maximum firmness.",
           skipIf:
             "You want guaranteed firm support, consistent quality order to order, or low-maintenance washing.",
+        },
+      ],
+    },
+    {
+      title: "The Best Pillow for Neck Pain: Our Top 3 Picks",
+      slug: "best-pillows-for-neck-pain",
+      excerpt:
+        "Unbiased pros and cons for TEMPUR-Neck, Avocado Green, and Eli & Elm.",
+      intro: [
+        "There are myriads of magazine articles and blog posts claiming that this is the best pillow for neck pain. However, it is hard to separate honest reviews from paid marketing online, especially in this space. That's why we do our own research.",
+        "When we checked out three of the pillows that get recommended the most, we wanted to know what the people actually using them think. This is what we got:",
+      ],
+      researchNote: {
+        title: "How we do our research",
+        content:
+          "First we exclude everything coming from influencers and bloggers. Then we sift through hundreds of product reviews on social media and ecommerce pages like Amazon, Ebay, Target and the like — what do the actual customers say? Do their experience match the marketing? Lastly we aggregate the information into honest, unbiased product reviews.",
+      },
+      products: [
+        {
+          heading:
+            "TEMPUR-Neck Pillow: The One Everyone's Cousin Swears By",
+          image: {
+            src: "/sites/side-sleeper/articles/best-pillows-for-neck-pain/tempur-neck.png",
+            alt: "TEMPUR-Neck pillows in different sizes",
+          },
+          whatItIs:
+            "Tempur-Pedic's contoured, single-piece memory foam neck pillow, built for side and back sleepers who need real cervical support. Starting at $129 for the medium profile, with small, large, and cooling versions available.",
+          whyItEarnsASpot: [
+            "Genuine ergonomic shape — the contour is engineered around the natural curve of the head and neck, not just marketing language, and long-term users report years of relief.",
+            "Holds its shape — unlike down or fiber-fill, this one doesn't flatten out after a few months.",
+            "Removable, washable cover for actual hygiene upkeep.",
+          ],
+          whereItFallsShort: [
+            "No returns, period — even for defective units, which real customers found out the hard way.",
+            "Firmness can misfire — several side sleepers with neck pain found the extra-firm feel worked against them, not for them.",
+            "Needs a break-in period before it molds properly, so first impressions can be misleading.",
+          ],
+          bestFor:
+            "Side or back sleepers wanting proven, doctor-informed contouring who don't mind a firmer feel.",
+          skipIf:
+            "You want to test-drive before committing — the no-returns policy is a real risk if firmness is a dealbreaker for you.",
+        },
+        {
+          heading:
+            'Avocado Green Pillow: Adjustable, Organic, and a Little Bit "Assembly Required"',
+          image: {
+            src: "/sites/side-sleeper/articles/best-pillows-for-neck-pain/avocado-green.png",
+            alt: "Avocado Green Pillow with customizable fill",
+          },
+          whatItIs:
+            "An organic latex-and-kapok fiber pillow with a zip-open design so you can add or remove filling to dial in your ideal loft. Starts at $125 for the standard size.",
+          whyItEarnsASpot: [
+            "Genuinely adjustable — unzip and pull filling until you hit your ideal loft, which real owners confirm actually works.",
+            "Sleeps cool — the latex-and-kapok blend breathes, with zero reviewer complaints about overheating.",
+            "Certified non-toxic — GOTS, OEKO-TEX, and MADE SAFE certified, which matters if you're sensitive to off-gassing.",
+          ],
+          whereItFallsShort: [
+            "Cervical support is hit-or-miss — several reviewers with neck pain found the loose fill shifts overnight and loses support, and Avocado's own site points side sleepers with neck pain toward its Molded Latex Pillow instead.",
+            "Comes over-stuffed — multiple buyers removed handfuls of filling right out of the box, with the extra bag going straight to landfill.",
+            'Pricier than average — $170 for the king size drew repeated "worth it?" comments.',
+          ],
+          bestFor:
+            "Combination sleepers who want a customizable, eco-friendly pillow and don't mind some trial-and-error.",
+          skipIf:
+            "Neck pain is your main issue — the adjustable fill won't hold cervical support as reliably as a molded or contoured pillow.",
+        },
+        {
+          heading:
+            "Eli & Elm Cooling Side Sleeper Pillow: The One Everyone Argues About the Price Of",
+          image: {
+            src: "/sites/side-sleeper/articles/best-pillows-for-neck-pain/eli-elm-cooling-side-sleeper.png",
+            alt: "Eli & Elm Cooling Side Sleeper Pillow for neutral neck position",
+          },
+          whatItIs:
+            "A U-shaped, contoured latex-and-polyester pillow built specifically for side sleepers, aimed at easing neck pain through spinal alignment. Currently $109.99 (marked down from $129.99) — worth double-checking at checkout, since this pillow's price has bounced around a lot over the years, from around $124 up past $200 at various points.",
+          whyItEarnsASpot: [
+            "Purpose-built U-shape — designed specifically to cradle the head and neck for side sleepers, not a generic rectangle stretched into a marketing claim.",
+            "Adjustable fill — unzip to remove or add the latex-and-polyester blend for custom height and firmness.",
+            "Brand reports strong neck-pain relief — Eli & Elm's own customer survey found 9 out of 10 respondents said the pillow helped with neck pain (note: this is the company's internally conducted survey, not independent third-party data).",
+          ],
+          whereItFallsShort: [
+            "Price volatility — shoppers have watched this pillow's price swing wildly over time, which makes it hard to know if you're getting a fair deal on any given day.",
+            "Limited independent reviews available — much of the public discussion around this pillow centers on price rather than verified long-term performance feedback.",
+          ],
+          bestFor:
+            "Side sleepers wanting a purpose-built, adjustable contour pillow at a currently discounted price.",
+          skipIf:
+            "You want your buying decision backed by verified independent reviews rather than a brand-run survey.",
         },
       ],
     },

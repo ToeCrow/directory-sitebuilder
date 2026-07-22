@@ -3,6 +3,7 @@ export type FAQ = { question: string; answer: string };
 export type ArticleProductSection = {
   heading: string;
   intro?: string;
+  // Static /sites/... paths for now; replace with blob/CDN URLs from admin later.
   image?: { src: string; alt: string };
   whatItIs: string;
   whyItEarnsASpot: string[];
