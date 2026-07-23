@@ -26,12 +26,17 @@ export const siteData: SiteData = {
 
   hero: {
     eyebrow: "Independent mattress comparison",
-    headline: "Best Mattresses for Side Sleepers",
+    headline: "Independent Reviews and Buying Guides for Side Sleepers",
     subheadline:
       "We compare the best mattresses for side sleepers based on pressure relief, cooling, spinal alignment, trial periods, warranty and value.",
     primaryCta: "Compare Mattresses",
     secondaryCta: "Read Buying Guide",
     secondaryCtaHref: "#buying-guide",
+    image: {
+      src: "/sites/side-sleeper/hero.png",
+      srcMobile: "/sites/side-sleeper/hero-mobile.png",
+      alt: "Side Sleeper Guide",
+    },
   },
 
   topPicks: {

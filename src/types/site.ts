@@ -73,6 +73,11 @@ export type SiteData = {
     primaryCta: string;
     secondaryCta?: string;
     secondaryCtaHref?: string;
+    image?: {
+      src: string;
+      srcMobile?: string;
+      alt: string;
+    };
   };
   topPicks: {
     title: string;
