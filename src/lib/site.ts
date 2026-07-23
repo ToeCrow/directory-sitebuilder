@@ -1,6 +1,5 @@
 import {
   getSiteBySlug,
-  isValidSiteSlug,
   type SiteSlug,
 } from "@/data/sites";
 import type { Article, Product } from "@/types/site";

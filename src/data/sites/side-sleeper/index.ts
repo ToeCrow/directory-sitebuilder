@@ -569,6 +569,8 @@ export const siteData: SiteData = {
     {
       title: "The Three Best Mattresses for Side Sleepers: Pros and Cons",
       slug: "best-mattresses-for-side-sleepers",
+      publishedAt: "2026-07-20",
+      author: "Side Sleeper Team",
       excerpt:
         "Unbiased pros and cons for Helix Midnight Luxe, WinkBeds, and Saatva Classic.",
       intro: [
@@ -664,6 +666,8 @@ export const siteData: SiteData = {
     {
       title: "The Three Best Pillows for Side Sleepers: Pros and Cons",
       slug: "best-pillows-for-side-sleepers",
+      publishedAt: "2026-07-20",
+      author: "Side Sleeper Team",
       excerpt:
         "Unbiased pros and cons for Coop, Eli & Elm, and Beckham Hotel Collection.",
       intro: [
@@ -760,6 +764,8 @@ export const siteData: SiteData = {
     {
       title: "The Best Pillow for Neck Pain: Our Top 3 Picks",
       slug: "best-pillows-for-neck-pain",
+      publishedAt: "2026-07-22",
+      author: "Side Sleeper Team",
       excerpt:
         "Unbiased pros and cons for TEMPUR-Neck, Avocado Green, and Eli & Elm.",
       intro: [

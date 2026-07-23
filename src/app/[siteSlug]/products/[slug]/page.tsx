@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { siteSlugs } from "@/data/sites";
+import { getDefaultOgImage } from "@/lib/seo";
 import {
   getProductBySlug,
   getProducts,
@@ -41,6 +42,7 @@ export async function generateMetadata({
   const title = `${product.name} Review`;
   const description = product.shortDescription;
   const path = `/${siteSlug}/products/${slug}`;
+  const ogImage = getDefaultOgImage(siteData);
 
   return {
     title,
@@ -50,14 +52,29 @@ export async function generateMetadata({
     },
     openGraph: {
       type: "article",
+      siteName: siteData.title,
       title: `${title} — ${siteData.title}`,
       description,
       url: path,
+      images: [
+        {
+          url: ogImage.url,
+          width: ogImage.width,
+          height: ogImage.height,
+          alt: ogImage.alt,
+        },
+      ],
     },
     twitter: {
-      card: "summary",
+      card: "summary_large_image",
       title: `${title} — ${siteData.title}`,
       description,
+      images: [
+        {
+          url: ogImage.url,
+          alt: ogImage.alt,
+        },
+      ],
     },
   };
 }

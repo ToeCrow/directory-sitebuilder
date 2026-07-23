@@ -1,11 +1,16 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { SiteSlug } from "@/data/sites";
-import { siteSlugs } from "@/data/sites";
 import { SiteProvider } from "@/context/SiteContext";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { AdSenseScript } from "@/components/AdSenseScript";
+import { JsonLd } from "@/components/JsonLd";
+import {
+  buildOrganizationSchema,
+  buildWebSiteSchema,
+} from "@/lib/schema";
+import { getDefaultOgImage } from "@/lib/seo";
 import { getSiteBySlug, isValidSiteSlug } from "@/lib/site";
 
 type SiteLayoutProps = {
@@ -22,6 +27,8 @@ export async function generateMetadata({
   if (!siteData) {
     return {};
   }
+
+  const ogImage = getDefaultOgImage(siteData);
 
   return {
     title: {
@@ -46,11 +53,25 @@ export async function generateMetadata({
       title: siteData.metaTitle,
       description: siteData.metaDescription,
       url: siteData.siteUrl,
+      images: [
+        {
+          url: ogImage.url,
+          width: ogImage.width,
+          height: ogImage.height,
+          alt: ogImage.alt,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title: siteData.metaTitle,
       description: siteData.metaDescription,
+      images: [
+        {
+          url: ogImage.url,
+          alt: ogImage.alt,
+        },
+      ],
     },
   };
 }
@@ -62,8 +83,17 @@ export default async function SiteLayout({ children, params }: SiteLayoutProps) 
     notFound();
   }
 
+  const siteData = getSiteBySlug(siteSlug);
+
+  if (!siteData) {
+    notFound();
+  }
+
   return (
     <SiteProvider siteSlug={siteSlug as SiteSlug}>
+      <JsonLd
+        data={[buildWebSiteSchema(siteData), buildOrganizationSchema(siteData)]}
+      />
       <AdSenseScript />
       <Header />
       {children}

@@ -19,6 +19,14 @@ export type Article = {
   intro: string[];
   researchNote: { title: string; content: string };
   products: ArticleProductSection[];
+  /** ISO 8601 date string, e.g. "2026-03-15" */
+  publishedAt?: string;
+  /** ISO 8601 date string, e.g. "2026-03-15" */
+  updatedAt?: string;
+  /** Display name only */
+  author?: string;
+  /** Optional per-article social share image override */
+  ogImage?: { src: string; alt: string };
 };
 
 export type BuyingGuideSection = { title: string; content: string };

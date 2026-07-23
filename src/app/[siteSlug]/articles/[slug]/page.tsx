@@ -3,6 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { siteSlugs } from "@/data/sites";
+import { JsonLd } from "@/components/JsonLd";
+import { buildArticleSchema } from "@/lib/schema";
+import { getArticleOgImage } from "@/lib/seo";
 import {
   getArticleBySlug,
   getArticles,
@@ -41,6 +44,7 @@ export async function generateMetadata({
 
   const description = article.excerpt ?? article.intro[0];
   const path = `/${siteSlug}/articles/${slug}`;
+  const ogImage = getArticleOgImage(siteData, article);
 
   return {
     title: article.title,
@@ -50,14 +54,32 @@ export async function generateMetadata({
     },
     openGraph: {
       type: "article",
+      siteName: siteData.title,
       title: article.title,
       description,
       url: path,
+      images: [
+        {
+          url: ogImage.url,
+          width: ogImage.width,
+          height: ogImage.height,
+          alt: ogImage.alt,
+        },
+      ],
+      ...(article.publishedAt ? { publishedTime: article.publishedAt } : {}),
+      ...(article.updatedAt ? { modifiedTime: article.updatedAt } : {}),
+      ...(article.author ? { authors: [article.author] } : {}),
     },
     twitter: {
       card: "summary_large_image",
       title: article.title,
       description,
+      images: [
+        {
+          url: ogImage.url,
+          alt: ogImage.alt,
+        },
+      ],
     },
   };
 }
@@ -76,8 +98,17 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     notFound();
   }
 
+  const path = `/${siteSlug}/articles/${slug}`;
+
   return (
     <main className="py-12 md:py-16">
+      <JsonLd
+        data={buildArticleSchema({
+          site: siteData,
+          article,
+          url: path,
+        })}
+      />
       <article className="mx-auto max-w-3xl px-4">
         <Link
           href={`/${siteSlug}#articles`}
