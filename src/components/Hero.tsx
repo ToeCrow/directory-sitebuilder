@@ -50,7 +50,7 @@ export function Hero({ siteSlug, className }: HeroProps) {
 
   if (hero.image) {
     return (
-      <section className={cn("border-b border-slate-200 bg-white", className)}>
+      <section className={cn("border-b border-slate-200 bg-white pt-[30px]", className)}>
         <div className="mx-auto flex w-full justify-center overflow-hidden bg-slate-50 px-4 md:px-6">
           {hero.image.srcMobile ? (
             <>
