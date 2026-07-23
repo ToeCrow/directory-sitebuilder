@@ -24,6 +24,7 @@ export async function generateMetadata({
 
   // Public homepage on custom domain is `/` (rewritten), not `/{siteSlug}`.
   return {
+    title: siteData.title,
     alternates: {
       canonical: "/",
     },

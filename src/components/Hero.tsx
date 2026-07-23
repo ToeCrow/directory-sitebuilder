@@ -8,6 +8,9 @@ type HeroProps = {
   className?: string;
 };
 
+const heroImageClassName =
+  "mx-auto h-auto max-h-[min(600px,50svh)] w-auto max-w-full object-contain";
+
 function HeroCtas({
   primaryCta,
   secondaryCta,
@@ -44,7 +47,7 @@ export function Hero({ siteSlug, className }: HeroProps) {
   if (hero.image) {
     return (
       <section className={cn("border-b border-slate-200 bg-white", className)}>
-        <div className="relative w-full overflow-hidden bg-slate-100">
+        <div className="flex w-full justify-center overflow-hidden bg-slate-100">
           {hero.image.srcMobile ? (
             <>
               <Image
@@ -54,7 +57,7 @@ export function Hero({ siteSlug, className }: HeroProps) {
                 height={403}
                 priority
                 sizes="100vw"
-                className="h-auto w-full md:hidden"
+                className={cn(heroImageClassName, "md:hidden")}
               />
               <Image
                 src={hero.image.src}
@@ -62,8 +65,8 @@ export function Hero({ siteSlug, className }: HeroProps) {
                 width={1200}
                 height={630}
                 priority
-                sizes="100vw"
-                className="hidden h-auto w-full md:block"
+                sizes="(max-width: 1200px) 100vw, 1143px"
+                className={cn(heroImageClassName, "hidden md:block")}
               />
             </>
           ) : (
@@ -73,8 +76,8 @@ export function Hero({ siteSlug, className }: HeroProps) {
               width={1200}
               height={630}
               priority
-              sizes="100vw"
-              className="h-auto w-full"
+              sizes="(max-width: 1200px) 100vw, 1143px"
+              className={heroImageClassName}
             />
           )}
         </div>

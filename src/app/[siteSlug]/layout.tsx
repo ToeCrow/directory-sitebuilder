@@ -32,7 +32,7 @@ export async function generateMetadata({
 
   return {
     title: {
-      default: siteData.metaTitle,
+      default: siteData.title,
       template: `%s | ${siteData.title}`,
     },
     description: siteData.metaDescription,

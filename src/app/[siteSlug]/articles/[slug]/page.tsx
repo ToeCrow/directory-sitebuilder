@@ -47,7 +47,9 @@ export async function generateMetadata({
   const ogImage = getArticleOgImage(siteData, article);
 
   return {
-    title: article.title,
+    title: {
+      absolute: article.title,
+    },
     description,
     alternates: {
       canonical: path,
