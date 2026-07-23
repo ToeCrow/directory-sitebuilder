@@ -66,6 +66,8 @@ export type SiteData = {
   niche: string;
   siteUrl: string;
   ratingScale: 5 | 10;
+  /** Optional header logo+wordmark image (e.g. /sites/side-sleeper/header-brand.png) */
+  headerBrandImage?: string;
   hero: {
     eyebrow?: string;
     headline: string;

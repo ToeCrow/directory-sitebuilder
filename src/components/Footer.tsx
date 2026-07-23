@@ -42,12 +42,6 @@ export function Footer() {
         >
           © {year} {siteData.title}. {siteData.affiliateDisclosure}
         </p>
-        {/* Temporary: remove after Impact verifies ownership */}
-        {siteSlug === "side-sleeper" && (
-          <p className="mt-4 text-xs text-slate-600">
-            Impact-Site-Verification: c17e92c6-4169-4ac8-bd57-bb59d8f651fa
-          </p>
-        )}
       </div>
     </footer>
   );

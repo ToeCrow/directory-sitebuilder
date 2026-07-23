@@ -8,8 +8,12 @@ type HeroProps = {
   className?: string;
 };
 
-const heroImageClassName =
-  "mx-auto h-auto max-h-[min(600px,50svh)] w-auto max-w-full object-contain";
+/** Portrait: full width. Landscape: capped height, side margins, max 1536px wide. */
+const heroImageClassName = cn(
+  "h-auto w-full max-w-[1536px] object-contain",
+  "portrait:w-full",
+  "landscape:mx-auto landscape:max-h-[min(600px,45svh)] landscape:w-auto",
+);
 
 function HeroCtas({
   primaryCta,
@@ -47,14 +51,14 @@ export function Hero({ siteSlug, className }: HeroProps) {
   if (hero.image) {
     return (
       <section className={cn("border-b border-slate-200 bg-white", className)}>
-        <div className="flex w-full justify-center overflow-hidden bg-slate-100">
+        <div className="mx-auto flex w-full justify-center overflow-hidden bg-slate-50 px-4 md:px-6">
           {hero.image.srcMobile ? (
             <>
               <Image
                 src={hero.image.srcMobile}
                 alt={hero.image.alt}
                 width={768}
-                height={403}
+                height={300}
                 priority
                 sizes="100vw"
                 className={cn(heroImageClassName, "md:hidden")}
@@ -62,10 +66,10 @@ export function Hero({ siteSlug, className }: HeroProps) {
               <Image
                 src={hero.image.src}
                 alt={hero.image.alt}
-                width={1200}
-                height={630}
+                width={1536}
+                height={600}
                 priority
-                sizes="(max-width: 1200px) 100vw, 1143px"
+                sizes="(max-width: 1536px) calc(100vw - 2rem), 1536px"
                 className={cn(heroImageClassName, "hidden md:block")}
               />
             </>
@@ -73,10 +77,10 @@ export function Hero({ siteSlug, className }: HeroProps) {
             <Image
               src={hero.image.src}
               alt={hero.image.alt}
-              width={1200}
-              height={630}
+              width={1536}
+              height={600}
               priority
-              sizes="(max-width: 1200px) 100vw, 1143px"
+              sizes="(max-width: 1536px) calc(100vw - 2rem), 1536px"
               className={heroImageClassName}
             />
           )}

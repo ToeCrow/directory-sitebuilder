@@ -23,6 +23,7 @@ export const siteData: SiteData = {
   niche: "mattresses",
   siteUrl: "https://side-sleepers.com",
   ratingScale: 10,
+  headerBrandImage: "/sites/side-sleeper/header-brand.png",
 
   hero: {
     eyebrow: "Independent mattress comparison",

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useSiteContext } from "@/context/SiteContext";
 
@@ -50,12 +51,15 @@ export function Header() {
   const [mobileArticlesOpen, setMobileArticlesOpen] = useState(false);
 
   const homeHref = `/${siteSlug}`;
-  const sectionLinks = [
+  const primaryLinks = [
     { href: `${homeHref}#compare`, label: "Compare" },
     { href: `${homeHref}#buying-guide`, label: "Buying Guide" },
     { href: `${homeHref}#faq`, label: "FAQ" },
-    { href: `${homeHref}#newsletter`, label: "Newsletter" },
   ];
+  const newsletterLink = {
+    href: `${homeHref}#newsletter`,
+    label: "Newsletter",
+  };
   const articles = siteData.articles;
 
   function closeMenu() {
@@ -65,17 +69,31 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 md:py-4">
         <Link
           href={homeHref}
-          className="min-w-0 truncate text-lg font-semibold text-slate-900"
+          className="min-w-0 shrink"
+          aria-label={siteData.title}
         >
-          {siteData.title}
+          {siteData.headerBrandImage ? (
+            <Image
+              src={siteData.headerBrandImage}
+              alt={siteData.title}
+              width={540}
+              height={105}
+              priority
+              className="h-9 w-auto max-w-[min(100%,280px)] object-contain object-left sm:h-10 sm:max-w-[320px] md:h-11 md:max-w-[380px]"
+            />
+          ) : (
+            <span className="block truncate text-lg font-semibold text-slate-900">
+              {siteData.title}
+            </span>
+          )}
         </Link>
 
         <nav aria-label="Main navigation" className="hidden md:block">
           <ul className="flex items-center gap-6">
-            {sectionLinks.map((link) => (
+            {primaryLinks.map((link) => (
               <li key={link.href}>
                 <Link
                   href={link.href}
@@ -117,6 +135,15 @@ export function Header() {
                 </div>
               </li>
             )}
+
+            <li>
+              <Link
+                href={newsletterLink.href}
+                className="text-sm font-medium text-slate-600 transition-colors hover:text-blue-600"
+              >
+                {newsletterLink.label}
+              </Link>
+            </li>
           </ul>
         </nav>
 
@@ -141,7 +168,7 @@ export function Header() {
           className="border-t border-slate-200 md:hidden"
         >
           <ul className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-3">
-            {sectionLinks.map((link) => (
+            {primaryLinks.map((link) => (
               <li key={link.href}>
                 <Link
                   href={link.href}
@@ -181,6 +208,16 @@ export function Header() {
                 )}
               </li>
             )}
+
+            <li>
+              <Link
+                href={newsletterLink.href}
+                className="block rounded-lg px-3 py-3 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-blue-600"
+                onClick={closeMenu}
+              >
+                {newsletterLink.label}
+              </Link>
+            </li>
           </ul>
         </nav>
       )}
