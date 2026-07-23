@@ -3,6 +3,27 @@
 import Link from "next/link";
 import { useSiteContext } from "@/context/SiteContext";
 
+function FooterNavLink({ href, label }: { href: string; label: string }) {
+  const isExternal =
+    href.startsWith("mailto:") ||
+    href.startsWith("http://") ||
+    href.startsWith("https://");
+
+  if (isExternal) {
+    return (
+      <a href={href} className="hover:text-white">
+        {label}
+      </a>
+    );
+  }
+
+  return (
+    <Link href={href} className="hover:text-white">
+      {label}
+    </Link>
+  );
+}
+
 export function Footer() {
   const { siteSlug, siteData } = useSiteContext();
   const year = new Date().getFullYear();
@@ -23,9 +44,7 @@ export function Footer() {
             <ul className="flex flex-wrap gap-6 text-sm">
               {siteData.footer.links.map((link) => (
                 <li key={link.label}>
-                  <a href={link.href} className="hover:text-white">
-                    {link.label}
-                  </a>
+                  <FooterNavLink href={link.href} label={link.label} />
                 </li>
               ))}
               <li>

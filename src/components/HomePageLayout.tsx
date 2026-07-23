@@ -18,6 +18,7 @@ export function HomePageLayout({ siteSlug }: HomePageLayoutProps) {
   return (
     <>
       <Hero siteSlug={siteSlug} />
+      <AffiliateDisclosure siteSlug={siteSlug} />
       <ProductGrid siteSlug={siteSlug} />
       <AdSlot slotId="primary" />
       <ComparisonTable siteSlug={siteSlug} />
@@ -26,7 +27,6 @@ export function HomePageLayout({ siteSlug }: HomePageLayoutProps) {
       <BuyingGuide siteSlug={siteSlug} />
       <FAQ siteSlug={siteSlug} />
       <ArticleGrid siteSlug={siteSlug} />
-      <AffiliateDisclosure siteSlug={siteSlug} />
       <LeadForm />
     </>
   );

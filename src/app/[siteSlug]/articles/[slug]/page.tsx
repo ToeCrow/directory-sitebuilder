@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { siteSlugs } from "@/data/sites";
+import { AffiliateDisclosure } from "@/components/AffiliateDisclosure";
 import { JsonLd } from "@/components/JsonLd";
 import { buildArticleSchema } from "@/lib/schema";
 import { getArticleOgImage } from "@/lib/seo";
@@ -144,8 +145,10 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           </p>
         </aside>
 
+        <AffiliateDisclosure siteSlug={siteSlug} className="mt-8 px-0" />
+
         {article.products.length > 0 && (
-          <div className="mt-12 space-y-16">
+          <div className="mt-8 space-y-16">
             {article.products.map((product, index) => (
               <section
                 key={product.heading}

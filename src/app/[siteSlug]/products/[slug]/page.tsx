@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { siteSlugs } from "@/data/sites";
+import { AffiliateDisclosure } from "@/components/AffiliateDisclosure";
 import { getDefaultOgImage } from "@/lib/seo";
 import {
   getProductBySlug,
@@ -125,6 +126,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <span className="font-medium">Best for:</span> {product.bestFor}
           </p>
         </header>
+
+        <AffiliateDisclosure siteSlug={siteSlug} className="mt-6 px-0" />
 
         <section className="mt-8" aria-labelledby="features-heading">
           <h2

@@ -50,6 +50,8 @@ export type Product = {
   pros: string[];
   cons: string[];
   affiliateUrl: string;
+  /** Whether we currently have an active affiliate partnership for this product */
+  hasAffiliatePartnership: boolean;
   rating: number;
   badge?: string;
   featuredRank: number | null;
