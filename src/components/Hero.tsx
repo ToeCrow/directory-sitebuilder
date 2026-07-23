@@ -10,7 +10,7 @@ type HeroProps = {
 
 /** Portrait: full width. Landscape: capped height, side margins, max 1536px wide. */
 const heroImageClassName = cn(
-  "h-auto w-full max-w-[1536px] object-contain",
+  "h-auto w-full max-w-[1536px] bg-[#F6F8FC] object-contain",
   "portrait:w-full",
   "landscape:mx-auto landscape:max-h-[min(600px,45svh)] landscape:w-auto",
 );
@@ -51,7 +51,7 @@ export function Hero({ siteSlug, className }: HeroProps) {
   if (hero.image) {
     return (
       <section className={cn("border-b border-slate-200 bg-white pt-[30px]", className)}>
-        <div className="mx-auto flex w-full justify-center overflow-hidden bg-slate-50 px-4 md:px-6">
+        <div className="mx-auto flex w-full justify-center overflow-hidden bg-[#F6F8FC] px-4 md:px-6">
           {hero.image.srcMobile ? (
             <>
               <Image
@@ -86,7 +86,7 @@ export function Hero({ siteSlug, className }: HeroProps) {
           )}
         </div>
 
-        <div className="mx-auto max-w-6xl px-4 py-10 text-center md:py-14">
+        <div className="mx-auto max-w-6xl bg-white px-4 py-10 text-center md:py-14">
           <h1 className="mx-auto max-w-3xl text-3xl font-bold tracking-tight text-slate-900 md:text-5xl">
             {hero.headline}
           </h1>

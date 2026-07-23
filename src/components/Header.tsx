@@ -68,7 +68,7 @@ export function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur">
+    <header className="sticky top-0 z-50 border-b border-slate-200 bg-white">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 md:py-4">
         <Link
           href={homeHref}
@@ -79,10 +79,10 @@ export function Header() {
             <Image
               src={siteData.headerBrandImage}
               alt={siteData.title}
-              width={540}
-              height={105}
+              width={468}
+              height={80}
               priority
-              className="h-9 w-auto max-w-[min(100%,280px)] object-contain object-left sm:h-10 sm:max-w-[320px] md:h-11 md:max-w-[380px]"
+              className="h-9 w-auto max-w-[min(100%,280px)] bg-transparent object-contain object-left sm:h-10 sm:max-w-[320px] md:h-11 md:max-w-[380px]"
             />
           ) : (
             <span className="block truncate text-lg font-semibold text-slate-900">
