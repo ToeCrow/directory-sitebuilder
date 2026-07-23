@@ -10,6 +10,13 @@ import {
   getSiteBySlug,
   isValidSiteSlug,
 } from "@/lib/site";
+import {
+  RESEARCH_SCORE_HOWTO_LABEL,
+  RESEARCH_SCORE_LABEL,
+  formatScoreValue,
+  getResearchScorePath,
+  siteUsesResearchScore,
+} from "@/lib/research-score";
 
 type ProductPageProps = {
   params: Promise<{ siteSlug: string; slug: string }>;
@@ -116,9 +123,29 @@ export default async function ProductPage({ params }: ProductPageProps) {
             {product.name}
           </h1>
           <p className="mt-2 text-sm font-medium text-slate-500">
-            Rating: {product.rating}/{siteData.ratingScale} · From{" "}
-            {product.priceFrom}
+            {siteUsesResearchScore(siteSlug) ? (
+              <>
+                {RESEARCH_SCORE_LABEL}:{" "}
+                {formatScoreValue(product.rating, siteData.ratingScale)} · From{" "}
+                {product.priceFrom}
+              </>
+            ) : (
+              <>
+                Rating: {product.rating}/{siteData.ratingScale} · From{" "}
+                {product.priceFrom}
+              </>
+            )}
           </p>
+          {siteUsesResearchScore(siteSlug) && (
+            <p className="mt-2 text-sm text-slate-600">
+              <Link
+                href={getResearchScorePath(siteSlug)}
+                className="font-medium text-blue-600 underline-offset-2 hover:underline"
+              >
+                {RESEARCH_SCORE_HOWTO_LABEL}
+              </Link>
+            </p>
+          )}
           <p className="mt-4 text-lg leading-relaxed text-slate-600">
             {product.shortDescription}
           </p>

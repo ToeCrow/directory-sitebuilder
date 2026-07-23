@@ -4,7 +4,7 @@ import type { SiteData } from "@/types/site";
 
 const comparisonRows = [
   { key: "brand", label: "Brand", type: "text" as const },
-  { key: "rating", label: "Rating", type: "text" as const },
+  { key: "rating", label: "Research Score", type: "text" as const },
   { key: "firmness", label: "Firmness", type: "text" as const },
   { key: "cooling", label: "Cooling", type: "text" as const },
   { key: "pressure-relief", label: "Pressure Relief", type: "text" as const },
@@ -19,17 +19,17 @@ export const siteData: SiteData = {
   title: "Side Sleeper Guide",
   metaTitle: "Best Mattresses for Side Sleepers (2026)",
   metaDescription:
-    "Compare the best mattresses for side sleepers based on pressure relief, cooling, spinal alignment, trial periods, warranty and value.",
+    "Compare mattresses for side sleepers based on pressure relief, cooling, support, trial periods, warranty, and value — researched from specs and owner feedback.",
   niche: "mattresses",
   siteUrl: "https://side-sleepers.com",
-  ratingScale: 10,
+  ratingScale: 5,
   headerBrandImage: "/sites/side-sleeper/header-brand.png",
 
   hero: {
-    eyebrow: "Independent mattress comparison",
-    headline: "Independent Reviews and Buying Guides for Side Sleepers",
+    eyebrow: "Research-based side sleeper guides",
+    headline: "Reviews, Guides, and Research for Side Sleepers",
     subheadline:
-      "We compare the best mattresses for side sleepers based on pressure relief, cooling, spinal alignment, trial periods, warranty and value.",
+      "Side Sleeper Guide is a research-based knowledge site for side sleepers — covering mattresses, pillows, and buying decisions using product specs, brand policies, and recurring customer feedback.",
     primaryCta: "Compare Mattresses",
     secondaryCta: "Read Buying Guide",
     secondaryCtaHref: "#buying-guide",
@@ -43,12 +43,13 @@ export const siteData: SiteData = {
   topPicks: {
     title: "Top picks",
     description:
-      "Our highest-rated mattresses for side sleepers, tested for pressure relief and spinal alignment.",
+      "At Side Sleeper Guide, these are our highest-rated mattress reviews for side sleepers — based on product research, specs, and recurring owner feedback around pressure relief, support, and cooling.",
   },
 
   productDirectory: {
     title: "Browse Our Complete Side Sleeper Directory",
-    description: "Compare every product we've reviewed for side sleepers.",
+    description:
+      "Compare every mattress Side Sleeper Guide has reviewed for side-sleeper suitability.",
   },
 
   products: [
@@ -68,7 +69,7 @@ export const siteData: SiteData = {
         "Free shipping and returns",
       ],
       pros: [
-        "Excellent pressure relief for shoulders and hips",
+        "Often praised for shoulder and hip pressure relief",
         "Durable hybrid construction",
         "Strong edge support for sitting",
       ],
@@ -79,13 +80,13 @@ export const siteData: SiteData = {
       ],
       affiliateUrl: "https://www.winkbeds.com/pages/shop-winkbed",
       hasAffiliatePartnership: false,
-      rating: 9.6,
+      rating: 4.8,
       featuredRank: 1,
       comparisonRank: 1,
       directoryOrder: 1,
       comparison: {
         brand: "WinkBed",
-        rating: "9.6/10",
+        rating: "4.8 / 5",
         firmness: "Medium Firm",
         cooling: "Good",
         "pressure-relief": "Excellent",
@@ -122,13 +123,13 @@ export const siteData: SiteData = {
       ],
       affiliateUrl: "https://www.saatva.com/mattresses/saatva-classic",
       hasAffiliatePartnership: false,
-      rating: 9.4,
+      rating: 4.7,
       featuredRank: 2,
       comparisonRank: 2,
       directoryOrder: 2,
       comparison: {
         brand: "Saatva Classic",
-        rating: "9.4/10",
+        rating: "4.7 / 5",
         firmness: "Plush Soft / Luxury Firm / Firm",
         cooling: "Very Good",
         "pressure-relief": "Very Good",
@@ -165,13 +166,13 @@ export const siteData: SiteData = {
       ],
       affiliateUrl: "https://helixsleep.com/products/midnight-luxe",
       hasAffiliatePartnership: false,
-      rating: 9.3,
+      rating: 4.7,
       featuredRank: 3,
       comparisonRank: 3,
       directoryOrder: 3,
       comparison: {
         brand: "Helix Midnight Luxe",
-        rating: "9.3/10",
+        rating: "4.7 / 5",
         firmness: "Medium",
         cooling: "Excellent",
         "pressure-relief": "Very Good",
@@ -208,13 +209,13 @@ export const siteData: SiteData = {
       ],
       affiliateUrl: "https://www.nolahsleep.com/products/nolah-natural-11",
       hasAffiliatePartnership: false,
-      rating: 9.1,
+      rating: 4.6,
       featuredRank: null,
       comparisonRank: 4,
       directoryOrder: 4,
       comparison: {
         brand: "Nolah Natural",
-        rating: "9.1/10",
+        rating: "4.6 / 5",
         firmness: "Medium",
         cooling: "Very Good",
         "pressure-relief": "Good",
@@ -240,8 +241,8 @@ export const siteData: SiteData = {
         "120-night trial",
       ],
       pros: [
-        "Strong pressure relief at contact points",
-        "Good spinal alignment",
+        "Often praised for shoulder and hip pressure relief",
+        "Owners often note solid support at contact points",
         "Multiple firmness choices",
       ],
       cons: [
@@ -251,13 +252,13 @@ export const siteData: SiteData = {
       ],
       affiliateUrl: "https://www.bearmattress.com/products/elite-hybrid-mattress",
       hasAffiliatePartnership: false,
-      rating: 9.2,
+      rating: 4.6,
       featuredRank: null,
       comparisonRank: 5,
       directoryOrder: 5,
       comparison: {
         brand: "Bear Elite Hybrid",
-        rating: "9.2/10",
+        rating: "4.6 / 5",
         firmness: "Soft / Medium / Firm",
         cooling: "Good",
         "pressure-relief": "Excellent",
@@ -288,19 +289,19 @@ export const siteData: SiteData = {
         "Good value for hybrid quality",
       ],
       cons: [
-        "Average cooling performance",
+        "Cooling feedback is mixed compared with dedicated cooling hybrids",
         "Limited firmness options",
         "May lack deep contour for lighter sleepers",
       ],
       affiliateUrl: "https://www.leesa.com/products/leesa-hybrid-mattress",
       hasAffiliatePartnership: false,
-      rating: 9.0,
+      rating: 4.5,
       featuredRank: null,
       comparisonRank: 6,
       directoryOrder: 6,
       comparison: {
         brand: "Leesa Sapira",
-        rating: "9.0/10",
+        rating: "4.5 / 5",
         firmness: "Medium Firm",
         cooling: "Good",
         "pressure-relief": "Good",
@@ -337,13 +338,13 @@ export const siteData: SiteData = {
       ],
       affiliateUrl: "https://brooklynbedding.com/products/aurora",
       hasAffiliatePartnership: false,
-      rating: 9.0,
+      rating: 4.5,
       featuredRank: null,
       comparisonRank: 7,
       directoryOrder: 7,
       comparison: {
         brand: "Brooklyn Bedding Aurora Luxe",
-        rating: "9.0/10",
+        rating: "4.5 / 5",
         firmness: "Soft / Medium / Firm",
         cooling: "Very Good",
         "pressure-relief": "Good",
@@ -370,7 +371,7 @@ export const siteData: SiteData = {
       ],
       pros: [
         "Excellent value for money",
-        "Deep pressure relief",
+        "Deep contouring that many side sleepers find pressure-relieving",
         "Industry-leading trial and warranty",
       ],
       cons: [
@@ -380,13 +381,13 @@ export const siteData: SiteData = {
       ],
       affiliateUrl: "https://www.nectarsleep.com/mattresses/premier-memory-foam-mattress",
       hasAffiliatePartnership: false,
-      rating: 8.8,
+      rating: 4.4,
       featuredRank: null,
       comparisonRank: 8,
       directoryOrder: 8,
       comparison: {
         brand: "Nectar Premier",
-        rating: "8.8/10",
+        rating: "4.4 / 5",
         firmness: "Medium Firm",
         cooling: "Fair",
         "pressure-relief": "Very Good",
@@ -423,13 +424,13 @@ export const siteData: SiteData = {
       ],
       affiliateUrl: "https://www.dreamcloudsleep.com/mattresses/premier-hybrid-mattress",
       hasAffiliatePartnership: false,
-      rating: 8.9,
+      rating: 4.5,
       featuredRank: null,
       comparisonRank: 9,
       directoryOrder: 9,
       comparison: {
         brand: "DreamCloud Premier",
-        rating: "8.9/10",
+        rating: "4.5 / 5",
         firmness: "Medium Firm",
         cooling: "Good",
         "pressure-relief": "Good",
@@ -466,13 +467,13 @@ export const siteData: SiteData = {
       ],
       affiliateUrl: "https://www.avocadogreenmattress.com/products/green-natural-organic-mattress",
       hasAffiliatePartnership: false,
-      rating: 8.7,
+      rating: 4.4,
       featuredRank: null,
       comparisonRank: 10,
       directoryOrder: 10,
       comparison: {
         brand: "Avocado Green",
-        rating: "8.7/10",
+        rating: "4.4 / 5",
         firmness: "Medium Firm",
         cooling: "Very Good",
         "pressure-relief": "Good",
@@ -487,7 +488,7 @@ export const siteData: SiteData = {
   comparisonTable: {
     title: "Mattress comparison",
     description:
-      "Compare side-sleeper mattresses across the features that matter most.",
+      "Compare side-sleeper mattresses across the features that matter most. Research Score reflects Side Sleeper Guide’s review criteria; Cooling and Pressure Relief are research notes from specs and recurring owner feedback.",
     rowHeaderLabel: "Specification",
     rows: comparisonRows,
   },
@@ -523,7 +524,7 @@ export const siteData: SiteData = {
       {
         title: "How we compare mattresses",
         content:
-          "We evaluate pressure relief, cooling, spinal alignment, trial periods, warranty, and overall value. Ratings reflect how well each mattress serves side sleepers specifically, not just general comfort.",
+          "At Side Sleeper Guide, we review product specifications and manufacturer information, then look for recurring patterns in verifiable customer feedback. We compare what matters most for side sleepers — including pressure relief, cooling, support, price, trials, and warranties — and summarize that work in our reviews and Research Score.",
       },
     ],
   },
@@ -588,15 +589,15 @@ export const siteData: SiteData = {
       publishedAt: "2026-07-20",
       author: "Side Sleeper Team",
       excerpt:
-        "Unbiased pros and cons for Helix Midnight Luxe, WinkBeds, and Saatva Classic.",
+        "Research-based pros and cons for Helix Midnight Luxe, WinkBeds, and Saatva Classic.",
       intro: [
-        "The internet is ripe with blog posts and articles on what's supposed to be the best mattresses for side sleepers. The problem is that it's hard to separate unbiased reviews from paid marketing in this space. That's why we do our own research.",
+        "The internet is ripe with blog posts and articles on what's supposed to be the best mattresses for side sleepers. The problem is that it's hard to separate useful reviews from paid marketing in this space. That's why the Side Sleeper Guide team does its own research.",
         "When we checked out three of the mattresses that get recommended the most, we wanted to know what the people actually sleeping in the mattresses think. This is what we got:",
       ],
       researchNote: {
-        title: "How we do our research",
+        title: "How Side Sleeper Guide researches products",
         content:
-          "First we exclude everything coming from influencers and bloggers. Then we sift through hundreds of product reviews on social media and ecommerce pages like Amazon, Ebay, Target and the like. Do the customer experience match the marketing? Lastly we aggregate the information into honest, unbiased product reviews.",
+          "The Side Sleeper Guide team skips influencer roundups and paid placements as primary evidence. We review official specs and policies, then compare recurring feedback from ecommerce reviews, forums, and social discussions. We look for patterns — where owner experience matches or contradicts marketing — and summarize pros, cons, and side-sleeper fit. Our reviews are based on product research and recurring customer feedback. Unless explicitly stated, we do not perform hands-on laboratory testing or physical measurements.",
       },
       products: [
         {
@@ -685,15 +686,15 @@ export const siteData: SiteData = {
       publishedAt: "2026-07-20",
       author: "Side Sleeper Team",
       excerpt:
-        "Unbiased pros and cons for Coop, Eli & Elm, and Beckham Hotel Collection.",
+        "Research-based pros and cons for Coop, Eli & Elm, and Beckham Hotel Collection.",
       intro: [
-        "There are lots and lots of blog posts and articles on what's supposed to be the best pillow for side sleepers. The problem is that it's hard to separate unbiased reviews from paid marketing in this space. That's why we do our own research.",
+        "There are lots and lots of blog posts and articles on what's supposed to be the best pillow for side sleepers. The problem is that it's hard to separate useful reviews from paid marketing in this space. That's why the Side Sleeper Guide team does its own research.",
         "When we checked out three of the pillows that get recommended the most, we wanted to know what the people actually using them think. This is what we got:",
       ],
       researchNote: {
-        title: "How we do our research",
+        title: "How Side Sleeper Guide researches products",
         content:
-          "First we exclude everything coming from influencers and bloggers. Then we sift through hundreds of product reviews on social media and ecommerce pages like Amazon, Ebay, Target and the like. Do the customer experience match the marketing? Lastly we aggregate the information into honest, unbiased product reviews.",
+          "The Side Sleeper Guide team skips influencer roundups and paid placements as primary evidence. We review official specs and policies, then compare recurring feedback from ecommerce reviews, forums, and social discussions. We look for patterns — where owner experience matches or contradicts marketing — and summarize pros, cons, and side-sleeper fit. Our reviews are based on product research and recurring customer feedback. Unless explicitly stated, we do not perform hands-on laboratory testing or physical measurements.",
       },
       products: [
         {
@@ -783,15 +784,15 @@ export const siteData: SiteData = {
       publishedAt: "2026-07-22",
       author: "Side Sleeper Team",
       excerpt:
-        "Unbiased pros and cons for TEMPUR-Neck, Avocado Green, and Eli & Elm.",
+        "Research-based pros and cons for TEMPUR-Neck, Avocado Green, and Eli & Elm.",
       intro: [
-        "There are myriads of magazine articles and blog posts claiming that this is the best pillow for neck pain. However, it is hard to separate honest reviews from paid marketing online, especially in this space. That's why we do our own research.",
+        "There are myriads of magazine articles and blog posts claiming that this is the best pillow for neck pain. However, it is hard to separate useful reviews from paid marketing online, especially in this space. That's why the Side Sleeper Guide team does its own research.",
         "When we checked out three of the pillows that get recommended the most, we wanted to know what the people actually using them think. This is what we got:",
       ],
       researchNote: {
-        title: "How we do our research",
+        title: "How Side Sleeper Guide researches products",
         content:
-          "First we exclude everything coming from influencers and bloggers. Then we sift through hundreds of product reviews on social media and ecommerce pages like Amazon, Ebay, Target and the like — what do the actual customers say? Do their experience match the marketing? Lastly we aggregate the information into honest, unbiased product reviews.",
+          "The Side Sleeper Guide team skips influencer roundups and paid placements as primary evidence. We review official specs and policies, then compare recurring feedback from ecommerce reviews, forums, and social discussions. We look for patterns — where owner experience matches or contradicts marketing — and summarize pros, cons, and side-sleeper fit. Our reviews are based on product research and recurring customer feedback. Unless explicitly stated, we do not perform hands-on laboratory testing or physical measurements.",
       },
       products: [
         {
@@ -878,14 +879,18 @@ export const siteData: SiteData = {
   },
 
   affiliateDisclosure:
-    "Disclosure: This site may earn a commission when you click certain links and make a purchase, at no additional cost to you. This does not affect our ratings or recommendations.",
+    "Disclosure: This site may earn a commission when you click certain links and make a purchase, at no additional cost to you. That never changes our research criteria or how we review products.",
 
   footer: {
-    tagline: "Independent mattress comparisons for side sleepers.",
+    tagline: "Research-based guides and mattress reviews for side sleepers.",
     links: [
       {
         label: "Contact",
         href: "mailto:side.sleepers.admin@gmail.com",
+      },
+      {
+        label: "Research Score",
+        href: "/side-sleeper/research-score",
       },
       {
         label: "Affiliate Disclosure",

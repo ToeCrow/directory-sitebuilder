@@ -4,6 +4,10 @@ import { getSiteData } from "@/lib/site";
 import type { Product } from "@/types/site";
 import { StarRating } from "@/components/StarRating";
 import { cn } from "@/lib/cn";
+import {
+  RESEARCH_SCORE_LABEL,
+  siteUsesResearchScore,
+} from "@/lib/research-score";
 
 type ProductCardProps = {
   siteSlug: SiteSlug;
@@ -19,6 +23,9 @@ export function ProductCard({
   const siteData = getSiteData(siteSlug);
   const productHref = `/${siteSlug}/products/${product.slug}`;
   const isDirectory = variant === "directory";
+  const scoreLabel = siteUsesResearchScore(siteSlug)
+    ? RESEARCH_SCORE_LABEL
+    : "Rating";
 
   return (
     <article
@@ -45,7 +52,11 @@ export function ProductCard({
             </Link>
           </h3>
         </div>
-        <StarRating rating={product.rating} maxRating={siteData.ratingScale} />
+        <StarRating
+          rating={product.rating}
+          maxRating={siteData.ratingScale}
+          label={scoreLabel}
+        />
       </div>
 
       <p className="mb-4 flex-1 text-sm leading-relaxed text-slate-600">
