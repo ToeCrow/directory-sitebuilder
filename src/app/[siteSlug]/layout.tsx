@@ -4,7 +4,6 @@ import type { SiteSlug } from "@/data/sites";
 import { SiteProvider } from "@/context/SiteContext";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { AdSenseScript } from "@/components/AdSenseScript";
 import { JsonLd } from "@/components/JsonLd";
 import {
   buildOrganizationSchema,
@@ -94,7 +93,6 @@ export default async function SiteLayout({ children, params }: SiteLayoutProps) 
       <JsonLd
         data={[buildWebSiteSchema(siteData), buildOrganizationSchema(siteData)]}
       />
-      <AdSenseScript />
       <Header />
       {children}
       <Footer />

@@ -10,7 +10,8 @@ type AdSlotProps = {
   className?: string;
 };
 
-const clientId = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
+const clientId =
+  process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID ?? "ca-pub-5955637768174044";
 
 export function AdSlot({ slotId, className }: AdSlotProps) {
   const siteData = useSiteData();
