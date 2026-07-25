@@ -1,6 +1,12 @@
+import Link from "next/link";
 import type { SiteSlug } from "@/data/sites";
 import { getSiteData } from "@/lib/site";
 import { cn } from "@/lib/cn";
+import {
+  RESEARCH_SCORE_HOWTO_LABEL,
+  getResearchScorePath,
+  siteUsesResearchScore,
+} from "@/lib/research-score";
 
 type BuyingGuideProps = {
   siteSlug: SiteSlug;
@@ -10,6 +16,7 @@ type BuyingGuideProps = {
 export function BuyingGuide({ siteSlug, className }: BuyingGuideProps) {
   const siteData = getSiteData(siteSlug);
   const { buyingGuide } = siteData;
+  const showResearchScoreLink = siteUsesResearchScore(siteSlug);
 
   return (
     <section
@@ -32,6 +39,19 @@ export function BuyingGuide({ siteSlug, className }: BuyingGuideProps) {
               </h3>
               <p className="mt-3 text-sm leading-relaxed text-slate-600">
                 {section.content}
+                {showResearchScoreLink &&
+                  section.title === "How we compare mattresses" && (
+                    <>
+                      {" "}
+                      <Link
+                        href={getResearchScorePath(siteSlug)}
+                        className="font-medium text-blue-600 underline-offset-2 hover:underline"
+                      >
+                        {RESEARCH_SCORE_HOWTO_LABEL}
+                      </Link>
+                      .
+                    </>
+                  )}
               </p>
             </article>
           ))}

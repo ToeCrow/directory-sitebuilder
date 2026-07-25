@@ -2,6 +2,11 @@
 
 import Link from "next/link";
 import { useSiteContext } from "@/context/SiteContext";
+import {
+  RESEARCH_SCORE_LABEL,
+  getResearchScorePath,
+  siteUsesResearchScore,
+} from "@/lib/research-score";
 
 function FooterNavLink({ href, label }: { href: string; label: string }) {
   const isExternal =
@@ -42,11 +47,19 @@ export function Footer() {
           </div>
           <nav aria-label="Footer navigation">
             <ul className="flex flex-wrap gap-6 text-sm">
-              {siteData.footer.links.map((link) => (
-                <li key={link.label}>
-                  <FooterNavLink href={link.href} label={link.label} />
-                </li>
-              ))}
+              {siteData.footer.links.map((link) => {
+                const href =
+                  link.label === RESEARCH_SCORE_LABEL &&
+                  siteUsesResearchScore(siteSlug)
+                    ? getResearchScorePath(siteSlug)
+                    : link.href;
+
+                return (
+                  <li key={link.label}>
+                    <FooterNavLink href={href} label={link.label} />
+                  </li>
+                );
+              })}
               <li>
                 <Link href={`/${siteSlug}`} className="hover:text-white">
                   Home

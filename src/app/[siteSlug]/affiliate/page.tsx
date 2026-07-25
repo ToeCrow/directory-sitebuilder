@@ -8,6 +8,7 @@ import {
   getSiteBySlug,
   isValidSiteSlug,
 } from "@/lib/site";
+import { siteUsesResearchScore } from "@/lib/research-score";
 
 type AffiliatePageProps = {
   params: Promise<{ siteSlug: string }>;
@@ -52,6 +53,7 @@ export default async function AffiliatePage({ params }: AffiliatePageProps) {
   }
 
   const products = getProducts(siteSlug as SiteSlug);
+  const usesResearchScore = siteUsesResearchScore(siteSlug);
 
   return (
     <main className="py-12 md:py-16">
@@ -68,10 +70,22 @@ export default async function AffiliatePage({ params }: AffiliatePageProps) {
             How we work with brands
           </h1>
           <p className="mt-4 text-base leading-relaxed text-slate-600">
-            When you buy through some links on {siteData.title}, we may earn a
-            commission at no extra cost to you. That never changes how we rate
-            or recommend products. Below is every product we cover and whether
-            we currently have an affiliate partnership.
+            {usesResearchScore ? (
+              <>
+                When you buy through some links on {siteData.title}, we may earn
+                a commission at no extra cost to you. That never changes our
+                research criteria or how we review products. Below is every
+                product we cover and whether we currently have an affiliate
+                partnership.
+              </>
+            ) : (
+              <>
+                When you buy through some links on {siteData.title}, we may earn
+                a commission at no extra cost to you. That never changes how we
+                rate or recommend products. Below is every product we cover and
+                whether we currently have an affiliate partnership.
+              </>
+            )}
           </p>
         </header>
 

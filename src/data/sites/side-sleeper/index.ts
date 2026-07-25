@@ -1,10 +1,14 @@
 // Future: replace static import with PostgreSQL query (pg driver + Flyway migrations).
 
 import type { SiteData } from "@/types/site";
+import {
+  lowerBackPainMattressArticle,
+  shoulderPainPillowArticle,
+} from "./roundup-articles";
 
 const comparisonRows = [
   { key: "brand", label: "Brand", type: "text" as const },
-  { key: "rating", label: "Rating", type: "text" as const },
+  { key: "rating", label: "Research Score", type: "text" as const },
   { key: "firmness", label: "Firmness", type: "text" as const },
   { key: "cooling", label: "Cooling", type: "text" as const },
   { key: "pressure-relief", label: "Pressure Relief", type: "text" as const },
@@ -19,17 +23,17 @@ export const siteData: SiteData = {
   title: "Side Sleeper Guide",
   metaTitle: "Best Mattresses for Side Sleepers (2026)",
   metaDescription:
-    "Compare the best mattresses for side sleepers based on pressure relief, cooling, spinal alignment, trial periods, warranty and value.",
+    "Compare mattresses for side sleepers based on pressure relief, cooling, support, trial periods, warranty, and value — researched from specs and owner feedback.",
   niche: "mattresses",
   siteUrl: "https://side-sleepers.com",
-  ratingScale: 10,
+  ratingScale: 5,
   headerBrandImage: "/sites/side-sleeper/header-brand.png",
 
   hero: {
-    eyebrow: "Independent mattress comparison",
-    headline: "Independent Reviews and Buying Guides for Side Sleepers",
+    eyebrow: "Research-based side sleeper guides",
+    headline: "Reviews, Guides, and Research for Side Sleepers",
     subheadline:
-      "We compare the best mattresses for side sleepers based on pressure relief, cooling, spinal alignment, trial periods, warranty and value.",
+      "Side Sleeper Guide is a research-based knowledge site for side sleepers — covering mattresses, pillows, and buying decisions using product specs, brand policies, and recurring customer feedback.",
     primaryCta: "Compare Mattresses",
     secondaryCta: "Read Buying Guide",
     secondaryCtaHref: "#buying-guide",
@@ -43,12 +47,13 @@ export const siteData: SiteData = {
   topPicks: {
     title: "Top picks",
     description:
-      "Our highest-rated mattresses for side sleepers, tested for pressure relief and spinal alignment.",
+      "At Side Sleeper Guide, these are our highest-rated mattress reviews for side sleepers — based on product research, specs, and recurring owner feedback around pressure relief, support, and cooling.",
   },
 
   productDirectory: {
     title: "Browse Our Complete Side Sleeper Directory",
-    description: "Compare every product we've reviewed for side sleepers.",
+    description:
+      "Compare every mattress Side Sleeper Guide has reviewed for side-sleeper suitability.",
   },
 
   products: [
@@ -68,7 +73,7 @@ export const siteData: SiteData = {
         "Free shipping and returns",
       ],
       pros: [
-        "Excellent pressure relief for shoulders and hips",
+        "Often praised for shoulder and hip pressure relief",
         "Durable hybrid construction",
         "Strong edge support for sitting",
       ],
@@ -79,13 +84,13 @@ export const siteData: SiteData = {
       ],
       affiliateUrl: "https://www.winkbeds.com/pages/shop-winkbed",
       hasAffiliatePartnership: false,
-      rating: 9.6,
+      rating: 4.8,
       featuredRank: 1,
       comparisonRank: 1,
       directoryOrder: 1,
       comparison: {
         brand: "WinkBed",
-        rating: "9.6/10",
+        rating: "4.8 / 5",
         firmness: "Medium Firm",
         cooling: "Good",
         "pressure-relief": "Excellent",
@@ -122,13 +127,13 @@ export const siteData: SiteData = {
       ],
       affiliateUrl: "https://www.saatva.com/mattresses/saatva-classic",
       hasAffiliatePartnership: false,
-      rating: 9.4,
+      rating: 4.7,
       featuredRank: 2,
       comparisonRank: 2,
       directoryOrder: 2,
       comparison: {
         brand: "Saatva Classic",
-        rating: "9.4/10",
+        rating: "4.7 / 5",
         firmness: "Plush Soft / Luxury Firm / Firm",
         cooling: "Very Good",
         "pressure-relief": "Very Good",
@@ -165,13 +170,13 @@ export const siteData: SiteData = {
       ],
       affiliateUrl: "https://helixsleep.com/products/midnight-luxe",
       hasAffiliatePartnership: false,
-      rating: 9.3,
+      rating: 4.7,
       featuredRank: 3,
       comparisonRank: 3,
       directoryOrder: 3,
       comparison: {
         brand: "Helix Midnight Luxe",
-        rating: "9.3/10",
+        rating: "4.7 / 5",
         firmness: "Medium",
         cooling: "Excellent",
         "pressure-relief": "Very Good",
@@ -208,13 +213,13 @@ export const siteData: SiteData = {
       ],
       affiliateUrl: "https://www.nolahsleep.com/products/nolah-natural-11",
       hasAffiliatePartnership: false,
-      rating: 9.1,
+      rating: 4.6,
       featuredRank: null,
       comparisonRank: 4,
       directoryOrder: 4,
       comparison: {
         brand: "Nolah Natural",
-        rating: "9.1/10",
+        rating: "4.6 / 5",
         firmness: "Medium",
         cooling: "Very Good",
         "pressure-relief": "Good",
@@ -240,8 +245,8 @@ export const siteData: SiteData = {
         "120-night trial",
       ],
       pros: [
-        "Strong pressure relief at contact points",
-        "Good spinal alignment",
+        "Often praised for shoulder and hip pressure relief",
+        "Owners often note solid support at contact points",
         "Multiple firmness choices",
       ],
       cons: [
@@ -251,13 +256,13 @@ export const siteData: SiteData = {
       ],
       affiliateUrl: "https://www.bearmattress.com/products/elite-hybrid-mattress",
       hasAffiliatePartnership: false,
-      rating: 9.2,
+      rating: 4.6,
       featuredRank: null,
       comparisonRank: 5,
       directoryOrder: 5,
       comparison: {
         brand: "Bear Elite Hybrid",
-        rating: "9.2/10",
+        rating: "4.6 / 5",
         firmness: "Soft / Medium / Firm",
         cooling: "Good",
         "pressure-relief": "Excellent",
@@ -288,19 +293,19 @@ export const siteData: SiteData = {
         "Good value for hybrid quality",
       ],
       cons: [
-        "Average cooling performance",
+        "Cooling feedback is mixed compared with dedicated cooling hybrids",
         "Limited firmness options",
         "May lack deep contour for lighter sleepers",
       ],
       affiliateUrl: "https://www.leesa.com/products/leesa-hybrid-mattress",
       hasAffiliatePartnership: false,
-      rating: 9.0,
+      rating: 4.5,
       featuredRank: null,
       comparisonRank: 6,
       directoryOrder: 6,
       comparison: {
         brand: "Leesa Sapira",
-        rating: "9.0/10",
+        rating: "4.5 / 5",
         firmness: "Medium Firm",
         cooling: "Good",
         "pressure-relief": "Good",
@@ -337,13 +342,13 @@ export const siteData: SiteData = {
       ],
       affiliateUrl: "https://brooklynbedding.com/products/aurora",
       hasAffiliatePartnership: false,
-      rating: 9.0,
+      rating: 4.5,
       featuredRank: null,
       comparisonRank: 7,
       directoryOrder: 7,
       comparison: {
         brand: "Brooklyn Bedding Aurora Luxe",
-        rating: "9.0/10",
+        rating: "4.5 / 5",
         firmness: "Soft / Medium / Firm",
         cooling: "Very Good",
         "pressure-relief": "Good",
@@ -370,7 +375,7 @@ export const siteData: SiteData = {
       ],
       pros: [
         "Excellent value for money",
-        "Deep pressure relief",
+        "Deep contouring that many side sleepers find pressure-relieving",
         "Industry-leading trial and warranty",
       ],
       cons: [
@@ -380,13 +385,13 @@ export const siteData: SiteData = {
       ],
       affiliateUrl: "https://www.nectarsleep.com/mattresses/premier-memory-foam-mattress",
       hasAffiliatePartnership: false,
-      rating: 8.8,
+      rating: 4.4,
       featuredRank: null,
       comparisonRank: 8,
       directoryOrder: 8,
       comparison: {
         brand: "Nectar Premier",
-        rating: "8.8/10",
+        rating: "4.4 / 5",
         firmness: "Medium Firm",
         cooling: "Fair",
         "pressure-relief": "Very Good",
@@ -423,13 +428,13 @@ export const siteData: SiteData = {
       ],
       affiliateUrl: "https://www.dreamcloudsleep.com/mattresses/premier-hybrid-mattress",
       hasAffiliatePartnership: false,
-      rating: 8.9,
+      rating: 4.5,
       featuredRank: null,
       comparisonRank: 9,
       directoryOrder: 9,
       comparison: {
         brand: "DreamCloud Premier",
-        rating: "8.9/10",
+        rating: "4.5 / 5",
         firmness: "Medium Firm",
         cooling: "Good",
         "pressure-relief": "Good",
@@ -466,13 +471,13 @@ export const siteData: SiteData = {
       ],
       affiliateUrl: "https://www.avocadogreenmattress.com/products/green-natural-organic-mattress",
       hasAffiliatePartnership: false,
-      rating: 8.7,
+      rating: 4.4,
       featuredRank: null,
       comparisonRank: 10,
       directoryOrder: 10,
       comparison: {
         brand: "Avocado Green",
-        rating: "8.7/10",
+        rating: "4.4 / 5",
         firmness: "Medium Firm",
         cooling: "Very Good",
         "pressure-relief": "Good",
@@ -487,7 +492,7 @@ export const siteData: SiteData = {
   comparisonTable: {
     title: "Mattress comparison",
     description:
-      "Compare side-sleeper mattresses across the features that matter most.",
+      "Compare side-sleeper mattresses across the features that matter most. Research Score reflects Side Sleeper Guide’s review criteria; Cooling and Pressure Relief are research notes from specs and recurring owner feedback.",
     rowHeaderLabel: "Specification",
     rows: comparisonRows,
   },
@@ -523,7 +528,7 @@ export const siteData: SiteData = {
       {
         title: "How we compare mattresses",
         content:
-          "We evaluate pressure relief, cooling, spinal alignment, trial periods, warranty, and overall value. Ratings reflect how well each mattress serves side sleepers specifically, not just general comfort.",
+          "At Side Sleeper Guide, we review product specifications and manufacturer information, then look for recurring patterns in verifiable customer feedback. We compare what matters most for side sleepers — including pressure relief, cooling, support, price, trials, and warranties — and summarize that work in our reviews and Research Score.",
       },
     ],
   },
@@ -583,20 +588,21 @@ export const siteData: SiteData = {
 
   articles: [
     {
+      kind: "product-roundup",
       title: "The Three Best Mattresses for Side Sleepers: Pros and Cons",
       slug: "best-mattresses-for-side-sleepers",
       publishedAt: "2026-07-20",
       author: "Side Sleeper Team",
       excerpt:
-        "Unbiased pros and cons for Helix Midnight Luxe, WinkBeds, and Saatva Classic.",
+        "Research-based pros and cons for Helix Midnight Luxe, WinkBeds, and Saatva Classic.",
       intro: [
-        "The internet is ripe with blog posts and articles on what's supposed to be the best mattresses for side sleepers. The problem is that it's hard to separate unbiased reviews from paid marketing in this space. That's why we do our own research.",
+        "The internet is ripe with blog posts and articles on what's supposed to be the best mattresses for side sleepers. The problem is that it's hard to separate useful reviews from paid marketing in this space. That's why the Side Sleeper Guide team does its own research.",
         "When we checked out three of the mattresses that get recommended the most, we wanted to know what the people actually sleeping in the mattresses think. This is what we got:",
       ],
       researchNote: {
-        title: "How we do our research",
+        title: "How Side Sleeper Guide researches products",
         content:
-          "First we exclude everything coming from influencers and bloggers. Then we sift through hundreds of product reviews on social media and ecommerce pages like Amazon, Ebay, Target and the like. Do the customer experience match the marketing? Lastly we aggregate the information into honest, unbiased product reviews.",
+          "The Side Sleeper Guide team skips influencer roundups and paid placements as primary evidence. We review official specs and policies, then compare recurring feedback from ecommerce reviews, forums, and social discussions. We look for patterns — where owner experience matches or contradicts marketing — and summarize pros, cons, and side-sleeper fit. Our reviews are based on product research and recurring customer feedback. Unless explicitly stated, we do not perform hands-on laboratory testing or physical measurements.",
       },
       products: [
         {
@@ -680,20 +686,21 @@ export const siteData: SiteData = {
       ],
     },
     {
+      kind: "product-roundup",
       title: "The Three Best Pillows for Side Sleepers: Pros and Cons",
       slug: "best-pillows-for-side-sleepers",
       publishedAt: "2026-07-20",
       author: "Side Sleeper Team",
       excerpt:
-        "Unbiased pros and cons for Coop, Eli & Elm, and Beckham Hotel Collection.",
+        "Research-based pros and cons for Coop, Eli & Elm, and Beckham Hotel Collection.",
       intro: [
-        "There are lots and lots of blog posts and articles on what's supposed to be the best pillow for side sleepers. The problem is that it's hard to separate unbiased reviews from paid marketing in this space. That's why we do our own research.",
+        "There are lots and lots of blog posts and articles on what's supposed to be the best pillow for side sleepers. The problem is that it's hard to separate useful reviews from paid marketing in this space. That's why the Side Sleeper Guide team does its own research.",
         "When we checked out three of the pillows that get recommended the most, we wanted to know what the people actually using them think. This is what we got:",
       ],
       researchNote: {
-        title: "How we do our research",
+        title: "How Side Sleeper Guide researches products",
         content:
-          "First we exclude everything coming from influencers and bloggers. Then we sift through hundreds of product reviews on social media and ecommerce pages like Amazon, Ebay, Target and the like. Do the customer experience match the marketing? Lastly we aggregate the information into honest, unbiased product reviews.",
+          "The Side Sleeper Guide team skips influencer roundups and paid placements as primary evidence. We review official specs and policies, then compare recurring feedback from ecommerce reviews, forums, and social discussions. We look for patterns — where owner experience matches or contradicts marketing — and summarize pros, cons, and side-sleeper fit. Our reviews are based on product research and recurring customer feedback. Unless explicitly stated, we do not perform hands-on laboratory testing or physical measurements.",
       },
       products: [
         {
@@ -778,20 +785,21 @@ export const siteData: SiteData = {
       ],
     },
     {
+      kind: "product-roundup",
       title: "The Best Pillow for Neck Pain: Our Top 3 Picks",
       slug: "best-pillows-for-neck-pain",
       publishedAt: "2026-07-22",
       author: "Side Sleeper Team",
       excerpt:
-        "Unbiased pros and cons for TEMPUR-Neck, Avocado Green, and Eli & Elm.",
+        "Research-based pros and cons for TEMPUR-Neck, Avocado Green, and Eli & Elm.",
       intro: [
-        "There are myriads of magazine articles and blog posts claiming that this is the best pillow for neck pain. However, it is hard to separate honest reviews from paid marketing online, especially in this space. That's why we do our own research.",
+        "There are myriads of magazine articles and blog posts claiming that this is the best pillow for neck pain. However, it is hard to separate useful reviews from paid marketing online, especially in this space. That's why the Side Sleeper Guide team does its own research.",
         "When we checked out three of the pillows that get recommended the most, we wanted to know what the people actually using them think. This is what we got:",
       ],
       researchNote: {
-        title: "How we do our research",
+        title: "How Side Sleeper Guide researches products",
         content:
-          "First we exclude everything coming from influencers and bloggers. Then we sift through hundreds of product reviews on social media and ecommerce pages like Amazon, Ebay, Target and the like — what do the actual customers say? Do their experience match the marketing? Lastly we aggregate the information into honest, unbiased product reviews.",
+          "The Side Sleeper Guide team skips influencer roundups and paid placements as primary evidence. We review official specs and policies, then compare recurring feedback from ecommerce reviews, forums, and social discussions. We look for patterns — where owner experience matches or contradicts marketing — and summarize pros, cons, and side-sleeper fit. Our reviews are based on product research and recurring customer feedback. Unless explicitly stated, we do not perform hands-on laboratory testing or physical measurements.",
       },
       products: [
         {
@@ -867,6 +875,191 @@ export const siteData: SiteData = {
         },
       ],
     },
+    lowerBackPainMattressArticle,
+    shoulderPainPillowArticle,
+    {
+      kind: "editorial",
+      title:
+        "Science Has Spoken: 7 Facts You Didn't Know About Sleep Quality",
+      slug: "sleep-quality-7-facts",
+      publishedAt: "2026-07-25",
+      author: "Side Sleeper Team",
+      excerpt:
+        "Your sleeping position isn't just comfort — research shows why mattress and pillow support matter more as we age.",
+      ogImage: {
+        src: "/sites/side-sleeper/articles/sleep-quality-7-facts/intro-vitaly-gariev.jpg",
+        alt: "Man in a superhero costume sleeping on a sofa",
+      },
+      intro: [
+        "Your sleeping position isn't just a matter of comfort—it's basically a biological clock. Research shows why choosing the right mattress and pillow get more important as we age.",
+      ],
+      introImage: {
+        src: "/sites/side-sleeper/articles/sleep-quality-7-facts/intro-vitaly-gariev.jpg",
+        alt: "Man in a superhero costume sleeping on a sofa",
+        caption:
+          "Let Side Sleeper Guide be your caped crusader in all things sleep. Photo by Vitaly Gariev on Unsplash",
+        creditHref:
+          "https://unsplash.com/photos/man-in-superhero-costume-sleeping-on-sofa-GjHclZLV2N4",
+        photographerHref: "https://unsplash.com/@silverkblack",
+      },
+      sections: [
+        {
+          heading: "#1 Older and calmer",
+          paragraphs: [
+            'A landmark study tracking sleepers aged 3 to 80 found that we get progressively "stiller" as we age: toddlers and kids toss and turn as often as 4-5 times an hour, while the 65-80 crowd settles down to roughly half that, around 2 changes per hour. And it\'s not just fewer shifts—older sleepers also hold each position longer, with far more stretches of 30+ minutes of complete stillness.',
+            "So if you've noticed you don't flip around as much as you used to, it's not just in your head (or your mattress)—it's a well-documented part of getting older. Which is exactly why choosing the right position (and the right support for it) matters more with age, not less: fewer natural adjustments throughout the night means less opportunity to self-correct out of a bad spinal alignment.",
+          ],
+          citations: [
+            {
+              label: "landmark study (De Koninck et al.)",
+              href: "https://www.researchgate.net/profile/Joseph-De-Koninck/publication/21575518_Sleep_Positions_and_Position_Shifts_in_Five_Age_Groups_An_Ontogenetic_Picture/links/589fbcf8a6fdccf5e96d360e/Sleep-Positions-and-Position-Shifts-in-Five-Age-Groups-An-Ontogenetic-Picture.pdf",
+            },
+          ],
+        },
+        {
+          heading: "#2 Side vs back",
+          paragraphs: [
+            "Science may have just settled the age-old side-vs-back debate—and side sleeping wins.",
+            "A 2022 study from China using flexible wearable sensors tracked 13 healthy adults across 15 nights and found that side sleepers consistently out-slept their back-sleeping counterparts, with right-side sleepers coming out on top, left-side sleepers close behind, and back sleepers trailing in last place.",
+            "The side sleepers weren't just imagining it, either:",
+          ],
+          bullets: [
+            "They woke up less often",
+            "Spent more time in deep, restorative slow-wave sleep",
+            "And reported feeling noticeably more refreshed in the morning",
+          ],
+          closingParagraphs: [
+            "There's a second piece to the puzzle too—how much you toss and turn matters just as much as which position you land in. The study found a clear link between restlessness and poor sleep quality: the more you shift around at night, the worse you tend to feel the next day.",
+            "So if you're a side sleeper who still wakes up groggy, the fix might not be your position at all—it might be what's underneath you. A mattress and pillow that actually hold you still in that position (instead of letting you fidget your way to a bad night) could be doing more heavy lifting than you think.",
+          ],
+          image: {
+            src: "/sites/side-sleeper/articles/sleep-quality-7-facts/sensor-diagram.png",
+            alt: "Wearable sleep sensor on a subject and a labeled diagram of the monitoring device",
+            caption:
+              "One of the subjects wearing the sensor (a) and the diagram of the monitoring device (b). Image: Screenshot from the research paper.",
+            creditHref: "https://www.mdpi.com/1424-8220/22/16/6220",
+          },
+          citations: [
+            {
+              label: "2022 wearable-sensor study (MDPI Sensors)",
+              href: "https://www.mdpi.com/1424-8220/22/16/6220",
+            },
+          ],
+        },
+        {
+          heading: "#3 Personalized advice works",
+          paragraphs: [
+            'Turns out your grandma\'s advice to "just sleep on it right" might have actual science behind it. A 2016 pilot study out of Portugal followed a group of physically active older women (average age 63) who were struggling with back pain, splitting them into two groups: one that got personalized coaching on how to sleep based on their specific pain points, and one that didn\'t.',
+          ],
+          citations: [
+            {
+              label: "Portugal pilot study (Desouzart et al., 2016)",
+              href: "https://doi.org/10.3233/WOR-152243",
+            },
+          ],
+        },
+        {
+          heading: "#4 Quick results",
+          paragraphs: [
+            "After just four weeks, the group that received sleep position guidance reported significantly fewer back pain complaints than the group left to their own devices. No new mattress, no fancy gadget—just being shown the right way to lie down made a measurable difference.",
+            "If simply knowing the right position can ease pain that much, imagine what pairing that knowledge with a mattress and pillow actually built to support it could do.",
+          ],
+          image: {
+            src: "/sites/side-sleeper/articles/sleep-quality-7-facts/sleep-positions.png",
+            alt: "Diagram of recommended side and back sleep positions versus not-recommended stomach sleep",
+            caption:
+              "Recommended sleeping positions and pillow orientation (A — lateral position and B — supine sleep position). Not recommended prone sleep position (C — prone sleep position). Image: Screenshot from the research paper.",
+            creditHref: "https://doi.org/10.3233/WOR-152243",
+          },
+          closingParagraphs: [
+            "What's striking is how fast the results showed up. We're talking about a month-long intervention producing a statistically significant drop in pain—which suggests your body starts \"listening\" to better sleep posture almost immediately, rather than needing months of habit-building.",
+            'Of course, this was a small pilot study, so it\'s more proof-of-concept than gospel truth. But it lines up with the bigger picture: your sleep position isn\'t a "nice to have," it\'s doing real, measurable work on your spine every single night.',
+          ],
+          citations: [
+            {
+              label: "Portugal pilot study (Desouzart et al., 2016)",
+              href: "https://doi.org/10.3233/WOR-152243",
+            },
+          ],
+        },
+        {
+          heading: "#5 Side sleepers beware",
+          paragraphs: [
+            'If you\'ve ever been told "just sleep on your side, it\'s the best position for your back," here\'s a plot twist: a Finnish 2024 study of 375 chronic low back pain patients found that there\'s no universal magic position that works for everyone.',
+            "Side sleeping was by far the most popular choice, with the vast majority of patients favoring it, but that popularity didn't make it painless — a meaningful chunk of side sleepers still reported it aggravating their symptoms.",
+          ],
+          image: {
+            src: "/sites/side-sleeper/articles/sleep-quality-7-facts/individual-position-david-clode.jpg",
+            alt: "Koala sleeping on a tree branch",
+            caption:
+              'The "best" sleeping position is highly individual. Photo by David Clode on Unsplash',
+            creditHref:
+              "https://unsplash.com/photos/koala-bear-sleeping-on-tree-Yg_sNKOiXvY",
+            photographerHref: "https://unsplash.com/@davidclode",
+          },
+          citations: [
+            {
+              label: "Finnish 2024 Cureus study (chronic LBP)",
+              href: "https://assets.cureus.com/uploads/original_article/pdf/238621/20240606-27320-1z0niuw.pdf",
+            },
+          ],
+        },
+        {
+          heading: "#6 The worst position",
+          paragraphs: [
+            'Stomach sleeping got the most votes for "position I can\'t tolerate," and interestingly, it was mostly younger patients who could still stomach it (pun intended), with a clear trend of people ditching the position as they aged. Back sleeping wasn\'t off the hook either, with over a third of patients avoiding it due to pain.',
+          ],
+          factBox: {
+            title: "Key findings",
+            items: [
+              "The majority of patients (87%) reported sleeping in a side-lying position, followed by supine (47%) and prone (22%) positions.",
+              "A negative correlation was found between age and preference for the prone position — younger patients were more likely to sleep on their stomachs.",
+              'Pain wasn\'t tied to one "villain" position: 42% of patients avoided the prone position, 35% avoided the back, 15% avoided the left side, and 13% avoided the right side due to pain.',
+              "While the prone position was most commonly linked with pain, especially among women, the findings suggest that any sleeping position could potentially exacerbate pain in individuals with chronic lower back pain.",
+              "Sleep disruption from back pain was nearly universal: 77% had disturbed sleep due to lower back pain, and 92% overall struggled with sleeping or rising because of it.",
+            ],
+          },
+          closingParagraphs: [
+            'The real takeaway here isn\'t "position X is bad, position Y is good"—it\'s that back pain and sleep position is a deeply individual equation. Nearly everyone in the study (over 90%) struggled with sleep disruption or difficulty getting up because of their back, which is a sobering reminder of just how much a single overlooked variable—how you\'re lying down for eight hours a night—can dominate your daily quality of life.',
+            "The researchers themselves landed on personalized guidance as the real solution, not a blanket recommendation.",
+            'Translation for your bedroom: rather than forcing yourself into whatever position is trending as "healthiest," the smarter move is finding the position (and the support system underneath it) that actually keeps your specific pain quiet.',
+          ],
+          citations: [
+            {
+              label: "Finnish 2024 Cureus study (chronic LBP)",
+              href: "https://assets.cureus.com/uploads/original_article/pdf/238621/20240606-27320-1z0niuw.pdf",
+            },
+          ],
+        },
+        {
+          heading: "#7 Specially engineered mattress",
+          paragraphs: [
+            'Here\'s a finding that might reshape how you think about "getting the right sleep position": it\'s not actually the position that matters most—it\'s what\'s underneath it.',
+            "A small but well-controlled study conducted in 2022 had chronic back pain sufferers spend a few nights on their own mattress, then swap onto a specially engineered mattress designed to keep the spine straight while side sleeping, then swap back. The result? Pain while lying down dropped by nearly a fifth, and comfort ratings jumped by a quarter—all without the participants changing their favorite sleeping position, which for the vast majority (a whopping 93%) was side sleeping anyway.",
+          ],
+          image: {
+            src: "/sites/side-sleeper/articles/sleep-quality-7-facts/mattress-butaforya.jpg",
+            alt: "Yellow mattress on a white table",
+            caption:
+              "Well engineered mattresses are important, but not the only factor to consider. Photo by BUTAFORYA on Unsplash",
+            creditHref:
+              "https://unsplash.com/photos/a-yellow-mattress-sitting-on-top-of-a-white-table-LwEF07KtwEg",
+            photographerHref: "https://unsplash.com/@butaforya",
+          },
+          closingParagraphs: [
+            'The takeaway? The mattress engineering did the heavy lifting, not a lecture on "correct" sleep posture.',
+            'Even more telling: which specific position someone slept in—left side, right side, even on their back—had no meaningful connection to their pain levels. What did matter was how much they tossed and turned (again with the "tossing and turning"). The more restless a person\'s night, the more pain and stiffness they reported upon waking.',
+            "Put simply: side sleeping isn't the magic bullet, and stillness might be just as important as position. This is exactly the argument for investing in a mattress that actively supports your spine's natural alignment while you sleep on your side, rather than one that lets your hips or shoulders sink and force you into a night of fidgeting. The right support system doesn't just make side sleeping possible—it makes it actually restorative.",
+          ],
+          citations: [
+            {
+              label: "2022 engineered-mattress study (Springer)",
+              href: "https://link.springer.com/content/pdf/10.1186/s41606-022-00073-x.pdf",
+            },
+          ],
+        },
+      ],
+    },
   ],
 
   newsletter: {
@@ -878,14 +1071,18 @@ export const siteData: SiteData = {
   },
 
   affiliateDisclosure:
-    "Disclosure: This site may earn a commission when you click certain links and make a purchase, at no additional cost to you. This does not affect our ratings or recommendations.",
+    "Disclosure: This site may earn a commission when you click certain links and make a purchase, at no additional cost to you. That never changes our research criteria or how we review products.",
 
   footer: {
-    tagline: "Independent mattress comparisons for side sleepers.",
+    tagline: "Research-based guides and mattress reviews for side sleepers.",
     links: [
       {
         label: "Contact",
         href: "mailto:side.sleepers.admin@gmail.com",
+      },
+      {
+        label: "Research Score",
+        href: "/side-sleeper/research-score",
       },
       {
         label: "Affiliate Disclosure",

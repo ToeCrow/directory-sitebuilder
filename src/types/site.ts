@@ -12,13 +12,40 @@ export type ArticleProductSection = {
   skipIf: string;
 };
 
-export type Article = {
+export type ArticleCitation = {
+  label: string;
+  href: string;
+};
+
+export type EditorialFigure = {
+  src: string;
+  alt: string;
+  caption?: string;
+  /** Unsplash (or other) photo page */
+  creditHref?: string;
+  /** Photographer profile page */
+  photographerHref?: string;
+};
+
+export type EditorialSection = {
+  heading: string;
+  paragraphs: string[];
+  bullets?: string[];
+  /** Extra paragraphs after bullets / mid-section image */
+  closingParagraphs?: string[];
+  image?: EditorialFigure;
+  factBox?: {
+    title: string;
+    items: string[];
+  };
+  citations?: ArticleCitation[];
+};
+
+type ArticleBase = {
   title: string;
   slug: string;
   excerpt?: string;
   intro: string[];
-  researchNote: { title: string; content: string };
-  products: ArticleProductSection[];
   /** ISO 8601 date string, e.g. "2026-03-15" */
   publishedAt?: string;
   /** ISO 8601 date string, e.g. "2026-03-15" */
@@ -28,6 +55,29 @@ export type Article = {
   /** Optional per-article social share image override */
   ogImage?: { src: string; alt: string };
 };
+
+export type ArticleClosingGuide = {
+  title: string;
+  items: string[];
+  closing?: string;
+  pricingNote?: string;
+};
+
+export type ProductRoundupArticle = ArticleBase & {
+  kind: "product-roundup";
+  researchNote: { title: string; content: string };
+  products: ArticleProductSection[];
+  /** Optional post-list “How to choose” guide */
+  closingGuide?: ArticleClosingGuide;
+};
+
+export type EditorialArticle = ArticleBase & {
+  kind: "editorial";
+  introImage?: EditorialFigure;
+  sections: EditorialSection[];
+};
+
+export type Article = ProductRoundupArticle | EditorialArticle;
 
 export type BuyingGuideSection = { title: string; content: string };
 
@@ -52,7 +102,13 @@ export type Product = {
   affiliateUrl: string;
   /** Whether we currently have an active affiliate partnership for this product */
   hasAffiliatePartnership: boolean;
+  /** Overall score on the site’s ratingScale (Research Score for side-sleeper). */
   rating: number;
+  /**
+   * Optional future per-criterion Research Score values (e.g. cooling, pressure relief).
+   * Not used in UI yet — reserved so the model can grow without reshaping Product.
+   */
+  researchScoreBreakdown?: Record<string, number>;
   badge?: string;
   featuredRank: number | null;
   comparisonRank: number;

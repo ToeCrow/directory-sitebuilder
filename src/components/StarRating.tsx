@@ -42,16 +42,20 @@ type StarRatingProps = {
   rating: number;
   maxRating?: number;
   showValue?: boolean;
+  /** Accessible / branded label, e.g. "Research Score" or "Rating" */
+  label?: string;
 };
 
 export function StarRating({
   rating,
   maxRating = 5,
   showValue = true,
+  label = "Rating",
 }: StarRatingProps) {
   const normalizedRating = (rating / maxRating) * 5;
   const fullStars = Math.floor(normalizedRating);
   const hasHalf = normalizedRating % 1 >= 0.5;
+  const displayValue = rating.toFixed(1);
 
   const stars = Array.from({ length: 5 }, (_, index) => {
     const position = index + 1;
@@ -70,12 +74,12 @@ export function StarRating({
   return (
     <div
       className="flex shrink-0 items-center gap-1.5"
-      aria-label={`Rating: ${rating} out of ${maxRating}`}
+      aria-label={`${label}: ${displayValue} out of ${maxRating}`}
     >
       <span className="flex items-center gap-0.5">{stars}</span>
       {showValue && (
         <span className="text-sm font-medium text-slate-700">
-          {rating}/{maxRating}
+          {displayValue} / {maxRating}
         </span>
       )}
     </div>
