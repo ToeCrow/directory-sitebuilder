@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { siteSlugs } from "@/data/sites";
 import { AffiliateDisclosure } from "@/components/AffiliateDisclosure";
 import { getDefaultOgImage } from "@/lib/seo";
 import {
   getProductBySlug,
-  getProducts,
   getSiteBySlug,
   isValidSiteSlug,
 } from "@/lib/site";
@@ -18,30 +16,23 @@ import {
   siteUsesResearchScore,
 } from "@/lib/research-score";
 
+export const dynamic = "force-dynamic";
+
 type ProductPageProps = {
   params: Promise<{ siteSlug: string; slug: string }>;
 };
-
-export function generateStaticParams() {
-  return siteSlugs.flatMap((siteSlug) =>
-    getProducts(siteSlug).map((product) => ({
-      siteSlug,
-      slug: product.slug,
-    })),
-  );
-}
 
 export async function generateMetadata({
   params,
 }: ProductPageProps): Promise<Metadata> {
   const { siteSlug, slug } = await params;
 
-  if (!isValidSiteSlug(siteSlug)) {
+  if (!(await isValidSiteSlug(siteSlug))) {
     return { title: "Product not found" };
   }
 
-  const product = getProductBySlug(siteSlug, slug);
-  const siteData = getSiteBySlug(siteSlug);
+  const product = await getProductBySlug(siteSlug, slug);
+  const siteData = await getSiteBySlug(siteSlug);
 
   if (!product || !siteData) {
     return { title: "Product not found" };
@@ -92,12 +83,12 @@ export async function generateMetadata({
 export default async function ProductPage({ params }: ProductPageProps) {
   const { siteSlug, slug } = await params;
 
-  if (!isValidSiteSlug(siteSlug)) {
+  if (!(await isValidSiteSlug(siteSlug))) {
     notFound();
   }
 
-  const product = getProductBySlug(siteSlug, slug);
-  const siteData = getSiteBySlug(siteSlug);
+  const product = await getProductBySlug(siteSlug, slug);
+  const siteData = await getSiteBySlug(siteSlug);
 
   if (!product || !siteData) {
     notFound();
@@ -123,7 +114,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             {product.name}
           </h1>
           <p className="mt-2 text-sm font-medium text-slate-500">
-            {siteUsesResearchScore(siteSlug) ? (
+            {siteUsesResearchScore(siteData) ? (
               <>
                 {RESEARCH_SCORE_LABEL}:{" "}
                 {formatScoreValue(product.rating, siteData.ratingScale)} · From{" "}
@@ -136,7 +127,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </>
             )}
           </p>
-          {siteUsesResearchScore(siteSlug) && (
+          {siteUsesResearchScore(siteData) && (
             <p className="mt-2 text-sm text-slate-600">
               <Link
                 href={getResearchScorePath(siteSlug)}

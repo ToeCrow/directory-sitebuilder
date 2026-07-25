@@ -1,5 +1,4 @@
 import Link from "next/link";
-import type { SiteSlug } from "@/data/sites";
 import { getSiteData } from "@/lib/site";
 import type { Product } from "@/types/site";
 import { StarRating } from "@/components/StarRating";
@@ -10,20 +9,20 @@ import {
 } from "@/lib/research-score";
 
 type ProductCardProps = {
-  siteSlug: SiteSlug;
+  siteSlug: string;
   product: Product;
   variant?: "featured" | "directory";
 };
 
-export function ProductCard({
+export async function ProductCard({
   siteSlug,
   product,
   variant = "featured",
 }: ProductCardProps) {
-  const siteData = getSiteData(siteSlug);
+  const siteData = await getSiteData(siteSlug);
   const productHref = `/${siteSlug}/products/${product.slug}`;
   const isDirectory = variant === "directory";
-  const scoreLabel = siteUsesResearchScore(siteSlug)
+  const scoreLabel = siteUsesResearchScore(siteData)
     ? RESEARCH_SCORE_LABEL
     : "Rating";
 

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { siteSlugs } from "@/data/sites";
 import {
   getSiteBySlug,
   isValidSiteSlug,
@@ -13,22 +12,20 @@ import {
   siteUsesResearchScore,
 } from "@/lib/research-score";
 
+export const dynamic = "force-dynamic";
+
 type ResearchScorePageProps = {
   params: Promise<{ siteSlug: string }>;
 };
-
-export function generateStaticParams() {
-  return siteSlugs
-    .filter((siteSlug) => siteUsesResearchScore(siteSlug))
-    .map((siteSlug) => ({ siteSlug }));
-}
 
 export async function generateMetadata({
   params,
 }: ResearchScorePageProps): Promise<Metadata> {
   const { siteSlug } = await params;
 
-  if (!siteUsesResearchScore(siteSlug)) {
+  const siteData = await getSiteBySlug(siteSlug);
+
+  if (!siteData || !siteUsesResearchScore(siteData)) {
     return { title: RESEARCH_SCORE_LABEL };
   }
 
@@ -49,12 +46,12 @@ export default async function ResearchScorePage({
 }: ResearchScorePageProps) {
   const { siteSlug } = await params;
 
-  if (!isValidSiteSlug(siteSlug) || !siteUsesResearchScore(siteSlug)) {
+  if (!(await isValidSiteSlug(siteSlug))) {
     notFound();
   }
 
-  const siteData = getSiteBySlug(siteSlug);
-  if (!siteData) {
+  const siteData = await getSiteBySlug(siteSlug);
+  if (!siteData || !siteUsesResearchScore(siteData)) {
     notFound();
   }
 

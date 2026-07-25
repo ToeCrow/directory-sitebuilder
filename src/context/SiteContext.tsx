@@ -1,25 +1,26 @@
 "use client";
 
 import { createContext, useContext } from "react";
-import type { SiteSlug } from "@/data/sites";
-import { getSiteData } from "@/lib/site";
 import type { SiteData } from "@/types/site";
 
 type SiteContextValue = {
-  siteSlug: SiteSlug;
+  siteSlug: string;
   siteData: SiteData;
 };
 
 const SiteContext = createContext<SiteContextValue | null>(null);
 
 type SiteProviderProps = {
-  siteSlug: SiteSlug;
+  siteSlug: string;
+  siteData: SiteData;
   children: React.ReactNode;
 };
 
-export function SiteProvider({ siteSlug, children }: SiteProviderProps) {
-  const siteData = getSiteData(siteSlug);
-
+export function SiteProvider({
+  siteSlug,
+  siteData,
+  children,
+}: SiteProviderProps) {
   return (
     <SiteContext.Provider value={{ siteSlug, siteData }}>
       {children}
@@ -46,6 +47,6 @@ export function useSiteConfig(): SiteData {
   return useSiteData();
 }
 
-export function useSiteSlug(): SiteSlug {
+export function useSiteSlug(): string {
   return useSiteContext().siteSlug;
 }

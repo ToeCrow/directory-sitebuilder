@@ -4,9 +4,27 @@ export const RESEARCH_SCORE_LABEL = "Research Score";
 export const RESEARCH_SCORE_HOWTO_LABEL =
   "How we calculate our Research Score";
 
-/** Sites that use Research Score instead of a generic Rating label. */
-export function siteUsesResearchScore(siteSlug: string): boolean {
-  return siteSlug === "side-sleeper";
+type ResearchScoreSite = {
+  slug: string;
+  features?: { researchScorePage?: boolean };
+};
+
+/**
+ * Prefer `features.researchScorePage` from hydrated SiteData when present;
+ * fall back to the side-sleeper slug for static seed / legacy callers.
+ */
+export function siteUsesResearchScore(
+  siteOrSlug: string | ResearchScoreSite,
+): boolean {
+  if (typeof siteOrSlug === "string") {
+    return siteOrSlug === "side-sleeper";
+  }
+
+  if (siteOrSlug.features?.researchScorePage != null) {
+    return siteOrSlug.features.researchScorePage;
+  }
+
+  return siteOrSlug.slug === "side-sleeper";
 }
 
 export function getResearchScorePath(siteSlug: string): string {

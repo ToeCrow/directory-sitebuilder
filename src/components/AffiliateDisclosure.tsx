@@ -1,9 +1,8 @@
 import Link from "next/link";
-import type { SiteSlug } from "@/data/sites";
 import { cn } from "@/lib/cn";
 
 type AffiliateDisclosureProps = {
-  siteSlug: SiteSlug;
+  siteSlug: string;
   className?: string;
 };
 

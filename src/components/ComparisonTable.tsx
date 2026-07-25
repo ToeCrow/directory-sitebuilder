@@ -1,4 +1,3 @@
-import type { SiteSlug } from "@/data/sites";
 import { getComparisonProducts, getComparisonValue, getSiteData } from "@/lib/site";
 import { cn } from "@/lib/cn";
 import Link from "next/link";
@@ -9,15 +8,15 @@ import {
 } from "@/lib/research-score";
 
 type ComparisonTableProps = {
-  siteSlug: SiteSlug;
+  siteSlug: string;
   className?: string;
 };
 
-export function ComparisonTable({ siteSlug, className }: ComparisonTableProps) {
-  const siteData = getSiteData(siteSlug);
-  const products = getComparisonProducts(siteSlug);
+export async function ComparisonTable({ siteSlug, className }: ComparisonTableProps) {
+  const siteData = await getSiteData(siteSlug);
+  const products = await getComparisonProducts(siteSlug);
   const { comparisonTable } = siteData;
-  const showResearchScoreLink = siteUsesResearchScore(siteSlug);
+  const showResearchScoreLink = siteUsesResearchScore(siteData);
 
   return (
     <section

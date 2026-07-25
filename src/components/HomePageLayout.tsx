@@ -1,4 +1,3 @@
-import type { SiteSlug } from "@/data/sites";
 import { Hero } from "@/components/Hero";
 import { ProductGrid } from "@/components/ProductGrid";
 import { ComparisonTable } from "@/components/ComparisonTable";
@@ -11,7 +10,7 @@ import { LeadForm } from "@/components/LeadForm";
 import { AdSlot } from "@/components/AdSlot";
 
 type HomePageLayoutProps = {
-  siteSlug: SiteSlug;
+  siteSlug: string;
 };
 
 export function HomePageLayout({ siteSlug }: HomePageLayoutProps) {

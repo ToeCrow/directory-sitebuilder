@@ -2,42 +2,33 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { siteSlugs } from "@/data/sites";
 import { AffiliateDisclosure } from "@/components/AffiliateDisclosure";
 import { JsonLd } from "@/components/JsonLd";
 import { buildArticleSchema } from "@/lib/schema";
 import { getArticleOgImage } from "@/lib/seo";
 import {
   getArticleBySlug,
-  getArticles,
   getSiteBySlug,
   isValidSiteSlug,
 } from "@/lib/site";
 
+export const dynamic = "force-dynamic";
+
 type ArticlePageProps = {
   params: Promise<{ siteSlug: string; slug: string }>;
 };
-
-export function generateStaticParams() {
-  return siteSlugs.flatMap((siteSlug) =>
-    getArticles(siteSlug).map((article) => ({
-      siteSlug,
-      slug: article.slug,
-    })),
-  );
-}
 
 export async function generateMetadata({
   params,
 }: ArticlePageProps): Promise<Metadata> {
   const { siteSlug, slug } = await params;
 
-  if (!isValidSiteSlug(siteSlug)) {
+  if (!(await isValidSiteSlug(siteSlug))) {
     return { title: "Article not found" };
   }
 
-  const article = getArticleBySlug(siteSlug, slug);
-  const siteData = getSiteBySlug(siteSlug);
+  const article = await getArticleBySlug(siteSlug, slug);
+  const siteData = await getSiteBySlug(siteSlug);
 
   if (!article || !siteData) {
     return { title: "Article not found" };
@@ -90,12 +81,12 @@ export async function generateMetadata({
 export default async function ArticlePage({ params }: ArticlePageProps) {
   const { siteSlug, slug } = await params;
 
-  if (!isValidSiteSlug(siteSlug)) {
+  if (!(await isValidSiteSlug(siteSlug))) {
     notFound();
   }
 
-  const article = getArticleBySlug(siteSlug, slug);
-  const siteData = getSiteBySlug(siteSlug);
+  const article = await getArticleBySlug(siteSlug, slug);
+  const siteData = await getSiteBySlug(siteSlug);
 
   if (!article || !siteData) {
     notFound();

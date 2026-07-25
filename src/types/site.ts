@@ -127,6 +127,10 @@ export type SiteData = {
       secondary: string;
     };
   };
+  /** CMS feature flags (e.g. researchScorePage). Optional on static seed. */
+  features?: {
+    researchScorePage?: boolean;
+  };
 };
 
 export type AdSlotId = "primary" | "secondary";

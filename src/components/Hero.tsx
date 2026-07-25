@@ -1,10 +1,9 @@
 import Image from "next/image";
-import type { SiteSlug } from "@/data/sites";
 import { getSiteData } from "@/lib/site";
 import { cn } from "@/lib/cn";
 
 type HeroProps = {
-  siteSlug: SiteSlug;
+  siteSlug: string;
   className?: string;
 };
 
@@ -44,8 +43,8 @@ function HeroCtas({
   );
 }
 
-export function Hero({ siteSlug, className }: HeroProps) {
-  const siteData = getSiteData(siteSlug);
+export async function Hero({ siteSlug, className }: HeroProps) {
+  const siteData = await getSiteData(siteSlug);
   const { hero } = siteData;
 
   if (hero.image) {

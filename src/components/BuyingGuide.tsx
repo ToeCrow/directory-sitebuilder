@@ -1,5 +1,4 @@
 import Link from "next/link";
-import type { SiteSlug } from "@/data/sites";
 import { getSiteData } from "@/lib/site";
 import { cn } from "@/lib/cn";
 import {
@@ -9,14 +8,14 @@ import {
 } from "@/lib/research-score";
 
 type BuyingGuideProps = {
-  siteSlug: SiteSlug;
+  siteSlug: string;
   className?: string;
 };
 
-export function BuyingGuide({ siteSlug, className }: BuyingGuideProps) {
-  const siteData = getSiteData(siteSlug);
+export async function BuyingGuide({ siteSlug, className }: BuyingGuideProps) {
+  const siteData = await getSiteData(siteSlug);
   const { buyingGuide } = siteData;
-  const showResearchScoreLink = siteUsesResearchScore(siteSlug);
+  const showResearchScoreLink = siteUsesResearchScore(siteData);
 
   return (
     <section

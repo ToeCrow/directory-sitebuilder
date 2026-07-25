@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Directory Sitebuilder
 
-## Getting Started
+Multi-tenant affiliate directory sites (Next.js) with a Postgres-backed CMS on branch `backend`.
 
-First, run the development server:
+Public `[siteSlug]` content is hydrated from PostgreSQL. Static TypeScript under `src/data/sites` remains the **seed / sitemap** source only — do not delete it in this MVP.
+
+## Prerequisites
+
+- Node.js 20+
+- Docker Desktop (for local Postgres)
+
+## Quick start (local)
 
 ```bash
+cp .env.example .env
+# Set ADMIN_PASSWORD and ADMIN_SESSION_SECRET (>= 16 chars)
+
+npm install
+npm run db:up
+npm run db:migrate
+npm run db:seed
+npm run db:verify
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- App: [http://localhost:3000](http://localhost:3000)
+- Admin: [http://localhost:3000/admin](http://localhost:3000/admin)
+- Postgres host port: **5435** (mapped from container `5432` to avoid clashing with other local Postgres)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Useful scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Script | Purpose |
+|--------|---------|
+| `npm run db:up` / `db:down` | Start/stop Docker Postgres |
+| `npm run db:generate` | Generate Drizzle migrations from schema |
+| `npm run db:migrate` | Apply migrations |
+| `npm run db:seed` | Seed from static `src/data/sites` (aborts if sites already exist) |
+| `npm run db:reset` | Truncate + re-seed (local only; blocks Neon-like URLs) |
+| `npm run db:verify` | Integrity + hydrate parity checks |
+| `npm run db:studio` | Drizzle Studio |
+| `npm run typecheck` | `tsc --noEmit` |
+| `npm run build` | Production build (must succeed **without** Postgres running) |
 
-## Learn More
+### Environment
 
-To learn more about Next.js, take a look at the following resources:
+See `.env.example`:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `DATABASE_URL` — runtime Postgres (local Docker or Neon pooled)
+- `ADMIN_PASSWORD` — checked at login only (never stored in the session cookie)
+- `ADMIN_SESSION_SECRET` — HMAC secret for the signed admin cookie
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Architecture (CMS MVP)
 
-## Deploy on Vercel
+```
+Postgres → repositories / hydrateSiteData → SiteData → public UI + SiteProvider
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Draft/published controls **visibility only**; saving a published row updates the public site immediately.
+- Top-pick products cannot be unpublished/deleted until removed from top picks.
+- Content routes use `force-dynamic` (no build-time DB queries).
+- Sitemap / robots still use static seed modules (no DB at build). See [docs/cms-data-contract.md](docs/cms-data-contract.md).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Neon (docs only — not wired)
+
+When you move off Docker, use two URLs. Details: [docs/neon.md](docs/neon.md).
+
+- `DATABASE_URL` — pooled connection for the Next.js app
+- `DATABASE_URL_DIRECT` — direct connection for migrations (`drizzle-kit` / `db:migrate`)
+
+Do **not** point local `db:reset` at Neon.
+
+## Allowed static seed imports
+
+| Location | Why |
+|----------|-----|
+| `scripts/db-seed.ts`, `scripts/db-verify.ts` | Seed + parity |
+| `src/lib/sitemap.ts`, `src/app/robots.ts` | MVP sitemap/robots without build-time DB |
+
+Public `[siteSlug]` pages and admin data UIs must use `@/lib/site` / admin repositories (Postgres), not `@/data/sites`.
+
+## Phase 6 status
+
+Docs + verification checklist: [docs/phase-6-verify.md](docs/phase-6-verify.md) · Neon notes: [docs/neon.md](docs/neon.md).
+
+After `npm run build` (or stopping Postgres while `next dev` is running), restart the dev server so route caches stay fresh.

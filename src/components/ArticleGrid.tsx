@@ -1,15 +1,14 @@
 import Link from "next/link";
-import type { SiteSlug } from "@/data/sites";
 import { getSiteData } from "@/lib/site";
 import { cn } from "@/lib/cn";
 
 type ArticleGridProps = {
-  siteSlug: SiteSlug;
+  siteSlug: string;
   className?: string;
 };
 
-export function ArticleGrid({ siteSlug, className }: ArticleGridProps) {
-  const siteData = getSiteData(siteSlug);
+export async function ArticleGrid({ siteSlug, className }: ArticleGridProps) {
+  const siteData = await getSiteData(siteSlug);
 
   return (
     <section

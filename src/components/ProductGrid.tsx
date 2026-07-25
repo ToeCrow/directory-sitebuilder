@@ -1,16 +1,15 @@
-import type { SiteSlug } from "@/data/sites";
 import { getFeaturedProducts, getSiteData } from "@/lib/site";
 import { ProductCard } from "@/components/ProductCard";
 import { cn } from "@/lib/cn";
 
 type ProductGridProps = {
-  siteSlug: SiteSlug;
+  siteSlug: string;
   className?: string;
 };
 
-export function ProductGrid({ siteSlug, className }: ProductGridProps) {
-  const siteData = getSiteData(siteSlug);
-  const featuredProducts = getFeaturedProducts(siteSlug);
+export async function ProductGrid({ siteSlug, className }: ProductGridProps) {
+  const siteData = await getSiteData(siteSlug);
+  const featuredProducts = await getFeaturedProducts(siteSlug);
 
   return (
     <section

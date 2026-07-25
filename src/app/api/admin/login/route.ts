@@ -1,22 +1,40 @@
 import { NextResponse } from "next/server";
-import { ADMIN_SESSION_COOKIE, isValidAdminSession } from "@/lib/admin-auth";
-
-// Future: replace with Auth.js / Clerk session creation.
+import {
+  ADMIN_SESSION_COOKIE,
+  createAdminSessionToken,
+  verifyAdminPassword,
+} from "@/lib/admin-auth";
 
 export async function POST(request: Request) {
-  const { password } = (await request.json()) as { password?: string };
+  let password: string | undefined;
+  try {
+    const body = (await request.json()) as { password?: string };
+    password = body.password;
+  } catch {
+    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+  }
 
-  if (!isValidAdminSession(password)) {
+  if (!verifyAdminPassword(password)) {
     return NextResponse.json({ error: "Invalid password" }, { status: 401 });
   }
 
-  const response = NextResponse.json({ ok: true });
+  let token: string;
+  try {
+    token = await createAdminSessionToken();
+  } catch {
+    return NextResponse.json(
+      { error: "Server misconfigured" },
+      { status: 500 },
+    );
+  }
 
-  response.cookies.set(ADMIN_SESSION_COOKIE, password!, {
+  const response = NextResponse.json({ ok: true });
+  response.cookies.set(ADMIN_SESSION_COOKIE, token, {
     httpOnly: true,
     sameSite: "lax",
     path: "/",
     secure: process.env.NODE_ENV === "production",
+    maxAge: 60 * 60 * 24 * 7,
   });
 
   return response;

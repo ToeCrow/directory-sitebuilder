@@ -1,10 +1,9 @@
-import type { SiteSlug } from "@/data/sites";
 import { getDirectoryProducts, getSiteData } from "@/lib/site";
 import { ProductCard } from "@/components/ProductCard";
 import { cn } from "@/lib/cn";
 
 type ProductDirectoryProps = {
-  siteSlug: SiteSlug;
+  siteSlug: string;
   className?: string;
 };
 
@@ -12,9 +11,9 @@ type ProductDirectoryProps = {
 // TODO: add pagination for large catalogs.
 // TODO: load products from PostgreSQL via admin/CMS.
 
-export function ProductDirectory({ siteSlug, className }: ProductDirectoryProps) {
-  const siteData = getSiteData(siteSlug);
-  const directoryProducts = getDirectoryProducts(siteSlug);
+export async function ProductDirectory({ siteSlug, className }: ProductDirectoryProps) {
+  const siteData = await getSiteData(siteSlug);
+  const directoryProducts = await getDirectoryProducts(siteSlug);
   const { productDirectory } = siteData;
 
   return (

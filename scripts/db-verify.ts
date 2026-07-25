@@ -1,0 +1,282 @@
+import { config } from "dotenv";
+config({ override: true });
+import { count, eq, sql } from "drizzle-orm";
+import { getAllSites, getSiteBySlug } from "@/data/sites";
+import { getDb } from "@/lib/db";
+import { hydrateSiteData } from "@/lib/db/hydrate";
+import {
+  articleProductSections,
+  articles,
+  faqs,
+  products,
+  sites,
+} from "@/lib/db/schema";
+
+type CheckResult = { ok: true } | { ok: false; message: string };
+
+function pass(message: string) {
+  console.log(`OK  ${message}`);
+}
+
+function fail(message: string): CheckResult {
+  console.error(`FAIL ${message}`);
+  return { ok: false, message };
+}
+
+function expectedCounts() {
+  const staticSites = getAllSites();
+  return {
+    sites: staticSites.length,
+    products: staticSites.reduce((total, site) => total + site.products.length, 0),
+    articles: staticSites.reduce((total, site) => total + site.articles.length, 0),
+    faqs: staticSites.reduce((total, site) => total + site.faqs.length, 0),
+    articleProductSections: staticSites.reduce(
+      (total, site) =>
+        total +
+        site.articles.reduce(
+          (articleTotal, article) => articleTotal + article.products.length,
+          0,
+        ),
+      0,
+    ),
+  };
+}
+
+async function checkTableCounts(): Promise<CheckResult> {
+  const expected = expectedCounts();
+  const db = getDb();
+
+  const [siteCount] = await db.select({ value: count() }).from(sites);
+  const [productCount] = await db.select({ value: count() }).from(products);
+  const [articleCount] = await db.select({ value: count() }).from(articles);
+  const [faqCount] = await db.select({ value: count() }).from(faqs);
+  const [articleSectionCount] = await db
+    .select({ value: count() })
+    .from(articleProductSections);
+
+  const actual = {
+    sites: Number(siteCount?.value ?? 0),
+    products: Number(productCount?.value ?? 0),
+    articles: Number(articleCount?.value ?? 0),
+    faqs: Number(faqCount?.value ?? 0),
+    articleProductSections: Number(articleSectionCount?.value ?? 0),
+  };
+
+  for (const key of Object.keys(expected) as Array<keyof typeof expected>) {
+    if (actual[key] !== expected[key]) {
+      return fail(`${key} count expected ${expected[key]}, got ${actual[key]}`);
+    }
+  }
+
+  pass(
+    `table counts match static seed (sites=${actual.sites}, products=${actual.products}, articles=${actual.articles}, faqs=${actual.faqs})`,
+  );
+  return { ok: true };
+}
+
+async function checkUniqueSlugs(): Promise<CheckResult> {
+  const db = getDb();
+
+  const duplicateProductSlugs = await db.execute<{ site_slug: string; slug: string; n: number }>(sql`
+    SELECT s.slug AS site_slug, p.slug, COUNT(*)::int AS n
+    FROM products p
+    JOIN sites s ON s.id = p.site_id
+    GROUP BY s.slug, p.slug
+    HAVING COUNT(*) > 1
+  `);
+
+  if (duplicateProductSlugs.rows.length > 0) {
+    return fail(`duplicate product slugs found: ${JSON.stringify(duplicateProductSlugs.rows)}`);
+  }
+
+  const duplicateArticleSlugs = await db.execute<{ site_slug: string; slug: string; n: number }>(sql`
+    SELECT s.slug AS site_slug, a.slug, COUNT(*)::int AS n
+    FROM articles a
+    JOIN sites s ON s.id = a.site_id
+    GROUP BY s.slug, a.slug
+    HAVING COUNT(*) > 1
+  `);
+
+  if (duplicateArticleSlugs.rows.length > 0) {
+    return fail(`duplicate article slugs found: ${JSON.stringify(duplicateArticleSlugs.rows)}`);
+  }
+
+  pass("product and article slugs are unique per site");
+  return { ok: true };
+}
+
+async function checkTopPicksIntegrity(): Promise<CheckResult> {
+  const db = getDb();
+
+  const missingProducts = await db.execute<{ site_slug: string; product_id: string }>(sql`
+    SELECT s.slug AS site_slug, tp.product_id
+    FROM site_top_picks tp
+    JOIN sites s ON s.id = tp.site_id
+    LEFT JOIN products p ON p.id = tp.product_id
+    WHERE p.id IS NULL
+  `);
+
+  if (missingProducts.rows.length > 0) {
+    return fail(`top picks reference missing products: ${JSON.stringify(missingProducts.rows)}`);
+  }
+
+  const draftProductsOnPublishedSites = await db.execute<{ site_slug: string; product_slug: string }>(sql`
+    SELECT s.slug AS site_slug, p.slug AS product_slug
+    FROM site_top_picks tp
+    JOIN sites s ON s.id = tp.site_id
+    JOIN products p ON p.id = tp.product_id
+    WHERE s.status = 'published' AND p.status = 'draft'
+  `);
+
+  if (draftProductsOnPublishedSites.rows.length > 0) {
+    return fail(
+      `published sites have top picks on draft products: ${JSON.stringify(draftProductsOnPublishedSites.rows)}`,
+    );
+  }
+
+  const duplicateTopPicks = await db.execute<{ site_slug: string; sort_order: number; n: number }>(sql`
+    SELECT s.slug AS site_slug, tp.sort_order, COUNT(*)::int AS n
+    FROM site_top_picks tp
+    JOIN sites s ON s.id = tp.site_id
+    GROUP BY s.slug, tp.sort_order
+    HAVING COUNT(*) > 1
+  `);
+
+  if (duplicateTopPicks.rows.length > 0) {
+    return fail(`duplicate top pick sort orders: ${JSON.stringify(duplicateTopPicks.rows)}`);
+  }
+
+  pass("top picks integrity checks passed");
+  return { ok: true };
+}
+
+async function checkRatingsInRange(): Promise<CheckResult> {
+  const db = getDb();
+  const rows = await db
+    .select({
+      siteSlug: sites.slug,
+      productSlug: products.slug,
+      rating: products.rating,
+      ratingScale: sites.ratingScale,
+    })
+    .from(products)
+    .innerJoin(sites, eq(products.siteId, sites.id));
+
+  for (const row of rows) {
+    const rating = Number(row.rating);
+    if (Number.isNaN(rating) || rating < 0 || rating > row.ratingScale) {
+      return fail(
+        `rating out of range for ${row.siteSlug}/${row.productSlug}: ${row.rating} (scale ${row.ratingScale})`,
+      );
+    }
+  }
+
+  pass("all product ratings are within site rating scale");
+  return { ok: true };
+}
+
+async function checkHydrationAndSpotChecks(): Promise<CheckResult> {
+  for (const staticSite of getAllSites()) {
+    const hydrated = await hydrateSiteData(staticSite.slug);
+
+    if (hydrated.products.length !== staticSite.products.length) {
+      return fail(
+        `${staticSite.slug}: hydrated product count ${hydrated.products.length} !== static ${staticSite.products.length}`,
+      );
+    }
+
+    for (const staticProduct of staticSite.products) {
+      const hydratedProduct = hydrated.products.find(
+        (product) => product.slug === staticProduct.slug,
+      );
+
+      if (!hydratedProduct) {
+        return fail(`${staticSite.slug}: missing hydrated product ${staticProduct.slug}`);
+      }
+
+      if (hydratedProduct.featuredRank !== staticProduct.featuredRank) {
+        return fail(
+          `${staticSite.slug}/${staticProduct.slug}: featuredRank expected ${staticProduct.featuredRank}, got ${hydratedProduct.featuredRank}`,
+        );
+      }
+    }
+
+    pass(`hydrated ${staticSite.slug} with matching featuredRank values`);
+  }
+
+  const sideSleeper = await hydrateSiteData("side-sleeper");
+  const winkbed = sideSleeper.products.find((product) => product.slug === "winkbed");
+  if (!winkbed || winkbed.rating !== 4.8) {
+    return fail(`side-sleeper/winkbed rating expected 4.8, got ${winkbed?.rating}`);
+  }
+  pass("side-sleeper winkbed rating is 4.8");
+
+  const constructionSoftware = await hydrateSiteData("construction-software");
+  const procore = constructionSoftware.products.find(
+    (product) => product.slug === "procore",
+  );
+  if (!procore) {
+    return fail("construction-software/procore not found in hydrated data");
+  }
+
+  const booleanKeys = [
+    "mobile-app",
+    "estimating",
+    "job-scheduling",
+    "document-management",
+    "time-tracking",
+  ] as const;
+
+  for (const key of booleanKeys) {
+    if (typeof procore.comparison[key] !== "boolean") {
+      return fail(
+        `construction-software/procore comparison.${key} expected boolean, got ${typeof procore.comparison[key]}`,
+      );
+    }
+  }
+  pass("construction-software procore comparison boolean keys preserved");
+
+  const staticSideSleeper = getSiteBySlug("side-sleeper");
+  const staticConstruction = getSiteBySlug("construction-software");
+  if (!staticSideSleeper || !staticConstruction) {
+    return fail("static site data missing for comparison");
+  }
+
+  if (sideSleeper.ads !== undefined) {
+    return fail("side-sleeper ads should be omitted when slots are empty");
+  }
+
+  pass("hydration spot checks passed");
+  return { ok: true };
+}
+
+async function main() {
+  const checks = [
+    checkTableCounts,
+    checkUniqueSlugs,
+    checkTopPicksIntegrity,
+    checkRatingsInRange,
+    checkHydrationAndSpotChecks,
+  ];
+
+  let failed = 0;
+
+  for (const check of checks) {
+    const result = await check();
+    if (!result.ok) {
+      failed += 1;
+    }
+  }
+
+  if (failed > 0) {
+    console.error(`\nVerification failed (${failed} check group(s)).`);
+    process.exit(1);
+  }
+
+  console.log("\nAll verification checks passed.");
+}
+
+main().catch((error: unknown) => {
+  console.error("Verification failed:", error);
+  process.exit(1);
+});

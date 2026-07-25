@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { siteSlugs } from "@/data/sites";
-import type { SiteSlug } from "@/data/sites";
 import {
   getProducts,
   getSiteBySlug,
@@ -10,19 +8,17 @@ import {
 } from "@/lib/site";
 import { siteUsesResearchScore } from "@/lib/research-score";
 
+export const dynamic = "force-dynamic";
+
 type AffiliatePageProps = {
   params: Promise<{ siteSlug: string }>;
 };
-
-export function generateStaticParams() {
-  return siteSlugs.map((siteSlug) => ({ siteSlug }));
-}
 
 export async function generateMetadata({
   params,
 }: AffiliatePageProps): Promise<Metadata> {
   const { siteSlug } = await params;
-  const siteData = getSiteBySlug(siteSlug);
+  const siteData = await getSiteBySlug(siteSlug);
 
   if (!siteData) {
     return { title: "Affiliate partnerships" };
@@ -43,17 +39,17 @@ export async function generateMetadata({
 export default async function AffiliatePage({ params }: AffiliatePageProps) {
   const { siteSlug } = await params;
 
-  if (!isValidSiteSlug(siteSlug)) {
+  if (!(await isValidSiteSlug(siteSlug))) {
     notFound();
   }
 
-  const siteData = getSiteBySlug(siteSlug);
+  const siteData = await getSiteBySlug(siteSlug);
   if (!siteData) {
     notFound();
   }
 
-  const products = getProducts(siteSlug as SiteSlug);
-  const usesResearchScore = siteUsesResearchScore(siteSlug);
+  const products = await getProducts(siteSlug);
+  const usesResearchScore = siteUsesResearchScore(siteData);
 
   return (
     <main className="py-12 md:py-16">

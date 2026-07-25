@@ -50,7 +50,7 @@ export function Footer() {
               {siteData.footer.links.map((link) => {
                 const href =
                   link.label === RESEARCH_SCORE_LABEL &&
-                  siteUsesResearchScore(siteSlug)
+                  siteUsesResearchScore(siteData)
                     ? getResearchScorePath(siteSlug)
                     : link.href;
 

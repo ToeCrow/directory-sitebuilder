@@ -5,7 +5,7 @@ import { getSiteSlugFromHost } from "@/lib/domain-map";
 
 // Future: replace cookie gate with Auth.js / Clerk proxy.
 
-export function proxy(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (pathname === "/admin/login") {
@@ -15,7 +15,7 @@ export function proxy(request: NextRequest) {
   if (pathname.startsWith("/admin")) {
     const session = request.cookies.get(ADMIN_SESSION_COOKIE)?.value;
 
-    if (!isValidAdminSession(session)) {
+    if (!(await isValidAdminSession(session))) {
       return NextResponse.redirect(new URL("/admin/login", request.url));
     }
   }

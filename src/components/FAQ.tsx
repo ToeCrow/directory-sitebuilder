@@ -1,14 +1,13 @@
-import type { SiteSlug } from "@/data/sites";
 import { getSiteData } from "@/lib/site";
 import { cn } from "@/lib/cn";
 
 type FAQProps = {
-  siteSlug: SiteSlug;
+  siteSlug: string;
   className?: string;
 };
 
-export function FAQ({ siteSlug, className }: FAQProps) {
-  const siteData = getSiteData(siteSlug);
+export async function FAQ({ siteSlug, className }: FAQProps) {
+  const siteData = await getSiteData(siteSlug);
 
   return (
     <section

@@ -1,12 +1,15 @@
 import type { MetadataRoute } from "next";
 import {
-  getArticles,
-  getProducts,
+  getAllSites,
   getSiteBySlug,
   siteSlugs,
   type SiteSlug,
-} from "@/lib/site";
+} from "@/data/sites";
 
+/**
+ * Sitemap reads the static seed modules — no build-time DB access.
+ * TODO after Neon: DB-backed sitemap + force-dynamic / on-demand revalidation.
+ */
 export function buildSiteSitemapEntries(
   siteSlug: string,
 ): MetadataRoute.Sitemap {
@@ -27,7 +30,7 @@ export function buildSiteSitemapEntries(
     },
   ];
 
-  for (const product of getProducts(siteSlug as SiteSlug)) {
+  for (const product of siteData.products) {
     entries.push({
       url: `${base}/${siteSlug}/products/${product.slug}`,
       lastModified: now,
@@ -36,11 +39,11 @@ export function buildSiteSitemapEntries(
     });
   }
 
-  for (const article of getArticles(siteSlug as SiteSlug)) {
+  for (const article of siteData.articles) {
     entries.push({
       url: `${base}/${siteSlug}/articles/${article.slug}`,
       lastModified: now,
-      changeFrequency: "weekly",
+      changeFrequency: "monthly",
       priority: 0.6,
     });
   }
@@ -51,3 +54,6 @@ export function buildSiteSitemapEntries(
 export function buildAllSitesSitemapEntries(): MetadataRoute.Sitemap {
   return siteSlugs.flatMap((slug) => buildSiteSitemapEntries(slug));
 }
+
+export { getAllSites };
+export type { SiteSlug };

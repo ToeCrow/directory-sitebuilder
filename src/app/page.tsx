@@ -1,9 +1,17 @@
 import Link from "next/link";
 import { platformConfig } from "@/config/platform";
-import { getAllSites } from "@/data/sites";
+import { getAllSites } from "@/lib/site";
 
-export default function PlatformHomePage() {
-  const sites = getAllSites();
+export const dynamic = "force-dynamic";
+
+export default async function PlatformHomePage() {
+  let sites: Awaited<ReturnType<typeof getAllSites>> = [];
+  try {
+    sites = await getAllSites();
+  } catch {
+    // DB optional on the platform hub (e.g. Postgres not running).
+    sites = [];
+  }
 
   return (
     <main className="flex flex-1 flex-col">
@@ -35,25 +43,33 @@ export default function PlatformHomePage() {
           >
             Published directory sites
           </h2>
-          <ul className="mt-6 divide-y divide-slate-200 rounded-xl border border-slate-200 bg-white">
-            {sites.map((site) => (
-              <li
-                key={site.slug}
-                className="flex flex-col gap-2 px-5 py-4 sm:flex-row sm:items-center sm:justify-between"
-              >
-                <div>
-                  <p className="font-medium text-slate-900">{site.title}</p>
-                  <p className="text-sm text-slate-500">/{site.slug}</p>
-                </div>
-                <Link
-                  href={`/${site.slug}`}
-                  className="text-sm font-medium text-blue-600 hover:text-blue-700"
+          {sites.length === 0 ? (
+            <p className="mt-6 text-sm text-slate-600">
+              No published sites loaded. Start Postgres (
+              <code>npm run db:up</code>) and seed (
+              <code>npm run db:seed</code>) if this list is empty.
+            </p>
+          ) : (
+            <ul className="mt-6 divide-y divide-slate-200 rounded-xl border border-slate-200 bg-white">
+              {sites.map((site) => (
+                <li
+                  key={site.slug}
+                  className="flex flex-col gap-2 px-5 py-4 sm:flex-row sm:items-center sm:justify-between"
                 >
-                  View site →
-                </Link>
-              </li>
-            ))}
-          </ul>
+                  <div>
+                    <p className="font-medium text-slate-900">{site.title}</p>
+                    <p className="text-sm text-slate-500">/{site.slug}</p>
+                  </div>
+                  <Link
+                    href={`/${site.slug}`}
+                    className="text-sm font-medium text-blue-600 hover:text-blue-700"
+                  >
+                    View site →
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
         </section>
       </div>
     </main>

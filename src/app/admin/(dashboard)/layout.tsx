@@ -4,8 +4,12 @@ const adminNav = [
   { href: "/admin", label: "Dashboard" },
   { href: "/admin/sites", label: "Sites" },
   { href: "/admin/products", label: "Products" },
+  { href: "/admin/top-picks", label: "Top picks" },
+  { href: "/admin/comparison", label: "Comparison" },
   { href: "/admin/faq", label: "FAQ" },
-  { href: "/admin/settings", label: "Settings" },
+  { href: "/admin/buying-guide", label: "Buying guide" },
+  { href: "/admin/footer", label: "Footer" },
+  { href: "/admin/articles", label: "Articles" },
 ];
 
 export default function AdminDashboardLayout({

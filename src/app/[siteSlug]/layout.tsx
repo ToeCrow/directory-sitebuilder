@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import type { SiteSlug } from "@/data/sites";
 import { SiteProvider } from "@/context/SiteContext";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -13,6 +12,8 @@ import {
 import { getDefaultOgImage } from "@/lib/seo";
 import { getSiteBySlug, isValidSiteSlug } from "@/lib/site";
 
+export const dynamic = "force-dynamic";
+
 type SiteLayoutProps = {
   children: React.ReactNode;
   params: Promise<{ siteSlug: string }>;
@@ -22,7 +23,7 @@ export async function generateMetadata({
   params,
 }: SiteLayoutProps): Promise<Metadata> {
   const { siteSlug } = await params;
-  const siteData = getSiteBySlug(siteSlug);
+  const siteData = await getSiteBySlug(siteSlug);
 
   if (!siteData) {
     return {};
@@ -79,18 +80,18 @@ export async function generateMetadata({
 export default async function SiteLayout({ children, params }: SiteLayoutProps) {
   const { siteSlug } = await params;
 
-  if (!isValidSiteSlug(siteSlug)) {
+  if (!(await isValidSiteSlug(siteSlug))) {
     notFound();
   }
 
-  const siteData = getSiteBySlug(siteSlug);
+  const siteData = await getSiteBySlug(siteSlug);
 
   if (!siteData) {
     notFound();
   }
 
   return (
-    <SiteProvider siteSlug={siteSlug as SiteSlug}>
+    <SiteProvider siteSlug={siteSlug} siteData={siteData}>
       <JsonLd
         data={[buildWebSiteSchema(siteData), buildOrganizationSchema(siteData)]}
       />
