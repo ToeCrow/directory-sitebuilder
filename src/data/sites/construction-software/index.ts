@@ -331,6 +331,7 @@ export const siteData: SiteData = {
 
   articles: [
     {
+      kind: "product-roundup",
       title: "Best Software for Small General Contractors",
       slug: "best-software-small-contractors",
       excerpt: "What to look for when choosing your first platform.",
@@ -343,6 +344,7 @@ export const siteData: SiteData = {
       products: [],
     },
     {
+      kind: "product-roundup",
       title: "Procore vs Buildertrend",
       slug: "procore-vs-buildertrend",
       excerpt: "How two popular tools compare for different contractor types.",
@@ -357,6 +359,7 @@ export const siteData: SiteData = {
       products: [],
     },
     {
+      kind: "product-roundup",
       title: "Field Management Apps Compared",
       slug: "field-management-apps",
       excerpt: "Top picks for superintendents and foremen on site.",
@@ -369,6 +372,7 @@ export const siteData: SiteData = {
       products: [],
     },
     {
+      kind: "product-roundup",
       title: "Construction Estimating Software Guide",
       slug: "estimating-software-guide",
       excerpt: "Tools that help you bid faster and more accurately.",
@@ -381,6 +385,7 @@ export const siteData: SiteData = {
       products: [],
     },
     {
+      kind: "product-roundup",
       title: "Software for Residential Builders",
       slug: "residential-builder-software",
       excerpt: "Platforms built for remodelers and custom home builders.",
@@ -393,6 +398,7 @@ export const siteData: SiteData = {
       products: [],
     },
     {
+      kind: "product-roundup",
       title: "How to Choose Contractor Software",
       slug: "how-to-choose-contractor-software",
       excerpt: "A step-by-step checklist for evaluating your options.",

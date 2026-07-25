@@ -584,6 +584,7 @@ export const siteData: SiteData = {
 
   articles: [
     {
+      kind: "product-roundup",
       title: "The Three Best Mattresses for Side Sleepers: Pros and Cons",
       slug: "best-mattresses-for-side-sleepers",
       publishedAt: "2026-07-20",
@@ -681,6 +682,7 @@ export const siteData: SiteData = {
       ],
     },
     {
+      kind: "product-roundup",
       title: "The Three Best Pillows for Side Sleepers: Pros and Cons",
       slug: "best-pillows-for-side-sleepers",
       publishedAt: "2026-07-20",
@@ -779,6 +781,7 @@ export const siteData: SiteData = {
       ],
     },
     {
+      kind: "product-roundup",
       title: "The Best Pillow for Neck Pain: Our Top 3 Picks",
       slug: "best-pillows-for-neck-pain",
       publishedAt: "2026-07-22",
@@ -865,6 +868,189 @@ export const siteData: SiteData = {
             "Side sleepers wanting a purpose-built, adjustable contour pillow at a currently discounted price.",
           skipIf:
             "You want your buying decision backed by verified independent reviews rather than a brand-run survey.",
+        },
+      ],
+    },
+    {
+      kind: "editorial",
+      title:
+        "Science Has Spoken: 7 Facts You Didn't Know About Sleep Quality",
+      slug: "sleep-quality-7-facts",
+      publishedAt: "2026-07-25",
+      author: "Side Sleeper Team",
+      excerpt:
+        "Your sleeping position isn't just comfort — research shows why mattress and pillow support matter more as we age.",
+      ogImage: {
+        src: "/sites/side-sleeper/articles/sleep-quality-7-facts/intro-vitaly-gariev.jpg",
+        alt: "Man in a superhero costume sleeping on a sofa",
+      },
+      intro: [
+        "Your sleeping position isn't just a matter of comfort—it's basically a biological clock. Research shows why choosing the right mattress and pillow get more important as we age.",
+      ],
+      introImage: {
+        src: "/sites/side-sleeper/articles/sleep-quality-7-facts/intro-vitaly-gariev.jpg",
+        alt: "Man in a superhero costume sleeping on a sofa",
+        caption:
+          "Let Side Sleeper Guide be your caped crusader in all things sleep. Photo by Vitaly Gariev on Unsplash",
+        creditHref:
+          "https://unsplash.com/photos/man-in-superhero-costume-sleeping-on-sofa-GjHclZLV2N4",
+        photographerHref: "https://unsplash.com/@silverkblack",
+      },
+      sections: [
+        {
+          heading: "#1 Older and calmer",
+          paragraphs: [
+            'A landmark study tracking sleepers aged 3 to 80 found that we get progressively "stiller" as we age: toddlers and kids toss and turn as often as 4-5 times an hour, while the 65-80 crowd settles down to roughly half that, around 2 changes per hour. And it\'s not just fewer shifts—older sleepers also hold each position longer, with far more stretches of 30+ minutes of complete stillness.',
+            "So if you've noticed you don't flip around as much as you used to, it's not just in your head (or your mattress)—it's a well-documented part of getting older. Which is exactly why choosing the right position (and the right support for it) matters more with age, not less: fewer natural adjustments throughout the night means less opportunity to self-correct out of a bad spinal alignment.",
+          ],
+          citations: [
+            {
+              label: "landmark study (De Koninck et al.)",
+              href: "https://www.researchgate.net/profile/Joseph-De-Koninck/publication/21575518_Sleep_Positions_and_Position_Shifts_in_Five_Age_Groups_An_Ontogenetic_Picture/links/589fbcf8a6fdccf5e96d360e/Sleep-Positions-and-Position-Shifts-in-Five-Age-Groups-An-Ontogenetic-Picture.pdf",
+            },
+          ],
+        },
+        {
+          heading: "#2 Side vs back",
+          paragraphs: [
+            "Science may have just settled the age-old side-vs-back debate—and side sleeping wins.",
+            "A 2022 study from China using flexible wearable sensors tracked 13 healthy adults across 15 nights and found that side sleepers consistently out-slept their back-sleeping counterparts, with right-side sleepers coming out on top, left-side sleepers close behind, and back sleepers trailing in last place.",
+            "The side sleepers weren't just imagining it, either:",
+          ],
+          bullets: [
+            "They woke up less often",
+            "Spent more time in deep, restorative slow-wave sleep",
+            "And reported feeling noticeably more refreshed in the morning",
+          ],
+          closingParagraphs: [
+            "There's a second piece to the puzzle too—how much you toss and turn matters just as much as which position you land in. The study found a clear link between restlessness and poor sleep quality: the more you shift around at night, the worse you tend to feel the next day.",
+            "So if you're a side sleeper who still wakes up groggy, the fix might not be your position at all—it might be what's underneath you. A mattress and pillow that actually hold you still in that position (instead of letting you fidget your way to a bad night) could be doing more heavy lifting than you think.",
+          ],
+          image: {
+            src: "/sites/side-sleeper/articles/sleep-quality-7-facts/sensor-diagram.png",
+            alt: "Wearable sleep sensor on a subject and a labeled diagram of the monitoring device",
+            caption:
+              "One of the subjects wearing the sensor (a) and the diagram of the monitoring device (b). Image: Screenshot from the research paper.",
+            creditHref: "https://www.mdpi.com/1424-8220/22/16/6220",
+          },
+          citations: [
+            {
+              label: "2022 wearable-sensor study (MDPI Sensors)",
+              href: "https://www.mdpi.com/1424-8220/22/16/6220",
+            },
+          ],
+        },
+        {
+          heading: "#3 Personalized advice works",
+          paragraphs: [
+            'Turns out your grandma\'s advice to "just sleep on it right" might have actual science behind it. A 2016 pilot study out of Portugal followed a group of physically active older women (average age 63) who were struggling with back pain, splitting them into two groups: one that got personalized coaching on how to sleep based on their specific pain points, and one that didn\'t.',
+          ],
+          citations: [
+            {
+              label: "Portugal pilot study (Desouzart et al., 2016)",
+              href: "https://doi.org/10.3233/WOR-152243",
+            },
+          ],
+        },
+        {
+          heading: "#4 Quick results",
+          paragraphs: [
+            "After just four weeks, the group that received sleep position guidance reported significantly fewer back pain complaints than the group left to their own devices. No new mattress, no fancy gadget—just being shown the right way to lie down made a measurable difference.",
+            "If simply knowing the right position can ease pain that much, imagine what pairing that knowledge with a mattress and pillow actually built to support it could do.",
+          ],
+          image: {
+            src: "/sites/side-sleeper/articles/sleep-quality-7-facts/sleep-positions.png",
+            alt: "Diagram of recommended side and back sleep positions versus not-recommended stomach sleep",
+            caption:
+              "Recommended sleeping positions and pillow orientation (A — lateral position and B — supine sleep position). Not recommended prone sleep position (C — prone sleep position). Image: Screenshot from the research paper.",
+            creditHref: "https://doi.org/10.3233/WOR-152243",
+          },
+          closingParagraphs: [
+            "What's striking is how fast the results showed up. We're talking about a month-long intervention producing a statistically significant drop in pain—which suggests your body starts \"listening\" to better sleep posture almost immediately, rather than needing months of habit-building.",
+            'Of course, this was a small pilot study, so it\'s more proof-of-concept than gospel truth. But it lines up with the bigger picture: your sleep position isn\'t a "nice to have," it\'s doing real, measurable work on your spine every single night.',
+          ],
+          citations: [
+            {
+              label: "Portugal pilot study (Desouzart et al., 2016)",
+              href: "https://doi.org/10.3233/WOR-152243",
+            },
+          ],
+        },
+        {
+          heading: "#5 Side sleepers beware",
+          paragraphs: [
+            'If you\'ve ever been told "just sleep on your side, it\'s the best position for your back," here\'s a plot twist: a Finnish 2024 study of 375 chronic low back pain patients found that there\'s no universal magic position that works for everyone.',
+            "Side sleeping was by far the most popular choice, with the vast majority of patients favoring it, but that popularity didn't make it painless — a meaningful chunk of side sleepers still reported it aggravating their symptoms.",
+          ],
+          image: {
+            src: "/sites/side-sleeper/articles/sleep-quality-7-facts/individual-position-david-clode.jpg",
+            alt: "Koala sleeping on a tree branch",
+            caption:
+              'The "best" sleeping position is highly individual. Photo by David Clode on Unsplash',
+            creditHref:
+              "https://unsplash.com/photos/koala-bear-sleeping-on-tree-Yg_sNKOiXvY",
+            photographerHref: "https://unsplash.com/@davidclode",
+          },
+          citations: [
+            {
+              label: "Finnish 2024 Cureus study (chronic LBP)",
+              href: "https://assets.cureus.com/uploads/original_article/pdf/238621/20240606-27320-1z0niuw.pdf",
+            },
+          ],
+        },
+        {
+          heading: "#6 The worst position",
+          paragraphs: [
+            'Stomach sleeping got the most votes for "position I can\'t tolerate," and interestingly, it was mostly younger patients who could still stomach it (pun intended), with a clear trend of people ditching the position as they aged. Back sleeping wasn\'t off the hook either, with over a third of patients avoiding it due to pain.',
+          ],
+          factBox: {
+            title: "Key findings",
+            items: [
+              "The majority of patients (87%) reported sleeping in a side-lying position, followed by supine (47%) and prone (22%) positions.",
+              "A negative correlation was found between age and preference for the prone position — younger patients were more likely to sleep on their stomachs.",
+              'Pain wasn\'t tied to one "villain" position: 42% of patients avoided the prone position, 35% avoided the back, 15% avoided the left side, and 13% avoided the right side due to pain.',
+              "While the prone position was most commonly linked with pain, especially among women, the findings suggest that any sleeping position could potentially exacerbate pain in individuals with chronic lower back pain.",
+              "Sleep disruption from back pain was nearly universal: 77% had disturbed sleep due to lower back pain, and 92% overall struggled with sleeping or rising because of it.",
+            ],
+          },
+          closingParagraphs: [
+            'The real takeaway here isn\'t "position X is bad, position Y is good"—it\'s that back pain and sleep position is a deeply individual equation. Nearly everyone in the study (over 90%) struggled with sleep disruption or difficulty getting up because of their back, which is a sobering reminder of just how much a single overlooked variable—how you\'re lying down for eight hours a night—can dominate your daily quality of life.',
+            "The researchers themselves landed on personalized guidance as the real solution, not a blanket recommendation.",
+            'Translation for your bedroom: rather than forcing yourself into whatever position is trending as "healthiest," the smarter move is finding the position (and the support system underneath it) that actually keeps your specific pain quiet.',
+          ],
+          citations: [
+            {
+              label: "Finnish 2024 Cureus study (chronic LBP)",
+              href: "https://assets.cureus.com/uploads/original_article/pdf/238621/20240606-27320-1z0niuw.pdf",
+            },
+          ],
+        },
+        {
+          heading: "#7 Specially engineered mattress",
+          paragraphs: [
+            'Here\'s a finding that might reshape how you think about "getting the right sleep position": it\'s not actually the position that matters most—it\'s what\'s underneath it.',
+            "A small but well-controlled study conducted in 2022 had chronic back pain sufferers spend a few nights on their own mattress, then swap onto a specially engineered mattress designed to keep the spine straight while side sleeping, then swap back. The result? Pain while lying down dropped by nearly a fifth, and comfort ratings jumped by a quarter—all without the participants changing their favorite sleeping position, which for the vast majority (a whopping 93%) was side sleeping anyway.",
+          ],
+          image: {
+            src: "/sites/side-sleeper/articles/sleep-quality-7-facts/mattress-butaforya.jpg",
+            alt: "Yellow mattress on a white table",
+            caption:
+              "Well engineered mattresses are important, but not the only factor to consider. Photo by BUTAFORYA on Unsplash",
+            creditHref:
+              "https://unsplash.com/photos/a-yellow-mattress-sitting-on-top-of-a-white-table-LwEF07KtwEg",
+            photographerHref: "https://unsplash.com/@butaforya",
+          },
+          closingParagraphs: [
+            'The takeaway? The mattress engineering did the heavy lifting, not a lecture on "correct" sleep posture.',
+            'Even more telling: which specific position someone slept in—left side, right side, even on their back—had no meaningful connection to their pain levels. What did matter was how much they tossed and turned (again with the "tossing and turning"). The more restless a person\'s night, the more pain and stiffness they reported upon waking.',
+            "Put simply: side sleeping isn't the magic bullet, and stillness might be just as important as position. This is exactly the argument for investing in a mattress that actively supports your spine's natural alignment while you sleep on your side, rather than one that lets your hips or shoulders sink and force you into a night of fidgeting. The right support system doesn't just make side sleeping possible—it makes it actually restorative.",
+          ],
+          citations: [
+            {
+              label: "2022 engineered-mattress study (Springer)",
+              href: "https://link.springer.com/content/pdf/10.1186/s41606-022-00073-x.pdf",
+            },
+          ],
         },
       ],
     },

@@ -13,6 +13,7 @@ import {
   getSiteBySlug,
   isValidSiteSlug,
 } from "@/lib/site";
+import type { EditorialFigure } from "@/types/site";
 
 type ArticlePageProps = {
   params: Promise<{ siteSlug: string; slug: string }>;
@@ -87,6 +88,52 @@ export async function generateMetadata({
   };
 }
 
+function EditorialFigureBlock({ figure }: { figure: EditorialFigure }) {
+  return (
+    <figure className="mt-6 overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
+      <Image
+        src={figure.src}
+        alt={figure.alt}
+        width={1200}
+        height={800}
+        className="h-auto w-full"
+      />
+      {figure.caption && (
+        <figcaption className="border-t border-slate-200 px-4 py-3 text-sm leading-relaxed text-slate-500">
+          {figure.caption}
+          {(figure.creditHref || figure.photographerHref) && (
+            <span className="mt-1 block">
+              {figure.photographerHref && (
+                <a
+                  href={figure.photographerHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium text-blue-600 hover:text-blue-700"
+                >
+                  Photographer
+                </a>
+              )}
+              {figure.photographerHref && figure.creditHref && (
+                <span aria-hidden="true"> · </span>
+              )}
+              {figure.creditHref && (
+                <a
+                  href={figure.creditHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium text-blue-600 hover:text-blue-700"
+                >
+                  Source
+                </a>
+              )}
+            </span>
+          )}
+        </figcaption>
+      )}
+    </figure>
+  );
+}
+
 export default async function ArticlePage({ params }: ArticlePageProps) {
   const { siteSlug, slug } = await params;
 
@@ -102,6 +149,8 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   }
 
   const path = `/${siteSlug}/articles/${slug}`;
+  const isEditorial = article.kind === "editorial";
+  const isRoundup = article.kind === "product-roundup";
 
   return (
     <main className="py-12 md:py-16">
@@ -134,20 +183,25 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
               </p>
             ))}
           </div>
+          {isEditorial && article.introImage && (
+            <EditorialFigureBlock figure={article.introImage} />
+          )}
         </header>
 
-        <aside className="mt-8 rounded-xl border border-blue-100 bg-blue-50 p-6">
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-blue-800">
-            {article.researchNote.title}
-          </h2>
-          <p className="mt-2 text-sm leading-relaxed text-blue-900/80">
-            {article.researchNote.content}
-          </p>
-        </aside>
+        {isRoundup && (
+          <aside className="mt-8 rounded-xl border border-blue-100 bg-blue-50 p-6">
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-blue-800">
+              {article.researchNote.title}
+            </h2>
+            <p className="mt-2 text-sm leading-relaxed text-blue-900/80">
+              {article.researchNote.content}
+            </p>
+          </aside>
+        )}
 
         <AffiliateDisclosure siteSlug={siteSlug} className="mt-8 px-0" />
 
-        {article.products.length > 0 && (
+        {isRoundup && article.products.length > 0 && (
           <div className="mt-8 space-y-16">
             {article.products.map((product, index) => (
               <section
@@ -242,6 +296,104 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                     </p>
                   </div>
                 </div>
+              </section>
+            ))}
+          </div>
+        )}
+
+        {isEditorial && (
+          <div className="mt-8 space-y-16">
+            {article.sections.map((section, index) => (
+              <section
+                key={section.heading}
+                aria-labelledby={`editorial-${index}-heading`}
+              >
+                <h2
+                  id={`editorial-${index}-heading`}
+                  className="text-2xl font-bold tracking-tight text-slate-900"
+                >
+                  {section.heading}
+                </h2>
+
+                <div className="mt-4 space-y-4">
+                  {section.paragraphs.map((paragraph) => (
+                    <p
+                      key={paragraph.slice(0, 64)}
+                      className="text-base leading-relaxed text-slate-600"
+                    >
+                      {paragraph}
+                    </p>
+                  ))}
+                </div>
+
+                {section.bullets && section.bullets.length > 0 && (
+                  <ul className="mt-4 list-disc space-y-2 pl-5">
+                    {section.bullets.map((item) => (
+                      <li
+                        key={item}
+                        className="text-base leading-relaxed text-slate-600"
+                      >
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+
+                {section.image && (
+                  <EditorialFigureBlock figure={section.image} />
+                )}
+
+                {section.factBox && (
+                  <aside className="mt-6 rounded-xl border border-blue-100 bg-blue-50 p-6">
+                    <h3 className="text-sm font-semibold uppercase tracking-wide text-blue-800">
+                      {section.factBox.title}
+                    </h3>
+                    <ul className="mt-3 list-disc space-y-2 pl-5">
+                      {section.factBox.items.map((item) => (
+                        <li
+                          key={item.slice(0, 64)}
+                          className="text-sm leading-relaxed text-blue-900/80"
+                        >
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </aside>
+                )}
+
+                {section.closingParagraphs &&
+                  section.closingParagraphs.length > 0 && (
+                    <div className="mt-4 space-y-4">
+                      {section.closingParagraphs.map((paragraph) => (
+                        <p
+                          key={paragraph.slice(0, 64)}
+                          className="text-base leading-relaxed text-slate-600"
+                        >
+                          {paragraph}
+                        </p>
+                      ))}
+                    </div>
+                  )}
+
+                {section.citations && section.citations.length > 0 && (
+                  <p className="mt-4 text-sm text-slate-500">
+                    Source
+                    {section.citations.length > 1 ? "s" : ""}:{" "}
+                    {section.citations.map((citation, citationIndex) => (
+                      <span key={citation.href}>
+                        {citationIndex > 0 && "; "}
+                        <a
+                          href={citation.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-medium text-blue-600 hover:text-blue-700"
+                        >
+                          {citation.label}
+                        </a>
+                      </span>
+                    ))}
+                  </p>
+                )}
               </section>
             ))}
           </div>
