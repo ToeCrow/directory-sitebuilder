@@ -56,10 +56,19 @@ type ArticleBase = {
   ogImage?: { src: string; alt: string };
 };
 
+export type ArticleClosingGuide = {
+  title: string;
+  items: string[];
+  closing?: string;
+  pricingNote?: string;
+};
+
 export type ProductRoundupArticle = ArticleBase & {
   kind: "product-roundup";
   researchNote: { title: string; content: string };
   products: ArticleProductSection[];
+  /** Optional post-list “How to choose” guide */
+  closingGuide?: ArticleClosingGuide;
 };
 
 export type EditorialArticle = ArticleBase & {

@@ -301,6 +301,37 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           </div>
         )}
 
+        {isRoundup && article.closingGuide && (
+          <section className="mt-16 border-t border-slate-200 pt-12">
+            <h2 className="text-2xl font-bold tracking-tight text-slate-900">
+              {article.closingGuide.title}
+            </h2>
+            <ul className="mt-6 space-y-3">
+              {article.closingGuide.items.map((item) => (
+                <li
+                  key={item}
+                  className="flex gap-2 text-sm leading-relaxed text-slate-600"
+                >
+                  <span className="text-blue-600" aria-hidden="true">
+                    →
+                  </span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+            {article.closingGuide.closing && (
+              <p className="mt-6 text-base leading-relaxed text-slate-600">
+                {article.closingGuide.closing}
+              </p>
+            )}
+            {article.closingGuide.pricingNote && (
+              <p className="mt-4 text-sm leading-relaxed text-slate-500">
+                {article.closingGuide.pricingNote}
+              </p>
+            )}
+          </section>
+        )}
+
         {isEditorial && (
           <div className="mt-8 space-y-16">
             {article.sections.map((section, index) => (

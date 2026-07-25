@@ -1,6 +1,10 @@
 // Future: replace static import with PostgreSQL query (pg driver + Flyway migrations).
 
 import type { SiteData } from "@/types/site";
+import {
+  lowerBackPainMattressArticle,
+  shoulderPainPillowArticle,
+} from "./roundup-articles";
 
 const comparisonRows = [
   { key: "brand", label: "Brand", type: "text" as const },
@@ -871,6 +875,8 @@ export const siteData: SiteData = {
         },
       ],
     },
+    lowerBackPainMattressArticle,
+    shoulderPainPillowArticle,
     {
       kind: "editorial",
       title:
