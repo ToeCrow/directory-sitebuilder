@@ -9,7 +9,6 @@ import { FAQ } from "@/components/FAQ";
 import { AffiliateDisclosure } from "@/components/AffiliateDisclosure";
 import { LeadForm } from "@/components/LeadForm";
 import { AdSlot } from "@/components/AdSlot";
-import { BrowseCta } from "@/components/BrowseCta";
 import { siteHasMattressPillowNav } from "@/lib/site";
 
 type HomePageLayoutProps = {
@@ -25,7 +24,6 @@ export function HomePageLayout({ siteSlug }: HomePageLayoutProps) {
         <Hero siteSlug={siteSlug} />
         <AffiliateDisclosure siteSlug={siteSlug} />
         <AdSlot slotId="primary" />
-        <BrowseCta siteSlug={siteSlug} />
         <BuyingGuide siteSlug={siteSlug} />
         <AdSlot slotId="secondary" />
         <FAQ siteSlug={siteSlug} />

@@ -1,7 +1,8 @@
 import Image from "next/image";
+import Link from "next/link";
 import type { SiteSlug } from "@/data/sites";
 import { getSiteData, siteHasMattressPillowNav } from "@/lib/site";
-import { getComparisonsPath } from "@/lib/paths";
+import { getProductsIndexPath } from "@/lib/paths";
 import { cn } from "@/lib/cn";
 
 type HeroProps = {
@@ -16,7 +17,43 @@ const heroImageClassName = cn(
   "landscape:mx-auto landscape:max-h-[min(600px,45svh)] landscape:w-auto",
 );
 
-function HeroCtas({
+const primaryCtaClassName =
+  "inline-flex items-center rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-700";
+
+const secondaryCtaClassName =
+  "inline-flex items-center rounded-lg border border-slate-300 px-6 py-3 text-sm font-semibold text-slate-700 transition-colors hover:border-slate-400 hover:bg-white";
+
+function SideSleeperHeroCtas({
+  siteSlug,
+  buyingGuideLabel,
+  buyingGuideHref,
+}: {
+  siteSlug: SiteSlug;
+  buyingGuideLabel: string;
+  buyingGuideHref: string;
+}) {
+  return (
+    <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+      <Link
+        href={getProductsIndexPath(siteSlug, "mattress")}
+        className={primaryCtaClassName}
+      >
+        Browse Mattresses
+      </Link>
+      <Link
+        href={getProductsIndexPath(siteSlug, "pillow")}
+        className={primaryCtaClassName}
+      >
+        Browse Pillows
+      </Link>
+      <a href={buyingGuideHref} className={primaryCtaClassName}>
+        {buyingGuideLabel}
+      </a>
+    </div>
+  );
+}
+
+function DefaultHeroCtas({
   primaryCta,
   primaryCtaHref,
   secondaryCta,
@@ -29,16 +66,13 @@ function HeroCtas({
 }) {
   return (
     <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-      <a
-        href={primaryCtaHref}
-        className="inline-flex items-center rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
-      >
+      <a href={primaryCtaHref} className={primaryCtaClassName}>
         {primaryCta}
       </a>
       {secondaryCta && (
         <a
           href={secondaryCtaHref ?? "#buying-guide"}
-          className="inline-flex items-center rounded-lg border border-slate-300 px-6 py-3 text-sm font-semibold text-slate-700 transition-colors hover:border-slate-400 hover:bg-white"
+          className={secondaryCtaClassName}
         >
           {secondaryCta}
         </a>
@@ -47,12 +81,32 @@ function HeroCtas({
   );
 }
 
+function HeroCtaGroup({ siteSlug }: { siteSlug: SiteSlug }) {
+  const { hero } = getSiteData(siteSlug);
+
+  if (siteHasMattressPillowNav(siteSlug)) {
+    return (
+      <SideSleeperHeroCtas
+        siteSlug={siteSlug}
+        buyingGuideLabel={hero.secondaryCta ?? "Read Buying Guide"}
+        buyingGuideHref={hero.secondaryCtaHref ?? "#buying-guide"}
+      />
+    );
+  }
+
+  return (
+    <DefaultHeroCtas
+      primaryCta={hero.primaryCta}
+      primaryCtaHref="#compare"
+      secondaryCta={hero.secondaryCta}
+      secondaryCtaHref={hero.secondaryCtaHref}
+    />
+  );
+}
+
 export function Hero({ siteSlug, className }: HeroProps) {
   const siteData = getSiteData(siteSlug);
   const { hero } = siteData;
-  const primaryCtaHref = siteHasMattressPillowNav(siteSlug)
-    ? getComparisonsPath(siteSlug)
-    : "#compare";
 
   if (hero.image) {
     return (
@@ -104,12 +158,7 @@ export function Hero({ siteSlug, className }: HeroProps) {
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-slate-600">
             {hero.subheadline}
           </p>
-          <HeroCtas
-            primaryCta={hero.primaryCta}
-            primaryCtaHref={primaryCtaHref}
-            secondaryCta={hero.secondaryCta}
-            secondaryCtaHref={hero.secondaryCtaHref}
-          />
+          <HeroCtaGroup siteSlug={siteSlug} />
         </div>
       </section>
     );
@@ -134,12 +183,7 @@ export function Hero({ siteSlug, className }: HeroProps) {
         <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-slate-600">
           {hero.subheadline}
         </p>
-        <HeroCtas
-          primaryCta={hero.primaryCta}
-          primaryCtaHref={primaryCtaHref}
-          secondaryCta={hero.secondaryCta}
-          secondaryCtaHref={hero.secondaryCtaHref}
-        />
+        <HeroCtaGroup siteSlug={siteSlug} />
       </div>
     </section>
   );
