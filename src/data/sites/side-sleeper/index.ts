@@ -671,10 +671,6 @@ export const siteData: SiteData = {
         label: "Privacy Policy",
         href: "/privacy-policy",
       },
-      {
-        label: "Privacy and cookie settings",
-        href: "#privacy-and-cookie-settings",
-      },
     ],
   },
 

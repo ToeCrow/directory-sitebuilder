@@ -294,10 +294,9 @@ export default async function PrivacyPolicyPage({
               <li>Manage individual options.</li>
             </ul>
             <p className="mt-4">
-              Visitors may change or withdraw their choices through the
-              &quot;Privacy and cookie settings&quot; control available in the
-              website footer on pages where advertising and consent scripts are
-              loaded.
+              Visitors may change or withdraw their choices through the privacy
+              and cookie controls provided by Google&apos;s Consent Management
+              Platform where that interface is shown.
             </p>
           </section>
 
