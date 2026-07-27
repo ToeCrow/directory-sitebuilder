@@ -672,8 +672,8 @@ export const siteData: SiteData = {
 
   ads: {
     slots: {
-      primary: "",
-      secondary: "",
+      primary: "7798730398",
+      secondary: "6296992173",
     },
   },
 };
