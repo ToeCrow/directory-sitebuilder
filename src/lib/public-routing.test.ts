@@ -161,9 +161,14 @@ describe("sitemap", () => {
     assert.ok(urls.includes("https://side-sleepers.com/products"));
     assert.ok(urls.includes("https://side-sleepers.com/comparisons"));
     assert.ok(urls.includes("https://side-sleepers.com/privacy-policy"));
+    assert.ok(urls.includes("https://side-sleepers.com/about"));
     assert.equal(
       urls.filter((u) => u === "https://side-sleepers.com/privacy-policy")
         .length,
+      1,
+    );
+    assert.equal(
+      urls.filter((u) => u === "https://side-sleepers.com/about").length,
       1,
     );
     assert.ok(
@@ -189,6 +194,10 @@ describe("sitemap", () => {
     assert.ok(urls.some((u) => u.includes("/construction-software/products")));
     assert.equal(
       urls.some((u) => u.includes("/privacy-policy")),
+      false,
+    );
+    assert.equal(
+      urls.some((u) => u.endsWith("/about") || u.includes("/about")),
       false,
     );
   });

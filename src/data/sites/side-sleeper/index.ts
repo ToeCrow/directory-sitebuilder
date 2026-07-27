@@ -656,6 +656,10 @@ export const siteData: SiteData = {
     tagline: "Research-based guides and mattress reviews for side sleepers.",
     links: [
       {
+        label: "About",
+        href: "/about",
+      },
+      {
         label: "Contact",
         href: "mailto:side.sleepers.admin@gmail.com",
       },

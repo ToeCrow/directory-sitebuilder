@@ -7,6 +7,7 @@ import {
   type SiteSlug,
 } from "@/lib/site";
 import { getPublicAbsoluteUrl, siteUsesPublicPaths } from "@/lib/paths";
+import { siteUsesAboutPage } from "@/lib/about";
 import { siteUsesPrivacyPolicy } from "@/lib/privacy-policy";
 
 export function buildSiteSitemapEntries(
@@ -39,6 +40,15 @@ export function buildSiteSitemapEntries(
       priority: 0.75,
     },
   ];
+
+  if (siteUsesAboutPage(siteSlug)) {
+    entries.push({
+      url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, "/about"),
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.4,
+    });
+  }
 
   if (siteUsesPrivacyPolicy(siteSlug)) {
     entries.push({
