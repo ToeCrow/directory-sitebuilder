@@ -23,7 +23,7 @@ export function LeadForm({ className }: LeadFormProps) {
   return (
     <section
       id="newsletter"
-      className={cn("py-16 md:py-20", className)}
+      className={cn("scroll-mt-24 py-16 md:py-20", className)}
       aria-labelledby="newsletter-heading"
     >
       <div className="mx-auto max-w-xl px-4 text-center">

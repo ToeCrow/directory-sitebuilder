@@ -15,6 +15,8 @@ import {
   getFeaturedProducts,
   siteHasMattressPillowNav,
 } from "@/lib/site";
+import { HashNavLink } from "@/components/HashNavLink";
+import { getHashSectionId } from "@/lib/hash-nav";
 
 function MenuIcon({ open }: { open: boolean }) {
   return (
@@ -186,12 +188,22 @@ export function Header() {
 
             {primaryLinks.map((link) => (
               <li key={link.href}>
-                <Link
-                  href={link.href}
-                  className="text-sm font-medium text-slate-600 transition-colors hover:text-blue-600"
-                >
-                  {link.label}
-                </Link>
+                {getHashSectionId(link.href) ? (
+                  <HashNavLink
+                    href={link.href}
+                    siteSlug={siteSlug}
+                    className="text-sm font-medium text-slate-600 transition-colors hover:text-blue-600"
+                  >
+                    {link.label}
+                  </HashNavLink>
+                ) : (
+                  <Link
+                    href={link.href}
+                    className="text-sm font-medium text-slate-600 transition-colors hover:text-blue-600"
+                  >
+                    {link.label}
+                  </Link>
+                )}
               </li>
             ))}
 
@@ -228,12 +240,13 @@ export function Header() {
             )}
 
             <li>
-              <Link
+              <HashNavLink
                 href={newsletterLink.href}
+                siteSlug={siteSlug}
                 className="text-sm font-medium text-slate-600 transition-colors hover:text-blue-600"
               >
                 {newsletterLink.label}
-              </Link>
+              </HashNavLink>
             </li>
           </ul>
         </nav>
@@ -290,13 +303,24 @@ export function Header() {
 
             {primaryLinks.map((link) => (
               <li key={link.href}>
-                <Link
-                  href={link.href}
-                  className="block rounded-lg px-3 py-3 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-blue-600"
-                  onClick={closeMenu}
-                >
-                  {link.label}
-                </Link>
+                {getHashSectionId(link.href) ? (
+                  <HashNavLink
+                    href={link.href}
+                    siteSlug={siteSlug}
+                    className="block rounded-lg px-3 py-3 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-blue-600"
+                    onNavigate={closeMenu}
+                  >
+                    {link.label}
+                  </HashNavLink>
+                ) : (
+                  <Link
+                    href={link.href}
+                    className="block rounded-lg px-3 py-3 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-blue-600"
+                    onClick={closeMenu}
+                  >
+                    {link.label}
+                  </Link>
+                )}
               </li>
             ))}
 
@@ -330,13 +354,14 @@ export function Header() {
             )}
 
             <li>
-              <Link
+              <HashNavLink
                 href={newsletterLink.href}
+                siteSlug={siteSlug}
                 className="block rounded-lg px-3 py-3 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-blue-600"
-                onClick={closeMenu}
+                onNavigate={closeMenu}
               >
                 {newsletterLink.label}
-              </Link>
+              </HashNavLink>
             </li>
           </ul>
         </nav>

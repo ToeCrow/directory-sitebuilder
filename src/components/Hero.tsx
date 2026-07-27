@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { SiteSlug } from "@/data/sites";
 import { getSiteData, siteHasMattressPillowNav } from "@/lib/site";
 import { getProductsIndexPath } from "@/lib/paths";
+import { InPageHashAnchor } from "@/components/InPageHashAnchor";
 import { cn } from "@/lib/cn";
 
 type HeroProps = {
@@ -46,9 +47,9 @@ function SideSleeperHeroCtas({
       >
         Browse Pillows
       </Link>
-      <a href={buyingGuideHref} className={primaryCtaClassName}>
+      <InPageHashAnchor href={buyingGuideHref} className={primaryCtaClassName}>
         {buyingGuideLabel}
-      </a>
+      </InPageHashAnchor>
     </div>
   );
 }
@@ -66,16 +67,16 @@ function DefaultHeroCtas({
 }) {
   return (
     <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-      <a href={primaryCtaHref} className={primaryCtaClassName}>
+      <InPageHashAnchor href={primaryCtaHref} className={primaryCtaClassName}>
         {primaryCta}
-      </a>
+      </InPageHashAnchor>
       {secondaryCta && (
-        <a
+        <InPageHashAnchor
           href={secondaryCtaHref ?? "#buying-guide"}
           className={secondaryCtaClassName}
         >
           {secondaryCta}
-        </a>
+        </InPageHashAnchor>
       )}
     </div>
   );
