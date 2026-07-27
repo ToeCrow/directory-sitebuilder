@@ -82,10 +82,6 @@ export function Header() {
         { href: `${homeHref}#faq`, label: "FAQ" },
       ];
 
-  const newsletterLink = {
-    href: `${homeHref}#newsletter`,
-    label: "Newsletter",
-  };
   const articles = siteData.articles;
 
   function closeMenu() {
@@ -238,16 +234,6 @@ export function Header() {
                 </div>
               </li>
             )}
-
-            <li>
-              <HashNavLink
-                href={newsletterLink.href}
-                siteSlug={siteSlug}
-                className="text-sm font-medium text-slate-600 transition-colors hover:text-blue-600"
-              >
-                {newsletterLink.label}
-              </HashNavLink>
-            </li>
           </ul>
         </nav>
 
@@ -352,17 +338,6 @@ export function Header() {
                 )}
               </li>
             )}
-
-            <li>
-              <HashNavLink
-                href={newsletterLink.href}
-                siteSlug={siteSlug}
-                className="block rounded-lg px-3 py-3 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-blue-600"
-                onNavigate={closeMenu}
-              >
-                {newsletterLink.label}
-              </HashNavLink>
-            </li>
           </ul>
         </nav>
       )}

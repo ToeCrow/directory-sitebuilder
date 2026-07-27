@@ -7,7 +7,6 @@ import { BuyingGuide } from "@/components/BuyingGuide";
 import { ArticleGrid } from "@/components/ArticleGrid";
 import { FAQ } from "@/components/FAQ";
 import { AffiliateDisclosure } from "@/components/AffiliateDisclosure";
-import { LeadForm } from "@/components/LeadForm";
 import { AdSlot } from "@/components/AdSlot";
 import { HashScrollOnLoad } from "@/components/HashScrollOnLoad";
 import { siteHasMattressPillowNav } from "@/lib/site";
@@ -30,7 +29,6 @@ export function HomePageLayout({ siteSlug }: HomePageLayoutProps) {
         <AdSlot slotId="secondary" />
         <FAQ siteSlug={siteSlug} />
         <ArticleGrid siteSlug={siteSlug} />
-        <LeadForm />
       </>
     );
   }
@@ -48,7 +46,6 @@ export function HomePageLayout({ siteSlug }: HomePageLayoutProps) {
       <BuyingGuide siteSlug={siteSlug} />
       <FAQ siteSlug={siteSlug} />
       <ArticleGrid siteSlug={siteSlug} />
-      <LeadForm />
     </>
   );
 }

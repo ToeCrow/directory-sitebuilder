@@ -156,10 +156,8 @@ export default async function PrivacyPolicyPage({
               </li>
             </ul>
             <p className="mt-4">
-              The on-site newsletter form currently does not submit or store
-              email addresses. Contact is handled through the email address
-              listed above; messages you send by email are processed so we can
-              respond.
+              Contact is handled through the email address listed above;
+              messages you send by email are processed so we can respond.
             </p>
           </section>
 
@@ -370,17 +368,11 @@ export default async function PrivacyPolicyPage({
               id="forms"
               className="text-xl font-semibold text-slate-900"
             >
-              9. Contact forms and newsletters
+              9. Contact
             </h2>
             <p className="mt-3">
-              The website includes a newsletter signup form for collecting an
-              email address. That form is currently a front-end placeholder and
-              does not send submissions to a server, newsletter provider, or
-              database.
-            </p>
-            <p className="mt-3">
-              There is no separate contact form. Privacy and other requests can
-              be sent by email to{" "}
+              There is no contact form or newsletter signup on the website.
+              Privacy and other requests can be sent by email to{" "}
               <a
                 href={`mailto:${CONTACT_EMAIL}`}
                 className="font-medium text-blue-600 underline-offset-2 hover:underline"
@@ -481,17 +473,6 @@ export default async function PrivacyPolicyPage({
             <p className="mt-4">
               Privacy requests can be submitted using the contact address listed
               above.
-            </p>
-            <p className="mt-3">
-              Visitors in Sweden can find information about the Swedish
-              Authority for Privacy Protection at:{" "}
-              <a
-                href="https://www.imy.se/"
-                className="font-medium text-blue-600 underline-offset-2 hover:underline"
-                rel="noopener noreferrer"
-              >
-                https://www.imy.se/
-              </a>
             </p>
           </section>
 
