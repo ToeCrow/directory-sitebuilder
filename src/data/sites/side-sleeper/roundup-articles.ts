@@ -43,6 +43,7 @@ export const lowerBackPainMattressArticle: ProductRoundupArticle = {
         "Anyone managing a diagnosed chronic back condition who wants a specialist mattress.",
       skipIf:
         "Your back pain is mild or occasional, since there are far cheaper options that will still help.",
+      productSlug: "saatva-rx",
     },
     {
       heading: "Helix Midnight Luxe with ErgoAlign: The Overall Favorite",
@@ -64,6 +65,8 @@ export const lowerBackPainMattressArticle: ProductRoundupArticle = {
       bestFor:
         "Side and combo sleepers who want a customizable lumbar boost.",
       skipIf: "You want back support baked in without paying for an add-on.",
+      productSlug: "helix-midnight-luxe",
+      productVariant: "with ErgoAlign",
     },
     {
       heading: "Nectar Premier Memory Foam: The Chiropractor-Endorsed Budget Pick",
@@ -85,6 +88,7 @@ export const lowerBackPainMattressArticle: ProductRoundupArticle = {
       bestFor:
         "Back and combo sleepers on a budget who want real spinal support without the luxury price tag.",
       skipIf: "You need strong edge support or sleep hot.",
+      productSlug: "nectar-premier",
     },
     {
       heading: "WinkBed (Plus Firmness): The Pick for Back Sleepers Who Need Extra Lift",
@@ -107,6 +111,8 @@ export const lowerBackPainMattressArticle: ProductRoundupArticle = {
         "Back sleepers, especially heavier ones, who need firm lumbar reinforcement.",
       skipIf:
         "You're a lightweight side sleeper who needs more contouring.",
+      productSlug: "winkbed",
+      productVariant: "WinkBed Plus",
     },
     {
       heading: "Brooklyn Bedding Signature Hybrid: The Best Value, Officially",
@@ -129,6 +135,7 @@ export const lowerBackPainMattressArticle: ProductRoundupArticle = {
         "Shoppers who want proven back pain relief without a luxury price tag.",
       skipIf:
         "Strong edge support or zero off-gassing is a dealbreaker for you.",
+      productSlug: "brooklyn-bedding-signature-hybrid",
     },
     {
       heading: "Nolah Evolution Hybrid: The Side Sleeper's Answer to Back Pain",
@@ -150,6 +157,7 @@ export const lowerBackPainMattressArticle: ProductRoundupArticle = {
       bestFor:
         "Side sleepers with back pain who want zoned, targeted relief.",
       skipIf: "You need serious edge support or are a heavier sleeper.",
+      productSlug: "nolah-evolution-hybrid",
     },
     {
       heading: "Titan Plus Core: The Firm, No-Sag Option for Heavier Sleepers",
@@ -172,6 +180,7 @@ export const lowerBackPainMattressArticle: ProductRoundupArticle = {
         "Heavier sleepers who need a mattress that won't sag under sustained weight.",
       skipIf:
         "You're a lightweight side sleeper who wants more give.",
+      productSlug: "titan-plus-core",
     },
   ],
   closingGuide: {
@@ -227,6 +236,7 @@ export const shoulderPainPillowArticle: ProductRoundupArticle = {
       bestFor: "Side and combo sleepers who want a pillow that lasts.",
       skipIf:
         "You're testing whether a pillow helps at all before committing to a premium price tag.",
+      productSlug: "saatva-latex-pillow",
     },
     {
       heading: "Eli & Elm Side Sleeper Pillow: The U-Shape Built Around Your Shoulder",
@@ -247,6 +257,7 @@ export const shoulderPainPillowArticle: ProductRoundupArticle = {
       ],
       bestFor: "Dedicated side sleepers with shoulder or neck pain.",
       skipIf: "You switch positions a lot through the night.",
+      productSlug: "eli-elm-side-sleeper",
     },
     {
       heading: "Pillow Cube Side Cube: The Budget Pick That Solves One Problem Very Well",
@@ -267,6 +278,7 @@ export const shoulderPainPillowArticle: ProductRoundupArticle = {
       ],
       bestFor: "Side sleepers who want a simple, affordable fix.",
       skipIf: "You need one pillow that works across multiple sleep positions.",
+      productSlug: "pillow-cube-side-cube",
     },
     {
       heading:
@@ -290,6 +302,7 @@ export const shoulderPainPillowArticle: ProductRoundupArticle = {
         "Anyone managing a diagnosed shoulder injury, not just posture-related soreness.",
       skipIf:
         "Your shoulder pain is mild or you're not ready for a multi-piece setup.",
+      productSlug: "medcline-shoulder-relief",
     },
     {
       heading: "Layla Kapok Pillow: The Adjustable All-Rounder",
@@ -310,6 +323,7 @@ export const shoulderPainPillowArticle: ProductRoundupArticle = {
       ],
       bestFor: "Combo sleepers who want one pillow that adapts.",
       skipIf: "You sleep hot and cooling is non-negotiable.",
+      productSlug: "layla-kapok-pillow",
     },
     {
       heading: "Purple Freeform Pillow: The Moldable Option for Picky Sleepers",
@@ -330,6 +344,7 @@ export const shoulderPainPillowArticle: ProductRoundupArticle = {
       ],
       bestFor: "Sleepers who like to fine-tune their setup.",
       skipIf: "You'd rather a pillow arrive at the right feel already.",
+      productSlug: "purple-freeform-pillow",
     },
     {
       heading:
@@ -352,6 +367,7 @@ export const shoulderPainPillowArticle: ProductRoundupArticle = {
       bestFor:
         "Anyone who wants a well-reviewed, adjustable pillow without a specialty price tag.",
       skipIf: "You specifically need a contoured shape for side sleeping.",
+      productSlug: "coop-original-adjustable",
     },
   ],
   closingGuide: {

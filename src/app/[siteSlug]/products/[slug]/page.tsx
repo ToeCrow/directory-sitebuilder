@@ -17,6 +17,8 @@ import {
   getResearchScorePath,
   siteUsesResearchScore,
 } from "@/lib/research-score";
+import { getPublicPath, getProductsIndexPath } from "@/lib/paths";
+import { buyLinkRel, getBuyUrl } from "@/lib/product-links";
 
 type ProductPageProps = {
   params: Promise<{ siteSlug: string; slug: string }>;
@@ -49,7 +51,7 @@ export async function generateMetadata({
 
   const title = `${product.name} Review`;
   const description = product.shortDescription;
-  const path = `/${siteSlug}/products/${slug}`;
+  const path = getPublicPath(siteSlug, `/products/${slug}`);
   const ogImage = getDefaultOgImage(siteData);
 
   return {
@@ -107,10 +109,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
     <main className="py-12 md:py-16">
       <article className="mx-auto max-w-3xl px-4">
         <Link
-          href={`/${siteSlug}`}
+          href={getProductsIndexPath(siteSlug)}
           className="text-sm font-medium text-blue-600 hover:text-blue-700"
         >
-          ← Back to comparison
+          ← Back to products
         </Link>
 
         <header className="mt-6 border-b border-slate-200 pb-8">
@@ -126,13 +128,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
             {siteUsesResearchScore(siteSlug) ? (
               <>
                 {RESEARCH_SCORE_LABEL}:{" "}
-                {formatScoreValue(product.rating, siteData.ratingScale)} · From{" "}
-                {product.priceFrom}
+                {formatScoreValue(product.rating, siteData.ratingScale)} ·{" "}
+                {product.priceDisplay}
               </>
             ) : (
               <>
-                Rating: {product.rating}/{siteData.ratingScale} · From{" "}
-                {product.priceFrom}
+                Rating: {product.rating}/{siteData.ratingScale} ·{" "}
+                {product.priceDisplay}
               </>
             )}
           </p>
@@ -216,9 +218,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
             or request a demo.
           </p>
           <a
-            href={product.affiliateUrl}
+            href={getBuyUrl(product)}
             target="_blank"
-            rel="noopener sponsored"
+            rel={buyLinkRel(product)}
             className="mt-4 inline-flex items-center rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
           >
             Visit {product.name}

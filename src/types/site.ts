@@ -10,6 +10,10 @@ export type ArticleProductSection = {
   whereItFallsShort: string[];
   bestFor: string;
   skipIf: string;
+  /** Catalog product slug when this section maps to a Product. */
+  productSlug?: string;
+  /** Variant label when the section describes a specific configuration of the catalog product. */
+  productVariant?: string;
 };
 
 export type ArticleCitation = {
@@ -87,19 +91,32 @@ export type ComparisonRow = {
   type?: "text" | "boolean";
 };
 
-// TODO: add optional category field (mattress | pillow | topper) for multi-category directories.
+export type ProductCategory = "mattress" | "pillow" | "software";
+
 // TODO: load products from PostgreSQL via admin/CMS instead of static site data.
 
 export type Product = {
   name: string;
   slug: string;
+  category: ProductCategory;
   shortDescription: string;
   bestFor: string;
-  priceFrom: string;
+  /**
+   * Numeric floor for sorting/filtering (USD).
+   * Null/undefined when price is unknown (e.g. custom quote).
+   */
+  priceFrom?: number | null;
+  /** Visitor-facing price string; mattress prices should state Queen (or other size). */
+  priceDisplay: string;
+  /** ISO date when price was last verified against the official product page. */
+  priceUpdatedAt?: string;
   features: string[];
   pros: string[];
   cons: string[];
-  affiliateUrl: string;
+  /** Always the official manufacturer/product page. */
+  productUrl: string;
+  /** Real affiliate tracking URL only when a partnership exists. */
+  affiliateUrl?: string;
   /** Whether we currently have an active affiliate partnership for this product */
   hasAffiliatePartnership: boolean;
   /** Overall score on the site’s ratingScale (Research Score for side-sleeper). */
@@ -111,9 +128,10 @@ export type Product = {
   researchScoreBreakdown?: Record<string, number>;
   badge?: string;
   featuredRank: number | null;
-  comparisonRank: number;
   directoryOrder: number;
-  comparison: Record<string, string | boolean>;
+  /** Present only for products included in the comparison table. */
+  comparisonRank?: number;
+  comparison?: Record<string, string | boolean>;
 };
 
 export type SiteData = {

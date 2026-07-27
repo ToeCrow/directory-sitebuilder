@@ -8,6 +8,8 @@ import {
   RESEARCH_SCORE_LABEL,
   siteUsesResearchScore,
 } from "@/lib/research-score";
+import { getProductPath } from "@/lib/paths";
+import { buyLinkRel, getBuyUrl } from "@/lib/product-links";
 
 type ProductCardProps = {
   siteSlug: SiteSlug;
@@ -21,7 +23,8 @@ export function ProductCard({
   variant = "featured",
 }: ProductCardProps) {
   const siteData = getSiteData(siteSlug);
-  const productHref = `/${siteSlug}/products/${product.slug}`;
+  const productHref = getProductPath(siteSlug, product.slug);
+  const buyHref = getBuyUrl(product);
   const isDirectory = variant === "directory";
   const scoreLabel = siteUsesResearchScore(siteSlug)
     ? RESEARCH_SCORE_LABEL
@@ -69,8 +72,8 @@ export function ProductCard({
           <dd className="text-slate-800">{product.bestFor}</dd>
         </div>
         <div>
-          <dt className="font-medium text-slate-500">Price from</dt>
-          <dd className="text-slate-800">{product.priceFrom}</dd>
+          <dt className="font-medium text-slate-500">Price</dt>
+          <dd className="text-slate-800">{product.priceDisplay}</dd>
         </div>
       </dl>
 
@@ -82,9 +85,9 @@ export function ProductCard({
           Read review
         </Link>
         <a
-          href={product.affiliateUrl}
+          href={buyHref}
           target="_blank"
-          rel="noopener sponsored"
+          rel={buyLinkRel(product)}
           className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
         >
           Visit site

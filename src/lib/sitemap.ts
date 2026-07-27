@@ -6,6 +6,7 @@ import {
   siteSlugs,
   type SiteSlug,
 } from "@/lib/site";
+import { getPublicAbsoluteUrl, siteUsesPublicPaths } from "@/lib/paths";
 
 export function buildSiteSitemapEntries(
   siteSlug: string,
@@ -15,21 +16,36 @@ export function buildSiteSitemapEntries(
     return [];
   }
 
-  const base = siteData.siteUrl.replace(/\/$/, "");
   const now = new Date();
 
   const entries: MetadataRoute.Sitemap = [
     {
-      url: `${base}/`,
+      url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, "/"),
       lastModified: now,
       changeFrequency: "weekly",
       priority: 1,
+    },
+    {
+      url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, "/products"),
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
+      url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, "/comparisons"),
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.75,
     },
   ];
 
   for (const product of getProducts(siteSlug as SiteSlug)) {
     entries.push({
-      url: `${base}/${siteSlug}/products/${product.slug}`,
+      url: getPublicAbsoluteUrl(
+        siteSlug,
+        siteData.siteUrl,
+        `/products/${product.slug}`,
+      ),
       lastModified: now,
       changeFrequency: "weekly",
       priority: 0.7,
@@ -38,11 +54,26 @@ export function buildSiteSitemapEntries(
 
   for (const article of getArticles(siteSlug as SiteSlug)) {
     entries.push({
-      url: `${base}/${siteSlug}/articles/${article.slug}`,
+      url: getPublicAbsoluteUrl(
+        siteSlug,
+        siteData.siteUrl,
+        `/articles/${article.slug}`,
+      ),
       lastModified: now,
       changeFrequency: "weekly",
       priority: 0.6,
     });
+  }
+
+  if (siteUsesPublicPaths(siteSlug)) {
+    const badPrefix = `${siteData.siteUrl.replace(/\/$/, "")}/${siteSlug}/`;
+    for (const entry of entries) {
+      if (entry.url.startsWith(badPrefix)) {
+        throw new Error(
+          `Sitemap URL incorrectly includes siteSlug prefix: ${entry.url}`,
+        );
+      }
+    }
   }
 
   return entries;

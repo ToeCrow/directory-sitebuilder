@@ -7,6 +7,7 @@ import { AffiliateDisclosure } from "@/components/AffiliateDisclosure";
 import { JsonLd } from "@/components/JsonLd";
 import { buildArticleSchema } from "@/lib/schema";
 import { getArticleOgImage } from "@/lib/seo";
+import { getPublicPath, getSitePath } from "@/lib/paths";
 import {
   getArticleBySlug,
   getArticles,
@@ -45,7 +46,7 @@ export async function generateMetadata({
   }
 
   const description = article.excerpt ?? article.intro[0];
-  const path = `/${siteSlug}/articles/${slug}`;
+  const path = getPublicPath(siteSlug, `/articles/${slug}`);
   const ogImage = getArticleOgImage(siteData, article);
 
   return {
@@ -148,7 +149,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     notFound();
   }
 
-  const path = `/${siteSlug}/articles/${slug}`;
+  const path = getPublicPath(siteSlug, `/articles/${slug}`);
   const isEditorial = article.kind === "editorial";
   const isRoundup = article.kind === "product-roundup";
 
@@ -163,7 +164,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       />
       <article className="mx-auto max-w-3xl px-4">
         <Link
-          href={`/${siteSlug}#articles`}
+          href={`${getSitePath(siteSlug)}#articles`}
           className="text-sm font-medium text-blue-600 hover:text-blue-700"
         >
           ← Back to related guides
@@ -432,7 +433,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
         <div className="mt-12 border-t border-slate-200 pt-8">
           <Link
-            href={`/${siteSlug}#articles`}
+            href={`${getSitePath(siteSlug)}#articles`}
             className="text-sm font-medium text-blue-600 hover:text-blue-700"
           >
             ← Back to related guides
