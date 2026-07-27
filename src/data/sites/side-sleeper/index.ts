@@ -185,7 +185,7 @@ export const siteData: SiteData = {
             alt: "Helix Midnight Luxe mattress layer diagram",
           },
           whatItIs:
-            "A medium-feel (6/10) hybrid built for side sleepers and tossers-and-turners. Helix pairs dense SupremeSupport memory foam with a zoned coil system, up to 1,000 individually wrapped coils reinforced under the hips and perimeter, to cradle shoulders and hips without letting your spine fold like a taco. Add-ons include a GlacioTex cooling cover and an ErgoAlign layer for lower back pain. Expect around $1,900 for a queen: R&D pricing, not budget pricing.",
+            "A medium-feel (6/10) hybrid built for side sleepers and tossers-and-turners. Helix pairs dense SupremeSupport memory foam with a zoned coil system, up to 1,000 individually wrapped coils reinforced under the hips and perimeter, to cradle shoulders and hips without letting your spine fold like a taco. Add-ons include a GlacioTex cooling cover and an ErgoAlign layer for lower back pain. Current sale pricing starts from about $1,119 (Queen is higher).",
           whyItEarnsASpot: [
             "Real engineering for side sleepers, not just a label: reinforced hip coils and zoned lumbar support are deliberate design choices.",
             "Low-risk trial: 120 nights (30-night minimum break-in) plus a Limited Lifetime Warranty.",
@@ -212,7 +212,7 @@ export const siteData: SiteData = {
             alt: "WinkBed mattress in a bedroom setting",
           },
           whatItIs:
-            "A hybrid mattress with individually wrapped coils, a gel-infused Euro pillow top, a Tencel cover, and a 3-Step Back-Relief lumbar system with reinforced Extra-Edge perimeter support. It comes in four firmness levels (Softer, Luxury Firm, Firmer, and Plus for heavier sleepers), so it's built to flex across body types and sleep positions rather than one specific position. Queen runs around $1,500 to $1,800 depending on the sale, with a 120-night trial and lifetime warranty.",
+            "A hybrid mattress with individually wrapped coils, a gel-infused Euro pillow top, a Tencel cover, and a 3-Step Back-Relief lumbar system with reinforced Extra-Edge perimeter support. It comes in four firmness levels (Softer, Luxury Firm, Firmer, and Plus for heavier sleepers), so it's built to flex across body types and sleep positions rather than one specific position. Queen is currently about $1,499 (ref. about $1,799), with a 120-night trial and lifetime warranty.",
           whyItEarnsASpot: [
             "Firmness options for everyone, including a Plus tier specifically for heavier sleepers who often get shortchanged elsewhere.",
             "A genuine long track record: multiple owners report 2 to 5+ years of solid performance, no sagging.",
@@ -239,7 +239,7 @@ export const siteData: SiteData = {
             alt: "Saatva Classic mattress on a platform bed",
           },
           whatItIs:
-            'An innerspring hybrid with a 3" Euro pillow top, over 1,000 tempered steel coils, and patented, chiropractor-approved Lumbar Zone Technology for spinal alignment. It comes in three firmness levels: Plush Soft (which Saatva itself markets specifically for side sleepers), Luxury Firm (5-7/10, the "everyone" option), and Firm (for stomach sleepers and heavier bodies). A queen Luxury Firm runs around $1,900 to $2,200, with a 365-night trial and lifetime warranty.',
+            'An innerspring hybrid with a 3" Euro pillow top, over 1,000 tempered steel coils, and patented, chiropractor-approved Lumbar Zone Technology for spinal alignment. It comes in three firmness levels: Plush Soft (which Saatva itself markets specifically for side sleepers), Luxury Firm (5-7/10, the "everyone" option), and Firm (for stomach sleepers and heavier bodies). A queen Luxury Firm is currently about $1,904 (sale; ref. about $2,229), with a 365-night trial and lifetime warranty.',
           whyItEarnsASpot: [
             "Genuinely plush top layer that several owners describe as hotel-quality on arrival.",
             "Long trial window, among the most generous in the category, to test real side-sleeping comfort.",
@@ -340,7 +340,7 @@ export const siteData: SiteData = {
             alt: "Beckham Hotel Collection pillow pair",
           },
           whatItIs:
-            'A down-alternative pillow pair (queen/standard, $59.99 for two on Amazon) with a 250-thread-count cotton cover and 1,050g of hollow-fiber fill per pillow, landing around 8" of loft at medium-firm. It\'s OEKO-TEX certified and machine washable. No sleep trial or brand warranty, just Amazon\'s standard 30-day return window.',
+            'A down-alternative pillow pair (queen/standard, sold as a set of 2 on Amazon) with a 250-thread-count cotton cover and hollow-fiber fill. Amazon pricing changes often — check the live listing before buying. No sleep trial or brand warranty, just Amazon’s standard return window.',
           whyItEarnsASpot: [
             "Comfortable from day one for most buyers, with several reviewers reporting less neck pain than pillows they'd previously tried.",
             "Exceptional value, often dropping well below full price during sales, cheap enough to replace rather than fuss over.",
@@ -386,7 +386,7 @@ export const siteData: SiteData = {
             alt: "TEMPUR-Neck pillows in different sizes",
           },
           whatItIs:
-            "Tempur-Pedic's contoured, single-piece memory foam neck pillow, built for side and back sleepers who need real cervical support. Starting at $129 for the medium profile, with small, large, and cooling versions available.",
+            "Tempur-Pedic's contoured, single-piece memory foam neck pillow, built for side and back sleepers who need real cervical support. Currently from about $114 for the medium profile, with small, large, and cooling versions available.",
           whyItEarnsASpot: [
             "Genuine ergonomic shape — the contour is engineered around the natural curve of the head and neck, not just marketing language, and long-term users report years of relief.",
             "Holds its shape — unlike down or fiber-fill, this one doesn't flatten out after a few months.",
@@ -411,7 +411,7 @@ export const siteData: SiteData = {
             alt: "Avocado Green Pillow with customizable fill",
           },
           whatItIs:
-            "An organic latex-and-kapok fiber pillow with a zip-open design so you can add or remove filling to dial in your ideal loft. Starts at $125 for the standard size.",
+            "An organic latex-and-kapok fiber pillow with a zip-open design so you can add or remove filling to dial in your ideal loft. Starts at about $118 for the standard size on sale (ref. about $139).",
           whyItEarnsASpot: [
             "Genuinely adjustable — unzip and pull filling until you hit your ideal loft, which real owners confirm actually works.",
             "Sleeps cool — the latex-and-kapok blend breathes, with zero reviewer complaints about overheating.",
@@ -436,7 +436,7 @@ export const siteData: SiteData = {
             alt: "Eli & Elm Cooling Side Sleeper Pillow for neutral neck position",
           },
           whatItIs:
-            "A U-shaped, contoured latex-and-polyester pillow built specifically for side sleepers, aimed at easing neck pain through spinal alignment. Currently $109.99 (marked down from $129.99) — worth double-checking at checkout, since this pillow's price has bounced around a lot over the years, from around $124 up past $200 at various points.",
+            "A U-shaped, contoured Side Sleeper Pillow sold with Eli & Elm’s Cooling Pillowcase—same pillow construction as the standalone Side Sleeper Pillow, bundled with the cooling case rather than a different pillow build. Currently about $123.99 for the pillow-plus-case package.",
           whyItEarnsASpot: [
             "Purpose-built U-shape — designed specifically to cradle the head and neck for side sleepers, not a generic rectangle stretched into a marketing claim.",
             "Adjustable fill — unzip to remove or add the latex-and-polyester blend for custom height and firmness.",

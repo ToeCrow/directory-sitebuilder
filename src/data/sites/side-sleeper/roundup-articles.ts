@@ -18,7 +18,7 @@ export const lowerBackPainMattressArticle: ProductRoundupArticle = {
   intro: [
     "If you start every morning with a slow, groaning shuffle to the coffee machine, your mattress might be the culprit. A mattress that's too soft lets your hips sink lower than your shoulders, twisting your spine out of alignment all night. One that's too firm does the opposite, leaving gaps under your lower back with nothing to fill them.",
     "The best mattress for lower back pain finds the middle ground: enough give to cushion pressure points, enough support to keep your spine level from head to heel.",
-    "We dug into seven mattresses built around exactly that balance, from a $624 firm hybrid to a $3,399 orthopedic specialist bed, and confirmed pricing and specs directly from each brand's site. Here's what actually holds up.",
+    "We dug into seven mattresses built around exactly that balance, from a $624 firm hybrid to a premium orthopedic specialist bed, and confirmed pricing and specs directly from each brand's site. Here's what actually holds up.",
   ],
   researchNote: RESEARCH_NOTE,
   products: [
@@ -29,7 +29,7 @@ export const lowerBackPainMattressArticle: ProductRoundupArticle = {
         alt: "Saatva Rx mattress built for chronic back and joint conditions",
       },
       whatItIs:
-        "A 15\" luxury hybrid engineered specifically for chronic back and joint conditions, featuring a Therapeutic Support Core and patented Lumbar Zone Quilting, priced at $3,399 for a queen.",
+        "A 15\" luxury hybrid engineered specifically for chronic back and joint conditions, featuring a Therapeutic Support Core and patented Lumbar Zone Quilting, currently about $3,124 for a queen (sale; ref. about $3,499).",
       whyItEarnsASpot: [
         "Purpose-built for conditions like sciatica, arthritis, herniated discs, and scoliosis, not just general morning stiffness.",
         "The Therapeutic Support Core adjusts to your body's curves, which independent testing found kept testers' spines neutral in every sleep position.",
@@ -52,7 +52,7 @@ export const lowerBackPainMattressArticle: ProductRoundupArticle = {
         alt: "Helix Midnight Luxe mattress with optional ErgoAlign layer",
       },
       whatItIs:
-        "A 13.5\" medium-feel hybrid with zoned lumbar coils, available with an optional ErgoAlign foam layer built specifically for lower back support, starting around $1,874 for a queen (plus $199 to $249 for the ErgoAlign upgrade).",
+        "A 13.5\" medium-feel hybrid with zoned lumbar coils, available with an optional ErgoAlign foam layer built specifically for lower back support, from about $1,119 (Twin sale pricing; Queen higher, plus $199 to $249 for the ErgoAlign upgrade).",
       whyItEarnsASpot: [
         "The ErgoAlign layer adds firm, targeted support right at the midsection, addressing the exact spot where soft mattresses let the lower back sink too deep.",
         "Zoned lumbar coils in the base mattress do real work even without the upgrade, per independent testers who praised its pressure relief.",
@@ -75,7 +75,7 @@ export const lowerBackPainMattressArticle: ProductRoundupArticle = {
         alt: "Nectar Premier memory foam mattress",
       },
       whatItIs:
-        "A 13\" all-foam mattress with gel-infused memory foam and a cool-to-the-touch cover, currently listed at $999 for a queen.",
+        "A 13\" all-foam mattress with gel-infused memory foam and a cool-to-the-touch cover, currently from about $549 (Queen listed around $999).",
       whyItEarnsASpot: [
         "Endorsed by the American Chiropractic Association specifically for back pain relief, a rare formal nod in a market full of vague marketing claims.",
         "Medium-firm feel works well for back and combination sleepers, the group most likely to need consistent lumbar support.",
@@ -121,7 +121,7 @@ export const lowerBackPainMattressArticle: ProductRoundupArticle = {
         alt: "Brooklyn Bedding Signature Hybrid mattress",
       },
       whatItIs:
-        "A 13.25\" hybrid with encased coils and a choice of soft, medium, or firm feel, priced at $1,465 MSRP for a queen (frequently discounted to around $1,099).",
+        "A 13.25\" hybrid with encased coils and a choice of soft, medium, or firm feel, frequently listed from about $719.25 on sale (MSRP from about $959).",
       whyItEarnsASpot: [
         "Named Best Value Mattress for Back Pain 2026 by AARP, a notable endorsement for a mattress at this price point.",
         "Three firmness options mean you're not locked into one feel, useful since back pain sufferers often disagree on soft versus firm.",
@@ -144,7 +144,7 @@ export const lowerBackPainMattressArticle: ProductRoundupArticle = {
         alt: "Nolah Evolution Hybrid mattress with zoned support",
       },
       whatItIs:
-        "A 14\" to 15\" hybrid with zoned AirFoam and Tri-Zone support coils, available in three firmness levels, priced at $1,899 MSRP for a queen (regularly discounted to around $1,374).",
+        "A 14\" to 15\" hybrid with zoned AirFoam and Tri-Zone support coils, available in three firmness levels, currently from about $1,127 on sale (MSRP from about $1,610).",
       whyItEarnsASpot: [
         "Zoned coils and foam target the midsection specifically, preventing the hip sinkage that throws off spinal alignment for side sleepers.",
         "Customers consistently rate it for hip and back pain relief, a common thread across independent reviews.",
