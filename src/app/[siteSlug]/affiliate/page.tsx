@@ -9,6 +9,7 @@ import {
   isValidSiteSlug,
 } from "@/lib/site";
 import { siteUsesResearchScore } from "@/lib/research-score";
+import { getProductPath, getPublicPath, getSitePath } from "@/lib/paths";
 
 type AffiliatePageProps = {
   params: Promise<{ siteSlug: string }>;
@@ -35,7 +36,7 @@ export async function generateMetadata({
     description:
       "See which products we cover and whether we currently have an affiliate partnership.",
     alternates: {
-      canonical: `/${siteSlug}/affiliate`,
+      canonical: getPublicPath(siteSlug, "/affiliate"),
     },
   };
 }
@@ -59,7 +60,7 @@ export default async function AffiliatePage({ params }: AffiliatePageProps) {
     <main className="py-12 md:py-16">
       <div className="mx-auto max-w-3xl px-4">
         <Link
-          href={`/${siteSlug}`}
+          href={getSitePath(siteSlug)}
           className="text-sm font-medium text-blue-600 hover:text-blue-700"
         >
           ← Back to home
@@ -105,7 +106,7 @@ export default async function AffiliatePage({ params }: AffiliatePageProps) {
                 >
                   <td className="py-3 pr-4">
                     <Link
-                      href={`/${siteSlug}/products/${product.slug}`}
+                      href={getProductPath(siteSlug, product.slug)}
                       className="font-medium text-slate-900 hover:text-blue-600"
                     >
                       {product.name}

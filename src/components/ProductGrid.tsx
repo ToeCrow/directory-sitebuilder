@@ -6,11 +6,20 @@ import { cn } from "@/lib/cn";
 type ProductGridProps = {
   siteSlug: SiteSlug;
   className?: string;
+  titleOverride?: string;
 };
 
-export function ProductGrid({ siteSlug, className }: ProductGridProps) {
+export function ProductGrid({
+  siteSlug,
+  className,
+  titleOverride,
+}: ProductGridProps) {
   const siteData = getSiteData(siteSlug);
   const featuredProducts = getFeaturedProducts(siteSlug);
+
+  if (featuredProducts.length === 0) {
+    return null;
+  }
 
   return (
     <section
@@ -22,7 +31,7 @@ export function ProductGrid({ siteSlug, className }: ProductGridProps) {
           id="top-picks-heading"
           className="text-2xl font-bold tracking-tight text-slate-900 md:text-3xl"
         >
-          {siteData.topPicks.title}
+          {titleOverride ?? siteData.topPicks.title}
         </h2>
         {siteData.topPicks.description && (
           <p className="mt-2 max-w-2xl text-slate-600">

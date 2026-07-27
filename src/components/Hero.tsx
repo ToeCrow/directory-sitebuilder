@@ -1,6 +1,7 @@
 import Image from "next/image";
 import type { SiteSlug } from "@/data/sites";
-import { getSiteData } from "@/lib/site";
+import { getSiteData, siteHasMattressPillowNav } from "@/lib/site";
+import { getComparisonsPath } from "@/lib/paths";
 import { cn } from "@/lib/cn";
 
 type HeroProps = {
@@ -17,17 +18,19 @@ const heroImageClassName = cn(
 
 function HeroCtas({
   primaryCta,
+  primaryCtaHref,
   secondaryCta,
   secondaryCtaHref,
 }: {
   primaryCta: string;
+  primaryCtaHref: string;
   secondaryCta?: string;
   secondaryCtaHref?: string;
 }) {
   return (
     <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
       <a
-        href="#compare"
+        href={primaryCtaHref}
         className="inline-flex items-center rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
       >
         {primaryCta}
@@ -47,10 +50,18 @@ function HeroCtas({
 export function Hero({ siteSlug, className }: HeroProps) {
   const siteData = getSiteData(siteSlug);
   const { hero } = siteData;
+  const primaryCtaHref = siteHasMattressPillowNav(siteSlug)
+    ? getComparisonsPath(siteSlug)
+    : "#compare";
 
   if (hero.image) {
     return (
-      <section className={cn("border-b border-slate-200 bg-white pt-[30px]", className)}>
+      <section
+        className={cn(
+          "border-b border-slate-200 bg-white pt-[30px]",
+          className,
+        )}
+      >
         <div className="mx-auto flex w-full justify-center overflow-hidden bg-[#F6F8FC] px-4 md:px-6">
           {hero.image.srcMobile ? (
             <>
@@ -95,6 +106,7 @@ export function Hero({ siteSlug, className }: HeroProps) {
           </p>
           <HeroCtas
             primaryCta={hero.primaryCta}
+            primaryCtaHref={primaryCtaHref}
             secondaryCta={hero.secondaryCta}
             secondaryCtaHref={hero.secondaryCtaHref}
           />
@@ -124,6 +136,7 @@ export function Hero({ siteSlug, className }: HeroProps) {
         </p>
         <HeroCtas
           primaryCta={hero.primaryCta}
+          primaryCtaHref={primaryCtaHref}
           secondaryCta={hero.secondaryCta}
           secondaryCtaHref={hero.secondaryCtaHref}
         />

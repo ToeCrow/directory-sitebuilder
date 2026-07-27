@@ -7,6 +7,7 @@ import {
   getResearchScorePath,
   siteUsesResearchScore,
 } from "@/lib/research-score";
+import { getSitePath } from "@/lib/paths";
 
 function FooterNavLink({ href, label }: { href: string; label: string }) {
   const isExternal =
@@ -52,7 +53,9 @@ export function Footer() {
                   link.label === RESEARCH_SCORE_LABEL &&
                   siteUsesResearchScore(siteSlug)
                     ? getResearchScorePath(siteSlug)
-                    : link.href;
+                    : link.href.startsWith("/")
+                      ? getSitePath(siteSlug, link.href)
+                      : link.href;
 
                 return (
                   <li key={link.label}>
@@ -61,7 +64,7 @@ export function Footer() {
                 );
               })}
               <li>
-                <Link href={`/${siteSlug}`} className="hover:text-white">
+                <Link href={getSitePath(siteSlug)} className="hover:text-white">
                   Home
                 </Link>
               </li>

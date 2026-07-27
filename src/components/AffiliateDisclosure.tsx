@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { SiteSlug } from "@/data/sites";
 import { cn } from "@/lib/cn";
+import { getSitePath } from "@/lib/paths";
 
 type AffiliateDisclosureProps = {
   siteSlug: SiteSlug;
@@ -22,7 +23,7 @@ export function AffiliateDisclosure({
       When you buy with our links, we may earn a commission. See how we work
       with brands{" "}
       <Link
-        href={`/${siteSlug}/affiliate`}
+        href={getSitePath(siteSlug, "/affiliate")}
         className="font-medium text-blue-600 underline-offset-2 hover:underline"
       >
         here

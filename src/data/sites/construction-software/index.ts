@@ -51,7 +51,9 @@ export const siteData: SiteData = {
       shortDescription:
         "Enterprise-grade construction management platform used by general contractors and owners on large commercial projects. Strong on RFIs, submittals, and financial tracking.",
       bestFor: "Mid-to-large contractors on commercial projects",
-      priceFrom: "Custom pricing",
+      priceFrom: null,
+      priceDisplay: "Custom pricing",
+      category: "software",
       features: [
         "Mobile app",
         "Estimating",
@@ -71,7 +73,7 @@ export const siteData: SiteData = {
         "Steep learning curve",
         "Overkill for residential-only contractors",
       ],
-      affiliateUrl: "https://example.com/affiliate/procore",
+      productUrl: "https://www.procore.com",
       hasAffiliatePartnership: false,
       rating: 4.6,
       featuredRank: 1,
@@ -94,7 +96,9 @@ export const siteData: SiteData = {
       shortDescription:
         "Field-first task and plan management tool built for superintendents and foremen. Excellent for coordinating daily work on site with drawings and punch lists.",
       bestFor: "Field teams and superintendents",
-      priceFrom: "$54/user/mo",
+      priceFrom: 54,
+      priceDisplay: "From $54/user/mo",
+      category: "software",
       features: [
         "Mobile app",
         "Job scheduling",
@@ -113,7 +117,7 @@ export const siteData: SiteData = {
         "Not ideal as a full back-office system",
         "Per-user pricing adds up for large crews",
       ],
-      affiliateUrl: "https://example.com/affiliate/fieldwire",
+      productUrl: "https://www.fieldwire.com",
       hasAffiliatePartnership: false,
       rating: 4.5,
       featuredRank: 2,
@@ -136,7 +140,9 @@ export const siteData: SiteData = {
       shortDescription:
         "All-in-one platform popular with residential builders and remodelers. Combines project management, client communication, scheduling, and selections in one place.",
       bestFor: "Residential builders and remodelers",
-      priceFrom: "$499/mo",
+      priceFrom: 499,
+      priceDisplay: "From $499/mo",
+      category: "software",
       features: [
         "Mobile app",
         "Estimating",
@@ -156,7 +162,7 @@ export const siteData: SiteData = {
         "Interface can feel busy for new users",
         "Less suited for heavy commercial work",
       ],
-      affiliateUrl: "https://example.com/affiliate/buildertrend",
+      productUrl: "https://www.buildertrend.com",
       hasAffiliatePartnership: false,
       rating: 4.4,
       featuredRank: 3,
@@ -178,7 +184,9 @@ export const siteData: SiteData = {
       shortDescription:
         "Estimating and takeoff-focused platform designed for small builders and trade contractors. Helps you bid faster and manage jobs from estimate to completion.",
       bestFor: "Small builders focused on estimating",
-      priceFrom: "$133/mo",
+      priceFrom: 133,
+      priceDisplay: "From $133/mo",
+      category: "software",
       features: [
         "Mobile app",
         "Estimating",
@@ -197,7 +205,7 @@ export const siteData: SiteData = {
         "Smaller integration ecosystem",
         "Time tracking requires workarounds",
       ],
-      affiliateUrl: "https://example.com/affiliate/buildxact",
+      productUrl: "https://www.buildxact.com",
       hasAffiliatePartnership: false,
       rating: 4.3,
       featuredRank: null,
@@ -219,7 +227,9 @@ export const siteData: SiteData = {
       shortDescription:
         "Budget-friendly all-in-one tool covering estimates, invoices, daily logs, and crew scheduling. A solid entry point for small trade contractors.",
       bestFor: "Budget-conscious small trade contractors",
-      priceFrom: "$49/mo",
+      priceFrom: 49,
+      priceDisplay: "From $49/mo",
+      category: "software",
       features: [
         "Mobile app",
         "Estimating",
@@ -239,7 +249,7 @@ export const siteData: SiteData = {
         "Mobile app less polished than Fieldwire or Procore",
         "Limited enterprise reporting",
       ],
-      affiliateUrl: "https://example.com/affiliate/contractor-foreman",
+      productUrl: "https://www.contractorforeman.com",
       hasAffiliatePartnership: false,
       rating: 4.2,
       featuredRank: null,

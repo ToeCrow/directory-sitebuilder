@@ -1,3 +1,5 @@
+import { getSitePath } from "@/lib/paths";
+
 /** Side Sleeper Guide’s branded scoring system (like IMDb Rating / TrustScore). */
 export const RESEARCH_SCORE_LABEL = "Research Score";
 
@@ -10,7 +12,7 @@ export function siteUsesResearchScore(siteSlug: string): boolean {
 }
 
 export function getResearchScorePath(siteSlug: string): string {
-  return `/${siteSlug}/research-score`;
+  return getSitePath(siteSlug, "/research-score");
 }
 
 /** Always one decimal, e.g. "4.8 / 5". */

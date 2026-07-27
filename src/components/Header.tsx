@@ -4,6 +4,17 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSiteContext } from "@/context/SiteContext";
+import {
+  getComparisonsPath,
+  getProductPath,
+  getProductsIndexPath,
+  getSitePath,
+  getArticlePath,
+} from "@/lib/paths";
+import {
+  getFeaturedProducts,
+  siteHasMattressPillowNav,
+} from "@/lib/site";
 
 function MenuIcon({ open }: { open: boolean }) {
   return (
@@ -49,13 +60,26 @@ export function Header() {
   const { siteSlug, siteData } = useSiteContext();
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileArticlesOpen, setMobileArticlesOpen] = useState(false);
+  const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
 
-  const homeHref = `/${siteSlug}`;
-  const primaryLinks = [
-    { href: `${homeHref}#compare`, label: "Compare" },
-    { href: `${homeHref}#buying-guide`, label: "Buying Guide" },
-    { href: `${homeHref}#faq`, label: "FAQ" },
-  ];
+  const homeHref = getSitePath(siteSlug);
+  const showProductsNav = siteHasMattressPillowNav(siteSlug);
+  const featuredReviews = showProductsNav
+    ? getFeaturedProducts(siteSlug).slice(0, 3)
+    : [];
+
+  const primaryLinks = showProductsNav
+    ? [
+        { href: getComparisonsPath(siteSlug), label: "Compare" },
+        { href: `${homeHref}#buying-guide`, label: "Buying Guide" },
+        { href: `${homeHref}#faq`, label: "FAQ" },
+      ]
+    : [
+        { href: `${homeHref}#compare`, label: "Compare" },
+        { href: `${homeHref}#buying-guide`, label: "Buying Guide" },
+        { href: `${homeHref}#faq`, label: "FAQ" },
+      ];
+
   const newsletterLink = {
     href: `${homeHref}#newsletter`,
     label: "Newsletter",
@@ -65,7 +89,20 @@ export function Header() {
   function closeMenu() {
     setMenuOpen(false);
     setMobileArticlesOpen(false);
+    setMobileProductsOpen(false);
   }
+
+  const productsMenu = [
+    { href: getProductsIndexPath(siteSlug), label: "All Products" },
+    {
+      href: getProductsIndexPath(siteSlug, "mattress"),
+      label: "Mattresses",
+    },
+    {
+      href: getProductsIndexPath(siteSlug, "pillow"),
+      label: "Pillows",
+    },
+  ];
 
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200 bg-white">
@@ -93,6 +130,60 @@ export function Header() {
 
         <nav aria-label="Main navigation" className="hidden md:block">
           <ul className="flex items-center gap-6">
+            {showProductsNav && (
+              <li className="group relative">
+                <button
+                  type="button"
+                  className="inline-flex items-center gap-1 text-sm font-medium text-slate-600 transition-colors hover:text-blue-600 group-hover:text-blue-600 group-focus-within:text-blue-600"
+                  aria-haspopup="true"
+                >
+                  Products
+                  <ChevronIcon />
+                </button>
+                <div className="invisible absolute left-0 top-full z-50 pt-2 opacity-0 transition group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
+                  <div
+                    role="menu"
+                    aria-label="Products"
+                    className="min-w-64 rounded-lg border border-slate-200 bg-white py-2 shadow-lg"
+                  >
+                    <ul>
+                      {productsMenu.map((item) => (
+                        <li key={item.href} role="none">
+                          <Link
+                            role="menuitem"
+                            href={item.href}
+                            className="block px-4 py-2.5 text-sm text-slate-700 transition-colors hover:bg-slate-50 hover:text-blue-600"
+                          >
+                            {item.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                    {featuredReviews.length > 0 && (
+                      <>
+                        <p className="mt-1 border-t border-slate-100 px-4 pb-1 pt-3 text-xs font-semibold uppercase tracking-wide text-slate-400">
+                          Featured Reviews
+                        </p>
+                        <ul>
+                          {featuredReviews.map((product) => (
+                            <li key={product.slug} role="none">
+                              <Link
+                                role="menuitem"
+                                href={getProductPath(siteSlug, product.slug)}
+                                className="block px-4 py-2.5 text-sm text-slate-700 transition-colors hover:bg-slate-50 hover:text-blue-600"
+                              >
+                                {product.name}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </li>
+            )}
+
             {primaryLinks.map((link) => (
               <li key={link.href}>
                 <Link
@@ -124,7 +215,7 @@ export function Header() {
                       <li key={article.slug} role="none">
                         <Link
                           role="menuitem"
-                          href={`${homeHref}/articles/${article.slug}`}
+                          href={getArticlePath(siteSlug, article.slug)}
                           className="block px-4 py-2.5 text-sm text-slate-700 transition-colors hover:bg-slate-50 hover:text-blue-600"
                         >
                           {article.title}
@@ -168,6 +259,35 @@ export function Header() {
           className="border-t border-slate-200 md:hidden"
         >
           <ul className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-3">
+            {showProductsNav && (
+              <li>
+                <button
+                  type="button"
+                  className="flex w-full items-center justify-between rounded-lg px-3 py-3 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-blue-600"
+                  aria-expanded={mobileProductsOpen}
+                  onClick={() => setMobileProductsOpen((open) => !open)}
+                >
+                  Products
+                  <ChevronIcon open={mobileProductsOpen} />
+                </button>
+                {mobileProductsOpen && (
+                  <ul className="mb-2 ml-2 border-l border-slate-200 pl-2">
+                    {productsMenu.map((item) => (
+                      <li key={item.href}>
+                        <Link
+                          href={item.href}
+                          className="block rounded-lg px-3 py-2.5 text-sm text-slate-600 transition-colors hover:bg-slate-50 hover:text-blue-600"
+                          onClick={closeMenu}
+                        >
+                          {item.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            )}
+
             {primaryLinks.map((link) => (
               <li key={link.href}>
                 <Link
@@ -196,7 +316,7 @@ export function Header() {
                     {articles.map((article) => (
                       <li key={article.slug}>
                         <Link
-                          href={`${homeHref}/articles/${article.slug}`}
+                          href={getArticlePath(siteSlug, article.slug)}
                           className="block rounded-lg px-3 py-2.5 text-sm text-slate-600 transition-colors hover:bg-slate-50 hover:text-blue-600"
                           onClick={closeMenu}
                         >

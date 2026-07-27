@@ -1,21 +1,47 @@
+import Link from "next/link";
 import type { SiteSlug } from "@/data/sites";
-import { getDirectoryProducts, getSiteData } from "@/lib/site";
+import {
+  getDirectoryProducts,
+  getSiteData,
+} from "@/lib/site";
+import type { ProductCategory } from "@/types/site";
 import { ProductCard } from "@/components/ProductCard";
 import { cn } from "@/lib/cn";
+import { getProductsIndexPath } from "@/lib/paths";
 
 type ProductDirectoryProps = {
   siteSlug: SiteSlug;
   className?: string;
+  category?: Extract<ProductCategory, "mattress" | "pillow">;
+  showCategoryFilters?: boolean;
 };
 
-// TODO: add category filters (mattress, pillow, topper).
-// TODO: add pagination for large catalogs.
-// TODO: load products from PostgreSQL via admin/CMS.
-
-export function ProductDirectory({ siteSlug, className }: ProductDirectoryProps) {
+export function ProductDirectory({
+  siteSlug,
+  className,
+  category,
+  showCategoryFilters = false,
+}: ProductDirectoryProps) {
   const siteData = getSiteData(siteSlug);
-  const directoryProducts = getDirectoryProducts(siteSlug);
+  const directoryProducts = getDirectoryProducts(
+    siteSlug,
+    category,
+  );
   const { productDirectory } = siteData;
+
+  const filters = [
+    { key: undefined, label: "All", href: getProductsIndexPath(siteSlug) },
+    {
+      key: "mattress" as const,
+      label: "Mattresses",
+      href: getProductsIndexPath(siteSlug, "mattress"),
+    },
+    {
+      key: "pillow" as const,
+      label: "Pillows",
+      href: getProductsIndexPath(siteSlug, "pillow"),
+    },
+  ];
 
   return (
     <section
@@ -35,6 +61,31 @@ export function ProductDirectory({ siteSlug, className }: ProductDirectoryProps)
             {productDirectory.description}
           </p>
         )}
+
+        {showCategoryFilters && (
+          <div className="mt-6 flex flex-wrap gap-2" role="navigation" aria-label="Product categories">
+            {filters.map((filter) => {
+              const active = category === filter.key;
+              return (
+                <Link
+                  key={filter.label}
+                  href={filter.href}
+                  scroll={false}
+                  className={cn(
+                    "rounded-lg px-3.5 py-2 text-sm font-medium transition-colors",
+                    active
+                      ? "bg-blue-600 text-white"
+                      : "border border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50",
+                  )}
+                  aria-current={active ? "page" : undefined}
+                >
+                  {filter.label}
+                </Link>
+              );
+            })}
+          </div>
+        )}
+
         <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {directoryProducts.map((product) => (
             <ProductCard

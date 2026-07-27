@@ -2,8 +2,11 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { ADMIN_SESSION_COOKIE, isValidAdminSession } from "@/lib/admin-auth";
 import { getSiteSlugFromHost } from "@/lib/domain-map";
-
-// Future: replace cookie gate with Auth.js / Clerk proxy.
+import {
+  getCustomDomainRewritePath,
+  getCustomDomainStripRedirectPath,
+  shouldRewriteCustomDomainPath,
+} from "@/lib/custom-domain";
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -20,13 +23,24 @@ export function proxy(request: NextRequest) {
     }
   }
 
-  // Temporary: hardcoded domain → site rewrite until DB mapping exists.
   const host = request.headers.get("host") ?? "";
   const siteSlug = getSiteSlugFromHost(host);
 
-  if (siteSlug && pathname === "/") {
+  // Only mapped custom-domain hosts are rewritten / stripped.
+  if (!siteSlug) {
+    return NextResponse.next();
+  }
+
+  const stripped = getCustomDomainStripRedirectPath(pathname, siteSlug);
+  if (stripped !== null) {
     const url = request.nextUrl.clone();
-    url.pathname = `/${siteSlug}`;
+    url.pathname = stripped;
+    return NextResponse.redirect(url, 308);
+  }
+
+  if (shouldRewriteCustomDomainPath(pathname, siteSlug)) {
+    const url = request.nextUrl.clone();
+    url.pathname = getCustomDomainRewritePath(pathname, siteSlug);
     return NextResponse.rewrite(url);
   }
 
@@ -34,5 +48,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/admin", "/admin/:path*"],
+  matcher: ["/((?!_next/static|_next/image).*)"],
 };

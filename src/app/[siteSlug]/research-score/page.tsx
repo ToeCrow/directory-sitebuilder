@@ -6,10 +6,10 @@ import {
   getSiteBySlug,
   isValidSiteSlug,
 } from "@/lib/site";
+import { getPublicPath, getSitePath } from "@/lib/paths";
 import {
   RESEARCH_SCORE_HOWTO_LABEL,
   RESEARCH_SCORE_LABEL,
-  getResearchScorePath,
   siteUsesResearchScore,
 } from "@/lib/research-score";
 
@@ -39,7 +39,7 @@ export async function generateMetadata({
     description:
       "How Side Sleeper Guide calculates Research Score — our review criteria, sources, and 5-star scale for side-sleeper suitability.",
     alternates: {
-      canonical: getResearchScorePath(siteSlug),
+      canonical: getPublicPath(siteSlug, "/research-score"),
     },
   };
 }
@@ -62,7 +62,7 @@ export default async function ResearchScorePage({
     <main className="py-12 md:py-16">
       <div className="mx-auto max-w-3xl px-4">
         <Link
-          href={`/${siteSlug}`}
+          href={getSitePath(siteSlug)}
           className="text-sm font-medium text-blue-600 hover:text-blue-700"
         >
           ← Back to home
