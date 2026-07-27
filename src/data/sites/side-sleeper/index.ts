@@ -35,7 +35,7 @@ export const siteData: SiteData = {
     headline: "Reviews, Guides, and Research for Side Sleepers",
     subheadline:
       "Side Sleeper Guide is a research-based knowledge site for side sleepers — covering mattresses, pillows, and buying decisions using product specs, brand policies, and recurring customer feedback.",
-    primaryCta: "Compare Mattresses",
+    primaryCta: "Browse Mattresses",
     secondaryCta: "Read Buying Guide",
     secondaryCtaHref: "#buying-guide",
     image: {
