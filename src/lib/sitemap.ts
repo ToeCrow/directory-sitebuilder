@@ -7,6 +7,7 @@ import {
   type SiteSlug,
 } from "@/lib/site";
 import { getPublicAbsoluteUrl, siteUsesPublicPaths } from "@/lib/paths";
+import { siteUsesPrivacyPolicy } from "@/lib/privacy-policy";
 
 export function buildSiteSitemapEntries(
   siteSlug: string,
@@ -38,6 +39,15 @@ export function buildSiteSitemapEntries(
       priority: 0.75,
     },
   ];
+
+  if (siteUsesPrivacyPolicy(siteSlug)) {
+    entries.push({
+      url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, "/privacy-policy"),
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.3,
+    });
+  }
 
   for (const product of getProducts(siteSlug as SiteSlug)) {
     entries.push({

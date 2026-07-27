@@ -1,13 +1,18 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useSiteContext } from "@/context/SiteContext";
+import { PrivacyCookieSettingsButton } from "@/components/PrivacyCookieSettingsButton";
 import {
   RESEARCH_SCORE_LABEL,
   getResearchScorePath,
   siteUsesResearchScore,
 } from "@/lib/research-score";
+import { isPrivacyPolicyPath } from "@/lib/privacy-policy";
 import { getSitePath } from "@/lib/paths";
+
+const PRIVACY_COOKIE_SETTINGS_LABEL = "Privacy and cookie settings";
 
 function FooterNavLink({ href, label }: { href: string; label: string }) {
   const isExternal =
@@ -32,7 +37,9 @@ function FooterNavLink({ href, label }: { href: string; label: string }) {
 
 export function Footer() {
   const { siteSlug, siteData } = useSiteContext();
+  const pathname = usePathname();
   const year = new Date().getFullYear();
+  const hidePrivacyCookieSettings = isPrivacyPolicyPath(pathname);
 
   return (
     <footer className="mt-auto border-t border-slate-200 bg-slate-900 py-10 text-slate-400">
@@ -49,6 +56,18 @@ export function Footer() {
           <nav aria-label="Footer navigation">
             <ul className="flex flex-wrap gap-6 text-sm">
               {siteData.footer.links.map((link) => {
+                if (link.label === PRIVACY_COOKIE_SETTINGS_LABEL) {
+                  if (hidePrivacyCookieSettings) {
+                    return null;
+                  }
+
+                  return (
+                    <li key={link.label}>
+                      <PrivacyCookieSettingsButton label={link.label} />
+                    </li>
+                  );
+                }
+
                 const href =
                   link.label === RESEARCH_SCORE_LABEL &&
                   siteUsesResearchScore(siteSlug)

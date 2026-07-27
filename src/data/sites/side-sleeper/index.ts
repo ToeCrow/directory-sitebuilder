@@ -667,6 +667,14 @@ export const siteData: SiteData = {
         label: "Affiliate Disclosure",
         href: "/affiliate",
       },
+      {
+        label: "Privacy Policy",
+        href: "/privacy-policy",
+      },
+      {
+        label: "Privacy and cookie settings",
+        href: "#privacy-and-cookie-settings",
+      },
     ],
   },
 

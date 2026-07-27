@@ -160,6 +160,12 @@ describe("sitemap", () => {
     assert.ok(urls.includes("https://side-sleepers.com/"));
     assert.ok(urls.includes("https://side-sleepers.com/products"));
     assert.ok(urls.includes("https://side-sleepers.com/comparisons"));
+    assert.ok(urls.includes("https://side-sleepers.com/privacy-policy"));
+    assert.equal(
+      urls.filter((u) => u === "https://side-sleepers.com/privacy-policy")
+        .length,
+      1,
+    );
     assert.ok(
       urls.some((u) => u === "https://side-sleepers.com/products/winkbed"),
     );
@@ -181,5 +187,9 @@ describe("sitemap", () => {
     const entries = buildSiteSitemapEntries("construction-software");
     const urls = entries.map((e) => e.url);
     assert.ok(urls.some((u) => u.includes("/construction-software/products")));
+    assert.equal(
+      urls.some((u) => u.includes("/privacy-policy")),
+      false,
+    );
   });
 });
