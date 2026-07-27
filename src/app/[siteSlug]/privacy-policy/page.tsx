@@ -117,6 +117,11 @@ export default async function PrivacyPolicyPage({
               </a>
             </p>
             <p className="mt-3">
+              Data controller and site operator:
+              <br />
+              Thomas Kronvold
+            </p>
+            <p className="mt-3">
               Contact:{" "}
               <a
                 href={`mailto:${CONTACT_EMAIL}`}
@@ -124,9 +129,6 @@ export default async function PrivacyPolicyPage({
               >
                 {CONTACT_EMAIL}
               </a>
-            </p>
-            <p className="mt-3">
-              Data controller or site operator: Side Sleeper Guide
             </p>
           </section>
 
