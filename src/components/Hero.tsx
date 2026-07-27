@@ -46,7 +46,7 @@ function SideSleeperHeroCtas({
       >
         Browse Pillows
       </Link>
-      <a href={buyingGuideHref} className={secondaryCtaClassName}>
+      <a href={buyingGuideHref} className={primaryCtaClassName}>
         {buyingGuideLabel}
       </a>
     </div>
