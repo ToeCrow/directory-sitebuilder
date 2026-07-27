@@ -21,7 +21,7 @@ export function BuyingGuide({ siteSlug, className }: BuyingGuideProps) {
   return (
     <section
       id="buying-guide"
-      className={cn("py-16 md:py-20", className)}
+      className={cn("scroll-mt-24 py-16 md:py-20", className)}
       aria-labelledby="buying-guide-heading"
     >
       <div className="mx-auto max-w-3xl px-4">

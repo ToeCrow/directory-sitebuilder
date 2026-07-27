@@ -23,7 +23,7 @@ export function ComparisonTable({ siteSlug, className }: ComparisonTableProps) {
     <section
       id="compare"
       className={cn(
-        "border-y border-slate-200 bg-slate-50 py-16 md:py-20",
+        "scroll-mt-24 border-y border-slate-200 bg-slate-50 py-16 md:py-20",
         className,
       )}
       aria-labelledby="compare-heading"

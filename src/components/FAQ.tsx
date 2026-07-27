@@ -13,7 +13,7 @@ export function FAQ({ siteSlug, className }: FAQProps) {
   return (
     <section
       id="faq"
-      className={cn("py-16 md:py-20", className)}
+      className={cn("scroll-mt-24 py-16 md:py-20", className)}
       aria-labelledby="faq-heading"
     >
       <div className="mx-auto max-w-3xl px-4">

@@ -9,6 +9,7 @@ import { FAQ } from "@/components/FAQ";
 import { AffiliateDisclosure } from "@/components/AffiliateDisclosure";
 import { LeadForm } from "@/components/LeadForm";
 import { AdSlot } from "@/components/AdSlot";
+import { HashScrollOnLoad } from "@/components/HashScrollOnLoad";
 import { siteHasMattressPillowNav } from "@/lib/site";
 
 type HomePageLayoutProps = {
@@ -21,6 +22,7 @@ export function HomePageLayout({ siteSlug }: HomePageLayoutProps) {
   if (isSideSleeperHome) {
     return (
       <>
+        <HashScrollOnLoad siteSlug={siteSlug} />
         <Hero siteSlug={siteSlug} />
         <AffiliateDisclosure siteSlug={siteSlug} />
         <AdSlot slotId="primary" />
@@ -35,6 +37,7 @@ export function HomePageLayout({ siteSlug }: HomePageLayoutProps) {
 
   return (
     <>
+      <HashScrollOnLoad siteSlug={siteSlug} />
       <Hero siteSlug={siteSlug} />
       <AffiliateDisclosure siteSlug={siteSlug} />
       <ProductGrid siteSlug={siteSlug} />
