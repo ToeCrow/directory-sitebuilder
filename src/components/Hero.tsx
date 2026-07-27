@@ -3,9 +3,8 @@ import Link from "next/link";
 import type { SiteSlug } from "@/data/sites";
 import { getSiteData, siteHasMattressPillowNav } from "@/lib/site";
 import { getProductsIndexPath } from "@/lib/paths";
-import { getHashSectionId, scrollToSectionId } from "@/lib/hash-nav";
+import { InPageHashAnchor } from "@/components/InPageHashAnchor";
 import { cn } from "@/lib/cn";
-import type { MouseEvent } from "react";
 
 type HeroProps = {
   siteSlug: SiteSlug;
@@ -24,18 +23,6 @@ const primaryCtaClassName =
 
 const secondaryCtaClassName =
   "inline-flex items-center rounded-lg border border-slate-300 px-6 py-3 text-sm font-semibold text-slate-700 transition-colors hover:border-slate-400 hover:bg-white";
-
-function handleInPageHashClick(event: MouseEvent<HTMLAnchorElement>) {
-  const href = event.currentTarget.getAttribute("href") ?? "";
-  const sectionId = getHashSectionId(href);
-  if (!sectionId) return;
-  // Only intercept pure in-page hashes (e.g. #buying-guide).
-  if (!href.startsWith("#")) return;
-  event.preventDefault();
-  if (scrollToSectionId(sectionId)) {
-    window.history.pushState(null, "", `#${sectionId}`);
-  }
-}
 
 function SideSleeperHeroCtas({
   siteSlug,
@@ -60,13 +47,9 @@ function SideSleeperHeroCtas({
       >
         Browse Pillows
       </Link>
-      <a
-        href={buyingGuideHref}
-        className={primaryCtaClassName}
-        onClick={handleInPageHashClick}
-      >
+      <InPageHashAnchor href={buyingGuideHref} className={primaryCtaClassName}>
         {buyingGuideLabel}
-      </a>
+      </InPageHashAnchor>
     </div>
   );
 }
@@ -84,21 +67,16 @@ function DefaultHeroCtas({
 }) {
   return (
     <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-      <a
-        href={primaryCtaHref}
-        className={primaryCtaClassName}
-        onClick={handleInPageHashClick}
-      >
+      <InPageHashAnchor href={primaryCtaHref} className={primaryCtaClassName}>
         {primaryCta}
-      </a>
+      </InPageHashAnchor>
       {secondaryCta && (
-        <a
+        <InPageHashAnchor
           href={secondaryCtaHref ?? "#buying-guide"}
           className={secondaryCtaClassName}
-          onClick={handleInPageHashClick}
         >
           {secondaryCta}
-        </a>
+        </InPageHashAnchor>
       )}
     </div>
   );
