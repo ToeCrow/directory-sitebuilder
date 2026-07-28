@@ -8,8 +8,7 @@ const RESEARCH_NOTE = {
 
 export const lowerBackPainMattressArticle: ProductRoundupArticle = {
   kind: "product-roundup",
-  title:
-    "Best Mattress for Lower Back Pain: 7 Picks That Won't Let You Down (Literally)",
+  title: "Best Mattresses for Lower Back Pain: 7 Picks",
   slug: "best-mattresses-for-lower-back-pain",
   publishedAt: "2026-07-25",
   author: "Side Sleeper Team",
@@ -203,7 +202,7 @@ export const lowerBackPainMattressArticle: ProductRoundupArticle = {
 
 export const shoulderPainPillowArticle: ProductRoundupArticle = {
   kind: "product-roundup",
-  title: "Best Pillow for Shoulder Pain: 7 Picks That Actually Take the Pressure Off",
+  title: "Best Pillows for Shoulder Pain: 7 Picks",
   slug: "best-pillows-for-shoulder-pain",
   publishedAt: "2026-07-25",
   author: "Side Sleeper Team",

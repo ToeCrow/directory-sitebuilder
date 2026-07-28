@@ -272,6 +272,8 @@ describe("sitemap", () => {
     assert.ok(urls.includes("https://side-sleepers.com/comparisons"));
     assert.ok(urls.includes("https://side-sleepers.com/privacy-policy"));
     assert.ok(urls.includes("https://side-sleepers.com/about"));
+    assert.ok(urls.includes("https://side-sleepers.com/affiliate"));
+    assert.ok(urls.includes("https://side-sleepers.com/research-score"));
     assert.equal(
       urls.filter((u) => u === "https://side-sleepers.com/privacy-policy")
         .length,
@@ -302,6 +304,11 @@ describe("sitemap", () => {
     const entries = buildSiteSitemapEntries("construction-software");
     const urls = entries.map((e) => e.url);
     assert.ok(urls.some((u) => u.includes("/construction-software/products")));
+    assert.ok(urls.some((u) => u.includes("/construction-software/affiliate")));
+    assert.equal(
+      urls.some((u) => u.includes("/research-score")),
+      false,
+    );
     assert.equal(
       urls.some((u) => u.includes("/privacy-policy")),
       false,

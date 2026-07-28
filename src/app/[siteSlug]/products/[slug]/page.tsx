@@ -50,8 +50,8 @@ export async function generateMetadata({
     return { title: "Product not found" };
   }
 
-  const title = `${product.name} Review`;
-  const description = product.shortDescription;
+  const title = product.metaTitle ?? `${product.name} Review`;
+  const description = product.metaDescription ?? product.shortDescription;
   const path = getPublicPath(siteSlug, `/products/${slug}`);
   const ogImage = getDefaultOgImage(siteData);
 

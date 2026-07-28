@@ -5,6 +5,7 @@ import { siteSlugs } from "@/data/sites";
 import { getSiteBySlug, isValidSiteSlug } from "@/lib/site";
 import { getPublicPath, getSitePath } from "@/lib/paths";
 import { getRequestPublicBasePath } from "@/lib/request-paths";
+import { buildPageOpenGraph } from "@/lib/seo";
 import { siteUsesPrivacyPolicy } from "@/lib/privacy-policy";
 
 const CONTACT_EMAIL = "side.sleepers.admin@gmail.com";
@@ -26,8 +27,9 @@ export async function generateMetadata({
   params,
 }: PrivacyPolicyPageProps): Promise<Metadata> {
   const { siteSlug } = await params;
+  const siteData = getSiteBySlug(siteSlug);
 
-  if (!siteUsesPrivacyPolicy(siteSlug)) {
+  if (!siteUsesPrivacyPolicy(siteSlug) || !siteData) {
     return { title: "Privacy Policy" };
   }
 
@@ -45,12 +47,12 @@ export async function generateMetadata({
       index: true,
       follow: true,
     },
-    openGraph: {
-      url: path,
+    openGraph: buildPageOpenGraph({
+      site: siteData,
       title: PAGE_TITLE,
       description: PAGE_DESCRIPTION,
-      type: "website",
-    },
+      path,
+    }),
   };
 }
 

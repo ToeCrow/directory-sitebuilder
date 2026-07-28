@@ -11,6 +11,7 @@ import {
   type SiteSlug,
 } from "@/lib/site";
 import { getPublicPath } from "@/lib/paths";
+import { buildPageOpenGraph } from "@/lib/seo";
 
 type ProductsIndexProps = {
   params: Promise<{ siteSlug: string }>;
@@ -29,15 +30,19 @@ export async function generateMetadata({
   if (!siteData) return { title: "Products" };
 
   const path = getPublicPath(siteSlug, "/products");
+  const description = siteData.productDirectory.description ?? "";
+  const ogTitle = `Products — ${siteData.title}`;
+
   return {
     title: "Products",
-    description: siteData.productDirectory.description,
+    description,
     alternates: { canonical: path },
-    openGraph: {
-      url: path,
-      title: `Products — ${siteData.title}`,
-      description: siteData.productDirectory.description,
-    },
+    openGraph: buildPageOpenGraph({
+      site: siteData,
+      title: ogTitle,
+      description,
+      path,
+    }),
   };
 }
 
@@ -52,6 +57,11 @@ export default async function ProductsIndexPage({
     notFound();
   }
 
+  const siteData = getSiteBySlug(siteSlug);
+  if (!siteData) {
+    notFound();
+  }
+
   const showCategoryFilters = siteHasMattressPillowNav(siteSlug);
   let category: "mattress" | "pillow" | undefined;
   if (showCategoryFilters) {
@@ -60,11 +70,18 @@ export default async function ProductsIndexPage({
     }
   }
 
-  const titleOverride =
-    showCategoryFilters ? "Top Mattress Picks" : undefined;
+  const titleOverride = showCategoryFilters ? "Top Mattress Picks" : undefined;
+  const pageHeading = showCategoryFilters
+    ? "Mattress and Pillow Reviews for Side Sleepers"
+    : siteData.productDirectory.title;
 
   return (
     <main>
+      <div className="mx-auto max-w-6xl px-4 pt-12 md:pt-16">
+        <h1 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
+          {pageHeading}
+        </h1>
+      </div>
       <ProductGrid
         siteSlug={siteSlug as SiteSlug}
         titleOverride={titleOverride}

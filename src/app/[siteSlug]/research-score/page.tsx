@@ -8,11 +8,15 @@ import {
 } from "@/lib/site";
 import { getPublicPath, getSitePath } from "@/lib/paths";
 import { getRequestPublicBasePath } from "@/lib/request-paths";
+import { buildPageOpenGraph } from "@/lib/seo";
 import {
   RESEARCH_SCORE_HOWTO_LABEL,
   RESEARCH_SCORE_LABEL,
   siteUsesResearchScore,
 } from "@/lib/research-score";
+
+const RESEARCH_SCORE_DESCRIPTION =
+  "How Side Sleeper Guide calculates Research Score — our review criteria, sources, and 5-star scale for side-sleeper suitability.";
 
 type ResearchScorePageProps = {
   params: Promise<{ siteSlug: string }>;
@@ -28,20 +32,28 @@ export async function generateMetadata({
   params,
 }: ResearchScorePageProps): Promise<Metadata> {
   const { siteSlug } = await params;
+  const siteData = getSiteBySlug(siteSlug);
 
-  if (!siteUsesResearchScore(siteSlug)) {
+  if (!siteUsesResearchScore(siteSlug) || !siteData) {
     return { title: RESEARCH_SCORE_LABEL };
   }
+
+  const path = getPublicPath(siteSlug, "/research-score");
 
   return {
     title: {
       absolute: RESEARCH_SCORE_HOWTO_LABEL,
     },
-    description:
-      "How Side Sleeper Guide calculates Research Score — our review criteria, sources, and 5-star scale for side-sleeper suitability.",
+    description: RESEARCH_SCORE_DESCRIPTION,
     alternates: {
-      canonical: getPublicPath(siteSlug, "/research-score"),
+      canonical: path,
     },
+    openGraph: buildPageOpenGraph({
+      site: siteData,
+      title: RESEARCH_SCORE_HOWTO_LABEL,
+      description: RESEARCH_SCORE_DESCRIPTION,
+      path,
+    }),
   };
 }
 

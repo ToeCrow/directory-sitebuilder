@@ -9,6 +9,7 @@ import {
 import { getPublicAbsoluteUrl, siteUsesPublicPaths } from "@/lib/paths";
 import { siteUsesAboutPage } from "@/lib/about";
 import { siteUsesPrivacyPolicy } from "@/lib/privacy-policy";
+import { siteUsesResearchScore } from "@/lib/research-score";
 
 export function buildSiteSitemapEntries(
   siteSlug: string,
@@ -56,6 +57,22 @@ export function buildSiteSitemapEntries(
       lastModified: now,
       changeFrequency: "yearly",
       priority: 0.3,
+    });
+  }
+
+  entries.push({
+    url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, "/affiliate"),
+    lastModified: now,
+    changeFrequency: "monthly",
+    priority: 0.4,
+  });
+
+  if (siteUsesResearchScore(siteSlug)) {
+    entries.push({
+      url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, "/research-score"),
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.5,
     });
   }
 

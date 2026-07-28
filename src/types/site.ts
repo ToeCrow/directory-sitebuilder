@@ -49,6 +49,8 @@ type ArticleBase = {
   title: string;
   slug: string;
   excerpt?: string;
+  /** Optional SEO meta description; falls back to excerpt or intro. */
+  metaDescription?: string;
   intro: string[];
   /** ISO 8601 date string, e.g. "2026-03-15" */
   publishedAt?: string;
@@ -100,6 +102,10 @@ export type Product = {
   slug: string;
   category: ProductCategory;
   shortDescription: string;
+  /** Optional SEO meta description; falls back to shortDescription. */
+  metaDescription?: string;
+  /** Optional SEO document title; falls back to "{name} Review". */
+  metaTitle?: string;
   bestFor: string;
   /**
    * Numeric floor for sorting/filtering (USD).

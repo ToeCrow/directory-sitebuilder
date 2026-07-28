@@ -5,6 +5,7 @@ import { siteSlugs } from "@/data/sites";
 import { getSiteBySlug, isValidSiteSlug } from "@/lib/site";
 import { getPublicPath, getSitePath } from "@/lib/paths";
 import { getRequestPublicBasePath } from "@/lib/request-paths";
+import { buildPageOpenGraph } from "@/lib/seo";
 import { siteUsesAboutPage } from "@/lib/about";
 import {
   RESEARCH_SCORE_LABEL,
@@ -29,8 +30,9 @@ export async function generateMetadata({
   params,
 }: AboutPageProps): Promise<Metadata> {
   const { siteSlug } = await params;
+  const siteData = getSiteBySlug(siteSlug);
 
-  if (!siteUsesAboutPage(siteSlug)) {
+  if (!siteUsesAboutPage(siteSlug) || !siteData) {
     return { title: "About" };
   }
 
@@ -48,12 +50,12 @@ export async function generateMetadata({
       index: true,
       follow: true,
     },
-    openGraph: {
-      url: path,
+    openGraph: buildPageOpenGraph({
+      site: siteData,
       title: PAGE_TITLE,
       description: PAGE_DESCRIPTION,
-      type: "website",
-    },
+      path,
+    }),
   };
 }
 

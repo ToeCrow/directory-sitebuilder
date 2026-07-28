@@ -46,7 +46,8 @@ export async function generateMetadata({
     return { title: "Article not found" };
   }
 
-  const description = article.excerpt ?? article.intro[0];
+  const description =
+    article.metaDescription ?? article.excerpt ?? article.intro[0];
   const path = getPublicPath(siteSlug, `/articles/${slug}`);
   const ogImage = getArticleOgImage(siteData, article);
 

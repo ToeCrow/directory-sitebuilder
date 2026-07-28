@@ -1,4 +1,5 @@
 import type { Article, SiteData } from "@/types/site";
+import type { Metadata } from "next";
 
 export const OG_IMAGE_WIDTH = 1200;
 export const OG_IMAGE_HEIGHT = 630;
@@ -31,6 +32,41 @@ export function getArticleOgImage(site: SiteData, article: Article): OgImage {
   }
 
   return getDefaultOgImage(site);
+}
+
+type BuildPageOpenGraphArgs = {
+  site: SiteData;
+  title: string;
+  description: string;
+  path: string;
+  type?: "website" | "article";
+};
+
+/** Complete Open Graph tags for indexable site pages. */
+export function buildPageOpenGraph({
+  site,
+  title,
+  description,
+  path,
+  type = "website",
+}: BuildPageOpenGraphArgs): NonNullable<Metadata["openGraph"]> {
+  const ogImage = getDefaultOgImage(site);
+
+  return {
+    type,
+    siteName: site.title,
+    title,
+    description,
+    url: path,
+    images: [
+      {
+        url: ogImage.url,
+        width: ogImage.width,
+        height: ogImage.height,
+        alt: ogImage.alt,
+      },
+    ],
+  };
 }
 
 export function toAbsoluteUrl(siteUrl: string, pathOrUrl: string): string {

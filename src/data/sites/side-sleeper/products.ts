@@ -10,6 +10,7 @@ export const products: Product[] = [
     badge: "Best Overall",
     shortDescription:
       "A premium hybrid with zoned support and a plush pillow-top feel that cushions shoulders and hips without feeling stuck.",
+    metaTitle: "WinkBed Review for Side Sleepers",
     bestFor: "Most side sleepers who want strong pressure relief and support",
     priceFrom: 1499,
     priceDisplay: "Currently $1,499 (ref. $1,799)",
@@ -378,6 +379,8 @@ export const products: Product[] = [
     category: "mattress",
     shortDescription:
       "A 13\" hybrid with gel memory foam comfort layers over individually wrapped coils, offering more bounce and airflow than the all-foam Premier while keeping Nectar’s long trial and Forever Warranty.",
+    metaDescription:
+      "Nectar Premier Hybrid review for side sleepers: gel memory foam over coils, bounce and airflow vs all-foam, plus Nectar’s long trial and Forever Warranty.",
     bestFor: "Side sleepers who want Premier foam contour with hybrid support",
     priceFrom: 799,
     priceDisplay: "From $799",
@@ -413,6 +416,8 @@ export const products: Product[] = [
     badge: "Best Value",
     shortDescription:
       "A 13\" all-foam Premier with a CloudQuilt™ euro top, 2x the cooling fibers and memory foam of DreamCloud Classic, and a firmer supportive feel for side sleepers who prefer foam.",
+    metaDescription:
+      "DreamCloud Premier review for side sleepers: all-foam euro-top build, extra cooling fibers vs Classic, and a firmer supportive feel for foam fans.",
     bestFor: "Side sleepers who want Premier foam value with a euro-top feel",
     priceFrom: 899,
     priceDisplay: "From $899",
@@ -541,6 +546,8 @@ export const products: Product[] = [
     category: "mattress",
     shortDescription:
       "A medical-grade hybrid engineered for pressure relief and spinal alignment, with zoned coils and a plush comfort system suited to side sleepers who need serious support.",
+    metaDescription:
+      "Saatva Rx review for side sleepers: medical-grade hybrid with zoned coils and plush comfort aimed at pressure relief and spinal alignment.",
     bestFor: "Side sleepers seeking premium, alignment-focused support",
     priceFrom: 3124,
     priceDisplay: "Queen $3,124 (sale; ref. $3,499)",
@@ -787,6 +794,8 @@ export const products: Product[] = [
     category: "pillow",
     shortDescription:
       "The Eli & Elm Side Sleeper Pillow bundled with the brand’s Cooling Pillowcase—same U-shaped side-sleeper pillow construction, sold as a pillow-plus-case package rather than a different pillow build.",
+    metaDescription:
+      "Eli & Elm Cooling Side Sleeper Pillow review: U-shaped side-sleeper pillow bundled with the Cooling Pillowcase, not a different pillow build.",
     bestFor: "Side sleepers who want the Side Sleeper Pillow with the Cooling Pillowcase included",
     priceFrom: 123.99,
     priceDisplay: "$123.99 with Cooling Pillowcase",
