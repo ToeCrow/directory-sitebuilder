@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { siteSlugs } from "@/data/sites";
 import { HomePageLayout } from "@/components/HomePageLayout";
 import type { SiteSlug } from "@/data/sites";
+import { getPublicPath } from "@/lib/paths";
+import { buildPageOpenGraph } from "@/lib/seo";
 import { getSiteBySlug } from "@/lib/site";
 
 type SitePageProps = {
@@ -22,15 +24,21 @@ export async function generateMetadata({
     return {};
   }
 
-  // Public homepage on custom domain is `/` (rewritten), not `/{siteSlug}`.
+  // Public homepage path: `/` on custom-domain sites, `/{siteSlug}` on platform-only sites.
+  const path = getPublicPath(siteSlug, "/");
+
   return {
     title: siteData.title,
+    description: siteData.metaDescription,
     alternates: {
-      canonical: "/",
+      canonical: path,
     },
-    openGraph: {
-      url: "/",
-    },
+    openGraph: buildPageOpenGraph({
+      site: siteData,
+      title: siteData.metaTitle,
+      description: siteData.metaDescription,
+      path,
+    }),
   };
 }
 
