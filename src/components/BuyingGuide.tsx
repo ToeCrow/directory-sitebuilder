@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import type { SiteSlug } from "@/data/sites";
+import { usePublicBasePath } from "@/context/SiteContext";
 import { getSiteData } from "@/lib/site";
 import { cn } from "@/lib/cn";
 import {
@@ -14,6 +17,7 @@ type BuyingGuideProps = {
 };
 
 export function BuyingGuide({ siteSlug, className }: BuyingGuideProps) {
+  const publicBasePath = usePublicBasePath();
   const siteData = getSiteData(siteSlug);
   const { buyingGuide } = siteData;
   const showResearchScoreLink = siteUsesResearchScore(siteSlug);
@@ -44,7 +48,7 @@ export function BuyingGuide({ siteSlug, className }: BuyingGuideProps) {
                     <>
                       {" "}
                       <Link
-                        href={getResearchScorePath(siteSlug)}
+                        href={getResearchScorePath(publicBasePath)}
                         className="font-medium text-blue-600 underline-offset-2 hover:underline"
                       >
                         {RESEARCH_SCORE_HOWTO_LABEL}

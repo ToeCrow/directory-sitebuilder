@@ -6,9 +6,11 @@ import {
   shouldRewriteCustomDomainPath,
 } from "./custom-domain";
 import {
+  buildInternalUrl,
   getAppPath,
   getPublicAbsoluteUrl,
   getPublicPath,
+  resolvePublicBasePath,
   siteUsesPublicPaths,
 } from "./paths";
 import { buildSiteSitemapEntries } from "./sitemap";
@@ -20,6 +22,85 @@ describe("custom domain host mapping", () => {
     assert.equal(getSiteSlugFromHost("www.side-sleepers.com"), "side-sleeper");
     assert.equal(getSiteSlugFromHost("localhost:3000"), undefined);
     assert.equal(getSiteSlugFromHost("example.com"), undefined);
+    assert.equal(
+      getSiteSlugFromHost("directory-sitebuilder.vercel.app"),
+      undefined,
+    );
+  });
+});
+
+describe("resolvePublicBasePath and buildInternalUrl", () => {
+  it("uses empty base on Side Sleeper custom domain", () => {
+    assert.equal(
+      resolvePublicBasePath("side-sleeper", "side-sleepers.com"),
+      "",
+    );
+    assert.equal(
+      resolvePublicBasePath("side-sleeper", "www.side-sleepers.com"),
+      "",
+    );
+    assert.equal(buildInternalUrl("", "/"), "/");
+    assert.equal(buildInternalUrl("", "/products"), "/products");
+    assert.equal(
+      buildInternalUrl("", "/products/winkbed"),
+      "/products/winkbed",
+    );
+    assert.equal(buildInternalUrl("", "products"), "/products");
+  });
+
+  it("uses /side-sleeper base on platform hosts", () => {
+    assert.equal(
+      resolvePublicBasePath("side-sleeper", "directory-sitebuilder.vercel.app"),
+      "/side-sleeper",
+    );
+    assert.equal(
+      resolvePublicBasePath("side-sleeper", "localhost:3000"),
+      "/side-sleeper",
+    );
+    assert.equal(buildInternalUrl("/side-sleeper", "/"), "/side-sleeper");
+    assert.equal(
+      buildInternalUrl("/side-sleeper", "/products"),
+      "/side-sleeper/products",
+    );
+    assert.equal(
+      buildInternalUrl("/side-sleeper", "/products/winkbed"),
+      "/side-sleeper/products/winkbed",
+    );
+  });
+
+  it("keeps Construction Software platform path on any host", () => {
+    assert.equal(
+      resolvePublicBasePath("construction-software", "side-sleepers.com"),
+      "/construction-software",
+    );
+    assert.equal(
+      resolvePublicBasePath(
+        "construction-software",
+        "directory-sitebuilder.vercel.app",
+      ),
+      "/construction-software",
+    );
+    assert.equal(
+      buildInternalUrl("/construction-software", "/products"),
+      "/construction-software/products",
+    );
+  });
+
+  it("avoids double slug and double slash", () => {
+    assert.equal(
+      buildInternalUrl("/side-sleeper/", "/products"),
+      "/side-sleeper/products",
+    );
+    assert.equal(
+      buildInternalUrl("/side-sleeper", "products/winkbed"),
+      "/side-sleeper/products/winkbed",
+    );
+    assert.equal(
+      getAppPath("", "/products").includes("/side-sleeper/side-sleeper"),
+      false,
+    );
+    assert.equal(getAppPath("/side-sleeper", "/products"), "/side-sleeper/products");
+    assert.equal(getAppPath("", "/products"), "/products");
   });
 });
 
@@ -42,13 +123,11 @@ describe("path helpers", () => {
     );
   });
 
-  it("keeps app paths prefixed for routing", () => {
+  it("builds host-aware app paths from publicBasePath", () => {
+    assert.equal(getAppPath("/side-sleeper", "/products"), "/side-sleeper/products");
+    assert.equal(getAppPath("", "/products"), "/products");
     assert.equal(
-      getAppPath("side-sleeper", "/products"),
-      "/side-sleeper/products",
-    );
-    assert.equal(
-      getAppPath("construction-software", "/products"),
+      getAppPath("/construction-software", "/products"),
       "/construction-software/products",
     );
   });
@@ -139,6 +218,10 @@ describe("custom domain rewrite helpers", () => {
       "/",
     );
     assert.equal(
+      getCustomDomainStripRedirectPath("/side-sleeper/products", "side-sleeper"),
+      "/products",
+    );
+    assert.equal(
       getCustomDomainStripRedirectPath(
         "/side-sleeper/products/winkbed",
         "side-sleeper",
@@ -148,6 +231,33 @@ describe("custom domain rewrite helpers", () => {
     assert.equal(
       getCustomDomainStripRedirectPath("/products", "side-sleeper"),
       null,
+    );
+  });
+
+  it("preserves query string when composing strip redirect target", () => {
+    const stripped = getCustomDomainStripRedirectPath(
+      "/side-sleeper/products/winkbed",
+      "side-sleeper",
+    );
+    assert.equal(stripped, "/products/winkbed");
+    // proxy clones nextUrl and only replaces pathname, so search is kept
+    const search = "?test=1";
+    assert.equal(`${stripped}${search}`, "/products/winkbed?test=1");
+  });
+
+  it("does not strip on platform domain because host is unmapped", () => {
+    assert.equal(
+      getSiteSlugFromHost("directory-sitebuilder.vercel.app"),
+      undefined,
+    );
+    // Without a mapped host, proxy never calls strip redirect.
+    // Prefixed platform paths remain valid app routes.
+    assert.equal(
+      getCustomDomainStripRedirectPath(
+        "/side-sleeper/products",
+        "side-sleeper",
+      ),
+      "/products",
     );
   });
 });

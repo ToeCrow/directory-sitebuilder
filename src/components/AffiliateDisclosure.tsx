@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import type { SiteSlug } from "@/data/sites";
+import { usePublicBasePath } from "@/context/SiteContext";
 import { cn } from "@/lib/cn";
 import { getSitePath } from "@/lib/paths";
 
@@ -9,9 +12,10 @@ type AffiliateDisclosureProps = {
 };
 
 export function AffiliateDisclosure({
-  siteSlug,
   className,
 }: AffiliateDisclosureProps) {
+  const publicBasePath = usePublicBasePath();
+
   return (
     <p
       className={cn(
@@ -23,7 +27,7 @@ export function AffiliateDisclosure({
       When you buy with our links, we may earn a commission. See how we work
       with brands{" "}
       <Link
-        href={getSitePath(siteSlug, "/affiliate")}
+        href={getSitePath(publicBasePath, "/affiliate")}
         className="font-medium text-blue-600 underline-offset-2 hover:underline"
       >
         here

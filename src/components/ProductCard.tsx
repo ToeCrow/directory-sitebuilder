@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import type { SiteSlug } from "@/data/sites";
+import { usePublicBasePath } from "@/context/SiteContext";
 import { getSiteData } from "@/lib/site";
 import type { Product } from "@/types/site";
 import { StarRating } from "@/components/StarRating";
@@ -22,8 +25,9 @@ export function ProductCard({
   product,
   variant = "featured",
 }: ProductCardProps) {
+  const publicBasePath = usePublicBasePath();
   const siteData = getSiteData(siteSlug);
-  const productHref = getProductPath(siteSlug, product.slug);
+  const productHref = getProductPath(publicBasePath, product.slug);
   const buyHref = getBuyUrl(product);
   const isDirectory = variant === "directory";
   const scoreLabel = siteUsesResearchScore(siteSlug)

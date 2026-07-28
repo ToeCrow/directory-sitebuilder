@@ -31,7 +31,7 @@ function FooterNavLink({ href, label }: { href: string; label: string }) {
 }
 
 export function Footer() {
-  const { siteSlug, siteData } = useSiteContext();
+  const { siteSlug, siteData, publicBasePath } = useSiteContext();
   const year = new Date().getFullYear();
 
   return (
@@ -52,9 +52,9 @@ export function Footer() {
                 const href =
                   link.label === RESEARCH_SCORE_LABEL &&
                   siteUsesResearchScore(siteSlug)
-                    ? getResearchScorePath(siteSlug)
+                    ? getResearchScorePath(publicBasePath)
                     : link.href.startsWith("/")
-                      ? getSitePath(siteSlug, link.href)
+                      ? getSitePath(publicBasePath, link.href)
                       : link.href;
 
                 return (
@@ -64,7 +64,10 @@ export function Footer() {
                 );
               })}
               <li>
-                <Link href={getSitePath(siteSlug)} className="hover:text-white">
+                <Link
+                  href={getSitePath(publicBasePath)}
+                  className="hover:text-white"
+                >
                   Home
                 </Link>
               </li>

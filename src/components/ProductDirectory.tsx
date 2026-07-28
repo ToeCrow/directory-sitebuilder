@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import type { SiteSlug } from "@/data/sites";
+import { usePublicBasePath } from "@/context/SiteContext";
 import {
   getDirectoryProducts,
   getSiteData,
@@ -22,6 +25,7 @@ export function ProductDirectory({
   category,
   showCategoryFilters = false,
 }: ProductDirectoryProps) {
+  const publicBasePath = usePublicBasePath();
   const siteData = getSiteData(siteSlug);
   const directoryProducts = getDirectoryProducts(
     siteSlug,
@@ -30,16 +34,16 @@ export function ProductDirectory({
   const { productDirectory } = siteData;
 
   const filters = [
-    { key: undefined, label: "All", href: getProductsIndexPath(siteSlug) },
+    { key: undefined, label: "All", href: getProductsIndexPath(publicBasePath) },
     {
       key: "mattress" as const,
       label: "Mattresses",
-      href: getProductsIndexPath(siteSlug, "mattress"),
+      href: getProductsIndexPath(publicBasePath, "mattress"),
     },
     {
       key: "pillow" as const,
       label: "Pillows",
-      href: getProductsIndexPath(siteSlug, "pillow"),
+      href: getProductsIndexPath(publicBasePath, "pillow"),
     },
   ];
 

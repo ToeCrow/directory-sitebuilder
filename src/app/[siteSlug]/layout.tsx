@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import type { SiteSlug } from "@/data/sites";
 import { SiteProvider } from "@/context/SiteContext";
@@ -10,6 +11,7 @@ import {
   buildOrganizationSchema,
   buildWebSiteSchema,
 } from "@/lib/schema";
+import { resolvePublicBasePath } from "@/lib/paths";
 import { getDefaultOgImage } from "@/lib/seo";
 import { getSiteBySlug, isValidSiteSlug } from "@/lib/site";
 
@@ -89,8 +91,16 @@ export default async function SiteLayout({ children, params }: SiteLayoutProps) 
     notFound();
   }
 
+  const host = (await headers()).get("host") ?? "";
+  const publicBasePath = resolvePublicBasePath(siteSlug, host);
+  const isCustomDomain = publicBasePath === "";
+
   return (
-    <SiteProvider siteSlug={siteSlug as SiteSlug}>
+    <SiteProvider
+      siteSlug={siteSlug as SiteSlug}
+      publicBasePath={publicBasePath}
+      isCustomDomain={isCustomDomain}
+    >
       <JsonLd
         data={[buildWebSiteSchema(siteData), buildOrganizationSchema(siteData)]}
       />

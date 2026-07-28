@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { siteSlugs } from "@/data/sites";
 import { getSiteBySlug, isValidSiteSlug } from "@/lib/site";
 import { getPublicPath, getSitePath } from "@/lib/paths";
+import { getRequestPublicBasePath } from "@/lib/request-paths";
 import { siteUsesAboutPage } from "@/lib/about";
 import {
   RESEARCH_SCORE_LABEL,
@@ -68,13 +69,14 @@ export default async function AboutPage({ params }: AboutPageProps) {
     notFound();
   }
 
-  const researchScoreHref = getResearchScorePath(siteSlug);
+  const publicBasePath = await getRequestPublicBasePath(siteSlug);
+  const researchScoreHref = getResearchScorePath(publicBasePath);
 
   return (
     <main className="py-12 md:py-16">
       <article className="mx-auto max-w-3xl px-4">
         <Link
-          href={getSitePath(siteSlug)}
+          href={getSitePath(publicBasePath)}
           className="text-sm font-medium text-blue-600 hover:text-blue-700"
         >
           ← Back to home

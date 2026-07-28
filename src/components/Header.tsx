@@ -59,12 +59,12 @@ function ChevronIcon({ open }: { open?: boolean }) {
 }
 
 export function Header() {
-  const { siteSlug, siteData } = useSiteContext();
+  const { siteSlug, siteData, publicBasePath } = useSiteContext();
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileArticlesOpen, setMobileArticlesOpen] = useState(false);
   const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
 
-  const homeHref = getSitePath(siteSlug);
+  const homeHref = getSitePath(publicBasePath);
   const showProductsNav = siteHasMattressPillowNav(siteSlug);
   const featuredReviews = showProductsNav
     ? getFeaturedProducts(siteSlug).slice(0, 3)
@@ -72,7 +72,7 @@ export function Header() {
 
   const primaryLinks = showProductsNav
     ? [
-        { href: getComparisonsPath(siteSlug), label: "Compare" },
+        { href: getComparisonsPath(publicBasePath), label: "Compare" },
         { href: `${homeHref}#buying-guide`, label: "Buying Guide" },
         { href: `${homeHref}#faq`, label: "FAQ" },
       ]
@@ -91,13 +91,13 @@ export function Header() {
   }
 
   const productsMenu = [
-    { href: getProductsIndexPath(siteSlug), label: "All Products" },
+    { href: getProductsIndexPath(publicBasePath), label: "All Products" },
     {
-      href: getProductsIndexPath(siteSlug, "mattress"),
+      href: getProductsIndexPath(publicBasePath, "mattress"),
       label: "Mattresses",
     },
     {
-      href: getProductsIndexPath(siteSlug, "pillow"),
+      href: getProductsIndexPath(publicBasePath, "pillow"),
       label: "Pillows",
     },
   ];
@@ -167,7 +167,7 @@ export function Header() {
                             <li key={product.slug} role="none">
                               <Link
                                 role="menuitem"
-                                href={getProductPath(siteSlug, product.slug)}
+                                href={getProductPath(publicBasePath, product.slug)}
                                 className="block px-4 py-2.5 text-sm text-slate-700 transition-colors hover:bg-slate-50 hover:text-blue-600"
                               >
                                 {product.name}
@@ -223,7 +223,7 @@ export function Header() {
                       <li key={article.slug} role="none">
                         <Link
                           role="menuitem"
-                          href={getArticlePath(siteSlug, article.slug)}
+                          href={getArticlePath(publicBasePath, article.slug)}
                           className="block px-4 py-2.5 text-sm text-slate-700 transition-colors hover:bg-slate-50 hover:text-blue-600"
                         >
                           {article.title}
@@ -326,7 +326,7 @@ export function Header() {
                     {articles.map((article) => (
                       <li key={article.slug}>
                         <Link
-                          href={getArticlePath(siteSlug, article.slug)}
+                          href={getArticlePath(publicBasePath, article.slug)}
                           className="block rounded-lg px-3 py-2.5 text-sm text-slate-600 transition-colors hover:bg-slate-50 hover:text-blue-600"
                           onClick={closeMenu}
                         >

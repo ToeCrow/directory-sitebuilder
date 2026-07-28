@@ -1,6 +1,9 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import type { SiteSlug } from "@/data/sites";
+import { usePublicBasePath } from "@/context/SiteContext";
 import { getSiteData, siteHasMattressPillowNav } from "@/lib/site";
 import { getProductsIndexPath } from "@/lib/paths";
 import { InPageHashAnchor } from "@/components/InPageHashAnchor";
@@ -25,24 +28,24 @@ const secondaryCtaClassName =
   "inline-flex items-center rounded-lg border border-slate-300 px-6 py-3 text-sm font-semibold text-slate-700 transition-colors hover:border-slate-400 hover:bg-white";
 
 function SideSleeperHeroCtas({
-  siteSlug,
+  publicBasePath,
   buyingGuideLabel,
   buyingGuideHref,
 }: {
-  siteSlug: SiteSlug;
+  publicBasePath: string;
   buyingGuideLabel: string;
   buyingGuideHref: string;
 }) {
   return (
     <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
       <Link
-        href={getProductsIndexPath(siteSlug, "mattress")}
+        href={getProductsIndexPath(publicBasePath, "mattress")}
         className={primaryCtaClassName}
       >
         Browse Mattresses
       </Link>
       <Link
-        href={getProductsIndexPath(siteSlug, "pillow")}
+        href={getProductsIndexPath(publicBasePath, "pillow")}
         className={primaryCtaClassName}
       >
         Browse Pillows
@@ -83,12 +86,13 @@ function DefaultHeroCtas({
 }
 
 function HeroCtaGroup({ siteSlug }: { siteSlug: SiteSlug }) {
+  const publicBasePath = usePublicBasePath();
   const { hero } = getSiteData(siteSlug);
 
   if (siteHasMattressPillowNav(siteSlug)) {
     return (
       <SideSleeperHeroCtas
-        siteSlug={siteSlug}
+        publicBasePath={publicBasePath}
         buyingGuideLabel={hero.secondaryCta ?? "Read Buying Guide"}
         buyingGuideHref={hero.secondaryCtaHref ?? "#buying-guide"}
       />

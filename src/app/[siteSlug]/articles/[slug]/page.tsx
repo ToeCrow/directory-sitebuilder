@@ -8,6 +8,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { buildArticleSchema } from "@/lib/schema";
 import { getArticleOgImage } from "@/lib/seo";
 import { getPublicPath, getSitePath } from "@/lib/paths";
+import { getRequestPublicBasePath } from "@/lib/request-paths";
 import {
   getArticleBySlug,
   getArticles,
@@ -152,6 +153,8 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   const path = getPublicPath(siteSlug, `/articles/${slug}`);
   const isEditorial = article.kind === "editorial";
   const isRoundup = article.kind === "product-roundup";
+  const publicBasePath = await getRequestPublicBasePath(siteSlug);
+  const articlesHref = `${getSitePath(publicBasePath)}#articles`;
 
   return (
     <main className="py-12 md:py-16">
@@ -164,7 +167,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       />
       <article className="mx-auto max-w-3xl px-4">
         <Link
-          href={`${getSitePath(siteSlug)}#articles`}
+          href={articlesHref}
           className="text-sm font-medium text-blue-600 hover:text-blue-700"
         >
           ← Back to related guides
@@ -433,7 +436,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
         <div className="mt-12 border-t border-slate-200 pt-8">
           <Link
-            href={`${getSitePath(siteSlug)}#articles`}
+            href={articlesHref}
             className="text-sm font-medium text-blue-600 hover:text-blue-700"
           >
             ← Back to related guides

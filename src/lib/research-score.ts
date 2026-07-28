@@ -11,8 +11,8 @@ export function siteUsesResearchScore(siteSlug: string): boolean {
   return siteSlug === "side-sleeper";
 }
 
-export function getResearchScorePath(siteSlug: string): string {
-  return getSitePath(siteSlug, "/research-score");
+export function getResearchScorePath(publicBasePath: string): string {
+  return getSitePath(publicBasePath, "/research-score");
 }
 
 /** Always one decimal, e.g. "4.8 / 5". */

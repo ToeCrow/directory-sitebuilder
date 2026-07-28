@@ -10,6 +10,7 @@ import {
 } from "@/lib/site";
 import { siteUsesResearchScore } from "@/lib/research-score";
 import { getProductPath, getPublicPath, getSitePath } from "@/lib/paths";
+import { getRequestPublicBasePath } from "@/lib/request-paths";
 
 type AffiliatePageProps = {
   params: Promise<{ siteSlug: string }>;
@@ -55,12 +56,13 @@ export default async function AffiliatePage({ params }: AffiliatePageProps) {
 
   const products = getProducts(siteSlug as SiteSlug);
   const usesResearchScore = siteUsesResearchScore(siteSlug);
+  const publicBasePath = await getRequestPublicBasePath(siteSlug);
 
   return (
     <main className="py-12 md:py-16">
       <div className="mx-auto max-w-3xl px-4">
         <Link
-          href={getSitePath(siteSlug)}
+          href={getSitePath(publicBasePath)}
           className="text-sm font-medium text-blue-600 hover:text-blue-700"
         >
           ← Back to home
@@ -106,7 +108,7 @@ export default async function AffiliatePage({ params }: AffiliatePageProps) {
                 >
                   <td className="py-3 pr-4">
                     <Link
-                      href={getProductPath(siteSlug, product.slug)}
+                      href={getProductPath(publicBasePath, product.slug)}
                       className="font-medium text-slate-900 hover:text-blue-600"
                     >
                       {product.name}

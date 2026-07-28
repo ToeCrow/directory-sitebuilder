@@ -18,6 +18,7 @@ import {
   siteUsesResearchScore,
 } from "@/lib/research-score";
 import { getPublicPath, getProductsIndexPath } from "@/lib/paths";
+import { getRequestPublicBasePath } from "@/lib/request-paths";
 import { buyLinkRel, getBuyUrl } from "@/lib/product-links";
 
 type ProductPageProps = {
@@ -105,11 +106,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
     notFound();
   }
 
+  const publicBasePath = await getRequestPublicBasePath(siteSlug);
+
   return (
     <main className="py-12 md:py-16">
       <article className="mx-auto max-w-3xl px-4">
         <Link
-          href={getProductsIndexPath(siteSlug)}
+          href={getProductsIndexPath(publicBasePath)}
           className="text-sm font-medium text-blue-600 hover:text-blue-700"
         >
           ← Back to products
@@ -141,7 +144,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           {siteUsesResearchScore(siteSlug) && (
             <p className="mt-2 text-sm text-slate-600">
               <Link
-                href={getResearchScorePath(siteSlug)}
+                href={getResearchScorePath(publicBasePath)}
                 className="font-medium text-blue-600 underline-offset-2 hover:underline"
               >
                 {RESEARCH_SCORE_HOWTO_LABEL}

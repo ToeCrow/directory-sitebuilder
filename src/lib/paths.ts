@@ -13,6 +13,34 @@ function normalizePath(path: string): string {
 }
 
 /**
+ * Join a host-aware public base path with a site-relative path.
+ * publicBasePath is "" on a mapped custom domain, or "/{siteSlug}" on the platform.
+ */
+export function buildInternalUrl(
+  publicBasePath: string,
+  path: string = "/",
+): string {
+  const base = publicBasePath.replace(/\/$/, "");
+  const normalized = normalizePath(path);
+  if (normalized === "/") {
+    return base || "/";
+  }
+  return `${base}${normalized}`;
+}
+
+/**
+ * Resolve the public base path for in-app links from the current request host.
+ * Custom domain for this site → ""; otherwise → "/{siteSlug}".
+ */
+export function resolvePublicBasePath(siteSlug: string, host: string): string {
+  const mappedSlug = getSiteSlugFromHost(host);
+  if (mappedSlug === siteSlug) {
+    return "";
+  }
+  return `/${siteSlug}`;
+}
+
+/**
  * Public canonical / sitemap path (no internal siteSlug for custom-domain sites).
  * Example side-sleeper: `/products/winkbed`
  */
@@ -28,41 +56,43 @@ export function getPublicPath(siteSlug: string, path: string = "/"): string {
 }
 
 /**
- * In-app Link href. Always includes /{siteSlug} so platform/local routing works.
- * On custom domains, middleware redirects prefixed URLs to the public path.
+ * In-app Link href using the host-aware publicBasePath.
+ * Custom domain: "/products". Platform: "/side-sleeper/products".
  */
-export function getAppPath(siteSlug: string, path: string = "/"): string {
-  const normalized = normalizePath(path);
-  if (normalized === "/") {
-    return `/${siteSlug}`;
-  }
-  return `/${siteSlug}${normalized}`;
+export function getAppPath(publicBasePath: string, path: string = "/"): string {
+  return buildInternalUrl(publicBasePath, path);
 }
 
 /** @deprecated Prefer getAppPath for links or getPublicPath for SEO. */
-export function getSitePath(siteSlug: string, path: string = "/"): string {
-  return getAppPath(siteSlug, path);
+export function getSitePath(publicBasePath: string, path: string = "/"): string {
+  return getAppPath(publicBasePath, path);
 }
 
-export function getProductPath(siteSlug: string, productSlug: string): string {
-  return getAppPath(siteSlug, `/products/${productSlug}`);
+export function getProductPath(
+  publicBasePath: string,
+  productSlug: string,
+): string {
+  return getAppPath(publicBasePath, `/products/${productSlug}`);
 }
 
 export function getProductsIndexPath(
-  siteSlug: string,
+  publicBasePath: string,
   category?: "mattress" | "pillow",
 ): string {
-  const base = getAppPath(siteSlug, "/products");
+  const base = getAppPath(publicBasePath, "/products");
   if (!category) return base;
   return `${base}?category=${category}`;
 }
 
-export function getComparisonsPath(siteSlug: string): string {
-  return getAppPath(siteSlug, "/comparisons");
+export function getComparisonsPath(publicBasePath: string): string {
+  return getAppPath(publicBasePath, "/comparisons");
 }
 
-export function getArticlePath(siteSlug: string, articleSlug: string): string {
-  return getAppPath(siteSlug, `/articles/${articleSlug}`);
+export function getArticlePath(
+  publicBasePath: string,
+  articleSlug: string,
+): string {
+  return getAppPath(publicBasePath, `/articles/${articleSlug}`);
 }
 
 /** Whether this host is a mapped custom domain (not the platform host). */

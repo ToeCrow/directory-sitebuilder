@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import type { SiteSlug } from "@/data/sites";
+import { usePublicBasePath } from "@/context/SiteContext";
 import { getSiteData } from "@/lib/site";
 import { cn } from "@/lib/cn";
 import { getArticlePath } from "@/lib/paths";
@@ -10,6 +13,7 @@ type ArticleGridProps = {
 };
 
 export function ArticleGrid({ siteSlug, className }: ArticleGridProps) {
+  const publicBasePath = usePublicBasePath();
   const siteData = getSiteData(siteSlug);
 
   return (
@@ -32,7 +36,7 @@ export function ArticleGrid({ siteSlug, className }: ArticleGridProps) {
           {siteData.articles.map((article) => (
             <li key={article.slug}>
               <Link
-                href={getArticlePath(siteSlug, article.slug)}
+                href={getArticlePath(publicBasePath, article.slug)}
                 className="block h-full rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
               >
                 <h3 className="font-semibold text-slate-900 hover:text-blue-600">

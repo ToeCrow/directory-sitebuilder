@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { siteSlugs } from "@/data/sites";
 import { getSiteBySlug, isValidSiteSlug } from "@/lib/site";
 import { getPublicPath, getSitePath } from "@/lib/paths";
+import { getRequestPublicBasePath } from "@/lib/request-paths";
 import { siteUsesPrivacyPolicy } from "@/lib/privacy-policy";
 
 const CONTACT_EMAIL = "side.sleepers.admin@gmail.com";
@@ -67,13 +68,14 @@ export default async function PrivacyPolicyPage({
     notFound();
   }
 
-  const affiliateHref = getSitePath(siteSlug, "/affiliate");
+  const publicBasePath = await getRequestPublicBasePath(siteSlug);
+  const affiliateHref = getSitePath(publicBasePath, "/affiliate");
 
   return (
     <main className="py-12 md:py-16">
       <article className="mx-auto max-w-3xl px-4">
         <Link
-          href={getSitePath(siteSlug)}
+          href={getSitePath(publicBasePath)}
           className="text-sm font-medium text-blue-600 hover:text-blue-700"
         >
           ← Back to home
