@@ -34,13 +34,13 @@ export function ReviewListItem({ article, href }: ReviewListItemProps) {
         </span>
       </div>
       {preview && (
-        <figure className="order-first max-w-sm overflow-hidden rounded-xl border border-slate-200 bg-slate-50 md:order-none md:max-w-none">
+        <figure className="relative order-first aspect-4/3 max-w-sm overflow-hidden rounded-xl border border-slate-200 bg-slate-100 md:order-0 md:max-w-none">
           <Image
             src={preview.src}
             alt={preview.alt}
-            width={640}
-            height={480}
-            className="aspect-[4/3] h-auto w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+            fill
+            sizes="(max-width: 768px) 100vw, 18rem"
+            className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
           />
         </figure>
       )}

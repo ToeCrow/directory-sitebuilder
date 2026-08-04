@@ -31,7 +31,7 @@ function ProductImagePlaceholder({ category }: { category: ProductCategory }) {
 
   return (
     <div
-      className="relative flex aspect-4/3 w-full items-center justify-center overflow-hidden bg-linear-to-br from-slate-100 via-slate-50 to-blue-50"
+      className="absolute inset-0 flex items-center justify-center overflow-hidden bg-linear-to-br from-slate-100 via-slate-50 to-blue-50"
       aria-hidden="true"
     >
       <div
@@ -98,15 +98,15 @@ export function ProductCard({
     <article className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white p-0 shadow-sm transition-shadow hover:shadow-md">
       <Link
         href={productHref}
-        className="relative mb-4 block overflow-hidden border-b border-slate-200 bg-slate-50"
+        className="relative mb-4 block aspect-4/3 overflow-hidden border-b border-slate-200 bg-slate-100"
       >
         {product.image ? (
           <Image
             src={product.image.src}
             alt={product.image.alt}
-            width={640}
-            height={480}
-            className="aspect-4/3 h-auto w-full object-cover transition-transform duration-300 hover:scale-[1.02]"
+            fill
+            sizes="(max-width: 768px) 100vw, 25vw"
+            className="object-cover object-center scale-[1.22] transition-transform duration-300 hover:scale-[1.28]"
           />
         ) : (
           <ProductImagePlaceholder category={product.category} />
