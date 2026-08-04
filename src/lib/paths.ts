@@ -77,11 +77,12 @@ export function getProductPath(
 
 export function getProductsIndexPath(
   publicBasePath: string,
-  category?: "mattress" | "pillow",
+  category?: "mattress" | "pillow" | "topper",
 ): string {
   const base = getAppPath(publicBasePath, "/products");
   if (!category) return base;
-  return `${base}?category=${category}`;
+  // Jump to the directory heading/filters (not the featured grid above).
+  return `${base}?category=${category}#directory`;
 }
 
 export function getComparisonsPath(publicBasePath: string): string {
@@ -92,7 +93,16 @@ export function getArticlePath(
   publicBasePath: string,
   articleSlug: string,
 ): string {
-  return getAppPath(publicBasePath, `/articles/${articleSlug}`);
+  return getAppPath(publicBasePath, `/reviews/${articleSlug}`);
+}
+
+export function getReviewsIndexPath(
+  publicBasePath: string,
+  category?: "mattress" | "pillow" | "science",
+): string {
+  const base = getAppPath(publicBasePath, "/reviews");
+  if (!category) return base;
+  return `${base}?category=${category}`;
 }
 
 /** Whether this host is a mapped custom domain (not the platform host). */

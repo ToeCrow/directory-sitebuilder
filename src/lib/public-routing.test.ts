@@ -10,9 +10,11 @@ import {
   getAppPath,
   getPublicAbsoluteUrl,
   getPublicPath,
+  getReviewsIndexPath,
   resolvePublicBasePath,
   siteUsesPublicPaths,
 } from "./paths";
+import { getArticlesToReviewsRedirectPath } from "./articles-redirect";
 import { buildSiteSitemapEntries } from "./sitemap";
 import { getSiteSlugFromHost } from "./domain-map";
 
@@ -151,8 +153,8 @@ describe("canonical helpers", () => {
     );
     assert.equal(getPublicPath("side-sleeper", "/comparisons"), "/comparisons");
     assert.equal(
-      getPublicPath("side-sleeper", "/articles/best-pillows-for-side-sleepers"),
-      "/articles/best-pillows-for-side-sleepers",
+      getPublicPath("side-sleeper", "/reviews/best-pillows-for-side-sleepers"),
+      "/reviews/best-pillows-for-side-sleepers",
     );
   });
 });
@@ -286,8 +288,9 @@ describe("sitemap", () => {
     assert.ok(
       urls.some((u) => u === "https://side-sleepers.com/products/winkbed"),
     );
+    assert.ok(urls.includes("https://side-sleepers.com/reviews"));
     assert.ok(
-      urls.some((u) => u.startsWith("https://side-sleepers.com/articles/")),
+      urls.some((u) => u.startsWith("https://side-sleepers.com/reviews/")),
     );
 
     for (const url of urls) {
@@ -316,6 +319,39 @@ describe("sitemap", () => {
     assert.equal(
       urls.some((u) => u.endsWith("/about") || u.includes("/about")),
       false,
+    );
+  });
+});
+
+describe("articles to reviews redirect", () => {
+  it("rewrites bare and site-prefixed /articles paths", () => {
+    assert.equal(getArticlesToReviewsRedirectPath("/articles"), "/reviews");
+    assert.equal(
+      getArticlesToReviewsRedirectPath("/articles/best-pillows-for-side-sleepers"),
+      "/reviews/best-pillows-for-side-sleepers",
+    );
+    assert.equal(
+      getArticlesToReviewsRedirectPath("/side-sleeper/articles"),
+      "/side-sleeper/reviews",
+    );
+    assert.equal(
+      getArticlesToReviewsRedirectPath(
+        "/side-sleeper/articles/best-pillows-for-side-sleepers",
+      ),
+      "/side-sleeper/reviews/best-pillows-for-side-sleepers",
+    );
+    assert.equal(getArticlesToReviewsRedirectPath("/products"), null);
+  });
+
+  it("builds reviews index paths with category filters", () => {
+    assert.equal(getReviewsIndexPath(""), "/reviews");
+    assert.equal(
+      getReviewsIndexPath("", "mattress"),
+      "/reviews?category=mattress",
+    );
+    assert.equal(
+      getReviewsIndexPath("/side-sleeper", "science"),
+      "/side-sleeper/reviews?category=science",
     );
   });
 });

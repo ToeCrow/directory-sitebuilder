@@ -10,6 +10,7 @@ export const lowerBackPainMattressArticle: ProductRoundupArticle = {
   kind: "product-roundup",
   title: "Best Mattresses for Lower Back Pain: 7 Picks",
   slug: "best-mattresses-for-lower-back-pain",
+  reviewCategory: "mattress",
   publishedAt: "2026-07-25",
   author: "Side Sleeper Team",
   excerpt:
@@ -204,6 +205,7 @@ export const shoulderPainPillowArticle: ProductRoundupArticle = {
   kind: "product-roundup",
   title: "Best Pillows for Shoulder Pain: 7 Picks",
   slug: "best-pillows-for-shoulder-pain",
+  reviewCategory: "pillow",
   publishedAt: "2026-07-25",
   author: "Side Sleeper Team",
   excerpt:

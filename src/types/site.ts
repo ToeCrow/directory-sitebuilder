@@ -45,6 +45,8 @@ export type EditorialSection = {
   citations?: ArticleCitation[];
 };
 
+export type ReviewCategory = "mattress" | "pillow" | "science";
+
 type ArticleBase = {
   title: string;
   slug: string;
@@ -52,6 +54,8 @@ type ArticleBase = {
   /** Optional SEO meta description; falls back to excerpt or intro. */
   metaDescription?: string;
   intro: string[];
+  /** Filter bucket on /reviews (side-sleeper). */
+  reviewCategory?: ReviewCategory;
   /** ISO 8601 date string, e.g. "2026-03-15" */
   publishedAt?: string;
   /** ISO 8601 date string, e.g. "2026-03-15" */
@@ -75,6 +79,8 @@ export type ProductRoundupArticle = ArticleBase & {
   products: ArticleProductSection[];
   /** Optional post-list “How to choose” guide */
   closingGuide?: ArticleClosingGuide;
+  /** Optional FAQ block after the product list */
+  faqs?: FAQ[];
 };
 
 export type EditorialArticle = ArticleBase & {
@@ -93,7 +99,7 @@ export type ComparisonRow = {
   type?: "text" | "boolean";
 };
 
-export type ProductCategory = "mattress" | "pillow" | "software";
+export type ProductCategory = "mattress" | "pillow" | "topper" | "software";
 
 // TODO: load products from PostgreSQL via admin/CMS instead of static site data.
 

@@ -22,9 +22,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${geistSans.variable} h-full antialiased`}>
-      <AhrefsAnalytics />
-      <body className="flex min-h-full flex-col font-sans">{children}</body>
-      <GoogleAnalytics gaId="G-YMC8178HM4" />
+      <body className="flex min-h-full flex-col font-sans">
+        {children}
+        <AhrefsAnalytics />
+        <GoogleAnalytics gaId="G-YMC8178HM4" />
+      </body>
     </html>
   );
 }

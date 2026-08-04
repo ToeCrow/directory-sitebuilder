@@ -1,9 +1,13 @@
-import type { Product, ProductCategory } from "@/types/site";
+import type {
+  Article,
+  Product,
+  ProductCategory,
+  ReviewCategory,
+} from "@/types/site";
 import {
   getSiteBySlug,
   type SiteSlug,
 } from "@/data/sites";
-import type { Article } from "@/types/site";
 
 export { getSiteBySlug, isValidSiteSlug, siteSlugs, getAllSites } from "@/data/sites";
 export type { SiteSlug } from "@/data/sites";
@@ -32,6 +36,15 @@ export function getArticleBySlug(
   slug: string,
 ): Article | undefined {
   return getArticles(siteSlug).find((article) => article.slug === slug);
+}
+
+export function getArticlesByReviewCategory(
+  siteSlug: SiteSlug,
+  category?: ReviewCategory,
+): Article[] {
+  const articles = getArticles(siteSlug);
+  if (!category) return articles;
+  return articles.filter((article) => article.reviewCategory === category);
 }
 
 export function getProductsByCategory(

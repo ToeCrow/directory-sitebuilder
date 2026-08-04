@@ -2,6 +2,11 @@
 
 import type { SiteData } from "@/types/site";
 import {
+  bodyPillowArticle,
+  mattressTopperArticle,
+  memoryFoamMattressesArticle,
+} from "./kladding-reviews";
+import {
   lowerBackPainMattressArticle,
   shoulderPainPillowArticle,
 } from "./roundup-articles";
@@ -54,7 +59,7 @@ export const siteData: SiteData = {
   productDirectory: {
     title: "Browse Our Complete Side Sleeper Directory",
     description:
-      "Browse Side Sleeper Guide mattress and pillow reviews for pressure relief, support, and cooling — based on specs and owner feedback.",
+      "Browse Side Sleeper Guide mattress, pillow, and topper reviews for pressure relief, support, and cooling — based on specs and owner feedback.",
   },
 
   products,
@@ -161,6 +166,7 @@ export const siteData: SiteData = {
       kind: "product-roundup",
       title: "The Three Best Mattresses for Side Sleepers: Pros and Cons",
       slug: "best-mattresses-for-side-sleepers",
+      reviewCategory: "mattress",
       publishedAt: "2026-07-20",
       author: "Side Sleeper Team",
       excerpt:
@@ -264,6 +270,7 @@ export const siteData: SiteData = {
       kind: "product-roundup",
       title: "The Three Best Pillows for Side Sleepers: Pros and Cons",
       slug: "best-pillows-for-side-sleepers",
+      reviewCategory: "pillow",
       publishedAt: "2026-07-20",
       author: "Side Sleeper Team",
       excerpt:
@@ -368,6 +375,7 @@ export const siteData: SiteData = {
       kind: "product-roundup",
       title: "The Best Pillow for Neck Pain: Our Top 3 Picks",
       slug: "best-pillows-for-neck-pain",
+      reviewCategory: "pillow",
       publishedAt: "2026-07-22",
       author: "Side Sleeper Team",
       excerpt:
@@ -462,11 +470,15 @@ export const siteData: SiteData = {
     },
     lowerBackPainMattressArticle,
     shoulderPainPillowArticle,
+    mattressTopperArticle,
+    memoryFoamMattressesArticle,
+    bodyPillowArticle,
     {
       kind: "editorial",
       title:
         "Science Has Spoken: 7 Facts You Didn't Know About Sleep Quality",
       slug: "sleep-quality-7-facts",
+      reviewCategory: "science",
       publishedAt: "2026-07-25",
       author: "Side Sleeper Team",
       excerpt:

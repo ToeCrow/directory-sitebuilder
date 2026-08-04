@@ -26,6 +26,7 @@ export function shouldRewriteCustomDomainPath(
   }
   if (
     pathname.includes(".") &&
+    !pathname.startsWith("/reviews") &&
     !pathname.startsWith("/articles") &&
     !pathname.startsWith("/products") &&
     !pathname.startsWith("/comparisons") &&

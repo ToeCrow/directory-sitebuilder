@@ -89,12 +89,21 @@ export function buildSiteSitemapEntries(
     });
   }
 
+  if (getArticles(siteSlug as SiteSlug).length > 0) {
+    entries.push({
+      url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, "/reviews"),
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.75,
+    });
+  }
+
   for (const article of getArticles(siteSlug as SiteSlug)) {
     entries.push({
       url: getPublicAbsoluteUrl(
         siteSlug,
         siteData.siteUrl,
-        `/articles/${article.slug}`,
+        `/reviews/${article.slug}`,
       ),
       lastModified: now,
       changeFrequency: "weekly",

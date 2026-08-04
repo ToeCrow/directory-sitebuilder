@@ -4,7 +4,7 @@ export function AhrefsAnalytics() {
   return (
     <Script
       src="https://analytics.ahrefs.com/analytics.js"
-      strategy="beforeInteractive"
+      strategy="afterInteractive"
       data-key="M+SRpf6b4Nw9DEgo1gij1A"
     />
   );

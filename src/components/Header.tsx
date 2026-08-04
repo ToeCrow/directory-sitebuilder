@@ -8,8 +8,8 @@ import {
   getComparisonsPath,
   getProductPath,
   getProductsIndexPath,
+  getReviewsIndexPath,
   getSitePath,
-  getArticlePath,
 } from "@/lib/paths";
 import {
   getFeaturedProducts,
@@ -61,7 +61,7 @@ function ChevronIcon({ open }: { open?: boolean }) {
 export function Header() {
   const { siteSlug, siteData, publicBasePath } = useSiteContext();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [mobileArticlesOpen, setMobileArticlesOpen] = useState(false);
+  const [mobileReviewsOpen, setMobileReviewsOpen] = useState(false);
   const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
 
   const homeHref = getSitePath(publicBasePath);
@@ -69,6 +69,7 @@ export function Header() {
   const featuredReviews = showProductsNav
     ? getFeaturedProducts(siteSlug).slice(0, 3)
     : [];
+  const showReviewsNav = siteData.articles.length > 0;
 
   const primaryLinks = showProductsNav
     ? [
@@ -82,11 +83,9 @@ export function Header() {
         { href: `${homeHref}#faq`, label: "FAQ" },
       ];
 
-  const articles = siteData.articles;
-
   function closeMenu() {
     setMenuOpen(false);
-    setMobileArticlesOpen(false);
+    setMobileReviewsOpen(false);
     setMobileProductsOpen(false);
   }
 
@@ -100,7 +99,28 @@ export function Header() {
       href: getProductsIndexPath(publicBasePath, "pillow"),
       label: "Pillows",
     },
+    {
+      href: getProductsIndexPath(publicBasePath, "topper"),
+      label: "Toppers",
+    },
   ];
+
+  const reviewsMenu = showProductsNav
+    ? [
+        {
+          href: getReviewsIndexPath(publicBasePath, "mattress"),
+          label: "Mattress reviews",
+        },
+        {
+          href: getReviewsIndexPath(publicBasePath, "pillow"),
+          label: "Pillow reviews",
+        },
+        {
+          href: getReviewsIndexPath(publicBasePath, "science"),
+          label: "Science of sleep",
+        },
+      ]
+    : [{ href: getReviewsIndexPath(publicBasePath), label: "All reviews" }];
 
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200 bg-white">
@@ -203,30 +223,30 @@ export function Header() {
               </li>
             ))}
 
-            {articles.length > 0 && (
+            {showReviewsNav && (
               <li className="group relative">
                 <button
                   type="button"
                   className="inline-flex items-center gap-1 text-sm font-medium text-slate-600 transition-colors hover:text-blue-600 group-hover:text-blue-600 group-focus-within:text-blue-600"
                   aria-haspopup="true"
                 >
-                  Articles
+                  Reviews
                   <ChevronIcon />
                 </button>
                 <div className="invisible absolute right-0 top-full z-50 pt-2 opacity-0 transition group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
                   <ul
                     role="menu"
-                    aria-label="Articles"
+                    aria-label="Reviews"
                     className="min-w-64 rounded-lg border border-slate-200 bg-white py-2 shadow-lg"
                   >
-                    {articles.map((article) => (
-                      <li key={article.slug} role="none">
+                    {reviewsMenu.map((item) => (
+                      <li key={item.href} role="none">
                         <Link
                           role="menuitem"
-                          href={getArticlePath(publicBasePath, article.slug)}
+                          href={item.href}
                           className="block px-4 py-2.5 text-sm text-slate-700 transition-colors hover:bg-slate-50 hover:text-blue-600"
                         >
-                          {article.title}
+                          {item.label}
                         </Link>
                       </li>
                     ))}
@@ -310,27 +330,27 @@ export function Header() {
               </li>
             ))}
 
-            {articles.length > 0 && (
+            {showReviewsNav && (
               <li>
                 <button
                   type="button"
                   className="flex w-full items-center justify-between rounded-lg px-3 py-3 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-blue-600"
-                  aria-expanded={mobileArticlesOpen}
-                  onClick={() => setMobileArticlesOpen((open) => !open)}
+                  aria-expanded={mobileReviewsOpen}
+                  onClick={() => setMobileReviewsOpen((open) => !open)}
                 >
-                  Articles
-                  <ChevronIcon open={mobileArticlesOpen} />
+                  Reviews
+                  <ChevronIcon open={mobileReviewsOpen} />
                 </button>
-                {mobileArticlesOpen && (
+                {mobileReviewsOpen && (
                   <ul className="mb-2 ml-2 border-l border-slate-200 pl-2">
-                    {articles.map((article) => (
-                      <li key={article.slug}>
+                    {reviewsMenu.map((item) => (
+                      <li key={item.href}>
                         <Link
-                          href={getArticlePath(publicBasePath, article.slug)}
+                          href={item.href}
                           className="block rounded-lg px-3 py-2.5 text-sm text-slate-600 transition-colors hover:bg-slate-50 hover:text-blue-600"
                           onClick={closeMenu}
                         >
-                          {article.title}
+                          {item.label}
                         </Link>
                       </li>
                     ))}

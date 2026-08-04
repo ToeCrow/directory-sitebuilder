@@ -15,7 +15,7 @@ import { getProductsIndexPath } from "@/lib/paths";
 type ProductDirectoryProps = {
   siteSlug: SiteSlug;
   className?: string;
-  category?: Extract<ProductCategory, "mattress" | "pillow">;
+  category?: Extract<ProductCategory, "mattress" | "pillow" | "topper">;
   showCategoryFilters?: boolean;
 };
 
@@ -45,12 +45,17 @@ export function ProductDirectory({
       label: "Pillows",
       href: getProductsIndexPath(publicBasePath, "pillow"),
     },
+    {
+      key: "topper" as const,
+      label: "Toppers",
+      href: getProductsIndexPath(publicBasePath, "topper"),
+    },
   ];
 
   return (
     <section
       id="directory"
-      className={cn("py-16 md:py-20", className)}
+      className={cn("scroll-mt-24 py-16 md:py-20", className)}
       aria-labelledby="directory-heading"
     >
       <div className="mx-auto max-w-6xl px-4">

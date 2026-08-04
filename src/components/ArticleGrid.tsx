@@ -5,7 +5,7 @@ import type { SiteSlug } from "@/data/sites";
 import { usePublicBasePath } from "@/context/SiteContext";
 import { getSiteData } from "@/lib/site";
 import { cn } from "@/lib/cn";
-import { getArticlePath } from "@/lib/paths";
+import { getArticlePath, getReviewsIndexPath } from "@/lib/paths";
 
 type ArticleGridProps = {
   siteSlug: SiteSlug;
@@ -18,22 +18,30 @@ export function ArticleGrid({ siteSlug, className }: ArticleGridProps) {
 
   return (
     <section
-      id="articles"
+      id="reviews"
       className={cn(
         "border-t border-slate-200 bg-slate-50 py-16 md:py-20",
         className,
       )}
-      aria-labelledby="articles-heading"
+      aria-labelledby="reviews-heading"
     >
       <div className="mx-auto max-w-6xl px-4">
-        <h2
-          id="articles-heading"
-          className="text-2xl font-bold tracking-tight text-slate-900 md:text-3xl"
-        >
-          Related guides
-        </h2>
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <h2
+            id="reviews-heading"
+            className="text-2xl font-bold tracking-tight text-slate-900 md:text-3xl"
+          >
+            Reviews
+          </h2>
+          <Link
+            href={getReviewsIndexPath(publicBasePath)}
+            className="text-sm font-medium text-blue-600 hover:text-blue-700"
+          >
+            View all reviews →
+          </Link>
+        </div>
         <ul className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {siteData.articles.map((article) => (
+          {siteData.articles.slice(0, 6).map((article) => (
             <li key={article.slug}>
               <Link
                 href={getArticlePath(publicBasePath, article.slug)}

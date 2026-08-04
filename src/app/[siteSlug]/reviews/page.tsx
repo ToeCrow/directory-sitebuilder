@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { siteSlugs } from "@/data/sites";
 import { AffiliateDisclosure } from "@/components/AffiliateDisclosure";
-import { ProductGrid } from "@/components/ProductGrid";
-import { ProductDirectory } from "@/components/ProductDirectory";
-import { ProductsDirectoryScroll } from "@/components/ProductsDirectoryScroll";
+import { ReviewDirectory } from "@/components/ReviewDirectory";
 import {
   getSiteBySlug,
   isValidSiteSlug,
@@ -14,8 +11,9 @@ import {
 } from "@/lib/site";
 import { getPublicPath } from "@/lib/paths";
 import { buildPageOpenGraph } from "@/lib/seo";
+import type { ReviewCategory } from "@/types/site";
 
-type ProductsIndexProps = {
+type ReviewsIndexProps = {
   params: Promise<{ siteSlug: string }>;
   searchParams: Promise<{ category?: string }>;
 };
@@ -26,17 +24,20 @@ export function generateStaticParams() {
 
 export async function generateMetadata({
   params,
-}: ProductsIndexProps): Promise<Metadata> {
+}: ReviewsIndexProps): Promise<Metadata> {
   const { siteSlug } = await params;
   const siteData = getSiteBySlug(siteSlug);
-  if (!siteData) return { title: "Products" };
+  if (!siteData) return { title: "Reviews" };
 
-  const path = getPublicPath(siteSlug, "/products");
-  const description = siteData.productDirectory.description ?? "";
-  const ogTitle = `Products — ${siteData.title}`;
+  const path = getPublicPath(siteSlug, "/reviews");
+  const description =
+    siteSlug === "side-sleeper"
+      ? "Mattress reviews, pillow reviews, and science of sleep guides for side sleepers — researched from specs and owner feedback."
+      : `Reviews and guides from ${siteData.title}.`;
+  const ogTitle = `Reviews — ${siteData.title}`;
 
   return {
-    title: "Products",
+    title: "Reviews",
     description,
     alternates: { canonical: path },
     openGraph: buildPageOpenGraph({
@@ -48,10 +49,10 @@ export async function generateMetadata({
   };
 }
 
-export default async function ProductsIndexPage({
+export default async function ReviewsIndexPage({
   params,
   searchParams,
-}: ProductsIndexProps) {
+}: ReviewsIndexProps) {
   const { siteSlug } = await params;
   const { category: categoryParam } = await searchParams;
 
@@ -65,39 +66,35 @@ export default async function ProductsIndexPage({
   }
 
   const showCategoryFilters = siteHasMattressPillowNav(siteSlug);
-  let category: "mattress" | "pillow" | "topper" | undefined;
+  let category: ReviewCategory | undefined;
   if (showCategoryFilters) {
     if (
       categoryParam === "mattress" ||
       categoryParam === "pillow" ||
-      categoryParam === "topper"
+      categoryParam === "science"
     ) {
       category = categoryParam;
     }
   }
 
-  const titleOverride = showCategoryFilters ? "Top Mattress Picks" : undefined;
   const pageHeading = showCategoryFilters
-    ? "Products Featured in Our Reviews"
-    : siteData.productDirectory.title;
+    ? "Reviews for Side Sleepers"
+    : "Reviews";
 
   return (
     <main>
-      {showCategoryFilters && (
-        <Suspense fallback={null}>
-          <ProductsDirectoryScroll />
-        </Suspense>
-      )}
       <div className="mx-auto max-w-6xl px-4 pt-12 md:pt-16">
         <h1 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
           {pageHeading}
         </h1>
+        {showCategoryFilters && (
+          <p className="mt-3 max-w-2xl text-slate-600">
+            Mattress reviews, pillow reviews, and science of sleep — researched
+            from product specs, brand policies, and recurring owner feedback.
+          </p>
+        )}
       </div>
-      <ProductGrid
-        siteSlug={siteSlug as SiteSlug}
-        titleOverride={titleOverride}
-      />
-      <ProductDirectory
+      <ReviewDirectory
         siteSlug={siteSlug as SiteSlug}
         category={category}
         showCategoryFilters={showCategoryFilters}

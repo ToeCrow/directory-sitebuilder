@@ -7,7 +7,7 @@ import { AffiliateDisclosure } from "@/components/AffiliateDisclosure";
 import { JsonLd } from "@/components/JsonLd";
 import { buildArticleSchema } from "@/lib/schema";
 import { getArticleOgImage } from "@/lib/seo";
-import { getPublicPath, getSitePath } from "@/lib/paths";
+import { getPublicPath, getReviewsIndexPath } from "@/lib/paths";
 import { getRequestPublicBasePath } from "@/lib/request-paths";
 import {
   getArticleBySlug,
@@ -17,7 +17,7 @@ import {
 } from "@/lib/site";
 import type { EditorialFigure } from "@/types/site";
 
-type ArticlePageProps = {
+type ReviewPageProps = {
   params: Promise<{ siteSlug: string; slug: string }>;
 };
 
@@ -32,23 +32,23 @@ export function generateStaticParams() {
 
 export async function generateMetadata({
   params,
-}: ArticlePageProps): Promise<Metadata> {
+}: ReviewPageProps): Promise<Metadata> {
   const { siteSlug, slug } = await params;
 
   if (!isValidSiteSlug(siteSlug)) {
-    return { title: "Article not found" };
+    return { title: "Review not found" };
   }
 
   const article = getArticleBySlug(siteSlug, slug);
   const siteData = getSiteBySlug(siteSlug);
 
   if (!article || !siteData) {
-    return { title: "Article not found" };
+    return { title: "Review not found" };
   }
 
   const description =
     article.metaDescription ?? article.excerpt ?? article.intro[0];
-  const path = getPublicPath(siteSlug, `/articles/${slug}`);
+  const path = getPublicPath(siteSlug, `/reviews/${slug}`);
   const ogImage = getArticleOgImage(siteData, article);
 
   return {
@@ -137,7 +137,7 @@ function EditorialFigureBlock({ figure }: { figure: EditorialFigure }) {
   );
 }
 
-export default async function ArticlePage({ params }: ArticlePageProps) {
+export default async function ReviewPage({ params }: ReviewPageProps) {
   const { siteSlug, slug } = await params;
 
   if (!isValidSiteSlug(siteSlug)) {
@@ -151,11 +151,11 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     notFound();
   }
 
-  const path = getPublicPath(siteSlug, `/articles/${slug}`);
+  const path = getPublicPath(siteSlug, `/reviews/${slug}`);
   const isEditorial = article.kind === "editorial";
   const isRoundup = article.kind === "product-roundup";
   const publicBasePath = await getRequestPublicBasePath(siteSlug);
-  const articlesHref = `${getSitePath(publicBasePath)}#articles`;
+  const reviewsHref = getReviewsIndexPath(publicBasePath);
 
   return (
     <main className="py-12 md:py-16">
@@ -168,10 +168,10 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       />
       <article className="mx-auto max-w-3xl px-4">
         <Link
-          href={articlesHref}
+          href={reviewsHref}
           className="text-sm font-medium text-blue-600 hover:text-blue-700"
         >
-          ← Back to related guides
+          ← Back to reviews
         </Link>
 
         <header className="mt-6 border-b border-slate-200 pb-8">
@@ -337,6 +337,26 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           </section>
         )}
 
+        {isRoundup && article.faqs && article.faqs.length > 0 && (
+          <section className="mt-16 border-t border-slate-200 pt-12">
+            <h2 className="text-2xl font-bold tracking-tight text-slate-900">
+              Frequently Asked Questions
+            </h2>
+            <dl className="mt-6 space-y-6">
+              {article.faqs.map((faq) => (
+                <div key={faq.question}>
+                  <dt className="text-lg font-semibold text-slate-900">
+                    {faq.question}
+                  </dt>
+                  <dd className="mt-2 text-sm leading-relaxed text-slate-600">
+                    {faq.answer}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+        )}
+
         {isEditorial && (
           <div className="mt-8 space-y-16">
             {article.sections.map((section, index) => (
@@ -437,10 +457,10 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
         <div className="mt-12 border-t border-slate-200 pt-8">
           <Link
-            href={articlesHref}
+            href={reviewsHref}
             className="text-sm font-medium text-blue-600 hover:text-blue-700"
           >
-            ← Back to related guides
+            ← Back to reviews
           </Link>
         </div>
       </article>
