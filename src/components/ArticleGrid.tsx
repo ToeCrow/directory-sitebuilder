@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import type { SiteSlug } from "@/data/sites";
+import { ReviewListItem } from "@/components/ReviewListItem";
 import { usePublicBasePath } from "@/context/SiteContext";
 import { getSiteData } from "@/lib/site";
 import { cn } from "@/lib/cn";
@@ -40,22 +41,13 @@ export function ArticleGrid({ siteSlug, className }: ArticleGridProps) {
             View all reviews →
           </Link>
         </div>
-        <ul className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="mt-6 border-t border-slate-200">
           {siteData.articles.slice(0, 6).map((article) => (
             <li key={article.slug}>
-              <Link
+              <ReviewListItem
+                article={article}
                 href={getArticlePath(publicBasePath, article.slug)}
-                className="block h-full rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
-              >
-                <h3 className="font-semibold text-slate-900 hover:text-blue-600">
-                  {article.title}
-                </h3>
-                {article.excerpt && (
-                  <p className="mt-2 text-sm leading-relaxed text-slate-600">
-                    {article.excerpt}
-                  </p>
-                )}
-              </Link>
+              />
             </li>
           ))}
         </ul>

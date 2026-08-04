@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import type { SiteSlug } from "@/data/sites";
+import { ReviewListItem } from "@/components/ReviewListItem";
 import { usePublicBasePath } from "@/context/SiteContext";
 import { getArticlesByReviewCategory, getSiteData } from "@/lib/site";
 import type { ReviewCategory } from "@/types/site";
@@ -51,10 +52,7 @@ export function ReviewDirectory({
       aria-labelledby="reviews-directory-heading"
     >
       <div className="mx-auto max-w-6xl px-4">
-        <h2
-          id="reviews-directory-heading"
-          className="sr-only"
-        >
+        <h2 id="reviews-directory-heading" className="sr-only">
           Review directory
         </h2>
 
@@ -89,22 +87,13 @@ export function ReviewDirectory({
         {reviews.length === 0 ? (
           <p className="mt-10 text-slate-600">No reviews in this category yet.</p>
         ) : (
-          <ul className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="mt-6 divide-y-0 border-t border-slate-200">
             {reviews.map((article) => (
               <li key={article.slug}>
-                <Link
+                <ReviewListItem
+                  article={article}
                   href={getArticlePath(publicBasePath, article.slug)}
-                  className="block h-full rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
-                >
-                  <h3 className="font-semibold text-slate-900 hover:text-blue-600">
-                    {article.title}
-                  </h3>
-                  {article.excerpt && (
-                    <p className="mt-2 text-sm leading-relaxed text-slate-600">
-                      {article.excerpt}
-                    </p>
-                  )}
-                </Link>
+                />
               </li>
             ))}
           </ul>
