@@ -107,6 +107,8 @@ export type Product = {
   name: string;
   slug: string;
   category: ProductCategory;
+  /** Product photo shown on the product page (and OG when set). */
+  image?: { src: string; alt: string };
   shortDescription: string;
   /** Optional SEO meta description; falls back to shortDescription. */
   metaDescription?: string;

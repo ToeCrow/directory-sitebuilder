@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { siteSlugs } from "@/data/sites";
@@ -53,7 +54,15 @@ export async function generateMetadata({
   const title = product.metaTitle ?? `${product.name} Review`;
   const description = product.metaDescription ?? product.shortDescription;
   const path = getPublicPath(siteSlug, `/products/${slug}`);
-  const ogImage = getDefaultOgImage(siteData);
+  const fallbackOg = getDefaultOgImage(siteData);
+  const ogImage = product.image
+    ? {
+        url: product.image.src,
+        width: fallbackOg.width,
+        height: fallbackOg.height,
+        alt: product.image.alt,
+      }
+    : fallbackOg;
 
   return {
     title: {
@@ -162,17 +171,39 @@ export default async function ProductPage({ params }: ProductPageProps) {
         <AffiliateDisclosure siteSlug={siteSlug} className="mt-6 px-0" />
 
         <section className="mt-8" aria-labelledby="features-heading">
-          <h2
-            id="features-heading"
-            className="text-xl font-semibold text-slate-900"
+          <div
+            className={
+              product.image
+                ? "grid gap-8 md:grid-cols-2 md:items-start"
+                : undefined
+            }
           >
-            Key features
-          </h2>
-          <ul className="mt-4 list-inside list-disc space-y-1 text-slate-600">
-            {product.features.map((feature) => (
-              <li key={feature}>{feature}</li>
-            ))}
-          </ul>
+            <div>
+              <h2
+                id="features-heading"
+                className="text-xl font-semibold text-slate-900"
+              >
+                Key features
+              </h2>
+              <ul className="mt-4 list-inside list-disc space-y-1 text-slate-600">
+                {product.features.map((feature) => (
+                  <li key={feature}>{feature}</li>
+                ))}
+              </ul>
+            </div>
+            {product.image && (
+              <figure className="overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
+                <Image
+                  src={product.image.src}
+                  alt={product.image.alt}
+                  width={1200}
+                  height={900}
+                  className="h-auto w-full object-cover"
+                  priority
+                />
+              </figure>
+            )}
+          </div>
         </section>
 
         <div className="mt-10 grid gap-8 md:grid-cols-2">

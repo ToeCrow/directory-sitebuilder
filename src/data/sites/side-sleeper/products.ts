@@ -1,11 +1,16 @@
 import type { Product } from "@/types/site";
+import { newCatalogProducts } from "./new-catalog-products";
 
 const priceUpdatedAt = "2026-07-27";
 
-export const products: Product[] = [
+const baseProducts: Product[] = [
   {
     name: "WinkBed",
     slug: "winkbed",
+    image: {
+      src: "/sites/side-sleeper/products/winkbed.png",
+      alt: "WinkBed mattress",
+    },
     category: "mattress",
     badge: "Best Overall",
     shortDescription:
@@ -53,6 +58,10 @@ export const products: Product[] = [
   {
     name: "Saatva Classic",
     slug: "saatva-classic",
+    image: {
+      src: "/sites/side-sleeper/products/saatva-classic.png",
+      alt: "Saatva Classic mattress",
+    },
     category: "mattress",
     badge: "Luxury Pick",
     shortDescription:
@@ -99,6 +108,10 @@ export const products: Product[] = [
   {
     name: "Helix Midnight Luxe",
     slug: "helix-midnight-luxe",
+    image: {
+      src: "/sites/side-sleeper/products/helix-midnight-luxe.png",
+      alt: "Helix Midnight Luxe mattress",
+    },
     category: "mattress",
     badge: "Best Cooling",
     shortDescription:
@@ -329,6 +342,10 @@ export const products: Product[] = [
   {
     name: "Nectar Premier Memory Foam",
     slug: "nectar-premier",
+    image: {
+      src: "/sites/side-sleeper/products/nectar-premier.png",
+      alt: "Nectar Premier memory foam mattress",
+    },
     category: "mattress",
     badge: "Best Budget",
     shortDescription:
@@ -543,6 +560,10 @@ export const products: Product[] = [
   {
     name: "Saatva Rx",
     slug: "saatva-rx",
+    image: {
+      src: "/sites/side-sleeper/products/saatva-rx.png",
+      alt: "Saatva Rx mattress",
+    },
     category: "mattress",
     shortDescription:
       "A medical-grade hybrid engineered for pressure relief and spinal alignment, with zoned coils and a plush comfort system suited to side sleepers who need serious support.",
@@ -590,6 +611,10 @@ export const products: Product[] = [
   {
     name: "Brooklyn Bedding Signature Hybrid",
     slug: "brooklyn-bedding-signature-hybrid",
+    image: {
+      src: "/sites/side-sleeper/products/brooklyn-bedding-signature-hybrid.png",
+      alt: "Brooklyn Bedding Signature Hybrid mattress",
+    },
     category: "mattress",
     shortDescription:
       "A versatile USA-made hybrid with a balanced foam-and-coil feel that cushions side-sleeper pressure points without excessive sink.",
@@ -635,6 +660,10 @@ export const products: Product[] = [
   {
     name: "Nolah Evolution Hybrid",
     slug: "nolah-evolution-hybrid",
+    image: {
+      src: "/sites/side-sleeper/products/nolah-evolution-hybrid.png",
+      alt: "Nolah Evolution Hybrid mattress",
+    },
     category: "mattress",
     shortDescription:
       "A taller hybrid with AirFoam comfort layers and zoned coils that contour to shoulders and hips while keeping the spine supported for side sleepers.",
@@ -680,6 +709,10 @@ export const products: Product[] = [
   {
     name: "Titan Plus Core",
     slug: "titan-plus-core",
+    image: {
+      src: "/sites/side-sleeper/products/titan-plus-core.png",
+      alt: "Titan Plus Core mattress",
+    },
     category: "mattress",
     shortDescription:
       "A reinforced hybrid from Brooklyn Bedding built for heavier bodies, with stronger coils and a supportive feel that still cushions side-sleeper contact points.",
@@ -725,6 +758,10 @@ export const products: Product[] = [
   {
     name: "Coop Original Adjustable Pillow",
     slug: "coop-original-adjustable",
+    image: {
+      src: "/sites/side-sleeper/products/coop-original-adjustable.png",
+      alt: "Coop Original Adjustable pillow",
+    },
     category: "pillow",
     shortDescription:
       "A shredded-foam adjustable pillow that lets side sleepers dial loft and firmness until the neck stays level with the spine.",
@@ -758,6 +795,10 @@ export const products: Product[] = [
   {
     name: "Eli & Elm Side Sleeper Pillow",
     slug: "eli-elm-side-sleeper",
+    image: {
+      src: "/sites/side-sleeper/products/eli-elm-side-sleeper.png",
+      alt: "Eli & Elm Side Sleeper pillow",
+    },
     category: "pillow",
     shortDescription:
       "A U-shaped contoured pillow designed specifically for side sleepers, with adjustable fill to keep the neck aligned and the shoulder nestled into the cutout.",
@@ -791,6 +832,10 @@ export const products: Product[] = [
   {
     name: "Eli & Elm Side Sleeper Pillow + Cooling Pillowcase",
     slug: "eli-elm-cooling-side-sleeper",
+    image: {
+      src: "/sites/side-sleeper/products/eli-elm-cooling-side-sleeper.png",
+      alt: "Eli & Elm Side Sleeper Pillow with cooling pillowcase",
+    },
     category: "pillow",
     shortDescription:
       "The Eli & Elm Side Sleeper Pillow bundled with the brand’s Cooling Pillowcase—same U-shaped side-sleeper pillow construction, sold as a pillow-plus-case package rather than a different pillow build.",
@@ -826,6 +871,10 @@ export const products: Product[] = [
   {
     name: "Beckham Hotel Collection Pillows",
     slug: "beckham-hotel-collection",
+    image: {
+      src: "/sites/side-sleeper/products/beckham-hotel-collection.png",
+      alt: "Beckham Hotel Collection pillows",
+    },
     category: "pillow",
     shortDescription:
       "A popular down-alternative hotel-style pillow pair with a soft, lofty feel that many side sleepers use as an affordable everyday option.",
@@ -859,6 +908,10 @@ export const products: Product[] = [
   {
     name: "TEMPUR-Neck Pillow",
     slug: "tempur-neck",
+    image: {
+      src: "/sites/side-sleeper/products/tempur-neck.png",
+      alt: "TEMPUR-Neck pillow",
+    },
     category: "pillow",
     shortDescription:
       "A contoured TEMPUR material pillow with a medium profile that cradles the neck and keeps side sleepers’ heads elevated for alignment.",
@@ -892,6 +945,10 @@ export const products: Product[] = [
   {
     name: "Avocado Green Pillow",
     slug: "avocado-green-pillow",
+    image: {
+      src: "/sites/side-sleeper/products/avocado-green-pillow.png",
+      alt: "Avocado Green pillow",
+    },
     category: "pillow",
     shortDescription:
       "An organic latex and wool pillow with a buoyant, breathable feel that supports side sleepers without the sink of memory foam.",
@@ -925,6 +982,10 @@ export const products: Product[] = [
   {
     name: "Saatva Latex Pillow",
     slug: "saatva-latex-pillow",
+    image: {
+      src: "/sites/side-sleeper/products/saatva-latex-pillow.png",
+      alt: "Saatva Latex pillow",
+    },
     category: "pillow",
     shortDescription:
       "A plush natural latex pillow with organic cotton and a buoyant loft that keeps side sleepers’ necks supported without collapsing overnight.",
@@ -958,6 +1019,10 @@ export const products: Product[] = [
   {
     name: "Pillow Cube Side Cube",
     slug: "pillow-cube-side-cube",
+    image: {
+      src: "/sites/side-sleeper/products/pillow-cube-side-cube.png",
+      alt: "Pillow Cube Side Cube pillow",
+    },
     category: "pillow",
     shortDescription:
       "A cube-shaped foam pillow engineered so side sleepers’ heads stay level—flat top and taller profile instead of a traditional slope.",
@@ -991,6 +1056,10 @@ export const products: Product[] = [
   {
     name: "MedCline Shoulder Relief System",
     slug: "medcline-shoulder-relief",
+    image: {
+      src: "/sites/side-sleeper/products/medcline-shoulder-relief.png",
+      alt: "MedCline Shoulder Relief System",
+    },
     category: "pillow",
     shortDescription:
       "A three-piece wedge and body-pillow system that elevates and positions side sleepers to reduce shoulder pressure and improve alignment.",
@@ -1024,6 +1093,10 @@ export const products: Product[] = [
   {
     name: "Layla Kapok Pillow",
     slug: "layla-kapok-pillow",
+    image: {
+      src: "/sites/side-sleeper/products/layla-kapok-pillow.png",
+      alt: "Layla Kapok pillow",
+    },
     category: "pillow",
     shortDescription:
       "A flippable pillow mixing shredded memory foam and buoyant kapok for a cooler, customizable loft that works well for side sleepers.",
@@ -1057,6 +1130,10 @@ export const products: Product[] = [
   {
     name: "Purple Freeform Pillow",
     slug: "purple-freeform-pillow",
+    image: {
+      src: "/sites/side-sleeper/products/purple-freeform-pillow.png",
+      alt: "Purple Freeform pillow",
+    },
     category: "pillow",
     shortDescription:
       "An adaptable Purple pillow with Hex lattice technology that flexes under the head while supporting the neck—useful for side sleepers who change positions.",
@@ -1090,6 +1167,10 @@ export const products: Product[] = [
   {
     name: "Saatva Graphite Memory Foam Topper",
     slug: "saatva-graphite-memory-foam-topper",
+    image: {
+      src: "/sites/side-sleeper/products/saatva-graphite-memory-foam-topper.jpg",
+      alt: "Saatva Graphite Memory Foam Topper",
+    },
     category: "topper",
     shortDescription:
       "A 3-inch graphite-infused memory foam topper with an organic cotton cover that adds cooling contouring for side-sleeper hips and shoulders.",
@@ -1126,6 +1207,10 @@ export const products: Product[] = [
   {
     name: "Nolah Mattress Topper",
     slug: "nolah-mattress-topper",
+    image: {
+      src: "/sites/side-sleeper/products/nolah-mattress-topper.jpg",
+      alt: "Nolah Mattress Topper",
+    },
     category: "topper",
     shortDescription:
       "A 2-inch dual-layer AirFoam HD topper with strong pressure relief and motion isolation, available in Plush or Luxury Firm.",
@@ -1160,6 +1245,10 @@ export const products: Product[] = [
   {
     name: "Helix Premium Mattress Topper",
     slug: "helix-premium-mattress-topper",
+    image: {
+      src: "/sites/side-sleeper/products/helix-premium-mattress-topper.jpg",
+      alt: "Helix Premium Mattress Topper",
+    },
     category: "topper",
     shortDescription:
       "A 3.75-inch hybrid topper with foam, microcoils, and a GlacioTex cooling cover for a springier feel than all-foam options.",
@@ -1194,6 +1283,10 @@ export const products: Product[] = [
   {
     name: "Birch Plush Organic Mattress Topper",
     slug: "birch-plush-organic-mattress-topper",
+    image: {
+      src: "/sites/side-sleeper/products/birch-plush-organic-mattress-topper.jpg",
+      alt: "Birch Plush Organic Mattress Topper",
+    },
     category: "topper",
     shortDescription:
       "A 2-inch natural Talalay latex topper wrapped in organic wool and cotton — GOTS and GREENGUARD Gold certified.",
@@ -1228,6 +1321,10 @@ export const products: Product[] = [
   {
     name: "Silk & Snow Organic Mattress Topper",
     slug: "silk-and-snow-organic-mattress-topper",
+    image: {
+      src: "/sites/side-sleeper/products/silk-and-snow-organic-mattress-topper.jpg",
+      alt: "Silk & Snow Organic Mattress Topper",
+    },
     category: "topper",
     shortDescription:
       "A 2-inch GOLS organic Dunlop latex topper with a removable GOTS organic cotton cover in Medium or Firm.",
@@ -1260,3 +1357,5 @@ export const products: Product[] = [
     directoryOrder: 32,
   },
 ];
+
+export const products: Product[] = [...baseProducts, ...newCatalogProducts];

@@ -208,6 +208,7 @@ export const memoryFoamMattressesArticle: ProductRoundupArticle = {
         "Side sleepers who want a plush, cloud-like feel without paying hybrid prices.",
       skipIf:
         "You specifically want a mattress engineered and marketed around side-sleeper pressure relief.",
+      productSlug: "casper-cloud-one",
     },
     {
       heading: "Nectar Luxe: Triple the Foam, Triple the Cooling",
@@ -230,6 +231,7 @@ export const memoryFoamMattressesArticle: ProductRoundupArticle = {
         "Side sleepers who run warm and want significantly more cooling and cushioning than a basic memory foam mattress.",
       skipIf:
         "You're comparison shopping strictly by price within the Nectar lineup.",
+      productSlug: "nectar-luxe",
     },
     {
       heading:
@@ -253,6 +255,7 @@ export const memoryFoamMattressesArticle: ProductRoundupArticle = {
         "Side sleepers who want memory foam contouring without the classic heat-trapping complaint.",
       skipIf:
         "You don't want to pay close attention to firmness selection before buying.",
+      productSlug: "winkbed-gravitylux",
     },
     {
       heading: "Nectar Premier: The Middle Child Done Right",
@@ -300,6 +303,7 @@ export const memoryFoamMattressesArticle: ProductRoundupArticle = {
         "Side sleepers who want verified eco-credentials and are willing to pay for them.",
       skipIf:
         "Sustainability certifications aren't a priority and you want to save money elsewhere.",
+      productSlug: "bedinabox-eco-lux",
     },
     {
       heading: "Nectar Classic: The Budget Benchmark",
@@ -324,6 +328,7 @@ export const memoryFoamMattressesArticle: ProductRoundupArticle = {
         "Budget-conscious side sleepers who still want Nectar's trial and warranty policies.",
       skipIf:
         "You're a heavier-set side sleeper who needs a thicker comfort layer.",
+      productSlug: "nectar-classic",
     },
     {
       heading: "Tempur-Pedic TEMPUR-ProBreeze Medium: The Splurge",
@@ -346,6 +351,7 @@ export const memoryFoamMattressesArticle: ProductRoundupArticle = {
         "Side sleepers who want the gold standard of memory foam and have the budget for it.",
       skipIf:
         "You want strong pressure relief without a four-figure price tag.",
+      productSlug: "tempur-probreeze-medium",
     },
     {
       heading: 'Siena Signature 10": Proof That Cheap Doesn\'t Mean Bad',
@@ -368,6 +374,7 @@ export const memoryFoamMattressesArticle: ProductRoundupArticle = {
         "Budget shoppers who still want certified foam and a real trial period.",
       skipIf:
         "You're a lighter-weight side sleeper who needs deeper contouring around the hips and shoulders.",
+      productSlug: "siena-signature-10",
     },
   ],
   faqs: [
@@ -431,6 +438,7 @@ export const bodyPillowArticle: ProductRoundupArticle = {
         "Side sleepers who want to fine-tune firmness themselves rather than commit to a fixed shape.",
       skipIf:
         "You'd rather have a pre-contoured pillow that requires zero setup.",
+      productSlug: "coop-adjustable-body-pillow",
     },
     {
       heading: "Buffy Wiggle Pillow: The Bendable, Style-Forward Pick",
@@ -454,6 +462,7 @@ export const bodyPillowArticle: ProductRoundupArticle = {
         "Side sleepers who want a versatile, tie-into-a-knot pillow that also looks good left out on the bed.",
       skipIf:
         "You want a pillow with a fixed ergonomic shape rather than a flexible bolster.",
+      productSlug: "buffy-wiggle-pillow",
     },
     {
       heading: "Sleep Number Cool ComfortFit Body Pillow: The Cooling Option",
@@ -476,6 +485,7 @@ export const bodyPillowArticle: ProductRoundupArticle = {
       bestFor:
         "Hot sleepers who want a body pillow that won't trap heat overnight.",
       skipIf: "You want to customize firmness by adding or removing fill.",
+      productSlug: "sleep-number-cool-comfortfit-body-pillow",
     },
     {
       heading:
@@ -500,6 +510,7 @@ export const bodyPillowArticle: ProductRoundupArticle = {
         "Side sleepers who want independently customizable support for their upper and lower body.",
       skipIf:
         "You want a simple, single-piece body pillow at a lower price point.",
+      productSlug: "nest-bedding-easy-breather-body-pillow",
     },
     {
       heading: "Snuggle-Pedic Body Pillow: The Budget Pick",
@@ -523,6 +534,7 @@ export const bodyPillowArticle: ProductRoundupArticle = {
         "Budget-conscious side sleepers who want shredded memory foam comfort without a premium price tag.",
       skipIf:
         "You prefer buying directly from a brand's own site with its own trial and return policy.",
+      productSlug: "snuggle-pedic-body-pillow",
     },
   ],
   faqs: [

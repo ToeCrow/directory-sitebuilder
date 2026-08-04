@@ -9,9 +9,12 @@ import { buildArticleSchema } from "@/lib/schema";
 import { getArticleOgImage } from "@/lib/seo";
 import { getPublicPath, getReviewsIndexPath } from "@/lib/paths";
 import { getRequestPublicBasePath } from "@/lib/request-paths";
+import { RoundupProductHeading } from "@/components/RoundupProductHeading";
+import { RoundupProductPageCta } from "@/components/RoundupProductPageCta";
 import {
   getArticleBySlug,
   getArticles,
+  getProductBySlug,
   getSiteBySlug,
   isValidSiteSlug,
 } from "@/lib/site";
@@ -208,101 +211,110 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
 
         {isRoundup && article.products.length > 0 && (
           <div className="mt-8 space-y-16">
-            {article.products.map((product, index) => (
-              <section
-                key={product.heading}
-                aria-labelledby={`product-${index}-heading`}
-              >
-                <h2
-                  id={`product-${index}-heading`}
-                  className="text-2xl font-bold tracking-tight text-slate-900"
+            {article.products.map((product, index) => {
+              const catalogProduct = product.productSlug
+                ? getProductBySlug(siteSlug, product.productSlug)
+                : undefined;
+
+              return (
+                <section
+                  key={product.heading}
+                  aria-labelledby={`product-${index}-heading`}
                 >
-                  {index + 1}) {product.heading}
-                </h2>
+                  <RoundupProductHeading
+                    index={index}
+                    heading={product.heading}
+                    product={catalogProduct}
+                  />
 
-                {product.intro && (
-                  <p className="mt-4 text-base leading-relaxed text-slate-600">
-                    {product.intro}
-                  </p>
-                )}
-
-                {product.image && (
-                  <figure className="mt-6 overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
-                    <Image
-                      src={product.image.src}
-                      alt={product.image.alt}
-                      width={1200}
-                      height={800}
-                      className="h-auto w-full"
-                    />
-                  </figure>
-                )}
-
-                <div className="mt-8 space-y-8">
-                  <div>
-                    <h3 className="text-lg font-semibold text-slate-900">
-                      What it is
-                    </h3>
-                    <p className="mt-3 text-sm leading-relaxed text-slate-600">
-                      {product.whatItIs}
+                  {product.intro && (
+                    <p className="mt-4 text-base leading-relaxed text-slate-600">
+                      {product.intro}
                     </p>
+                  )}
+
+                  {product.image && (
+                    <figure className="mt-6 overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
+                      <Image
+                        src={product.image.src}
+                        alt={product.image.alt}
+                        width={1200}
+                        height={800}
+                        className="h-auto w-full"
+                      />
+                    </figure>
+                  )}
+
+                  <div className="mt-8 space-y-8">
+                    <div>
+                      <h3 className="text-lg font-semibold text-slate-900">
+                        What it is
+                      </h3>
+                      <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                        {product.whatItIs}
+                      </p>
+                    </div>
+
+                    <div>
+                      <h3 className="text-lg font-semibold text-slate-900">
+                        Why it earns a spot on this list
+                      </h3>
+                      <ul className="mt-3 space-y-2">
+                        {product.whyItEarnsASpot.map((item) => (
+                          <li
+                            key={item}
+                            className="flex gap-2 text-sm leading-relaxed text-slate-600"
+                          >
+                            <span className="text-green-600" aria-hidden="true">
+                              ✓
+                            </span>
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div>
+                      <h3 className="text-lg font-semibold text-slate-900">
+                        Where it falls short
+                      </h3>
+                      <ul className="mt-3 space-y-2">
+                        {product.whereItFallsShort.map((item) => (
+                          <li
+                            key={item}
+                            className="flex gap-2 text-sm leading-relaxed text-slate-600"
+                          >
+                            <span className="text-red-500" aria-hidden="true">
+                              ✗
+                            </span>
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div className="rounded-xl border border-slate-200 bg-slate-50 p-5">
+                      <p className="text-sm leading-relaxed text-slate-700">
+                        <span className="font-semibold text-slate-900">
+                          Best for:
+                        </span>{" "}
+                        {product.bestFor}
+                      </p>
+                      <p className="mt-3 text-sm leading-relaxed text-slate-700">
+                        <span className="font-semibold text-slate-900">
+                          Skip if:
+                        </span>{" "}
+                        {product.skipIf}
+                      </p>
+                    </div>
                   </div>
 
-                  <div>
-                    <h3 className="text-lg font-semibold text-slate-900">
-                      Why it earns a spot on this list
-                    </h3>
-                    <ul className="mt-3 space-y-2">
-                      {product.whyItEarnsASpot.map((item) => (
-                        <li
-                          key={item}
-                          className="flex gap-2 text-sm leading-relaxed text-slate-600"
-                        >
-                          <span className="text-green-600" aria-hidden="true">
-                            ✓
-                          </span>
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div>
-                    <h3 className="text-lg font-semibold text-slate-900">
-                      Where it falls short
-                    </h3>
-                    <ul className="mt-3 space-y-2">
-                      {product.whereItFallsShort.map((item) => (
-                        <li
-                          key={item}
-                          className="flex gap-2 text-sm leading-relaxed text-slate-600"
-                        >
-                          <span className="text-red-500" aria-hidden="true">
-                            ✗
-                          </span>
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="rounded-xl border border-slate-200 bg-slate-50 p-5">
-                    <p className="text-sm leading-relaxed text-slate-700">
-                      <span className="font-semibold text-slate-900">
-                        Best for:
-                      </span>{" "}
-                      {product.bestFor}
-                    </p>
-                    <p className="mt-3 text-sm leading-relaxed text-slate-700">
-                      <span className="font-semibold text-slate-900">
-                        Skip if:
-                      </span>{" "}
-                      {product.skipIf}
-                    </p>
-                  </div>
-                </div>
-              </section>
-            ))}
+                  {catalogProduct && (
+                    <RoundupProductPageCta product={catalogProduct} />
+                  )}
+                </section>
+              );
+            })}
           </div>
         )}
 
