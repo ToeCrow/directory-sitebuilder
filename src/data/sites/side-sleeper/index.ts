@@ -51,9 +51,9 @@ export const siteData: SiteData = {
   },
 
   topPicks: {
-    title: "Top picks",
+    title: "Top mattress picks for side sleepers",
     description:
-      "At Side Sleeper Guide, these are our highest-rated mattress reviews for side sleepers — based on product research, specs, and recurring owner feedback around pressure relief, support, and cooling.",
+      "The three mattresses from our Best Mattresses for Side Sleepers guide — Helix Midnight Luxe, WinkBed, and Saatva Classic — ranked by Research Score from product specs and recurring owner feedback.",
   },
 
   productDirectory: {

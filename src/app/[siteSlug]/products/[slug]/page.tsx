@@ -4,8 +4,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { siteSlugs } from "@/data/sites";
 import { AffiliateDisclosure } from "@/components/AffiliateDisclosure";
+import { ReviewListItem } from "@/components/ReviewListItem";
 import { getDefaultOgImage } from "@/lib/seo";
 import {
+  getArticlesFeaturingProduct,
   getProductBySlug,
   getProducts,
   getSiteBySlug,
@@ -18,7 +20,11 @@ import {
   getResearchScorePath,
   siteUsesResearchScore,
 } from "@/lib/research-score";
-import { getPublicPath, getProductsIndexPath } from "@/lib/paths";
+import {
+  getArticlePath,
+  getPublicPath,
+  getProductsIndexPath,
+} from "@/lib/paths";
 import { getRequestPublicBasePath } from "@/lib/request-paths";
 import { buyLinkRel, getBuyUrl } from "@/lib/product-links";
 
@@ -116,6 +122,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   }
 
   const publicBasePath = await getRequestPublicBasePath(siteSlug);
+  const featuredGuides = getArticlesFeaturingProduct(siteSlug, product.slug);
 
   return (
     <main className="py-12 md:py-16">
@@ -245,6 +252,30 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </ul>
           </section>
         </div>
+
+        {featuredGuides.length > 0 && (
+          <section
+            className="mt-12 border-t border-slate-200"
+            aria-labelledby="featured-guides-heading"
+          >
+            <h2
+              id="featured-guides-heading"
+              className="mt-10 text-xl font-semibold text-slate-900"
+            >
+              Featured in our guides
+            </h2>
+            <ul className="mt-2">
+              {featuredGuides.map((article) => (
+                <li key={article.slug}>
+                  <ReviewListItem
+                    article={article}
+                    href={getArticlePath(publicBasePath, article.slug)}
+                  />
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
 
         <div className="mt-10 rounded-xl border border-slate-200 bg-slate-50 p-6">
           <p className="text-sm text-slate-600">

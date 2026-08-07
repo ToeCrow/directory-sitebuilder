@@ -19,14 +19,14 @@ export function HomePageLayout({ siteSlug }: HomePageLayoutProps) {
   const isSideSleeperHome = siteHasMattressPillowNav(siteSlug);
 
   if (isSideSleeperHome) {
+    // AdSlots intentionally omitted until AdSense approval.
+    // Re-enable with: <AdSlot slotId="primary" /> / <AdSlot slotId="secondary" />
     return (
       <>
         <HashScrollOnLoad siteSlug={siteSlug} />
         <Hero siteSlug={siteSlug} />
         <AffiliateDisclosure siteSlug={siteSlug} />
-        <AdSlot slotId="primary" />
         <BuyingGuide siteSlug={siteSlug} />
-        <AdSlot slotId="secondary" />
         <FAQ siteSlug={siteSlug} />
         <ArticleGrid siteSlug={siteSlug} />
       </>

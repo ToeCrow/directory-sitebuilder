@@ -93,55 +93,69 @@ export function ProductCard({
   const scoreLabel = siteUsesResearchScore(siteSlug)
     ? RESEARCH_SCORE_LABEL
     : "Rating";
+  const headingId = `product-card-${product.slug}`;
 
   return (
-    <article className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white p-0 shadow-sm transition-shadow hover:shadow-md">
+    <article className="group relative flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white p-0 shadow-sm transition-[border-color,box-shadow,transform] duration-200 ease-out hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md">
       <Link
         href={productHref}
-        className="relative mb-4 block aspect-4/3 overflow-hidden border-b border-slate-200 bg-slate-100"
+        className="absolute inset-0 z-0"
+        aria-labelledby={headingId}
       >
+        <span className="sr-only">View {product.name}</span>
+      </Link>
+
+      <div className="pointer-events-none relative mb-4 aspect-4/3 overflow-hidden border-b border-slate-200 bg-slate-100">
         {product.image ? (
           <Image
             src={product.image.src}
             alt={product.image.alt}
             fill
             sizes="(max-width: 768px) 100vw, 25vw"
-            className="object-cover object-center scale-[1.22] transition-transform duration-300 hover:scale-[1.28]"
+            className="object-cover object-center scale-[1.22] transition-transform duration-300 group-hover:scale-[1.28]"
           />
         ) : (
           <ProductImagePlaceholder category={product.category} />
         )}
-      </Link>
+      </div>
 
       <div
         className={cn(
-          "flex flex-1 flex-col",
+          "pointer-events-none relative flex flex-1 flex-col",
           isDirectory ? "px-4 pb-4" : "px-6 pb-6",
         )}
       >
-        <div className="mb-3 flex items-start justify-between gap-4">
-          <div className="min-w-0">
-            {product.badge && (
-              <span className="mb-2 inline-block rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700">
-                {product.badge}
-              </span>
+        <div className="mb-3">
+          {product.badge && (
+            <span className="mb-2 inline-block rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700">
+              {product.badge}
+            </span>
+          )}
+          <h3
+            id={headingId}
+            className={cn(
+              "font-semibold text-slate-900 transition-colors group-hover:text-blue-600",
+              isDirectory ? "text-lg" : "text-xl",
             )}
-            <h3
-              className={cn(
-                "font-semibold text-slate-900",
-                isDirectory ? "text-lg" : "text-xl",
-              )}
-            >
-              <Link href={productHref} className="hover:text-blue-600">
-                {product.name}
-              </Link>
-            </h3>
+          >
+            {product.name}
+          </h3>
+          <div
+            className={cn(
+              "mt-2",
+              !isDirectory &&
+                "rounded-lg border border-slate-200 bg-slate-50 px-3 py-2",
+            )}
+          >
+            <p className="mb-1 text-xs font-medium uppercase tracking-wide text-slate-500">
+              {scoreLabel}
+            </p>
+            <StarRating
+              rating={product.rating}
+              maxRating={siteData.ratingScale}
+              label={scoreLabel}
+            />
           </div>
-          <StarRating
-            rating={product.rating}
-            maxRating={siteData.ratingScale}
-            label={scoreLabel}
-          />
         </div>
 
         <p className="mb-4 flex-1 text-sm leading-relaxed text-slate-600">
@@ -159,18 +173,12 @@ export function ProductCard({
           </div>
         </dl>
 
-        <div className="mt-auto flex flex-col gap-2 sm:flex-row">
-          <Link
-            href={productHref}
-            className="inline-flex items-center justify-center rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-400 hover:bg-slate-50"
-          >
-            Read review
-          </Link>
+        <div className="pointer-events-auto relative z-10 mt-auto">
           <a
             href={buyHref}
             target="_blank"
             rel={buyLinkRel(product)}
-            className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
+            className="inline-flex w-full items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
           >
             Visit site
           </a>

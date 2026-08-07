@@ -38,6 +38,18 @@ export function getArticleBySlug(
   return getArticles(siteSlug).find((article) => article.slug === slug);
 }
 
+/** Roundup guides that reference a catalog product via productSlug. */
+export function getArticlesFeaturingProduct(
+  siteSlug: SiteSlug,
+  productSlug: string,
+): Article[] {
+  return getArticles(siteSlug).filter(
+    (article) =>
+      article.kind === "product-roundup" &&
+      article.products.some((product) => product.productSlug === productSlug),
+  );
+}
+
 export function getArticlesByReviewCategory(
   siteSlug: SiteSlug,
   category?: ReviewCategory,
