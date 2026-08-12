@@ -14,7 +14,7 @@ export function RoundupProductPageCta({ product }: RoundupProductPageCtaProps) {
         rel={buyLinkRel(product)}
         className="text-sm font-medium text-blue-600 hover:text-blue-700"
       >
-        View product page →
+        Check price & availability for {product.name}
       </a>
     </p>
   );

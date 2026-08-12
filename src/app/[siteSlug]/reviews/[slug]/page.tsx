@@ -7,7 +7,11 @@ import { AffiliateDisclosure } from "@/components/AffiliateDisclosure";
 import { JsonLd } from "@/components/JsonLd";
 import { buildArticleSchema } from "@/lib/schema";
 import { getArticleOgImage } from "@/lib/seo";
-import { getPublicPath, getReviewsIndexPath } from "@/lib/paths";
+import {
+  getProductPath,
+  getPublicPath,
+  getReviewsIndexPath,
+} from "@/lib/paths";
 import { getRequestPublicBasePath } from "@/lib/request-paths";
 import { RoundupProductHeading } from "@/components/RoundupProductHeading";
 import { RoundupProductPageCta } from "@/components/RoundupProductPageCta";
@@ -225,6 +229,7 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
                     index={index}
                     heading={product.heading}
                     product={catalogProduct}
+                    publicBasePath={publicBasePath}
                   />
 
                   {product.intro && (
@@ -235,13 +240,30 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
 
                   {product.image && (
                     <figure className="mt-6 overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
-                      <Image
-                        src={product.image.src}
-                        alt={product.image.alt}
-                        width={1200}
-                        height={800}
-                        className="h-auto w-full"
-                      />
+                      {catalogProduct ? (
+                        <Link
+                          href={getProductPath(
+                            publicBasePath,
+                            catalogProduct.slug,
+                          )}
+                        >
+                          <Image
+                            src={product.image.src}
+                            alt={product.image.alt}
+                            width={1200}
+                            height={800}
+                            className="h-auto w-full"
+                          />
+                        </Link>
+                      ) : (
+                        <Image
+                          src={product.image.src}
+                          alt={product.image.alt}
+                          width={1200}
+                          height={800}
+                          className="h-auto w-full"
+                        />
+                      )}
                     </figure>
                   )}
 

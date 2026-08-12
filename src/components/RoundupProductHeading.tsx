@@ -1,10 +1,12 @@
+import Link from "next/link";
 import type { Product } from "@/types/site";
-import { buyLinkRel, getBuyUrl } from "@/lib/product-links";
+import { getProductPath } from "@/lib/paths";
 
 type RoundupProductHeadingProps = {
   index: number;
   heading: string;
   product?: Product;
+  publicBasePath: string;
 };
 
 function splitHeading(heading: string): { name: string; rest: string } {
@@ -34,6 +36,7 @@ export function RoundupProductHeading({
   index,
   heading,
   product,
+  publicBasePath,
 }: RoundupProductHeadingProps) {
   const { name, rest } = splitHeading(heading);
   const headingId = `product-${index}-heading`;
@@ -46,14 +49,12 @@ export function RoundupProductHeading({
       {index + 1}){" "}
       {product ? (
         <>
-          <a
-            href={getBuyUrl(product)}
-            target="_blank"
-            rel={buyLinkRel(product)}
+          <Link
+            href={getProductPath(publicBasePath, product.slug)}
             className="text-blue-600 hover:text-blue-700"
           >
             {name}
-          </a>
+          </Link>
           {rest}
         </>
       ) : (
