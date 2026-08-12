@@ -182,54 +182,69 @@ export const siteData: SiteData = {
 
   faqs: [
     {
+      question: "Is it better to sleep on your left or right side?",
+      answer:
+        "There is no single best side for everyone. Sleeping on the left side may be preferable for people with nighttime acid reflux and is commonly recommended during later pregnancy, while sleeping on the opposite side of a sore shoulder may be more comfortable. For most people, the better side is the one that allows comfortable, uninterrupted sleep without creating pain or numbness.",
+    },
+    {
+      question: "Why does my shoulder hurt when I sleep on my side?",
+      answer:
+        "Side sleeping places more direct pressure on the shoulder against the mattress. A mattress that is too firm, a pillow with the wrong height, or sleeping directly on an already sore shoulder can all contribute to discomfort. Pillow loft matters because your head and neck need enough support to avoid pulling the shoulder and neck out of a comfortable position.\n\nIf your pillow may be part of the problem, see our [Best Pillows for Shoulder Pain](/reviews/best-pillows-for-shoulder-pain).",
+    },
+    {
+      question: "Why does my hip hurt when I sleep on my side?",
+      answer:
+        "Side sleeping concentrates more pressure around the hip and shoulder. A very firm mattress may not cushion the hip enough, while a mattress that is too soft can allow the pelvis to sink too deeply. Mattress comfort is only one possible factor, however, so persistent or significant hip pain should not automatically be blamed on your bed.\n\nSee our [Best Mattresses for Side Sleepers](/reviews/best-mattresses-for-side-sleepers) for mattresses we researched with pressure relief and support in mind.",
+    },
+    {
+      question: "Why does my arm go numb when I sleep on my side?",
+      answer:
+        "Temporary numbness or tingling can happen when your sleeping position puts pressure on an arm or nerve. Changing position and avoiding sleeping directly on the arm may help, while a pillow that properly supports the head and neck can reduce how much weight ends up on the shoulder. Frequent, persistent numbness — especially with weakness or other symptoms — should be discussed with a healthcare professional.\n\nOur [Best Pillows for Side Sleepers](/reviews/best-pillows-for-side-sleepers) compares different approaches to loft, shape and adjustability.",
+    },
+    {
+      question: "Should side sleepers sleep with a pillow between their knees?",
+      answer:
+        "A pillow between the knees can help keep the hips, pelvis and spine in a more neutral position while side sleeping. It may be especially useful if your upper leg tends to rotate forward during the night. A regular pillow works, but a full-length body pillow can support both the upper body and legs at the same time.\n\nSee our [Best Body Pillows for Side Sleepers](/reviews/best-body-pillow-for-side-sleepers) for the options we researched.",
+    },
+    {
       question: "What mattress firmness is best for side sleepers?",
       answer:
-        "Most side sleepers sleep best on a medium to medium-soft mattress, typically rated between 4 and 6.5 out of 10 on the firmness scale. A mattress that is too firm can create painful pressure on the shoulders and hips, while one that is too soft may allow the spine to fall out of alignment. The ideal firmness also depends on your body weight. Lightweight sleepers usually prefer softer mattresses, while heavier individuals often need slightly firmer support to maintain healthy spinal alignment without sacrificing pressure relief.",
+        "There is no universal firmness that works for every side sleeper. Medium to medium-firm is a common starting point, but lighter sleepers often need more cushioning to sink in enough at the shoulder and hip, while heavier sleepers may need a firmer surface for support. Your body weight, shape and personal preference all matter.\n\nSee our [Best Mattresses for Side Sleepers](/reviews/best-mattresses-for-side-sleepers) for the firmness options and trade-offs we found in our research.",
     },
     {
-      question: "Are hybrid mattresses better for side sleepers?",
+      question: "Is memory foam or a hybrid mattress better for side sleepers?",
       answer:
-        "Hybrid mattresses are often considered one of the best options for side sleepers because they combine supportive pocket coils with pressure-relieving foam layers. This combination helps cushion the shoulders and hips while keeping the spine properly aligned throughout the night. Compared to traditional memory foam mattresses, hybrids usually sleep cooler, offer stronger edge support, and make it easier to change sleeping positions. However, the best mattress always depends on your body type, sleeping habits, and personal comfort preferences.",
-    },
-    {
-      question: "Is memory foam good for side sleepers?",
-      answer:
-        "Yes, memory foam can be an excellent choice for side sleepers because it contours closely to the body's natural curves. This helps reduce pressure on the shoulders and hips, which are common pain points when sleeping on your side. Memory foam also minimizes motion transfer, making it a popular option for couples. The main downside is that some memory foam mattresses retain heat. Fortunately, many modern models include cooling gel, breathable covers, or hybrid coil systems to improve airflow and temperature regulation.",
-    },
-    {
-      question: "Can the wrong mattress cause shoulder pain?",
-      answer:
-        "Yes. A mattress that is too firm may place excessive pressure on your shoulder, while a mattress that is too soft can allow your body to sink unevenly, causing poor spinal alignment. Both situations may contribute to shoulder discomfort or make existing pain worse. Side sleepers usually benefit from mattresses that provide enough cushioning for the shoulder while still supporting the rest of the body. Choosing the right pillow height is equally important for reducing pressure and keeping the neck aligned.",
-    },
-    {
-      question: "Can the wrong mattress cause hip pain?",
-      answer:
-        "Yes. Hip pain is a common complaint among side sleepers using a mattress that doesn't provide adequate support or pressure relief. A mattress that is too firm can create painful pressure points around the hips, while one that is too soft may cause the hips to sink too deeply, putting stress on the lower back. Medium or medium-soft mattresses with high-quality comfort layers often provide the best balance between pressure relief and spinal support for most side sleepers.",
-    },
-    {
-      question: "Why do my arms go numb when sleeping on my side?",
-      answer:
-        "Arm numbness while sleeping on your side is often caused by excessive pressure on the shoulder, which can temporarily compress nerves and reduce blood flow. A mattress that is too firm may increase this pressure, while a pillow that is too low or too high can place additional strain on the neck and shoulder. Choosing a mattress with good pressure relief and a pillow that keeps your head and neck properly aligned may help reduce numbness and improve overall sleep comfort.",
-    },
-    {
-      question: "What is the best cooling mattress for side sleepers?",
-      answer:
-        "The best cooling mattress for side sleepers combines effective pressure relief with excellent airflow. Hybrid mattresses are often the preferred choice because their pocket coil systems allow heat to escape more easily than all-foam mattresses. Features such as breathable covers, gel-infused memory foam, natural latex, and phase-change materials can further improve temperature regulation. If you frequently sleep hot, look for mattresses specifically designed with cooling technology rather than relying on standard foam alone.",
+        "Both can work well, but they feel different. Memory foam tends to contour closely around the shoulders and hips, while hybrids combine comfort layers with a coil support system that usually gives the bed more bounce and airflow. The better choice depends on whether you prefer a deeper, slower-moving feel or a more responsive sleep surface.\n\nIf you prefer the close contour of foam, see our [Top 8 Memory Foam Mattresses for Side Sleepers](/reviews/top-8-memory-foam-mattresses-for-side-sleepers).",
     },
     {
       question: "Do heavier side sleepers need a firmer mattress?",
       answer:
-        "In most cases, yes. Heavier side sleepers generally benefit from a slightly firmer mattress because additional body weight compresses the comfort layers more deeply. A firmer support system helps maintain proper spinal alignment while still allowing enough cushioning for the shoulders and hips. Many mattress manufacturers also offer reinforced or plus-sized models designed specifically for sleepers over 230 lbs (105 kg), providing better durability and long-term support.",
+        "Often, yes — but not simply because “firmer is better.” A heavier sleeper generally sinks farther into the same mattress than a lighter sleeper, so additional firmness and stronger support can help prevent excessive sinkage while still allowing cushioning around the shoulders and hips. Individual body shape and comfort preferences still matter.\n\nOur [Best Mattresses for Side Sleepers](/reviews/best-mattresses-for-side-sleepers) includes mattresses with different firmness options, including models aimed at heavier sleepers.",
     },
     {
-      question: "How long should a mattress last?",
+      question: "What pillow loft is best for side sleepers?",
       answer:
-        "Most quality mattresses last between 7 and 10 years, although the lifespan depends on the materials, construction, and how the mattress is used. Premium latex and hybrid mattresses often last longer than lower-quality foam models. If your mattress develops noticeable sagging, body impressions, increased aches and pains, or no longer provides restful sleep, it may be time for a replacement—even if the warranty is still active.",
+        "Side sleepers usually need more loft than back or stomach sleepers because the pillow has to fill the space between the head and mattress created by the shoulder. Medium-to-high loft is a common starting point, but broad shoulders may require more height while a softer mattress that lets the shoulder sink deeply may require less. Adjustable pillows can make finding the right height easier.\n\nSee our [Best Pillows for Side Sleepers](/reviews/best-pillows-for-side-sleepers) for adjustable, shaped and traditional options.",
+    },
+    {
+      question: "What type of pillow is best for side sleepers?",
+      answer:
+        "There is no single material that is best for everyone. Adjustable shredded-foam pillows let you change the loft, molded or contoured foam keeps a more consistent shape, and latex tends to feel more responsive than memory foam. The important part is finding a pillow that fills the shoulder-to-head gap without pushing the head too far upward.\n\nOur [Best Pillows for Side Sleepers](/reviews/best-pillows-for-side-sleepers) compares several of these approaches and their trade-offs.",
+    },
+    {
+      question: "Are body pillows good for side sleepers?",
+      answer:
+        "They can be. A body pillow gives side sleepers something to support the upper arm and place between the knees, which can help keep the hips and pelvis from rotating as much during sleep. The best shape and firmness depend on whether you mainly want leg support, something to hug, or support along most of the body.\n\nSee our [Best Body Pillows for Side Sleepers](/reviews/best-body-pillow-for-side-sleepers) for the models we researched.",
     },
     {
       question: "Should side sleepers use a mattress topper?",
       answer:
-        "A mattress topper can be a great solution if your current mattress feels too firm but is otherwise in good condition. Adding a high-quality memory foam or latex topper can improve pressure relief around the shoulders and hips without the cost of replacing the entire mattress. However, a topper cannot fix a mattress that is worn out, sagging, or lacks proper support. If your mattress is old or damaged, replacing it is usually the better long-term solution.",
+        "A topper can make sense when your mattress feels too firm but is otherwise supportive and in good condition. Memory foam, latex and other cushioning materials can change the surface feel and provide more room for the shoulders and hips to sink in. A topper cannot repair a sagging or structurally worn-out mattress, so replacement is usually the better option when the support underneath has failed.\n\nSee our [Best Mattress Toppers for Side Sleepers](/reviews/best-mattress-topper-for-side-sleepers) for the options we researched.",
+    },
+    {
+      question: "How thick should a mattress topper be for side sleepers?",
+      answer:
+        "Most mattress toppers are roughly 1 to 4 inches thick, and thickness determines how much they change the feel of the mattress. A thicker topper can provide a more noticeable cushioning change when a mattress is much too firm, while a thinner topper may be enough when only a small adjustment is needed. Body weight, topper firmness and the condition of the mattress underneath are just as important as thickness alone.\n\nSee our [Best Mattress Toppers for Side Sleepers](/reviews/best-mattress-topper-for-side-sleepers) for the materials, thicknesses and trade-offs we found.",
     },
   ],
 
