@@ -3,6 +3,7 @@ import {
   getArticles,
   getProducts,
   getSiteBySlug,
+  siteHasMattressPillowNav,
   siteSlugs,
   type SiteSlug,
 } from "@/lib/site";
@@ -34,13 +35,17 @@ export function buildSiteSitemapEntries(
       changeFrequency: "weekly",
       priority: 0.8,
     },
-    {
+  ];
+
+  // Construction-software (and similar) keep /comparisons; Side Sleeper does not.
+  if (!siteHasMattressPillowNav(siteSlug)) {
+    entries.push({
       url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, "/comparisons"),
       lastModified: now,
       changeFrequency: "weekly",
       priority: 0.75,
-    },
-  ];
+    });
+  }
 
   if (siteUsesAboutPage(siteSlug)) {
     entries.push({

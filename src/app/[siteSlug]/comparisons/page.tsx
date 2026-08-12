@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { siteSlugs } from "@/data/sites";
 import { ComparisonTable } from "@/components/ComparisonTable";
 import { AffiliateDisclosure } from "@/components/AffiliateDisclosure";
@@ -9,7 +9,8 @@ import {
   siteHasMattressPillowNav,
   type SiteSlug,
 } from "@/lib/site";
-import { getPublicPath } from "@/lib/paths";
+import { getProductsIndexPath, getPublicPath } from "@/lib/paths";
+import { getRequestPublicBasePath } from "@/lib/request-paths";
 import { buildPageOpenGraph } from "@/lib/seo";
 
 type ComparisonsPageProps = {
@@ -26,6 +27,10 @@ export async function generateMetadata({
   const { siteSlug } = await params;
   const siteData = getSiteBySlug(siteSlug);
   if (!siteData) return { title: "Comparisons" };
+
+  if (siteHasMattressPillowNav(siteSlug)) {
+    return { title: "Redirecting…" };
+  }
 
   const path = getPublicPath(siteSlug, "/comparisons");
   const description = siteData.comparisonTable.description ?? "";
@@ -56,15 +61,17 @@ export default async function ComparisonsPage({ params }: ComparisonsPageProps) 
     notFound();
   }
 
-  const pageHeading = siteHasMattressPillowNav(siteSlug)
-    ? "Compare Mattresses for Side Sleepers"
-    : siteData.comparisonTable.title;
+  // Side Sleeper Guide: comparison page retired — send traffic to products.
+  if (siteHasMattressPillowNav(siteSlug)) {
+    const publicBasePath = await getRequestPublicBasePath(siteSlug);
+    permanentRedirect(getProductsIndexPath(publicBasePath));
+  }
 
   return (
     <main>
       <div className="mx-auto max-w-6xl px-4 pt-12 md:pt-16">
         <h1 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
-          {pageHeading}
+          {siteData.comparisonTable.title}
         </h1>
       </div>
       <ComparisonTable siteSlug={siteSlug as SiteSlug} />

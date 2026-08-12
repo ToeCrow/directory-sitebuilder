@@ -271,7 +271,10 @@ describe("sitemap", () => {
 
     assert.ok(urls.includes("https://side-sleepers.com/"));
     assert.ok(urls.includes("https://side-sleepers.com/products"));
-    assert.ok(urls.includes("https://side-sleepers.com/comparisons"));
+    assert.equal(
+      urls.includes("https://side-sleepers.com/comparisons"),
+      false,
+    );
     assert.ok(urls.includes("https://side-sleepers.com/privacy-policy"));
     assert.ok(urls.includes("https://side-sleepers.com/about"));
     assert.ok(urls.includes("https://side-sleepers.com/affiliate"));

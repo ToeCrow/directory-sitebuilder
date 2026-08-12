@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useSiteContext } from "@/context/SiteContext";
 import {
-  getComparisonsPath,
   getProductPath,
   getProductsIndexPath,
   getReviewsIndexPath,
@@ -73,7 +72,6 @@ export function Header() {
 
   const primaryLinks = showProductsNav
     ? [
-        { href: getComparisonsPath(publicBasePath), label: "Compare" },
         { href: `${homeHref}#buying-guide`, label: "Buying Guide" },
         { href: `${homeHref}#faq`, label: "FAQ" },
       ]
