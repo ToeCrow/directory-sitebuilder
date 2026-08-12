@@ -26,9 +26,9 @@ export function HomePageLayout({ siteSlug }: HomePageLayoutProps) {
         <HashScrollOnLoad siteSlug={siteSlug} />
         <Hero siteSlug={siteSlug} />
         <AffiliateDisclosure siteSlug={siteSlug} />
+        <ArticleGrid siteSlug={siteSlug} />
         <BuyingGuide siteSlug={siteSlug} />
         <FAQ siteSlug={siteSlug} />
-        <ArticleGrid siteSlug={siteSlug} />
       </>
     );
   }

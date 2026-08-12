@@ -192,6 +192,13 @@ export type SiteData = {
   };
   faqs: FAQ[];
   articles: Article[];
+  /**
+   * Homepage Featured Reviews: priority keyword guides (Search Console).
+   * Combined with scienceArticleSlug + latest-published logic in getFeaturedHomeReviews.
+   */
+  featuredReviewSlugs?: string[];
+  /** Science / editorial article always included in Featured Reviews when set. */
+  scienceArticleSlug?: string;
   newsletter: {
     title: string;
     description: string;

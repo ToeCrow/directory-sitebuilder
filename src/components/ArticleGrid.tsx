@@ -4,7 +4,7 @@ import Link from "next/link";
 import type { SiteSlug } from "@/data/sites";
 import { ReviewListItem } from "@/components/ReviewListItem";
 import { usePublicBasePath } from "@/context/SiteContext";
-import { getSiteData } from "@/lib/site";
+import { getFeaturedHomeReviews, getSiteData } from "@/lib/site";
 import { cn } from "@/lib/cn";
 import { getArticlePath, getReviewsIndexPath } from "@/lib/paths";
 
@@ -16,6 +16,16 @@ type ArticleGridProps = {
 export function ArticleGrid({ siteSlug, className }: ArticleGridProps) {
   const publicBasePath = usePublicBasePath();
   const siteData = getSiteData(siteSlug);
+  const reviews = siteData.featuredReviewSlugs
+    ? getFeaturedHomeReviews(siteSlug)
+    : siteData.articles.slice(0, 6);
+  const heading = siteData.featuredReviewSlugs
+    ? "Featured Reviews"
+    : "Reviews";
+
+  if (reviews.length === 0) {
+    return null;
+  }
 
   return (
     <section
@@ -32,7 +42,7 @@ export function ArticleGrid({ siteSlug, className }: ArticleGridProps) {
             id="reviews-heading"
             className="text-2xl font-bold tracking-tight text-slate-900 md:text-3xl"
           >
-            Reviews
+            {heading}
           </h2>
           <Link
             href={getReviewsIndexPath(publicBasePath)}
@@ -42,7 +52,7 @@ export function ArticleGrid({ siteSlug, className }: ArticleGridProps) {
           </Link>
         </div>
         <ul className="mt-6 border-t border-slate-200">
-          {siteData.articles.slice(0, 6).map((article) => (
+          {reviews.map((article) => (
             <li key={article.slug}>
               <ReviewListItem
                 article={article}

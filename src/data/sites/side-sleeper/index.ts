@@ -161,6 +161,13 @@ export const siteData: SiteData = {
     },
   ],
 
+  featuredReviewSlugs: [
+    "best-mattresses-for-side-sleepers",
+    "best-pillows-for-side-sleepers",
+    "best-mattresses-for-lower-back-pain",
+  ],
+  scienceArticleSlug: "sleep-quality-7-facts",
+
   articles: [
     {
       kind: "product-roundup",

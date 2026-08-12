@@ -180,7 +180,7 @@ export function ProductCard({
             rel={buyLinkRel(product)}
             className="inline-flex w-full items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
           >
-            Visit site
+            Check price & availability
           </a>
         </div>
       </div>

@@ -59,6 +59,61 @@ export function getArticlesByReviewCategory(
   return articles.filter((article) => article.reviewCategory === category);
 }
 
+/**
+ * Homepage Featured Reviews: keyword guides + science + latest
+ * (if science is latest, use 2nd-latest non-science instead).
+ */
+export function getFeaturedHomeReviews(siteSlug: SiteSlug): Article[] {
+  const siteData = getSiteData(siteSlug);
+  const articles = getArticles(siteSlug);
+  const bySlug = new Map(articles.map((article) => [article.slug, article]));
+  const featured: Article[] = [];
+  const seen = new Set<string>();
+
+  const push = (article: Article | undefined) => {
+    if (!article || seen.has(article.slug)) return;
+    seen.add(article.slug);
+    featured.push(article);
+  };
+
+  for (const slug of siteData.featuredReviewSlugs ?? []) {
+    push(bySlug.get(slug));
+  }
+
+  const scienceSlug = siteData.scienceArticleSlug;
+  if (scienceSlug) {
+    push(bySlug.get(scienceSlug));
+  }
+
+  const rankedNewestFirst = articles
+    .map((article, index) => ({ article, index }))
+    .sort((a, b) => {
+      const dateA = a.article.publishedAt ?? "";
+      const dateB = b.article.publishedAt ?? "";
+      if (dateA !== dateB) {
+        return dateB.localeCompare(dateA);
+      }
+      return b.index - a.index;
+    })
+    .map(({ article }) => article);
+
+  const latest = rankedNewestFirst[0];
+  if (!latest) {
+    return featured;
+  }
+
+  if (scienceSlug && latest.slug === scienceSlug) {
+    const secondLatestNonScience = rankedNewestFirst.find(
+      (article) => article.slug !== scienceSlug,
+    );
+    push(secondLatestNonScience);
+  } else {
+    push(latest);
+  }
+
+  return featured;
+}
+
 export function getProductsByCategory(
   siteSlug: SiteSlug,
   category: ProductCategory,
