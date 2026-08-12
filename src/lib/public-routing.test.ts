@@ -8,6 +8,7 @@ import {
 import {
   buildInternalUrl,
   getAppPath,
+  getBuyingGuidePath,
   getPublicAbsoluteUrl,
   getPublicPath,
   getReviewsIndexPath,
@@ -132,6 +133,15 @@ describe("path helpers", () => {
       getAppPath("/construction-software", "/products"),
       "/construction-software/products",
     );
+    assert.equal(getBuyingGuidePath(""), "/buying-guide");
+    assert.equal(
+      getBuyingGuidePath("/side-sleeper"),
+      "/side-sleeper/buying-guide",
+    );
+    assert.equal(
+      getBuyingGuidePath("/construction-software"),
+      "/construction-software/buying-guide",
+    );
   });
 
   it("never puts siteSlug in side-sleeper public absolute URLs", () => {
@@ -180,8 +190,16 @@ describe("custom domain rewrite helpers", () => {
       true,
     );
     assert.equal(
+      shouldRewriteCustomDomainPath("/buying-guide", "side-sleeper"),
+      true,
+    );
+    assert.equal(
       getCustomDomainRewritePath("/products", "side-sleeper"),
       "/side-sleeper/products",
+    );
+    assert.equal(
+      getCustomDomainRewritePath("/buying-guide", "side-sleeper"),
+      "/side-sleeper/buying-guide",
     );
   });
 
@@ -279,6 +297,7 @@ describe("sitemap", () => {
     assert.ok(urls.includes("https://side-sleepers.com/about"));
     assert.ok(urls.includes("https://side-sleepers.com/affiliate"));
     assert.ok(urls.includes("https://side-sleepers.com/research-score"));
+    assert.ok(urls.includes("https://side-sleepers.com/buying-guide"));
     assert.equal(
       urls.filter((u) => u === "https://side-sleepers.com/privacy-policy")
         .length,
@@ -311,6 +330,9 @@ describe("sitemap", () => {
     const urls = entries.map((e) => e.url);
     assert.ok(urls.some((u) => u.includes("/construction-software/products")));
     assert.ok(urls.some((u) => u.includes("/construction-software/affiliate")));
+    assert.ok(
+      urls.some((u) => u.includes("/construction-software/buying-guide")),
+    );
     assert.equal(
       urls.some((u) => u.includes("/research-score")),
       false,

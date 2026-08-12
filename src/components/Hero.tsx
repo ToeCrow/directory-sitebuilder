@@ -1,11 +1,12 @@
 "use client";
 
+import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { SiteSlug } from "@/data/sites";
 import { usePublicBasePath } from "@/context/SiteContext";
 import { getSiteData, siteHasMattressPillowNav } from "@/lib/site";
-import { getProductsIndexPath } from "@/lib/paths";
+import { getAppPath, getBuyingGuidePath, getProductsIndexPath } from "@/lib/paths";
 import { InPageHashAnchor } from "@/components/InPageHashAnchor";
 import { cn } from "@/lib/cn";
 
@@ -27,14 +28,42 @@ const primaryCtaClassName =
 const secondaryCtaClassName =
   "inline-flex items-center rounded-lg border border-slate-300 px-6 py-3 text-sm font-semibold text-slate-700 transition-colors hover:border-slate-400 hover:bg-white";
 
+function resolveCtaHref(publicBasePath: string, href: string): string {
+  if (href.startsWith("#") || href.startsWith("http://") || href.startsWith("https://")) {
+    return href;
+  }
+  return getAppPath(publicBasePath, href);
+}
+
+function CtaLink({
+  href,
+  className,
+  children,
+}: {
+  href: string;
+  className: string;
+  children: ReactNode;
+}) {
+  if (href.startsWith("#")) {
+    return (
+      <InPageHashAnchor href={href} className={className}>
+        {children}
+      </InPageHashAnchor>
+    );
+  }
+  return (
+    <Link href={href} className={className}>
+      {children}
+    </Link>
+  );
+}
+
 function SideSleeperHeroCtas({
   publicBasePath,
   buyingGuideLabel,
-  buyingGuideHref,
 }: {
   publicBasePath: string;
   buyingGuideLabel: string;
-  buyingGuideHref: string;
 }) {
   return (
     <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
@@ -50,36 +79,44 @@ function SideSleeperHeroCtas({
       >
         Browse Pillows
       </Link>
-      <InPageHashAnchor href={buyingGuideHref} className={primaryCtaClassName}>
+      <Link
+        href={getBuyingGuidePath(publicBasePath)}
+        className={primaryCtaClassName}
+      >
         {buyingGuideLabel}
-      </InPageHashAnchor>
+      </Link>
     </div>
   );
 }
 
 function DefaultHeroCtas({
+  publicBasePath,
   primaryCta,
   primaryCtaHref,
   secondaryCta,
   secondaryCtaHref,
 }: {
+  publicBasePath: string;
   primaryCta: string;
   primaryCtaHref: string;
   secondaryCta?: string;
   secondaryCtaHref?: string;
 }) {
+  const primaryHref = resolveCtaHref(publicBasePath, primaryCtaHref);
+  const secondaryHref = resolveCtaHref(
+    publicBasePath,
+    secondaryCtaHref ?? "/buying-guide",
+  );
+
   return (
     <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-      <InPageHashAnchor href={primaryCtaHref} className={primaryCtaClassName}>
+      <CtaLink href={primaryHref} className={primaryCtaClassName}>
         {primaryCta}
-      </InPageHashAnchor>
+      </CtaLink>
       {secondaryCta && (
-        <InPageHashAnchor
-          href={secondaryCtaHref ?? "#buying-guide"}
-          className={secondaryCtaClassName}
-        >
+        <CtaLink href={secondaryHref} className={secondaryCtaClassName}>
           {secondaryCta}
-        </InPageHashAnchor>
+        </CtaLink>
       )}
     </div>
   );
@@ -94,13 +131,13 @@ function HeroCtaGroup({ siteSlug }: { siteSlug: SiteSlug }) {
       <SideSleeperHeroCtas
         publicBasePath={publicBasePath}
         buyingGuideLabel={hero.secondaryCta ?? "Read Buying Guide"}
-        buyingGuideHref={hero.secondaryCtaHref ?? "#buying-guide"}
       />
     );
   }
 
   return (
     <DefaultHeroCtas
+      publicBasePath={publicBasePath}
       primaryCta={hero.primaryCta}
       primaryCtaHref="#compare"
       secondaryCta={hero.secondaryCta}

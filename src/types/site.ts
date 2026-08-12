@@ -93,6 +93,26 @@ export type Article = ProductRoundupArticle | EditorialArticle;
 
 export type BuyingGuideSection = { title: string; content: string };
 
+export type BuyingGuideSubsection = { title: string; content: string };
+
+export type BuyingGuideChapter = {
+  title: string;
+  /** Optional body when the chapter has no subsections (e.g. methodology). */
+  content?: string;
+  subsections?: BuyingGuideSubsection[];
+};
+
+export type BuyingGuideProductNavItem = {
+  category: "mattress" | "pillow" | "topper";
+  title: string;
+  description: string;
+};
+
+export type BuyingGuideProductNav = {
+  title: string;
+  items: BuyingGuideProductNavItem[];
+};
+
 export type ComparisonRow = {
   key: string;
   label: string;
@@ -188,7 +208,17 @@ export type SiteData = {
   };
   buyingGuide: {
     title: string;
-    sections: BuyingGuideSection[];
+    /** Short intro paragraphs (hierarchical guides, e.g. Side Sleeper). */
+    intro?: string[];
+    /**
+     * Hierarchical chapters (H2) with optional H3 subsections.
+     * When present, preferred over flat `sections` for page rendering.
+     */
+    chapters?: BuyingGuideChapter[];
+    /** Category entry points into the product catalogue. */
+    productNav?: BuyingGuideProductNav;
+    /** Flat sections (e.g. Construction Software). */
+    sections?: BuyingGuideSection[];
   };
   faqs: FAQ[];
   articles: Article[];

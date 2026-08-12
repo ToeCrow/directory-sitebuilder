@@ -89,6 +89,10 @@ export function getComparisonsPath(publicBasePath: string): string {
   return getAppPath(publicBasePath, "/comparisons");
 }
 
+export function getBuyingGuidePath(publicBasePath: string): string {
+  return getAppPath(publicBasePath, "/buying-guide");
+}
+
 export function getArticlePath(
   publicBasePath: string,
   articleSlug: string,

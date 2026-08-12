@@ -42,7 +42,7 @@ export const siteData: SiteData = {
       "Side Sleeper Guide is a research-based knowledge site for side sleepers — covering mattresses, pillows, and buying decisions using product specs, brand policies, and recurring customer feedback.",
     primaryCta: "Browse Mattresses",
     secondaryCta: "Read Buying Guide",
-    secondaryCtaHref: "#buying-guide",
+    secondaryCtaHref: "/buying-guide",
     image: {
       src: "/sites/side-sleeper/hero.png",
       srcMobile: "/sites/side-sleeper/hero-mobile.png",
@@ -73,39 +73,111 @@ export const siteData: SiteData = {
   },
 
   buyingGuide: {
-    title: "Side sleeper mattress buying guide",
-    sections: [
+    title: "Side Sleeper Buying Guide",
+    intro: [
+      "Side sleeping concentrates weight on the shoulders and hips. Without enough cushioning at those points, pressure can build and the spine can fall out of a comfortable line — so side sleepers often need a setup that contours to curves while still supporting the midsection.",
+      "The right mattress, pillow, or topper depends on cushioning, support, body weight, sleeping preferences, and how your current bed already feels. This guide walks through what to compare before you browse the catalogue.",
+    ],
+    chapters: [
       {
-        title: "Why side sleepers need a different mattress",
-        content:
-          "Side sleeping concentrates weight on your shoulders and hips. Without enough cushioning, pressure builds at those points and your spine can fall out of alignment. Side sleepers need a mattress that contours to curves while keeping the midsection supported.",
+        title: "Choosing a mattress for side sleeping",
+        subsections: [
+          {
+            title: "Firmness",
+            content:
+              "Medium to medium-soft is a common starting point for many side sleepers, but body weight, body shape, and personal preference matter. Too firm and you may feel pressure at the shoulder and hip; too soft and the torso can sink, twisting the spine.",
+          },
+          {
+            title: "Pressure relief and support",
+            content:
+              "A helpful side-sleeper mattress fills the gap at the waist while letting the shoulder and hip sink slightly, which can keep the spine closer to a neutral line from neck to tailbone.",
+          },
+          {
+            title: "Memory foam vs hybrid",
+            content:
+              "Memory foam excels at pressure relief and contouring but can sleep warm and feel slow to respond. Hybrids combine foam comfort layers with coils for better airflow, bounce, and edge support. Combination sleepers often prefer hybrids.",
+          },
+          {
+            title: "Body weight",
+            content:
+              "Lighter side sleepers (under 130 lbs) often need softer surfaces for adequate contouring. Average-weight sleepers may suit medium firmness. Heavier side sleepers (over 230 lbs) often need firmer support layers to prevent excessive sinkage while still cushioning pressure points.",
+          },
+          {
+            title: "Zoned support",
+            content:
+              "Some mattresses use zoned support that is softer at the shoulders and firmer at the hips — a feature worth comparing when you want more cushioning at pressure points without losing midsection support.",
+          },
+        ],
       },
       {
-        title: "Best firmness for side sleepers",
-        content:
-          "Most side sleepers do best on medium to medium-soft mattresses. Too firm and you feel pressure at the shoulder and hip. Too soft and your torso sinks, twisting your spine. Look for zoned support that is softer at the shoulders and firmer at the hips.",
+        title: "Choosing a pillow for side sleeping",
+        subsections: [
+          {
+            title: "Loft",
+            content:
+              "On your side, your head sits farther from the mattress than when you sleep on your back. A pillow that is too low lets the neck drop toward the mattress; one that is too high pushes the head up and can strain the shoulder. Many side sleepers need medium-to-high loft so the neck stays roughly level with the spine — and adjustable-fill pillows let you dial that height in over a few nights.",
+          },
+          {
+            title: "Fill and adjustability",
+            content:
+              "Shredded memory foam or fiber blends are common in adjustable pillows: unzip, add or remove fill, and change loft for side sleeping. Latex fills often feel firmer and cooler and may hold loft longer; shredded memory foam tends to contour more. Molded or contoured foam pillows keep a fixed cervical shape — useful if you want consistent support, less ideal if you change positions often. Body pillows can help keep hips and shoulders stacked by supporting the upper arm and top knee.",
+          },
+          {
+            title: "Neck and shoulder position",
+            content:
+              "A side-sleeper pillow should fill the gap between ear and mattress without forcing the chin into the chest or rolling the shoulder forward. Pair loft with mattress firmness: a firmer mattress may need a slightly higher pillow, while a plush surface may need less. Pillow choice can affect comfort at the neck and shoulder, but it is not a medical treatment — if you have ongoing pain, talk with a qualified clinician.",
+          },
+        ],
       },
       {
-        title: "Hybrid vs memory foam for side sleepers",
-        content:
-          "Memory foam excels at pressure relief and contouring but can sleep warm and feel slow to respond. Hybrids combine foam comfort layers with coils for better airflow, bounce, and edge support. Combination sleepers often prefer hybrids.",
+        title: "When a mattress topper makes sense",
+        subsections: [
+          {
+            title: "Topper vs replacing the mattress",
+            content:
+              "A mattress topper can help if your current mattress feels too firm but is otherwise in good condition. Memory foam or latex toppers may improve cushioning at the shoulders and hips without replacing the whole mattress. A topper cannot fix a mattress that is worn out, sagging, or lacking support underneath — if you see deep body impressions, broken coils, or worse sleep over time, replacement is usually the better long-term path.",
+          },
+          {
+            title: "Memory foam vs latex",
+            content:
+              "Memory foam toppers are popular for pressure relief because they contour around the shoulder and hip. Latex toppers often feel more responsive and sleep cooler for people who find foam too sinky or warm.",
+          },
+          {
+            title: "Thickness and firmness",
+            content:
+              "Thickness and density matter as much as material: a thin, soft topper may not change feel much, while a thick soft topper on an already soft mattress can let the hips sink too far for side sleeping. If a medium-firm mattress needs more cushioning for side sleeping, a 2–3 inch medium-soft foam or latex topper is a common starting point in product specs and owner feedback. If the mattress already feels soft, a firmer or thinner topper (or no topper) may keep the spine from dipping. Check your mattress warranty before adding a topper, as warranty terms vary by manufacturer.",
+          },
+        ],
       },
       {
-        title: "Pressure relief and spinal alignment",
+        title: "How we evaluate mattresses, pillows, and toppers",
         content:
-          "A good side-sleeper mattress fills the gap at your waist while letting your shoulder and hip sink slightly. This keeps your spine in a neutral line from neck to tailbone. Zoned coils and layered foams are designed specifically for this.",
-      },
-      {
-        title: "How to choose based on body weight",
-        content:
-          "Lighter side sleepers (under 130 lbs) often need softer surfaces for adequate contouring. Average-weight sleepers suit medium firmness. Heavier side sleepers (over 230 lbs) need firmer support layers to prevent excessive sinkage while still cushioning pressure points.",
-      },
-      {
-        title: "How we compare mattresses",
-        content:
-          "At Side Sleeper Guide, we review product specifications and manufacturer information, then look for recurring patterns in verifiable customer feedback. We compare what matters most for side sleepers — including pressure relief, cooling, support, price, trials, and warranties — and summarize that work in our reviews and Research Score.",
+          "At Side Sleeper Guide, we review product specifications and manufacturer information, then look for recurring patterns in verifiable customer feedback. We compare what matters most for side sleepers — including pressure relief, loft and support for pillows, cushioning from toppers, cooling, price, trials, and warranties — and summarize that work in our reviews and Research Score.",
       },
     ],
+    productNav: {
+      title: "Find the right product",
+      items: [
+        {
+          category: "mattress",
+          title: "Mattresses",
+          description:
+            "Compare side-sleeper mattresses for pressure relief, support, and cooling in the catalogue.",
+        },
+        {
+          category: "pillow",
+          title: "Pillows",
+          description:
+            "Browse pillows by loft, fill, and shape suited to side sleeping.",
+        },
+        {
+          category: "topper",
+          title: "Mattress toppers",
+          description:
+            "Explore toppers that add cushioning when your mattress is firm but still structurally sound.",
+        },
+      ],
+    },
   },
 
   faqs: [

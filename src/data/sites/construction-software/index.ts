@@ -29,7 +29,7 @@ export const siteData: SiteData = {
       "Compare top-rated tools for small contractors, builders, and field teams. Independent reviews to help you choose the right platform.",
     primaryCta: "Compare tools",
     secondaryCta: "Read buying guide",
-    secondaryCtaHref: "#buying-guide",
+    secondaryCtaHref: "/buying-guide",
   },
 
   topPicks: {

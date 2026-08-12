@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useSiteContext } from "@/context/SiteContext";
 import {
+  getBuyingGuidePath,
   getProductPath,
   getProductsIndexPath,
   getReviewsIndexPath,
@@ -70,14 +71,15 @@ export function Header() {
     : [];
   const showReviewsNav = siteData.articles.length > 0;
 
+  const buyingGuideHref = getBuyingGuidePath(publicBasePath);
   const primaryLinks = showProductsNav
     ? [
-        { href: `${homeHref}#buying-guide`, label: "Buying Guide" },
+        { href: buyingGuideHref, label: "Buying Guide" },
         { href: `${homeHref}#faq`, label: "FAQ" },
       ]
     : [
         { href: `${homeHref}#compare`, label: "Compare" },
-        { href: `${homeHref}#buying-guide`, label: "Buying Guide" },
+        { href: buyingGuideHref, label: "Buying Guide" },
         { href: `${homeHref}#faq`, label: "FAQ" },
       ];
 

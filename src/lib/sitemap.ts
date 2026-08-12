@@ -47,6 +47,13 @@ export function buildSiteSitemapEntries(
     });
   }
 
+  entries.push({
+    url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, "/buying-guide"),
+    lastModified: now,
+    changeFrequency: "monthly",
+    priority: 0.7,
+  });
+
   if (siteUsesAboutPage(siteSlug)) {
     entries.push({
       url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, "/about"),
