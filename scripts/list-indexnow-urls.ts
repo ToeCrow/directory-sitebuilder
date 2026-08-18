@@ -1,3 +1,3 @@
-import { getIndexNowUrlList } from "../src/lib/indexnow";
+import { getIndexNowUrlSnapshots } from "../src/lib/indexnow";
 
-process.stdout.write(JSON.stringify(getIndexNowUrlList("side-sleeper")));
+process.stdout.write(JSON.stringify(getIndexNowUrlSnapshots("side-sleeper")));

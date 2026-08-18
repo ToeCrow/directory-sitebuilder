@@ -60,7 +60,7 @@ export async function GET(request: Request) {
   return handleSubmit(request);
 }
 
-/** Optional body `{ urls: string[] }` to submit only new pages. */
+/** Optional body `{ urls: string[] }` to submit added, updated, or deleted pages. */
 export async function POST(request: Request) {
   return handleSubmit(request);
 }

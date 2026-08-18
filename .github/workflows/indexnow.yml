@@ -1,4 +1,4 @@
-name: IndexNow on new pages
+name: IndexNow on changed URLs
 
 on:
   push:
@@ -7,13 +7,19 @@ on:
     paths:
       - "src/data/sites/side-sleeper/**"
       - "src/app/**/page.tsx"
+      - "src/app/**/layout.tsx"
       - "src/lib/sitemap.ts"
       - "src/lib/indexnow.ts"
+      - "src/lib/site.ts"
+      - "src/lib/paths.ts"
+      - "src/lib/about.ts"
+      - "src/lib/privacy-policy.ts"
+      - "src/lib/research-score.ts"
       - "scripts/indexnow-on-push.ts"
       - "scripts/list-indexnow-urls.ts"
 
 jobs:
-  submit-new-urls:
+  submit-changed-urls:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -30,7 +36,7 @@ jobs:
       - name: Install
         run: npm ci
 
-      - name: Submit new sitemap URLs to IndexNow
+      - name: Submit added, updated, and deleted sitemap URLs to IndexNow
         env:
           INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
         run: npx tsx scripts/indexnow-on-push.ts

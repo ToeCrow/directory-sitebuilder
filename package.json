@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "test": "tsx --test src/lib/public-routing.test.ts src/lib/indexnow.test.ts",
+    "indexnow:changed": "tsx scripts/indexnow-on-push.ts",
     "indexnow:new": "tsx scripts/indexnow-on-push.ts"
   },
   "dependencies": {

@@ -1,11 +1,18 @@
 import assert from "node:assert/strict";
 import { describe, it, afterEach } from "node:test";
+import { buildSiteSitemapEntries } from "./sitemap";
 import {
+  applyPublicTemplateFallback,
+  diffIndexNowSnapshots,
   getIndexNowKey,
   getIndexNowKeyLocation,
   getIndexNowUrlList,
+  getIndexNowUrlSnapshots,
+  indexNowUrlsToSubmit,
   isAuthorizedIndexNowSubmit,
-  diffNewIndexNowUrls,
+  isPublicSiteTemplatePath,
+  parseIndexNowSnapshotList,
+  type IndexNowUrlSnapshot,
 } from "./indexnow";
 
 const originalEnv = { ...process.env };
@@ -18,6 +25,10 @@ afterEach(() => {
   }
   Object.assign(process.env, originalEnv);
 });
+
+function snap(url: string, fingerprint: string): IndexNowUrlSnapshot {
+  return { url, fingerprint };
+}
 
 describe("indexnow helpers", () => {
   it("builds keyLocation at site root", () => {
@@ -52,6 +63,24 @@ describe("indexnow helpers", () => {
     }
   });
 
+  it("snapshots match sitemap URLs and are stable", () => {
+    const first = getIndexNowUrlSnapshots("side-sleeper");
+    const second = getIndexNowUrlSnapshots("side-sleeper");
+    const sitemapUrls = buildSiteSitemapEntries("side-sleeper").map(
+      (entry) => entry.url,
+    );
+
+    assert.deepEqual(
+      first.map((snapshot) => snapshot.url),
+      sitemapUrls,
+    );
+    assert.deepEqual(first, second);
+    assert.ok(first.length > 0);
+    for (const snapshot of first) {
+      assert.equal(snapshot.fingerprint.length, 64);
+    }
+  });
+
   it("validates INDEXNOW_KEY format", () => {
     process.env.INDEXNOW_KEY = "short";
     assert.throws(() => getIndexNowKey(), /8–128/);
@@ -77,23 +106,137 @@ describe("indexnow helpers", () => {
     assert.equal(isAuthorizedIndexNowSubmit("Bearer cron-secret"), true);
   });
 
-  it("diffs only newly added URLs", () => {
+  it("diffs added, updated, and removed URLs", () => {
+    const previous = [
+      snap("https://side-sleepers.com/", "home-v1"),
+      snap("https://side-sleepers.com/products/old", "old-v1"),
+      snap("https://side-sleepers.com/products/kept", "kept-v1"),
+    ];
+    const current = [
+      snap("https://side-sleepers.com/", "home-v2"),
+      snap("https://side-sleepers.com/products/kept", "kept-v1"),
+      snap("https://side-sleepers.com/products/new", "new-v1"),
+    ];
+
+    assert.deepEqual(diffIndexNowSnapshots(current, previous), {
+      added: ["https://side-sleepers.com/products/new"],
+      updated: ["https://side-sleepers.com/"],
+      removed: ["https://side-sleepers.com/products/old"],
+    });
+  });
+
+  it("treats slug rename as removed old URL and added new URL", () => {
     assert.deepEqual(
-      diffNewIndexNowUrls(
-        [
-          "https://side-sleepers.com/",
-          "https://side-sleepers.com/products/new",
-        ],
-        ["https://side-sleepers.com/"],
+      diffIndexNowSnapshots(
+        [snap("https://side-sleepers.com/products/new-slug", "same")],
+        [snap("https://side-sleepers.com/products/old-slug", "same")],
       ),
-      ["https://side-sleepers.com/products/new"],
+      {
+        added: ["https://side-sleepers.com/products/new-slug"],
+        updated: [],
+        removed: ["https://side-sleepers.com/products/old-slug"],
+      },
+    );
+  });
+
+  it("skips updates when previous snapshots have no fingerprints", () => {
+    const previous = [
+      snap("https://side-sleepers.com/", ""),
+      snap("https://side-sleepers.com/products/old", ""),
+    ];
+    const current = [
+      snap("https://side-sleepers.com/", "home-v2"),
+      snap("https://side-sleepers.com/products/new", "new-v1"),
+    ];
+
+    assert.deepEqual(diffIndexNowSnapshots(current, previous), {
+      added: ["https://side-sleepers.com/products/new"],
+      updated: [],
+      removed: ["https://side-sleepers.com/products/old"],
+    });
+  });
+
+  it("returns an empty diff when snapshots are unchanged", () => {
+    const snapshots = [
+      snap("https://side-sleepers.com/", "home-v1"),
+      snap("https://side-sleepers.com/products/kept", "kept-v1"),
+    ];
+
+    assert.deepEqual(diffIndexNowSnapshots(snapshots, snapshots), {
+      added: [],
+      updated: [],
+      removed: [],
+    });
+    assert.deepEqual(indexNowUrlsToSubmit(diffIndexNowSnapshots(snapshots, snapshots)), []);
+  });
+
+  it("parses both legacy URL lists and snapshot objects", () => {
+    assert.deepEqual(
+      parseIndexNowSnapshotList([
+        "https://side-sleepers.com/",
+        "https://side-sleepers.com/products",
+      ]),
+      [
+        snap("https://side-sleepers.com/", ""),
+        snap("https://side-sleepers.com/products", ""),
+      ],
     );
     assert.deepEqual(
-      diffNewIndexNowUrls(
-        ["https://side-sleepers.com/"],
-        ["https://side-sleepers.com/"],
-      ),
-      [],
+      parseIndexNowSnapshotList([
+        snap("https://side-sleepers.com/", "abc"),
+      ]),
+      [snap("https://side-sleepers.com/", "abc")],
+    );
+    assert.throws(() => parseIndexNowSnapshotList({}), /must be an array/);
+    assert.throws(() => parseIndexNowSnapshotList([42]), /Invalid IndexNow snapshot/);
+  });
+
+  it("marks remaining current URLs as updated when public templates change", () => {
+    const diff = {
+      added: ["https://side-sleepers.com/products/new"],
+      updated: ["https://side-sleepers.com/reviews/guide"],
+      removed: ["https://side-sleepers.com/products/old"],
+    };
+    const currentUrls = [
+      "https://side-sleepers.com/",
+      "https://side-sleepers.com/products/new",
+      "https://side-sleepers.com/reviews/guide",
+    ];
+
+    assert.deepEqual(
+      applyPublicTemplateFallback(diff, currentUrls, [
+        "src/data/sites/side-sleeper/products.ts",
+      ]),
+      diff,
+    );
+
+    assert.deepEqual(
+      applyPublicTemplateFallback(diff, currentUrls, [
+        "src/app/[siteSlug]/about/page.tsx",
+      ]),
+      {
+        added: ["https://side-sleepers.com/products/new"],
+        updated: [
+          "https://side-sleepers.com/reviews/guide",
+          "https://side-sleepers.com/",
+        ],
+        removed: ["https://side-sleepers.com/products/old"],
+      },
+    );
+  });
+
+  it("detects public site template paths", () => {
+    assert.equal(
+      isPublicSiteTemplatePath("src/app/[siteSlug]/about/page.tsx"),
+      true,
+    );
+    assert.equal(
+      isPublicSiteTemplatePath("src\\app\\[siteSlug]\\layout.tsx"),
+      true,
+    );
+    assert.equal(
+      isPublicSiteTemplatePath("src/app/admin/(dashboard)/page.tsx"),
+      false,
     );
   });
 });

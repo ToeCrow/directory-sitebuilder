@@ -1,6 +1,6 @@
 /**
- * Compare sitemap URLs for side-sleeper between HEAD and HEAD~1.
- * If new URLs appeared (new pages), submit only those to IndexNow.
+ * Compare content snapshots for side-sleeper between HEAD and HEAD~1.
+ * Submit added, updated, and deleted sitemap URLs to IndexNow.
  *
  * Usage (CI or local):
  *   npx tsx scripts/indexnow-on-push.ts
@@ -13,12 +13,17 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import {
   INDEXNOW_DEFAULT_SITE_SLUG,
-  diffNewIndexNowUrls,
-  getIndexNowUrlList,
+  applyPublicTemplateFallback,
+  diffIndexNowSnapshots,
+  getIndexNowUrlSnapshots,
+  indexNowUrlsToSubmit,
+  isPublicSiteTemplatePath,
+  parseIndexNowSnapshotList,
   submitSiteToIndexNow,
+  type IndexNowUrlSnapshot,
 } from "../src/lib/indexnow";
 
-function listUrlsAtRef(ref: string): string[] {
+function listSnapshotsAtRef(ref: string): IndexNowUrlSnapshot[] {
   const root = process.cwd();
   const prevDir = join(tmpdir(), `indexnow-prev-${process.pid}`);
 
@@ -61,7 +66,7 @@ function listUrlsAtRef(ref: string): string[] {
       },
     );
 
-    return JSON.parse(output.trim()) as string[];
+    return parseIndexNowSnapshotList(JSON.parse(output.trim()) as unknown);
   } finally {
     try {
       execFileSync("git", ["worktree", "remove", "--force", prevDir], {
@@ -74,39 +79,80 @@ function listUrlsAtRef(ref: string): string[] {
   }
 }
 
+function listChangedFiles(fromRef: string, toRef: string): string[] {
+  try {
+    const output = execFileSync(
+      "git",
+      ["diff", "--name-only", fromRef, toRef],
+      {
+        encoding: "utf8",
+        cwd: process.cwd(),
+      },
+    );
+    return output
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter(Boolean);
+  } catch {
+    return [];
+  }
+}
+
 async function main() {
   if (!process.env.INDEXNOW_KEY?.trim()) {
     console.error("INDEXNOW_KEY is required");
     process.exit(1);
   }
 
-  const current = getIndexNowUrlList(INDEXNOW_DEFAULT_SITE_SLUG);
-  let previous: string[] = [];
+  const current = getIndexNowUrlSnapshots(INDEXNOW_DEFAULT_SITE_SLUG);
+  let previous: IndexNowUrlSnapshot[] = [];
 
   try {
-    previous = listUrlsAtRef("HEAD~1");
+    previous = listSnapshotsAtRef("HEAD~1");
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     console.warn(
-      `Could not load previous URL list (${message}); treating all current URLs as new.`,
+      `Could not load previous URL snapshots (${message}); treating all current URLs as new.`,
     );
     previous = [];
   }
 
-  const neu = diffNewIndexNowUrls(current, previous);
+  const changedFiles = listChangedFiles("HEAD~1", "HEAD");
+  let diff = diffIndexNowSnapshots(current, previous);
+  diff = applyPublicTemplateFallback(
+    diff,
+    current.map((snapshot) => snapshot.url),
+    changedFiles,
+  );
 
-  if (neu.length === 0) {
-    console.log("No new sitemap URLs since HEAD~1 — skipping IndexNow.");
+  if (changedFiles.some(isPublicSiteTemplatePath)) {
+    console.log(
+      "Public site templates changed — treating remaining current sitemap URLs as updated.",
+    );
+  }
+
+  const urlList = indexNowUrlsToSubmit(diff);
+
+  if (urlList.length === 0) {
+    console.log(
+      "No added, updated, or deleted sitemap URLs since HEAD~1 — skipping IndexNow.",
+    );
     return;
   }
 
-  console.log(`Submitting ${neu.length} new URL(s) to IndexNow:`);
-  for (const url of neu) {
-    console.log(`  ${url}`);
+  console.log(`Submitting ${urlList.length} URL(s) to IndexNow:`);
+  for (const url of diff.added) {
+    console.log(`  + ${url}`);
+  }
+  for (const url of diff.updated) {
+    console.log(`  ~ ${url}`);
+  }
+  for (const url of diff.removed) {
+    console.log(`  - ${url}`);
   }
 
   const result = await submitSiteToIndexNow(INDEXNOW_DEFAULT_SITE_SLUG, {
-    urlList: neu,
+    urlList,
   });
 
   console.log(
