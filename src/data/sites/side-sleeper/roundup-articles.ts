@@ -8,12 +8,14 @@ const RESEARCH_NOTE = {
 
 export const lowerBackPainMattressArticle: ProductRoundupArticle = {
   kind: "product-roundup",
-  title: "Best Mattresses for Lower Back Pain: 7 Picks",
+  title: "Best Mattresses for Lower Back Pain: 7 Picks (2026)",
   slug: "best-mattresses-for-lower-back-pain",
   reviewCategory: "mattress",
   publishedAt: "2026-07-25",
   author: "Side Sleeper Team",
   excerpt:
+    "Seven mattresses for lower back pain — from a budget firm hybrid to an orthopedic specialist bed — based on specs, policies, and recurring owner feedback.",
+  metaDescription:
     "Seven mattresses for lower back pain — from a budget firm hybrid to an orthopedic specialist bed — based on specs, policies, and recurring owner feedback.",
   intro: [
     "If you start every morning with a slow, groaning shuffle to the coffee machine, your mattress might be the culprit. A mattress that's too soft lets your hips sink lower than your shoulders, twisting your spine out of alignment all night. One that's too firm does the opposite, leaving gaps under your lower back with nothing to fill them.",
@@ -203,13 +205,15 @@ export const lowerBackPainMattressArticle: ProductRoundupArticle = {
 
 export const shoulderPainPillowArticle: ProductRoundupArticle = {
   kind: "product-roundup",
-  title: "Best Pillows for Shoulder Pain: 7 Picks",
+  title: "Best Pillows for Shoulder Pain: 7 Research-Based Picks",
   slug: "best-pillows-for-shoulder-pain",
   reviewCategory: "pillow",
   publishedAt: "2026-07-25",
   author: "Side Sleeper Team",
   excerpt:
     "Seven pillows for shoulder pain — from a $60 foam cube to a medical-grade sleep system — based on specs, policies, and recurring owner feedback.",
+  metaDescription:
+    "Seven pillows for shoulder pain — from a $60 foam cube to a medical-grade sleep system — based on specs, policies, and owner feedback for side sleepers.",
   intro: [
     "If you wake up massaging your own shoulder before you've even opened your eyes, the problem probably isn't your mattress. It's the pillow. A flat or overstuffed pillow leaves a gap between your ear and your shoulder that your neck has to bridge all night, and your shoulder pays the toll.",
     "The best pillow for shoulder pain fills that gap instead of ignoring it, so your spine stays level and your shoulder gets to just... rest.",

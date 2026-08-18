@@ -171,7 +171,7 @@ export const mattressTopperArticle: ProductRoundupArticle = {
 
 export const memoryFoamMattressesArticle: ProductRoundupArticle = {
   kind: "product-roundup",
-  title: "Top 8 Memory Foam Mattresses for Side Sleepers",
+  title: "Top 8 Memory Foam Mattresses for Side Sleepers (2026)",
   slug: "top-8-memory-foam-mattresses-for-side-sleepers",
   reviewCategory: "mattress",
   publishedAt: "2026-08-04",
@@ -179,7 +179,7 @@ export const memoryFoamMattressesArticle: ProductRoundupArticle = {
   excerpt:
     "Eight memory foam mattresses that contour to hips and shoulders — from budget picks to Tempur-Pedic — researched for side sleepers.",
   metaDescription:
-    "Top 8 memory foam mattresses for side sleepers: Casper Cloud One, Nectar Luxe, WinkBed GravityLux, Nectar Premier, BedInABox Eco-Lux, Nectar Classic, TEMPUR-ProBreeze, and Siena Signature.",
+    "Eight memory foam mattresses for side sleepers, from budget Siena to Tempur-Pedic — contouring, cooling, and price from specs and owner feedback.",
   intro: [
     "Memory foam mattresses use one or more layers of viscoelastic foam (sometimes paired with polyfoam) to create a deep, exacting hug around the body. For side sleepers, that dramatic contouring is exactly what cushions the hips and shoulders while keeping the spine level.",
   ],
@@ -400,7 +400,7 @@ export const memoryFoamMattressesArticle: ProductRoundupArticle = {
 
 export const bodyPillowArticle: ProductRoundupArticle = {
   kind: "product-roundup",
-  title: "Best Body Pillow for Side Sleepers: 5 Top Picks",
+  title: "Best Body Pillow for Side Sleepers: 5 Top Picks (2026)",
   slug: "best-body-pillow-for-side-sleepers",
   reviewCategory: "pillow",
   publishedAt: "2026-08-04",

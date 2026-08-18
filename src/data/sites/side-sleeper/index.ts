@@ -467,7 +467,7 @@ export const siteData: SiteData = {
     },
     {
       kind: "product-roundup",
-      title: "The Best Pillow for Neck Pain: Our Top 3 Picks",
+      title: "The Best Pillow for Neck Pain: Our Top 3 Picks (2026)",
       slug: "best-pillows-for-neck-pain",
       reviewCategory: "pillow",
       publishedAt: "2026-07-22",
@@ -475,7 +475,7 @@ export const siteData: SiteData = {
       excerpt:
         "Research-based pros and cons for TEMPUR-Neck, Avocado Green, and Eli & Elm.",
       metaDescription:
-        "Pros and cons for TEMPUR-Neck, Avocado Green, and Eli & Elm — research-based pillow picks for neck pain from specs and owner feedback.",
+        "Pros and cons for TEMPUR-Neck, Avocado Green, and Eli & Elm — research-based pillow picks for neck pain from specs, owner feedback, and side-sleeper fit.",
       intro: [
         "There are myriads of magazine articles and blog posts claiming that this is the best pillow for neck pain. However, it is hard to separate useful reviews from paid marketing online, especially in this space. That's why the Side Sleeper Guide team does its own research.",
         "When we checked out three of the pillows that get recommended the most, we wanted to know what the people actually using them think. This is what we got:",
@@ -577,6 +577,8 @@ export const siteData: SiteData = {
       author: "Side Sleeper Team",
       excerpt:
         "Your sleeping position isn't just comfort — research shows why mattress and pillow support matter more as we age.",
+      metaDescription:
+        "Seven research-backed facts about sleep quality: why side-sleeping alignment, mattress support, and pillow loft matter more as we get older.",
       ogImage: {
         src: "/sites/side-sleeper/articles/sleep-quality-7-facts/intro-vitaly-gariev.jpg",
         alt: "Man in a superhero costume sleeping on a sofa",
