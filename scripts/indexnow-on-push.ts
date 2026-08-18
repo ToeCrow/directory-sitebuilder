@@ -48,13 +48,10 @@ function listUrlsAtRef(ref: string): string[] {
       );
     }
 
+    // Use a script file (not `tsx -e`) so shell quoting never breaks on CI.
     const output = execFileSync(
       "npx",
-      [
-        "tsx",
-        "-e",
-        "import { getIndexNowUrlList } from './src/lib/indexnow.ts'; process.stdout.write(JSON.stringify(getIndexNowUrlList('side-sleeper')));",
-      ],
+      ["tsx", "scripts/list-indexnow-urls.ts"],
       {
         cwd: prevDir,
         encoding: "utf8",
