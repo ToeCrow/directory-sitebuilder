@@ -12,6 +12,7 @@ import {
   getProducts,
   getSiteBySlug,
   isValidSiteSlug,
+  siteHasMattressPillowNav,
 } from "@/lib/site";
 import {
   RESEARCH_SCORE_HOWTO_LABEL,
@@ -279,8 +280,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
         <div className="mt-10 rounded-xl border border-slate-200 bg-slate-50 p-6">
           <p className="text-sm text-slate-600">
-            Ready to try {product.name}? Visit the official site to learn more
-            or request a demo.
+            {siteHasMattressPillowNav(siteSlug)
+              ? `Ready to try ${product.name}? Visit the official site to check availability and current price.`
+              : `Ready to try ${product.name}? Visit the official site to learn more or request a demo.`}
           </p>
           <a
             href={getBuyUrl(product)}
