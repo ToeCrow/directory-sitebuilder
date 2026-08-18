@@ -1,0 +1,35 @@
+name: IndexNow on new pages
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "src/data/sites/side-sleeper/**"
+      - "src/app/**/page.tsx"
+      - "src/lib/sitemap.ts"
+      - "src/lib/indexnow.ts"
+      - "scripts/indexnow-on-push.ts"
+
+jobs:
+  submit-new-urls:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Submit new sitemap URLs to IndexNow
+        env:
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
+        run: npx tsx scripts/indexnow-on-push.ts

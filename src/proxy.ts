@@ -12,6 +12,13 @@ import {
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  const indexNowKey = process.env.INDEXNOW_KEY?.trim();
+  if (indexNowKey && pathname === `/${indexNowKey}.txt`) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/api/indexnow/key";
+    return NextResponse.rewrite(url);
+  }
+
   if (pathname === "/admin/login") {
     return NextResponse.next();
   }
