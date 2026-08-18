@@ -203,7 +203,7 @@ describe("custom domain rewrite helpers", () => {
     );
   });
 
-  it("does not rewrite admin, api, next, sitemap, robots, favicon", () => {
+  it("does not rewrite admin, api, next, sitemap, robots, favicon, BingSiteAuth", () => {
     for (const path of [
       "/admin",
       "/admin/login",
@@ -212,6 +212,7 @@ describe("custom domain rewrite helpers", () => {
       "/sitemap.xml",
       "/robots.txt",
       "/favicon.ico",
+      "/BingSiteAuth.xml",
     ]) {
       assert.equal(
         shouldRewriteCustomDomainPath(path, "side-sleeper"),

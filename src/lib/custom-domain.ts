@@ -5,6 +5,7 @@ const PASSTHROUGH_FILES = new Set([
   "/favicon.ico",
   "/robots.txt",
   "/sitemap.xml",
+  "/BingSiteAuth.xml",
 ]);
 
 /**
