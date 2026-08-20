@@ -108,6 +108,10 @@ export function Header() {
   const reviewsMenu = showProductsNav
     ? [
         {
+          href: getReviewsIndexPath(publicBasePath),
+          label: "All reviews",
+        },
+        {
           href: getReviewsIndexPath(publicBasePath, "mattress"),
           label: "Mattress reviews",
         },
