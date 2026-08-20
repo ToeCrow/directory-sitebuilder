@@ -455,4 +455,43 @@ export const newCatalogProducts: Product[] = [
     featuredRank: null,
     directoryOrder: 44,
   },
+  {
+    name: "Brooklyn Bedding Talalay Latex Pillow",
+    slug: "brooklyn-bedding-talalay-latex-pillow",
+    image: {
+      src: "/sites/side-sleeper/products/brooklyn-bedding-talalay-latex-pillow.jpg",
+      alt: "Brooklyn Bedding Talalay Latex Pillow",
+    },
+    category: "pillow",
+    shortDescription:
+      "A 100% Talalay latex pillow with a Tencel cover and two loft heights for cooler, bouncier neck support than dense memory foam.",
+    metaTitle: "Brooklyn Bedding Talalay Latex Pillow Review",
+    bestFor:
+      "Hot sleepers with neck pain who want a natural material and don't sleep exclusively on their side",
+    priceFrom: 120.4,
+    priceDisplay: "Currently $120.40 (ref. $172)",
+    priceUpdatedAt: "2026-08-20",
+    features: [
+      "100% Talalay latex core",
+      "Organic cotton and Tencel cover",
+      "High and low loft options",
+      "3-year defect warranty",
+      "Made in the USA",
+    ],
+    pros: [
+      "Stays cooler than dense memory foam",
+      "Two loft heights, with the higher profile for side sleepers",
+      "Strong verified review base for neck-pain relief",
+    ],
+    cons: [
+      "Not as side-sleeper-specific as a cube pillow",
+      "Latex bounce is less contouring than memory foam",
+      "Some owners report neck issues after a few weeks",
+    ],
+    productUrl: "https://brooklynbedding.com/products/talalay-latex-pillow",
+    hasAffiliatePartnership: false,
+    rating: 4.4,
+    featuredRank: null,
+    directoryOrder: 45,
+  },
 ];

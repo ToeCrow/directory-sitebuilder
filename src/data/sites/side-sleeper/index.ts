@@ -7,6 +7,10 @@ import {
   memoryFoamMattressesArticle,
 } from "./kladding-reviews";
 import {
+  neckPainCubeLatexKapokArticle,
+  neckPainScienceArticle,
+} from "./neck-pain-articles";
+import {
   lowerBackPainMattressArticle,
   shoulderPainPillowArticle,
 } from "./roundup-articles";
@@ -567,6 +571,7 @@ export const siteData: SiteData = {
     mattressTopperArticle,
     memoryFoamMattressesArticle,
     bodyPillowArticle,
+    neckPainCubeLatexKapokArticle,
     {
       kind: "editorial",
       title:
@@ -753,6 +758,7 @@ export const siteData: SiteData = {
         },
       ],
     },
+    neckPainScienceArticle,
   ],
 
   newsletter: {
