@@ -80,6 +80,12 @@ export async function generateMetadata({
           ]
         : undefined,
     },
+    icons: siteData.favicon
+      ? {
+          icon: [{ url: siteData.favicon, type: "image/png" }],
+          apple: [{ url: siteData.favicon, type: "image/png" }],
+        }
+      : undefined,
   };
 }
 

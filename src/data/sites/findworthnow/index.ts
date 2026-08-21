@@ -9,6 +9,7 @@ export const siteData: SiteData = {
   niche: "affiliate-directory",
   siteUrl: "https://findworthnow.com",
   ratingScale: 5,
+  favicon: "/sites/findworthnow/favicon.png",
 
   hero: {
     eyebrow: "Discover what's worth it.",

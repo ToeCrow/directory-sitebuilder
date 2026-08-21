@@ -178,6 +178,8 @@ export type SiteData = {
   ratingScale: 5 | 10;
   /** Optional header logo+wordmark image (e.g. /sites/side-sleeper/header-brand.png) */
   headerBrandImage?: string;
+  /** Optional tab icon (e.g. /sites/findworthnow/favicon.png) */
+  favicon?: string;
   hero: {
     eyebrow?: string;
     headline: string;
