@@ -18,7 +18,7 @@ export function DirectoryProductCard({
   const headingId = `directory-product-${product.slug}`;
 
   return (
-    <article className="group relative flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white p-0 shadow-sm transition-[border-color,box-shadow,transform] duration-200 ease-out hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md">
+    <article className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-slate-200 bg-white p-0 shadow-sm transition-[border-color,box-shadow,transform] duration-200 ease-out hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md">
       <Link
         href={href}
         className="absolute inset-0 z-0"
@@ -41,19 +41,19 @@ export function DirectoryProductCard({
       </div>
 
       <div className="pointer-events-none relative flex flex-1 flex-col px-6 pb-6">
-        <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+        <p className="truncate text-xs font-semibold uppercase tracking-wide text-slate-500">
           {categoryLabel ? `${categoryLabel} · ${product.typeLabel}` : product.typeLabel}
         </p>
         <h2
           id={headingId}
-          className="mt-2 text-xl font-semibold tracking-tight text-slate-900 transition-colors group-hover:text-blue-600"
+          className="mt-2 line-clamp-2 min-h-[3.5rem] text-xl font-semibold tracking-tight text-slate-900 transition-colors group-hover:text-blue-600"
         >
           {product.name}
         </h2>
-        <p className="mt-3 flex-1 text-sm leading-relaxed text-slate-600">
+        <p className="mt-3 line-clamp-3 min-h-[4.125rem] text-sm leading-relaxed text-slate-600">
           {product.shortDescription}
         </p>
-        <p className="mt-5 text-sm font-medium text-blue-700 group-hover:text-blue-800">
+        <p className="mt-auto pt-5 text-sm font-medium text-blue-700 group-hover:text-blue-800">
           Read overview →
         </p>
       </div>
