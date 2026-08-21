@@ -444,6 +444,7 @@ describe("sitemap", () => {
     assert.ok(urls.includes("https://findworthnow.com/sleep"));
     assert.ok(urls.includes("https://findworthnow.com/products"));
     assert.ok(urls.includes("https://findworthnow.com/dental-health"));
+    assert.ok(urls.includes("https://findworthnow.com/diets-weight-loss"));
     assert.ok(
       urls.includes("https://findworthnow.com/sleep/sleep-revive-review"),
     );

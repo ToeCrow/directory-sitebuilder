@@ -1,5 +1,6 @@
 import type { DirectoryCatalog } from "@/types/directory-catalog";
 import { additionalOffers } from "./offers";
+import { batchTwoOffers } from "./offers-batch2";
 
 export const catalog: DirectoryCatalog = {
   categories: [
@@ -35,6 +36,17 @@ export const catalog: DirectoryCatalog = {
       metaTitle: "Dietary Supplements",
       metaDescription:
         "Explore dietary supplements on FindWorthNow, with short overviews of what manufacturers currently list.",
+    },
+    {
+      slug: "diets-weight-loss",
+      name: "Diets & Weight Loss",
+      description:
+        "Teas, cleanses, digital diet plans, and other offers people compare when they are researching weight.",
+      intro:
+        "This section looks at diet and weight-loss offers — teas, supplements, bottles, and digital plans. We summarize what the seller currently lists. None of this is a weight-loss guarantee, and none of it is medical advice.",
+      metaTitle: "Diets & Weight Loss",
+      metaDescription:
+        "Explore diet and weight-loss offers on FindWorthNow, with short overviews of what sellers currently list.",
     },
     {
       slug: "mens-health",
@@ -312,5 +324,6 @@ export const catalog: DirectoryCatalog = {
       ],
     },
     ...additionalOffers,
+    ...batchTwoOffers,
   ],
 };
