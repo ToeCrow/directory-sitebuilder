@@ -1,6 +1,11 @@
 import { createHash } from "node:crypto";
 import { getPublicAbsoluteUrl } from "@/lib/paths";
 import { siteUsesAboutPage } from "@/lib/about";
+import {
+  getDirectoryCategories,
+  getDirectoryProducts,
+  siteUsesEditorialCatalog,
+} from "@/lib/directory-catalog";
 import { siteUsesPrivacyPolicy } from "@/lib/privacy-policy";
 import { siteUsesResearchScore } from "@/lib/research-score";
 import {
@@ -201,6 +206,40 @@ export function getIndexNowUrlSnapshots(siteSlug: string): IndexNowUrlSnapshot[]
   const chrome = siteChrome(siteData);
   const abs = (path: string) =>
     getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, path);
+
+  if (siteUsesEditorialCatalog(siteSlug)) {
+    const snapshots: IndexNowUrlSnapshot[] = [
+      snapshotFor(abs("/"), chrome, {
+        hero: siteData.hero,
+        categories: getDirectoryCategories(siteSlug),
+      }),
+      snapshotFor(abs("/affiliate-disclosure"), chrome, {
+        affiliateDisclosure: siteData.affiliateDisclosure,
+      }),
+    ];
+
+    for (const category of getDirectoryCategories(siteSlug)) {
+      snapshots.push(
+        snapshotFor(abs(`/${category.slug}`), chrome, {
+          category,
+          products: getDirectoryProducts(siteSlug, category.slug),
+        }),
+      );
+    }
+
+    for (const product of getDirectoryProducts(siteSlug)) {
+      snapshots.push(
+        snapshotFor(
+          abs(`/${product.categorySlug}/${product.reviewSlug}`),
+          chrome,
+          product,
+        ),
+      );
+    }
+
+    return snapshots;
+  }
+
   const products = getProducts(siteSlug);
   const articles = getArticles(siteSlug);
   const snapshots: IndexNowUrlSnapshot[] = [

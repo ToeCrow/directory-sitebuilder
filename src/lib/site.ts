@@ -1,3 +1,4 @@
+import { siteUsesEditorialCatalog } from "@/lib/directory-catalog";
 import type {
   Article,
   Product,
@@ -6,6 +7,7 @@ import type {
 } from "@/types/site";
 import {
   getSiteBySlug,
+  siteSlugs,
   type SiteSlug,
 } from "@/data/sites";
 
@@ -157,4 +159,8 @@ export function getComparisonValue(
 
 export function siteHasMattressPillowNav(siteSlug: string): boolean {
   return siteSlug === "side-sleeper";
+}
+
+export function getLegacyDirectorySiteSlugs(): SiteSlug[] {
+  return siteSlugs.filter((slug) => !siteUsesEditorialCatalog(slug));
 }

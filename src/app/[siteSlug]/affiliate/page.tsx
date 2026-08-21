@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { siteSlugs } from "@/data/sites";
 import type { SiteSlug } from "@/data/sites";
 import {
+  getLegacyDirectorySiteSlugs,
   getProducts,
   getSiteBySlug,
   isValidSiteSlug,
 } from "@/lib/site";
+import { siteUsesEditorialCatalog } from "@/lib/directory-catalog";
 import { siteUsesResearchScore } from "@/lib/research-score";
 import { getProductPath, getPublicPath, getSitePath } from "@/lib/paths";
 import { getRequestPublicBasePath } from "@/lib/request-paths";
@@ -22,7 +23,7 @@ type AffiliatePageProps = {
 };
 
 export function generateStaticParams() {
-  return siteSlugs.map((siteSlug) => ({ siteSlug }));
+  return getLegacyDirectorySiteSlugs().map((siteSlug) => ({ siteSlug }));
 }
 
 export async function generateMetadata({
@@ -57,7 +58,7 @@ export async function generateMetadata({
 export default async function AffiliatePage({ params }: AffiliatePageProps) {
   const { siteSlug } = await params;
 
-  if (!isValidSiteSlug(siteSlug)) {
+  if (!isValidSiteSlug(siteSlug) || siteUsesEditorialCatalog(siteSlug)) {
     notFound();
   }
 

@@ -6,11 +6,13 @@ import Link from "next/link";
 import { useSiteContext } from "@/context/SiteContext";
 import {
   getBuyingGuidePath,
+  getDirectoryCategoryPath,
   getProductPath,
   getProductsIndexPath,
   getReviewsIndexPath,
   getSitePath,
 } from "@/lib/paths";
+import { getDirectoryCategories } from "@/lib/directory-catalog";
 import {
   getFeaturedProducts,
   siteHasMattressPillowNav,
@@ -65,23 +67,30 @@ export function Header() {
   const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
 
   const homeHref = getSitePath(publicBasePath);
+  const editorialCategories = getDirectoryCategories(siteSlug);
+  const isEditorialCatalog = editorialCategories.length > 0;
   const showProductsNav = siteHasMattressPillowNav(siteSlug);
   const featuredReviews = showProductsNav
     ? getFeaturedProducts(siteSlug).slice(0, 3)
     : [];
-  const showReviewsNav = siteData.articles.length > 0;
+  const showReviewsNav = !isEditorialCatalog && siteData.articles.length > 0;
 
   const buyingGuideHref = getBuyingGuidePath(publicBasePath);
-  const primaryLinks = showProductsNav
-    ? [
-        { href: buyingGuideHref, label: "Buying Guide" },
-        { href: `${homeHref}#faq`, label: "FAQ" },
-      ]
-    : [
-        { href: `${homeHref}#compare`, label: "Compare" },
-        { href: buyingGuideHref, label: "Buying Guide" },
-        { href: `${homeHref}#faq`, label: "FAQ" },
-      ];
+  const primaryLinks = isEditorialCatalog
+    ? editorialCategories.map((category) => ({
+        href: getDirectoryCategoryPath(publicBasePath, category.slug),
+        label: category.name,
+      }))
+    : showProductsNav
+      ? [
+          { href: buyingGuideHref, label: "Buying Guide" },
+          { href: `${homeHref}#faq`, label: "FAQ" },
+        ]
+      : [
+          { href: `${homeHref}#compare`, label: "Compare" },
+          { href: buyingGuideHref, label: "Buying Guide" },
+          { href: `${homeHref}#faq`, label: "FAQ" },
+        ];
 
   function closeMenu() {
     setMenuOpen(false);

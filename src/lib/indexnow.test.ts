@@ -81,6 +81,24 @@ describe("indexnow helpers", () => {
     }
   });
 
+  it("snapshots match findworthnow sitemap URLs", () => {
+    const snapshots = getIndexNowUrlSnapshots("findworthnow");
+    const sitemapUrls = buildSiteSitemapEntries("findworthnow").map(
+      (entry) => entry.url,
+    );
+
+    assert.deepEqual(
+      snapshots.map((snapshot) => snapshot.url),
+      sitemapUrls,
+    );
+    assert.ok(
+      snapshots.some(
+        (snapshot) =>
+          snapshot.url === "https://findworthnow.com/sleep/sleep-revive-review",
+      ),
+    );
+  });
+
   it("validates INDEXNOW_KEY format", () => {
     process.env.INDEXNOW_KEY = "short";
     assert.throws(() => getIndexNowKey(), /8–128/);

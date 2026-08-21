@@ -1,5 +1,6 @@
 import type { Article, SiteData } from "@/types/site";
 import type { Metadata } from "next";
+import { siteUsesEditorialCatalog } from "@/lib/directory-catalog";
 
 export const OG_IMAGE_WIDTH = 1200;
 export const OG_IMAGE_HEIGHT = 630;
@@ -12,7 +13,11 @@ export type OgImage = {
 };
 
 /** Relative path resolved to an absolute URL via site metadataBase. */
-export function getDefaultOgImage(site: SiteData): OgImage {
+export function getDefaultOgImage(site: SiteData): OgImage | undefined {
+  if (siteUsesEditorialCatalog(site.slug)) {
+    return undefined;
+  }
+
   return {
     url: `/sites/${site.slug}/og-default.png`,
     width: OG_IMAGE_WIDTH,
@@ -31,7 +36,14 @@ export function getArticleOgImage(site: SiteData, article: Article): OgImage {
     };
   }
 
-  return getDefaultOgImage(site);
+  return (
+    getDefaultOgImage(site) ?? {
+      url: `/sites/${site.slug}/og-default.png`,
+      width: OG_IMAGE_WIDTH,
+      height: OG_IMAGE_HEIGHT,
+      alt: site.title,
+    }
+  );
 }
 
 type BuildPageOpenGraphArgs = {
@@ -58,14 +70,16 @@ export function buildPageOpenGraph({
     title,
     description,
     url: path,
-    images: [
-      {
-        url: ogImage.url,
-        width: ogImage.width,
-        height: ogImage.height,
-        alt: ogImage.alt,
-      },
-    ],
+    images: ogImage
+      ? [
+          {
+            url: ogImage.url,
+            width: ogImage.width,
+            height: ogImage.height,
+            alt: ogImage.alt,
+          },
+        ]
+      : undefined,
   };
 }
 

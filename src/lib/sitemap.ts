@@ -9,6 +9,11 @@ import {
 } from "@/lib/site";
 import { getPublicAbsoluteUrl, siteUsesPublicPaths } from "@/lib/paths";
 import { siteUsesAboutPage } from "@/lib/about";
+import {
+  getDirectoryCategories,
+  getDirectoryProducts,
+  siteUsesEditorialCatalog,
+} from "@/lib/directory-catalog";
 import { siteUsesPrivacyPolicy } from "@/lib/privacy-policy";
 import { siteUsesResearchScore } from "@/lib/research-score";
 
@@ -21,6 +26,62 @@ export function buildSiteSitemapEntries(
   }
 
   const now = new Date();
+
+  if (siteUsesEditorialCatalog(siteSlug)) {
+    const entries: MetadataRoute.Sitemap = [
+      {
+        url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, "/"),
+        lastModified: now,
+        changeFrequency: "weekly",
+        priority: 1,
+      },
+      {
+        url: getPublicAbsoluteUrl(
+          siteSlug,
+          siteData.siteUrl,
+          "/affiliate-disclosure",
+        ),
+        lastModified: now,
+        changeFrequency: "yearly",
+        priority: 0.3,
+      },
+    ];
+
+    for (const category of getDirectoryCategories(siteSlug)) {
+      entries.push({
+        url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, `/${category.slug}`),
+        lastModified: now,
+        changeFrequency: "weekly",
+        priority: 0.8,
+      });
+    }
+
+    for (const product of getDirectoryProducts(siteSlug)) {
+      entries.push({
+        url: getPublicAbsoluteUrl(
+          siteSlug,
+          siteData.siteUrl,
+          `/${product.categorySlug}/${product.reviewSlug}`,
+        ),
+        lastModified: now,
+        changeFrequency: "weekly",
+        priority: 0.9,
+      });
+    }
+
+    if (siteUsesPublicPaths(siteSlug)) {
+      const badPrefix = `${siteData.siteUrl.replace(/\/$/, "")}/${siteSlug}/`;
+      for (const entry of entries) {
+        if (entry.url.startsWith(badPrefix)) {
+          throw new Error(
+            `Sitemap URL incorrectly includes siteSlug prefix: ${entry.url}`,
+          );
+        }
+      }
+    }
+
+    return entries;
+  }
 
   const entries: MetadataRoute.Sitemap = [
     {

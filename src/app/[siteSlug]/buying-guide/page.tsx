@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { siteSlugs } from "@/data/sites";
 import { BuyingGuide } from "@/components/BuyingGuide";
+import { siteUsesEditorialCatalog } from "@/lib/directory-catalog";
 import {
+  getLegacyDirectorySiteSlugs,
   getSiteBySlug,
   isValidSiteSlug,
   type SiteSlug,
@@ -17,7 +18,7 @@ type BuyingGuidePageProps = {
 };
 
 export function generateStaticParams() {
-  return siteSlugs.map((siteSlug) => ({ siteSlug }));
+  return getLegacyDirectorySiteSlugs().map((siteSlug) => ({ siteSlug }));
 }
 
 export async function generateMetadata({
@@ -25,7 +26,7 @@ export async function generateMetadata({
 }: BuyingGuidePageProps): Promise<Metadata> {
   const { siteSlug } = await params;
   const siteData = getSiteBySlug(siteSlug);
-  if (!siteData) {
+  if (!siteData || siteUsesEditorialCatalog(siteSlug)) {
     return { title: "Buying guide" };
   }
 
@@ -53,7 +54,7 @@ export async function generateMetadata({
 export default async function BuyingGuidePage({ params }: BuyingGuidePageProps) {
   const { siteSlug } = await params;
 
-  if (!isValidSiteSlug(siteSlug)) {
+  if (!isValidSiteSlug(siteSlug) || siteUsesEditorialCatalog(siteSlug)) {
     notFound();
   }
 

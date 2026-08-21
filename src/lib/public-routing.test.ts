@@ -9,6 +9,8 @@ import {
   buildInternalUrl,
   getAppPath,
   getBuyingGuidePath,
+  getDirectoryCategoryPath,
+  getDirectoryReviewPath,
   getPublicAbsoluteUrl,
   getPublicPath,
   getReviewsIndexPath,
@@ -29,6 +31,11 @@ describe("custom domain host mapping", () => {
       getSiteSlugFromHost("directory-sitebuilder.vercel.app"),
       undefined,
     );
+  });
+
+  it("maps findworthnow.com hosts", () => {
+    assert.equal(getSiteSlugFromHost("findworthnow.com"), "findworthnow");
+    assert.equal(getSiteSlugFromHost("www.findworthnow.com"), "findworthnow");
   });
 });
 
@@ -71,6 +78,33 @@ describe("resolvePublicBasePath and buildInternalUrl", () => {
     );
   });
 
+  it("uses empty base on FindWorthNow custom domain", () => {
+    assert.equal(
+      resolvePublicBasePath("findworthnow", "findworthnow.com"),
+      "",
+    );
+    assert.equal(
+      resolvePublicBasePath("findworthnow", "www.findworthnow.com"),
+      "",
+    );
+    assert.equal(buildInternalUrl("", "/sleep"), "/sleep");
+    assert.equal(
+      buildInternalUrl("", "/sleep/sleep-revive-review"),
+      "/sleep/sleep-revive-review",
+    );
+  });
+
+  it("uses /findworthnow base on platform hosts", () => {
+    assert.equal(
+      resolvePublicBasePath("findworthnow", "localhost:3000"),
+      "/findworthnow",
+    );
+    assert.equal(
+      buildInternalUrl("/findworthnow", "/sleep"),
+      "/findworthnow/sleep",
+    );
+  });
+
   it("keeps Construction Software platform path on any host", () => {
     assert.equal(
       resolvePublicBasePath("construction-software", "side-sleepers.com"),
@@ -108,6 +142,24 @@ describe("resolvePublicBasePath and buildInternalUrl", () => {
 });
 
 describe("path helpers", () => {
+  it("uses public paths without siteSlug for findworthnow", () => {
+    assert.equal(siteUsesPublicPaths("findworthnow"), true);
+    assert.equal(getPublicPath("findworthnow", "/"), "/");
+    assert.equal(getPublicPath("findworthnow", "/sleep"), "/sleep");
+    assert.equal(
+      getPublicPath("findworthnow", "/sleep/sleep-revive-review"),
+      "/sleep/sleep-revive-review",
+    );
+    assert.equal(
+      getPublicAbsoluteUrl(
+        "findworthnow",
+        "https://findworthnow.com",
+        "/sleep/sleep-revive-review",
+      ),
+      "https://findworthnow.com/sleep/sleep-revive-review",
+    );
+  });
+
   it("uses public paths without siteSlug for side-sleeper", () => {
     assert.equal(siteUsesPublicPaths("side-sleeper"), true);
     assert.equal(getPublicPath("side-sleeper", "/"), "/");
@@ -141,6 +193,19 @@ describe("path helpers", () => {
     assert.equal(
       getBuyingGuidePath("/construction-software"),
       "/construction-software/buying-guide",
+    );
+    assert.equal(getDirectoryCategoryPath("", "sleep"), "/sleep");
+    assert.equal(
+      getDirectoryCategoryPath("/findworthnow", "sleep"),
+      "/findworthnow/sleep",
+    );
+    assert.equal(
+      getDirectoryReviewPath("", "sleep", "sleep-revive-review"),
+      "/sleep/sleep-revive-review",
+    );
+    assert.equal(
+      getDirectoryReviewPath("/findworthnow", "sleep", "sleep-revive-review"),
+      "/findworthnow/sleep/sleep-revive-review",
     );
   });
 
@@ -200,6 +265,29 @@ describe("custom domain rewrite helpers", () => {
     assert.equal(
       getCustomDomainRewritePath("/buying-guide", "side-sleeper"),
       "/side-sleeper/buying-guide",
+    );
+    assert.equal(shouldRewriteCustomDomainPath("/sleep", "findworthnow"), true);
+    assert.equal(
+      shouldRewriteCustomDomainPath(
+        "/sleep/sleep-revive-review",
+        "findworthnow",
+      ),
+      true,
+    );
+    assert.equal(
+      shouldRewriteCustomDomainPath("/affiliate-disclosure", "findworthnow"),
+      true,
+    );
+    assert.equal(
+      getCustomDomainRewritePath("/sleep", "findworthnow"),
+      "/findworthnow/sleep",
+    );
+    assert.equal(
+      getCustomDomainRewritePath(
+        "/sleep/sleep-revive-review",
+        "findworthnow",
+      ),
+      "/findworthnow/sleep/sleep-revive-review",
     );
   });
 
@@ -346,6 +434,30 @@ describe("sitemap", () => {
       urls.some((u) => u.endsWith("/about") || u.includes("/about")),
       false,
     );
+  });
+
+  it("emits findworthnow public URLs without /findworthnow prefix", () => {
+    const entries = buildSiteSitemapEntries("findworthnow");
+    const urls = entries.map((e) => e.url);
+
+    assert.ok(urls.includes("https://findworthnow.com/"));
+    assert.ok(urls.includes("https://findworthnow.com/sleep"));
+    assert.ok(
+      urls.includes("https://findworthnow.com/sleep/sleep-revive-review"),
+    );
+    assert.ok(urls.includes("https://findworthnow.com/affiliate-disclosure"));
+    assert.equal(urls.includes("https://findworthnow.com/products"), false);
+    assert.equal(urls.includes("https://findworthnow.com/buying-guide"), false);
+    assert.equal(urls.includes("https://findworthnow.com/comparisons"), false);
+    assert.equal(urls.includes("https://findworthnow.com/affiliate"), false);
+
+    for (const url of urls) {
+      assert.equal(
+        url.includes("/findworthnow/"),
+        false,
+        `unexpected prefix in ${url}`,
+      );
+    }
   });
 });
 

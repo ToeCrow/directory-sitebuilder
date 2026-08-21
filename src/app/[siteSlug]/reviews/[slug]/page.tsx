@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { siteSlugs } from "@/data/sites";
 import { AffiliateDisclosure } from "@/components/AffiliateDisclosure";
 import { JsonLd } from "@/components/JsonLd";
 import { buildArticleSchema } from "@/lib/schema";
@@ -18,10 +17,12 @@ import { RoundupProductPageCta } from "@/components/RoundupProductPageCta";
 import {
   getArticleBySlug,
   getArticles,
+  getLegacyDirectorySiteSlugs,
   getProductBySlug,
   getSiteBySlug,
   isValidSiteSlug,
 } from "@/lib/site";
+import { siteUsesEditorialCatalog } from "@/lib/directory-catalog";
 import type { EditorialFigure } from "@/types/site";
 
 type ReviewPageProps = {
@@ -29,7 +30,7 @@ type ReviewPageProps = {
 };
 
 export function generateStaticParams() {
-  return siteSlugs.flatMap((siteSlug) =>
+  return getLegacyDirectorySiteSlugs().flatMap((siteSlug) =>
     getArticles(siteSlug).map((article) => ({
       siteSlug,
       slug: article.slug,
@@ -147,7 +148,7 @@ function EditorialFigureBlock({ figure }: { figure: EditorialFigure }) {
 export default async function ReviewPage({ params }: ReviewPageProps) {
   const { siteSlug, slug } = await params;
 
-  if (!isValidSiteSlug(siteSlug)) {
+  if (!isValidSiteSlug(siteSlug) || siteUsesEditorialCatalog(siteSlug)) {
     notFound();
   }
 

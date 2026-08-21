@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
-import { siteSlugs } from "@/data/sites";
 import { AffiliateDisclosure } from "@/components/AffiliateDisclosure";
 import { ProductGrid } from "@/components/ProductGrid";
 import { ProductDirectory } from "@/components/ProductDirectory";
 import { ProductsDirectoryScroll } from "@/components/ProductsDirectoryScroll";
+import { siteUsesEditorialCatalog } from "@/lib/directory-catalog";
 import {
+  getLegacyDirectorySiteSlugs,
   getSiteBySlug,
   isValidSiteSlug,
   siteHasMattressPillowNav,
@@ -21,7 +22,7 @@ type ProductsIndexProps = {
 };
 
 export function generateStaticParams() {
-  return siteSlugs.map((siteSlug) => ({ siteSlug }));
+  return getLegacyDirectorySiteSlugs().map((siteSlug) => ({ siteSlug }));
 }
 
 export async function generateMetadata({
@@ -55,7 +56,7 @@ export default async function ProductsIndexPage({
   const { siteSlug } = await params;
   const { category: categoryParam } = await searchParams;
 
-  if (!isValidSiteSlug(siteSlug)) {
+  if (!isValidSiteSlug(siteSlug) || siteUsesEditorialCatalog(siteSlug)) {
     notFound();
   }
 

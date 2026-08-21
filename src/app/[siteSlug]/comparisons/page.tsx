@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
-import { siteSlugs } from "@/data/sites";
 import { ComparisonTable } from "@/components/ComparisonTable";
 import { AffiliateDisclosure } from "@/components/AffiliateDisclosure";
 import {
+  getLegacyDirectorySiteSlugs,
   getSiteBySlug,
   isValidSiteSlug,
   siteHasMattressPillowNav,
   type SiteSlug,
 } from "@/lib/site";
+import { siteUsesEditorialCatalog } from "@/lib/directory-catalog";
 import { getProductsIndexPath, getPublicPath } from "@/lib/paths";
 import { getRequestPublicBasePath } from "@/lib/request-paths";
 import { buildPageOpenGraph } from "@/lib/seo";
@@ -18,7 +19,7 @@ type ComparisonsPageProps = {
 };
 
 export function generateStaticParams() {
-  return siteSlugs.map((siteSlug) => ({ siteSlug }));
+  return getLegacyDirectorySiteSlugs().map((siteSlug) => ({ siteSlug }));
 }
 
 export async function generateMetadata({
@@ -52,7 +53,7 @@ export async function generateMetadata({
 export default async function ComparisonsPage({ params }: ComparisonsPageProps) {
   const { siteSlug } = await params;
 
-  if (!isValidSiteSlug(siteSlug)) {
+  if (!isValidSiteSlug(siteSlug) || siteUsesEditorialCatalog(siteSlug)) {
     notFound();
   }
 

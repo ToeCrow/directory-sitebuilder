@@ -2,18 +2,19 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { siteSlugs } from "@/data/sites";
 import { AffiliateDisclosure } from "@/components/AffiliateDisclosure";
 import { ReviewListItem } from "@/components/ReviewListItem";
-import { getDefaultOgImage } from "@/lib/seo";
+import { getDefaultOgImage, OG_IMAGE_HEIGHT, OG_IMAGE_WIDTH } from "@/lib/seo";
 import {
   getArticlesFeaturingProduct,
+  getLegacyDirectorySiteSlugs,
   getProductBySlug,
   getProducts,
   getSiteBySlug,
   isValidSiteSlug,
   siteHasMattressPillowNav,
 } from "@/lib/site";
+import { siteUsesEditorialCatalog } from "@/lib/directory-catalog";
 import {
   RESEARCH_SCORE_HOWTO_LABEL,
   RESEARCH_SCORE_LABEL,
@@ -34,7 +35,7 @@ type ProductPageProps = {
 };
 
 export function generateStaticParams() {
-  return siteSlugs.flatMap((siteSlug) =>
+  return getLegacyDirectorySiteSlugs().flatMap((siteSlug) =>
     getProducts(siteSlug).map((product) => ({
       siteSlug,
       slug: product.slug,
@@ -61,7 +62,12 @@ export async function generateMetadata({
   const title = product.metaTitle ?? `${product.name} Review`;
   const description = product.metaDescription ?? product.shortDescription;
   const path = getPublicPath(siteSlug, `/products/${slug}`);
-  const fallbackOg = getDefaultOgImage(siteData);
+  const fallbackOg = getDefaultOgImage(siteData) ?? {
+    url: `/sites/${siteData.slug}/og-default.png`,
+    width: OG_IMAGE_WIDTH,
+    height: OG_IMAGE_HEIGHT,
+    alt: siteData.title,
+  };
   const ogImage = product.image
     ? {
         url: product.image.src,
@@ -111,7 +117,7 @@ export async function generateMetadata({
 export default async function ProductPage({ params }: ProductPageProps) {
   const { siteSlug, slug } = await params;
 
-  if (!isValidSiteSlug(siteSlug)) {
+  if (!isValidSiteSlug(siteSlug) || siteUsesEditorialCatalog(siteSlug)) {
     notFound();
   }
 

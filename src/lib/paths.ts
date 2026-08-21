@@ -109,6 +109,21 @@ export function getReviewsIndexPath(
   return `${base}?category=${category}`;
 }
 
+export function getDirectoryCategoryPath(
+  publicBasePath: string,
+  categorySlug: string,
+): string {
+  return getAppPath(publicBasePath, `/${categorySlug}`);
+}
+
+export function getDirectoryReviewPath(
+  publicBasePath: string,
+  categorySlug: string,
+  reviewSlug: string,
+): string {
+  return getAppPath(publicBasePath, `/${categorySlug}/${reviewSlug}`);
+}
+
 /** Whether this host is a mapped custom domain (not the platform host). */
 export function isCustomDomainHost(host: string): boolean {
   return getSiteSlugFromHost(host) !== undefined;

@@ -14,6 +14,7 @@ import {
 import { resolvePublicBasePath } from "@/lib/paths";
 import { getDefaultOgImage } from "@/lib/seo";
 import { getSiteBySlug, isValidSiteSlug } from "@/lib/site";
+import { siteUsesEditorialCatalog } from "@/lib/directory-catalog";
 
 type SiteLayoutProps = {
   children: React.ReactNode;
@@ -55,25 +56,29 @@ export async function generateMetadata({
       title: siteData.metaTitle,
       description: siteData.metaDescription,
       url: siteData.siteUrl,
-      images: [
-        {
-          url: ogImage.url,
-          width: ogImage.width,
-          height: ogImage.height,
-          alt: ogImage.alt,
-        },
-      ],
+      images: ogImage
+        ? [
+            {
+              url: ogImage.url,
+              width: ogImage.width,
+              height: ogImage.height,
+              alt: ogImage.alt,
+            },
+          ]
+        : undefined,
     },
     twitter: {
-      card: "summary_large_image",
+      card: ogImage ? "summary_large_image" : "summary",
       title: siteData.metaTitle,
       description: siteData.metaDescription,
-      images: [
-        {
-          url: ogImage.url,
-          alt: ogImage.alt,
-        },
-      ],
+      images: ogImage
+        ? [
+            {
+              url: ogImage.url,
+              alt: ogImage.alt,
+            },
+          ]
+        : undefined,
     },
   };
 }
@@ -104,7 +109,7 @@ export default async function SiteLayout({ children, params }: SiteLayoutProps) 
       <JsonLd
         data={[buildWebSiteSchema(siteData), buildOrganizationSchema(siteData)]}
       />
-      <AdSenseScript />
+      {!siteUsesEditorialCatalog(siteSlug) && <AdSenseScript />}
       <Header />
       {children}
       <Footer />

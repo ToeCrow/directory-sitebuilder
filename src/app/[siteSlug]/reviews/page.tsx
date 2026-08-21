@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { siteSlugs } from "@/data/sites";
 import { AffiliateDisclosure } from "@/components/AffiliateDisclosure";
 import { ReviewDirectory } from "@/components/ReviewDirectory";
 import {
+  getLegacyDirectorySiteSlugs,
   getSiteBySlug,
   isValidSiteSlug,
   siteHasMattressPillowNav,
   type SiteSlug,
 } from "@/lib/site";
+import { siteUsesEditorialCatalog } from "@/lib/directory-catalog";
 import { getPublicPath } from "@/lib/paths";
 import { buildPageOpenGraph } from "@/lib/seo";
 import type { ReviewCategory } from "@/types/site";
@@ -19,7 +20,7 @@ type ReviewsIndexProps = {
 };
 
 export function generateStaticParams() {
-  return siteSlugs.map((siteSlug) => ({ siteSlug }));
+  return getLegacyDirectorySiteSlugs().map((siteSlug) => ({ siteSlug }));
 }
 
 export async function generateMetadata({
@@ -56,7 +57,7 @@ export default async function ReviewsIndexPage({
   const { siteSlug } = await params;
   const { category: categoryParam } = await searchParams;
 
-  if (!isValidSiteSlug(siteSlug)) {
+  if (!isValidSiteSlug(siteSlug) || siteUsesEditorialCatalog(siteSlug)) {
     notFound();
   }
 

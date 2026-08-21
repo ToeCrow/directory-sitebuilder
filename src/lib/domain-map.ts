@@ -3,6 +3,8 @@
 export const DOMAIN_SITE_MAP: Record<string, string> = {
   "side-sleepers.com": "side-sleeper",
   "www.side-sleepers.com": "side-sleeper",
+  "findworthnow.com": "findworthnow",
+  "www.findworthnow.com": "findworthnow",
 };
 
 export function getSiteSlugFromHost(host: string): string | undefined {

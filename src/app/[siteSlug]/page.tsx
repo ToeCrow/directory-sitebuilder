@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { siteSlugs } from "@/data/sites";
 import { HomePageLayout } from "@/components/HomePageLayout";
 import type { SiteSlug } from "@/data/sites";
+import { siteUsesEditorialCatalog } from "@/lib/directory-catalog";
 import { getPublicPath } from "@/lib/paths";
 import { buildPageOpenGraph } from "@/lib/seo";
 import { getSiteBySlug } from "@/lib/site";
@@ -26,9 +27,13 @@ export async function generateMetadata({
 
   // Public homepage path: `/` on custom-domain sites, `/{siteSlug}` on platform-only sites.
   const path = getPublicPath(siteSlug, "/");
+  const isEditorial = siteUsesEditorialCatalog(siteSlug);
+  const title = isEditorial
+    ? { absolute: siteData.metaTitle }
+    : siteData.title;
 
   return {
-    title: siteData.title,
+    title,
     description: siteData.metaDescription,
     alternates: {
       canonical: path,

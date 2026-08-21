@@ -8,13 +8,21 @@ import { FAQ } from "@/components/FAQ";
 import { AffiliateDisclosure } from "@/components/AffiliateDisclosure";
 import { AdSlot } from "@/components/AdSlot";
 import { HashScrollOnLoad } from "@/components/HashScrollOnLoad";
+import { FindWorthNowHome } from "@/components/FindWorthNowHome";
+import { siteUsesEditorialCatalog } from "@/lib/directory-catalog";
+import { getRequestPublicBasePath } from "@/lib/request-paths";
 import { siteHasMattressPillowNav } from "@/lib/site";
 
 type HomePageLayoutProps = {
   siteSlug: SiteSlug;
 };
 
-export function HomePageLayout({ siteSlug }: HomePageLayoutProps) {
+export async function HomePageLayout({ siteSlug }: HomePageLayoutProps) {
+  if (siteUsesEditorialCatalog(siteSlug)) {
+    const publicBasePath = await getRequestPublicBasePath(siteSlug);
+    return <FindWorthNowHome siteSlug={siteSlug} publicBasePath={publicBasePath} />;
+  }
+
   const isSideSleeperHome = siteHasMattressPillowNav(siteSlug);
 
   if (isSideSleeperHome) {
