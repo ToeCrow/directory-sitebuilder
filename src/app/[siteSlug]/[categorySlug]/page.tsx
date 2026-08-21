@@ -75,42 +75,44 @@ export default async function DirectoryCategoryPage({
   const products = getDirectoryProducts(siteSlug, category.slug);
 
   return (
-    <main className="mx-auto max-w-3xl px-4 py-12 md:py-16">
-      <Link
-        href={getSitePath(publicBasePath)}
-        className="text-sm font-medium text-blue-700 hover:text-blue-800"
-      >
-        ← Back to home
-      </Link>
+    <main className="py-12 md:py-16">
+      <div className="mx-auto max-w-6xl px-4">
+        <Link
+          href={getSitePath(publicBasePath)}
+          className="text-sm font-medium text-blue-700 hover:text-blue-800"
+        >
+          ← Back to home
+        </Link>
 
-      <header className="mt-6 border-b border-slate-200 pb-8">
-        <h1 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
-          {category.name}
-        </h1>
-        <p className="mt-4 text-base leading-relaxed text-slate-600">
-          {category.intro}
-        </p>
-      </header>
+        <header className="mt-6 max-w-3xl border-b border-slate-200 pb-8">
+          <h1 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
+            {category.name}
+          </h1>
+          <p className="mt-4 text-base leading-relaxed text-slate-600">
+            {category.intro}
+          </p>
+        </header>
 
-      <section className="mt-10" aria-labelledby="products-heading">
-        <h2 id="products-heading" className="sr-only">
-          Products
-        </h2>
-        <ul className="space-y-4">
-          {products.map((product) => (
-            <li key={product.slug}>
-              <DirectoryProductCard
-                product={product}
-                href={getDirectoryReviewPath(
-                  publicBasePath,
-                  product.categorySlug,
-                  product.reviewSlug,
-                )}
-              />
-            </li>
-          ))}
-        </ul>
-      </section>
+        <section className="mt-10" aria-labelledby="products-heading">
+          <h2 id="products-heading" className="sr-only">
+            Products
+          </h2>
+          <ul className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {products.map((product) => (
+              <li key={product.slug}>
+                <DirectoryProductCard
+                  product={product}
+                  href={getDirectoryReviewPath(
+                    publicBasePath,
+                    product.categorySlug,
+                    product.reviewSlug,
+                  )}
+                />
+              </li>
+            ))}
+          </ul>
+        </section>
+      </div>
     </main>
   );
 }

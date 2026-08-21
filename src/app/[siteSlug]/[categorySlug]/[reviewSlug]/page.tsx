@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AffiliateCtaLink } from "@/components/AffiliateCtaLink";
+import { ProductMediaImage } from "@/components/ProductMediaImage";
 import { siteSlugs } from "@/data/sites";
 import {
   getDirectoryCategory,
@@ -115,6 +116,17 @@ export default async function DirectoryReviewPage({ params }: ReviewPageProps) {
         <h1 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
           {product.reviewTitle}
         </h1>
+        {product.image && (
+          <div className="relative mt-6 aspect-4/3 overflow-hidden rounded-xl border border-slate-200 bg-slate-100 sm:aspect-video">
+            <ProductMediaImage
+              src={product.image.src}
+              alt={product.image.alt}
+              sizes="(max-width: 768px) 100vw, 48rem"
+              className="p-4"
+              priority
+            />
+          </div>
+        )}
         <p className="mt-4 text-lg leading-relaxed text-slate-600">
           {product.heroDescription}
         </p>

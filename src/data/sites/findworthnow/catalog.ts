@@ -22,6 +22,10 @@ export const catalog: DirectoryCatalog = {
       typeLabel: "Sleep Support Supplement",
       shortDescription:
         "A dietary supplement sold on sleeprevive.org and marketed to support sleep.",
+      image: {
+        src: "/sites/findworthnow/products/sleep-revive.png",
+        alt: "Three Sleep Revive supplement bottles from Critical Nutrition Labs",
+      },
       affiliateUrl:
         "https://sleeprevive.org/?hopId=0b6f12e4-2400-4154-ae89-975447d57b68&traffic_source=tiktok",
       ctaLabel: "Visit Sleep Revive",
@@ -98,6 +102,10 @@ export const catalog: DirectoryCatalog = {
       typeLabel: "Digital Sleep Program",
       shortDescription:
         "A digital bedtime program, sold with a pillow, that is marketed around breathing and tongue posture.",
+      image: {
+        src: "/sites/findworthnow/products/breathing-for-sleep.png",
+        alt: "Breathing for Sleep program bundle with video, handbook, and pillow",
+      },
       affiliateUrl:
         "https://c48a58pjfpqo516wtk4gr9ocbi.hop.clickbank.net/?&traffic_source=tiktok",
       ctaLabel: "Visit Breathing for Sleep",
@@ -174,6 +182,10 @@ export const catalog: DirectoryCatalog = {
       typeLabel: "Digital Lucid Dreaming Program",
       shortDescription:
         "A digital lucid-dreaming bootcamp sold through ClickBank as a low-priced online course.",
+      image: {
+        src: "/sites/findworthnow/products/unique-lucid-dreaming.png",
+        alt: "30 Day Lucid Dreaming Bootcamp digital course shown on multiple devices",
+      },
       affiliateUrl:
         "https://176080n8eitq5164vghegpn7b8.hop.clickbank.net/?&traffic_source=tiktok",
       ctaLabel: "Visit Unique Lucid Dreaming",
