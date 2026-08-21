@@ -77,12 +77,12 @@ export function getProductPath(
 
 export function getProductsIndexPath(
   publicBasePath: string,
-  category?: "mattress" | "pillow" | "topper",
+  category?: string,
 ): string {
   const base = getAppPath(publicBasePath, "/products");
   if (!category) return base;
   // Jump to the directory heading/filters (not the featured grid above).
-  return `${base}?category=${category}#directory`;
+  return `${base}?category=${encodeURIComponent(category)}#directory`;
 }
 
 export function getComparisonsPath(publicBasePath: string): string {

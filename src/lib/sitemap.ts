@@ -45,6 +45,12 @@ export function buildSiteSitemapEntries(
         changeFrequency: "yearly",
         priority: 0.3,
       },
+      {
+        url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, "/products"),
+        lastModified: now,
+        changeFrequency: "weekly",
+        priority: 0.85,
+      },
     ];
 
     for (const category of getDirectoryCategories(siteSlug)) {

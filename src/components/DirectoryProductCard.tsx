@@ -7,11 +7,13 @@ import { ProductMediaImage } from "@/components/ProductMediaImage";
 type DirectoryProductCardProps = {
   product: DirectoryProduct;
   href: string;
+  categoryLabel?: string;
 };
 
 export function DirectoryProductCard({
   product,
   href,
+  categoryLabel,
 }: DirectoryProductCardProps) {
   const headingId = `directory-product-${product.slug}`;
 
@@ -40,7 +42,7 @@ export function DirectoryProductCard({
 
       <div className="pointer-events-none relative flex flex-1 flex-col px-6 pb-6">
         <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-          {product.typeLabel}
+          {categoryLabel ? `${categoryLabel} · ${product.typeLabel}` : product.typeLabel}
         </p>
         <h2
           id={headingId}

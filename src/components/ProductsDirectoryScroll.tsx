@@ -13,11 +13,7 @@ export function ProductsDirectoryScroll() {
   const category = searchParams.get("category");
 
   useEffect(() => {
-    if (
-      category !== "mattress" &&
-      category !== "pillow" &&
-      category !== "topper"
-    ) {
+    if (!category) {
       return;
     }
 

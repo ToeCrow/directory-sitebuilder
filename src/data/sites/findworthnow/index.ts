@@ -5,7 +5,7 @@ export const siteData: SiteData = {
   title: "FindWorthNow",
   metaTitle: "FindWorthNow – Discover What's Worth It",
   metaDescription:
-    "FindWorthNow explores products, tools, programs, and ideas worth considering — starting with sleep.",
+    "FindWorthNow explores products, tools, programs, and ideas worth considering — sleep, supplements, and more.",
   niche: "affiliate-directory",
   siteUrl: "https://findworthnow.com",
   ratingScale: 5,
@@ -15,8 +15,8 @@ export const siteData: SiteData = {
     headline: "FindWorthNow",
     subheadline:
       "FindWorthNow explores products, tools, programs, and ideas worth considering. We start small, stay specific, and only publish categories we actually cover.",
-    primaryCta: "Explore Sleep",
-    secondaryCtaHref: "/sleep",
+    primaryCta: "Browse products",
+    secondaryCtaHref: "/products",
   },
 
   topPicks: {
@@ -24,7 +24,9 @@ export const siteData: SiteData = {
   },
 
   productDirectory: {
-    title: "Browse FindWorthNow",
+    title: "Product reviews",
+    description:
+      "Short overviews of products people are researching. Filter by category, then open a review for what the seller currently lists.",
   },
 
   products: [],
@@ -55,7 +57,7 @@ export const siteData: SiteData = {
   footer: {
     tagline: "Discover what's worth it.",
     links: [
-      { label: "Sleep", href: "/sleep" },
+      { label: "Products", href: "/products" },
       { label: "Affiliate Disclosure", href: "/affiliate-disclosure" },
     ],
   },

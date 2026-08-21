@@ -216,6 +216,11 @@ export function getIndexNowUrlSnapshots(siteSlug: string): IndexNowUrlSnapshot[]
       snapshotFor(abs("/affiliate-disclosure"), chrome, {
         affiliateDisclosure: siteData.affiliateDisclosure,
       }),
+      snapshotFor(abs("/products"), chrome, {
+        productDirectory: siteData.productDirectory,
+        categories: getDirectoryCategories(siteSlug),
+        products: getDirectoryProducts(siteSlug),
+      }),
     ];
 
     for (const category of getDirectoryCategories(siteSlug)) {

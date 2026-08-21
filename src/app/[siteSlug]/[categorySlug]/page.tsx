@@ -10,13 +10,16 @@ import {
   siteUsesEditorialCatalog,
 } from "@/lib/directory-catalog";
 import {
+  getDirectoryCategoryPath,
   getDirectoryReviewPath,
+  getProductsIndexPath,
   getPublicPath,
   getSitePath,
 } from "@/lib/paths";
 import { getRequestPublicBasePath } from "@/lib/request-paths";
 import { buildPageOpenGraph } from "@/lib/seo";
 import { getSiteBySlug, isValidSiteSlug } from "@/lib/site";
+import { cn } from "@/lib/cn";
 
 type CategoryPageProps = {
   params: Promise<{ siteSlug: string; categorySlug: string }>;
@@ -73,6 +76,7 @@ export default async function DirectoryCategoryPage({
 
   const publicBasePath = await getRequestPublicBasePath(siteSlug);
   const products = getDirectoryProducts(siteSlug, category.slug);
+  const categories = getDirectoryCategories(siteSlug);
 
   return (
     <main className="py-12 md:py-16">
@@ -93,11 +97,42 @@ export default async function DirectoryCategoryPage({
           </p>
         </header>
 
+        <div
+          className="mt-8 flex flex-wrap gap-2"
+          role="navigation"
+          aria-label="Product categories"
+        >
+          <Link
+            href={getProductsIndexPath(publicBasePath)}
+            className="rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:bg-slate-50"
+          >
+            All
+          </Link>
+          {categories.map((item) => {
+            const active = item.slug === category.slug;
+            return (
+              <Link
+                key={item.slug}
+                href={getDirectoryCategoryPath(publicBasePath, item.slug)}
+                className={cn(
+                  "rounded-lg px-3.5 py-2 text-sm font-medium transition-colors",
+                  active
+                    ? "bg-blue-600 text-white"
+                    : "border border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50",
+                )}
+                aria-current={active ? "page" : undefined}
+              >
+                {item.name}
+              </Link>
+            );
+          })}
+        </div>
+
         <section className="mt-10" aria-labelledby="products-heading">
           <h2 id="products-heading" className="sr-only">
             Products
           </h2>
-          <ul className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <ul className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {products.map((product) => (
               <li key={product.slug}>
                 <DirectoryProductCard

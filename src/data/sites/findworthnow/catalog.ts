@@ -1,4 +1,5 @@
 import type { DirectoryCatalog } from "@/types/directory-catalog";
+import { additionalOffers } from "./offers";
 
 export const catalog: DirectoryCatalog = {
   categories: [
@@ -12,6 +13,61 @@ export const catalog: DirectoryCatalog = {
       metaTitle: "Sleep Products & Resources",
       metaDescription:
         "Explore sleep products, tools, and approaches on FindWorthNow.",
+    },
+    {
+      slug: "dental-health",
+      name: "Dental Health",
+      description:
+        "Oral-care supplements people are researching, from chewable probiotics to postbiotic tablets.",
+      intro:
+        "This section looks at oral-care supplements sold for teeth, gums, and breath. None of this is dental advice, and none of it replaces a dentist.",
+      metaTitle: "Dental Health Products",
+      metaDescription:
+        "Explore oral-care supplements and what manufacturers currently list on FindWorthNow.",
+    },
+    {
+      slug: "dietary-supplements",
+      name: "Dietary Supplements",
+      description:
+        "Capsules, powders, and liquids sold for everyday health topics — listed as the manufacturer describes them.",
+      intro:
+        "This section covers dietary supplements people are comparing. We summarize what the seller currently lists. Supplements are not medicines, and this is not medical advice.",
+      metaTitle: "Dietary Supplements",
+      metaDescription:
+        "Explore dietary supplements on FindWorthNow, with short overviews of what manufacturers currently list.",
+    },
+    {
+      slug: "mens-health",
+      name: "Men's Health",
+      description:
+        "Supplements marketed toward prostate support and men's wellness.",
+      intro:
+        "This section looks at supplements sold in the men's-health category. We summarize the official offer. This is not medical advice, and these products are not treatments for any disease.",
+      metaTitle: "Men's Health Products",
+      metaDescription:
+        "Explore men's-health supplements on FindWorthNow, with short overviews of what manufacturers currently list.",
+    },
+    {
+      slug: "mental-health",
+      name: "Mental Health",
+      description:
+        "Products marketed around memory, clarity, and everyday mental wellness.",
+      intro:
+        "This section looks at products sold around memory and mental wellness. We summarize what the seller currently lists. This is not mental-health care, and it is not a substitute for a clinician.",
+      metaTitle: "Mental Health Products",
+      metaDescription:
+        "Explore memory and mental-wellness products on FindWorthNow, with short overviews of what sellers currently list.",
+    },
+    {
+      slug: "health-fitness",
+      name: "Health & Fitness",
+      description:
+        "Programs and tools sold around focus, fitness, and everyday performance.",
+      intro:
+        "This section covers health-and-fitness offers that are not a standard supplement bottle — for example digital audio routines. We summarize what the seller currently lists.",
+      metaTitle: "Health & Fitness",
+      metaDescription:
+        "Explore health and fitness programs on FindWorthNow, with short overviews of what sellers currently list.",
     },
   ],
   products: [
@@ -255,5 +311,6 @@ export const catalog: DirectoryCatalog = {
         },
       ],
     },
+    ...additionalOffers,
   ],
 };

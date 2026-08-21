@@ -442,11 +442,15 @@ describe("sitemap", () => {
 
     assert.ok(urls.includes("https://findworthnow.com/"));
     assert.ok(urls.includes("https://findworthnow.com/sleep"));
+    assert.ok(urls.includes("https://findworthnow.com/products"));
+    assert.ok(urls.includes("https://findworthnow.com/dental-health"));
     assert.ok(
       urls.includes("https://findworthnow.com/sleep/sleep-revive-review"),
     );
     assert.ok(urls.includes("https://findworthnow.com/affiliate-disclosure"));
-    assert.equal(urls.includes("https://findworthnow.com/products"), false);
+    assert.ok(
+      urls.includes("https://findworthnow.com/dental-health/prodentim-review"),
+    );
     assert.equal(urls.includes("https://findworthnow.com/buying-guide"), false);
     assert.equal(urls.includes("https://findworthnow.com/comparisons"), false);
     assert.equal(urls.includes("https://findworthnow.com/affiliate"), false);

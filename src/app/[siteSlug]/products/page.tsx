@@ -2,18 +2,24 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { AffiliateDisclosure } from "@/components/AffiliateDisclosure";
+import { DirectoryCatalogDirectory } from "@/components/DirectoryCatalogDirectory";
 import { ProductGrid } from "@/components/ProductGrid";
 import { ProductDirectory } from "@/components/ProductDirectory";
 import { ProductsDirectoryScroll } from "@/components/ProductsDirectoryScroll";
-import { siteUsesEditorialCatalog } from "@/lib/directory-catalog";
 import {
-  getLegacyDirectorySiteSlugs,
+  getDirectoryCategories,
+  getDirectoryProducts,
+  siteUsesEditorialCatalog,
+} from "@/lib/directory-catalog";
+import {
   getSiteBySlug,
   isValidSiteSlug,
   siteHasMattressPillowNav,
+  siteSlugs,
   type SiteSlug,
 } from "@/lib/site";
 import { getPublicPath } from "@/lib/paths";
+import { getRequestPublicBasePath } from "@/lib/request-paths";
 import { buildPageOpenGraph } from "@/lib/seo";
 
 type ProductsIndexProps = {
@@ -22,7 +28,7 @@ type ProductsIndexProps = {
 };
 
 export function generateStaticParams() {
-  return getLegacyDirectorySiteSlugs().map((siteSlug) => ({ siteSlug }));
+  return siteSlugs.map((siteSlug) => ({ siteSlug }));
 }
 
 export async function generateMetadata({
@@ -33,7 +39,10 @@ export async function generateMetadata({
   if (!siteData) return { title: "Products" };
 
   const path = getPublicPath(siteSlug, "/products");
-  const description = siteData.productDirectory.description ?? "";
+  const description = siteUsesEditorialCatalog(siteSlug)
+    ? (siteData.productDirectory.description ??
+      "Browse product reviews and filter by category.")
+    : (siteData.productDirectory.description ?? "");
   const ogTitle = `Products — ${siteData.title}`;
 
   return {
@@ -56,13 +65,57 @@ export default async function ProductsIndexPage({
   const { siteSlug } = await params;
   const { category: categoryParam } = await searchParams;
 
-  if (!isValidSiteSlug(siteSlug) || siteUsesEditorialCatalog(siteSlug)) {
+  if (!isValidSiteSlug(siteSlug)) {
     notFound();
   }
 
   const siteData = getSiteBySlug(siteSlug);
   if (!siteData) {
     notFound();
+  }
+
+  if (siteUsesEditorialCatalog(siteSlug)) {
+    const publicBasePath = await getRequestPublicBasePath(siteSlug);
+    const categories = getDirectoryCategories(siteSlug);
+    const activeCategory = categories.find(
+      (category) => category.slug === categoryParam,
+    );
+    const products = getDirectoryProducts(siteSlug, activeCategory?.slug);
+    const heading = activeCategory
+      ? `${activeCategory.name} reviews`
+      : siteData.productDirectory.title;
+
+    return (
+      <main>
+        <Suspense fallback={null}>
+          <ProductsDirectoryScroll />
+        </Suspense>
+        <div className="mx-auto max-w-6xl px-4 pt-12 md:pt-16">
+          <h1 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
+            {heading}
+          </h1>
+          {activeCategory ? (
+            <p className="mt-3 max-w-2xl text-slate-600">{activeCategory.intro}</p>
+          ) : (
+            siteData.productDirectory.description && (
+              <p className="mt-3 max-w-2xl text-slate-600">
+                {siteData.productDirectory.description}
+              </p>
+            )
+          )}
+        </div>
+        <DirectoryCatalogDirectory
+          publicBasePath={publicBasePath}
+          categories={categories}
+          products={products}
+          activeCategorySlug={activeCategory?.slug}
+          title=""
+        />
+        <div className="mx-auto max-w-6xl px-4 pb-12">
+          <AffiliateDisclosure siteSlug={siteSlug as SiteSlug} className="px-0" />
+        </div>
+      </main>
+    );
   }
 
   const showCategoryFilters = siteHasMattressPillowNav(siteSlug);

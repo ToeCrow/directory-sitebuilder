@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useSiteContext } from "@/context/SiteContext";
 import {
   getBuyingGuidePath,
-  getDirectoryCategoryPath,
   getProductPath,
   getProductsIndexPath,
   getReviewsIndexPath,
@@ -69,19 +68,17 @@ export function Header() {
   const homeHref = getSitePath(publicBasePath);
   const editorialCategories = getDirectoryCategories(siteSlug);
   const isEditorialCatalog = editorialCategories.length > 0;
-  const showProductsNav = siteHasMattressPillowNav(siteSlug);
-  const featuredReviews = showProductsNav
+  const showMattressProductsNav = siteHasMattressPillowNav(siteSlug);
+  const showProductsNav = showMattressProductsNav || isEditorialCatalog;
+  const featuredReviews = showMattressProductsNav
     ? getFeaturedProducts(siteSlug).slice(0, 3)
     : [];
   const showReviewsNav = !isEditorialCatalog && siteData.articles.length > 0;
 
   const buyingGuideHref = getBuyingGuidePath(publicBasePath);
   const primaryLinks = isEditorialCatalog
-    ? editorialCategories.map((category) => ({
-        href: getDirectoryCategoryPath(publicBasePath, category.slug),
-        label: category.name,
-      }))
-    : showProductsNav
+    ? []
+    : showMattressProductsNav
       ? [
           { href: buyingGuideHref, label: "Buying Guide" },
           { href: `${homeHref}#faq`, label: "FAQ" },
@@ -98,23 +95,31 @@ export function Header() {
     setMobileProductsOpen(false);
   }
 
-  const productsMenu = [
-    { href: getProductsIndexPath(publicBasePath), label: "All Products" },
-    {
-      href: getProductsIndexPath(publicBasePath, "mattress"),
-      label: "Mattresses",
-    },
-    {
-      href: getProductsIndexPath(publicBasePath, "pillow"),
-      label: "Pillows",
-    },
-    {
-      href: getProductsIndexPath(publicBasePath, "topper"),
-      label: "Toppers",
-    },
-  ];
+  const productsMenu = isEditorialCatalog
+    ? [
+        { href: getProductsIndexPath(publicBasePath), label: "All Products" },
+        ...editorialCategories.map((category) => ({
+          href: getProductsIndexPath(publicBasePath, category.slug),
+          label: category.name,
+        })),
+      ]
+    : [
+        { href: getProductsIndexPath(publicBasePath), label: "All Products" },
+        {
+          href: getProductsIndexPath(publicBasePath, "mattress"),
+          label: "Mattresses",
+        },
+        {
+          href: getProductsIndexPath(publicBasePath, "pillow"),
+          label: "Pillows",
+        },
+        {
+          href: getProductsIndexPath(publicBasePath, "topper"),
+          label: "Toppers",
+        },
+      ];
 
-  const reviewsMenu = showProductsNav
+  const reviewsMenu = showMattressProductsNav
     ? [
         {
           href: getReviewsIndexPath(publicBasePath),
