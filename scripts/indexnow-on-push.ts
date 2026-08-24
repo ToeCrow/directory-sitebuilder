@@ -18,6 +18,7 @@ import {
   getIndexNowUrlSnapshots,
   indexNowUrlsToSubmit,
   isPublicSiteTemplatePath,
+  pageTemplateHasCopyChange,
   parseIndexNowSnapshotList,
   submitSiteToIndexNow,
   type IndexNowUrlSnapshot,
@@ -79,6 +80,30 @@ function listSnapshotsAtRef(ref: string): IndexNowUrlSnapshot[] {
   }
 }
 
+function gitShow(ref: string, filePath: string): string | undefined {
+  try {
+    return execFileSync("git", ["show", `${ref}:${filePath}`], {
+      encoding: "utf8",
+      cwd: process.cwd(),
+      stdio: ["ignore", "pipe", "pipe"],
+    });
+  } catch {
+    return undefined;
+  }
+}
+
+function listTemplateCopyChanges(fromRef: string, toRef: string, files: string[]): string[] {
+  return files.filter((filePath) => {
+    if (!isPublicSiteTemplatePath(filePath)) {
+      return false;
+    }
+    return pageTemplateHasCopyChange(
+      gitShow(fromRef, filePath),
+      gitShow(toRef, filePath),
+    );
+  });
+}
+
 function listChangedFiles(fromRef: string, toRef: string): string[] {
   try {
     const output = execFileSync(
@@ -118,14 +143,15 @@ async function main() {
   }
 
   const changedFiles = listChangedFiles("HEAD~1", "HEAD");
+  const templateCopyFiles = listTemplateCopyChanges("HEAD~1", "HEAD", changedFiles);
   let diff = diffIndexNowSnapshots(current, previous);
   diff = applyPublicTemplateFallback(
     diff,
     current.map((snapshot) => snapshot.url),
-    changedFiles,
+    templateCopyFiles,
   );
 
-  if (changedFiles.some(isPublicSiteTemplatePath)) {
+  if (templateCopyFiles.length > 0) {
     console.log(
       "Public site templates changed — treating remaining current sitemap URLs as updated.",
     );

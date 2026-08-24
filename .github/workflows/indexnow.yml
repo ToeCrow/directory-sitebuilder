@@ -7,7 +7,6 @@ on:
     paths:
       - "src/data/sites/side-sleeper/**"
       - "src/app/**/page.tsx"
-      - "src/app/**/layout.tsx"
       - "src/lib/sitemap.ts"
       - "src/lib/indexnow.ts"
       - "src/lib/site.ts"

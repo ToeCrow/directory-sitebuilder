@@ -11,6 +11,7 @@ import {
   indexNowUrlsToSubmit,
   isAuthorizedIndexNowSubmit,
   isPublicSiteTemplatePath,
+  pageTemplateHasCopyChange,
   parseIndexNowSnapshotList,
   type IndexNowUrlSnapshot,
 } from "./indexnow";
@@ -230,6 +231,13 @@ describe("indexnow helpers", () => {
 
     assert.deepEqual(
       applyPublicTemplateFallback(diff, currentUrls, [
+        "src/app/[siteSlug]/layout.tsx",
+      ]),
+      diff,
+    );
+
+    assert.deepEqual(
+      applyPublicTemplateFallback(diff, currentUrls, [
         "src/app/[siteSlug]/about/page.tsx",
       ]),
       {
@@ -243,18 +251,98 @@ describe("indexnow helpers", () => {
     );
   });
 
-  it("detects public site template paths", () => {
+  it("detects public site page templates and ignores layout chrome", () => {
     assert.equal(
       isPublicSiteTemplatePath("src/app/[siteSlug]/about/page.tsx"),
       true,
     );
     assert.equal(
-      isPublicSiteTemplatePath("src\\app\\[siteSlug]\\layout.tsx"),
+      isPublicSiteTemplatePath("src/app/[siteSlug]/page.tsx"),
       true,
+    );
+    assert.equal(
+      isPublicSiteTemplatePath("src\\app\\[siteSlug]\\reviews\\page.tsx"),
+      true,
+    );
+    assert.equal(
+      isPublicSiteTemplatePath("src\\app\\[siteSlug]\\layout.tsx"),
+      false,
+    );
+    assert.equal(
+      isPublicSiteTemplatePath("src/app/[siteSlug]/error.tsx"),
+      false,
+    );
+    assert.equal(
+      isPublicSiteTemplatePath("src/app/globals.css"),
+      false,
     );
     assert.equal(
       isPublicSiteTemplatePath("src/app/admin/(dashboard)/page.tsx"),
       false,
     );
+  });
+
+  it("ignores className-only page template edits", () => {
+    const before = `
+      <h1 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
+        Reviews for Side Sleepers
+      </h1>
+      <p className="mt-3 max-w-2xl text-slate-600">
+        Mattress reviews, pillow reviews, and science of sleep.
+      </p>
+    `;
+    const after = `
+      <h1 className="text-3xl font-bold tracking-tight text-ss-navy md:text-4xl">
+        Reviews for Side Sleepers
+      </h1>
+      <p className="mt-3 max-w-2xl text-ss-ink/75">
+        Mattress reviews, pillow reviews, and science of sleep.
+      </p>
+    `;
+    const cnBefore = `
+      <Link
+        className={cn(
+          "rounded-lg px-3.5 py-2 text-sm font-medium",
+          active ? "bg-blue-600 text-white" : "border border-slate-200 bg-white",
+        )}
+      >
+        All
+      </Link>
+    `;
+    const cnAfter = `
+      <Link
+        className={cn(
+          "rounded-lg px-3.5 py-2 text-sm font-medium",
+          active ? "bg-ss-navy text-ss-paper" : "border border-ss-navy/15 bg-ss-paper",
+        )}
+      >
+        All
+      </Link>
+    `;
+
+    assert.equal(pageTemplateHasCopyChange(before, after), false);
+    assert.equal(pageTemplateHasCopyChange(cnBefore, cnAfter), false);
+    assert.equal(pageTemplateHasCopyChange(undefined, after), true);
+    assert.equal(pageTemplateHasCopyChange(before, undefined), true);
+  });
+
+  it("treats page template copy and structure changes as updates", () => {
+    const before = `
+      <h1 className="text-slate-900">Reviews for Side Sleepers</h1>
+      <p className="text-slate-600">Mattress reviews.</p>
+    `;
+    const copyAfter = `
+      <h1 className="text-ss-navy">Guides for Side Sleepers</h1>
+      <p className="text-ss-ink/75">Mattress reviews.</p>
+    `;
+    const structureAfter = `
+      <div>
+        <h1 className="text-ss-navy">Reviews for Side Sleepers</h1>
+        <p className="text-ss-ink/75">Mattress reviews.</p>
+      </div>
+    `;
+
+    assert.equal(pageTemplateHasCopyChange(before, copyAfter), true);
+    assert.equal(pageTemplateHasCopyChange(before, structureAfter), true);
   });
 });

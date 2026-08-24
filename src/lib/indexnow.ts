@@ -395,12 +395,114 @@ export function parseIndexNowSnapshotList(raw: unknown): IndexNowUrlSnapshot[] {
 }
 
 export function isPublicSiteTemplatePath(filePath: string): boolean {
-  return filePath.replaceAll("\\", "/").startsWith(PUBLIC_SITE_TEMPLATE_PREFIX);
+  const normalized = filePath.replaceAll("\\", "/");
+  return (
+    normalized.startsWith(PUBLIC_SITE_TEMPLATE_PREFIX) &&
+    normalized.endsWith("/page.tsx")
+  );
+}
+
+function stripClassNameAttributes(source: string): string {
+  let result = "";
+  let i = 0;
+
+  while (i < source.length) {
+    const isClassName =
+      source.startsWith("className", i) &&
+      (i === 0 || !/[A-Za-z0-9_$]/.test(source[i - 1]));
+
+    if (!isClassName) {
+      result += source[i];
+      i += 1;
+      continue;
+    }
+
+    let j = i + "className".length;
+    while (j < source.length && /\s/.test(source[j])) j += 1;
+    if (source[j] !== "=") {
+      result += source[i];
+      i += 1;
+      continue;
+    }
+
+    j += 1;
+    while (j < source.length && /\s/.test(source[j])) j += 1;
+
+    if (source[j] === '"' || source[j] === "'") {
+      const quote = source[j];
+      j += 1;
+      while (j < source.length && source[j] !== quote) {
+        if (source[j] === "\\") j += 1;
+        j += 1;
+      }
+      i = Math.min(j + 1, source.length);
+      continue;
+    }
+
+    if (source[j] === "{") {
+      let depth = 0;
+      let k = j;
+      while (k < source.length) {
+        const char = source[k];
+        if (char === '"' || char === "'" || char === "`") {
+          const quote = char;
+          k += 1;
+          while (k < source.length && source[k] !== quote) {
+            if (source[k] === "\\") k += 1;
+            k += 1;
+          }
+          k += 1;
+          continue;
+        }
+        if (char === "{") {
+          depth += 1;
+          k += 1;
+          continue;
+        }
+        if (char === "}") {
+          depth -= 1;
+          k += 1;
+          if (depth === 0) break;
+          continue;
+        }
+        k += 1;
+      }
+      i = k;
+      continue;
+    }
+
+    result += source[i];
+    i += 1;
+  }
+
+  return result;
+}
+
+function pageTemplateCopySignature(source: string): string {
+  return stripClassNameAttributes(source).replace(/\s+/g, "");
 }
 
 /**
- * Copy in `src/app/[siteSlug]/**` is not part of content fingerprints.
- * Treat remaining current sitemap URLs as updated when those templates change.
+ * True when page.tsx copy/structure changed, ignoring className-only edits.
+ * Missing before or after (added/deleted file) counts as a copy change.
+ */
+export function pageTemplateHasCopyChange(
+  before: string | undefined,
+  after: string | undefined,
+): boolean {
+  if (before === undefined && after === undefined) {
+    return false;
+  }
+  if (before === undefined || after === undefined) {
+    return true;
+  }
+  return pageTemplateCopySignature(before) !== pageTemplateCopySignature(after);
+}
+
+/**
+ * Copy in public `page.tsx` files is not part of content fingerprints.
+ * Treat remaining current sitemap URLs as updated when those page templates
+ * change. Callers should pass only page.tsx files with real copy changes.
  */
 export function applyPublicTemplateFallback(
   diff: IndexNowSnapshotDiff,
