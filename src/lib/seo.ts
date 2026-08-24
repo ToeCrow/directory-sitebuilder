@@ -46,26 +46,50 @@ export function getArticleOgImage(site: SiteData, article: Article): OgImage {
   );
 }
 
-type BuildPageOpenGraphArgs = {
+type BuildPageOpenGraphBase = {
   site: SiteData;
   title: string;
   description: string;
   path: string;
+};
+
+type ArticleOpenGraph = Extract<
+  NonNullable<Metadata["openGraph"]>,
+  { type: "article" }
+>;
+type WebsiteOpenGraph = Extract<
+  NonNullable<Metadata["openGraph"]>,
+  { type: "website" }
+>;
+
+type BuildPageOpenGraphArgs = BuildPageOpenGraphBase & {
   type?: "website" | "article";
+  publishedTime?: string;
+  modifiedTime?: string;
 };
 
 /** Complete Open Graph tags for indexable site pages. */
+export function buildPageOpenGraph(
+  args: BuildPageOpenGraphBase & {
+    type: "article";
+    publishedTime?: string;
+    modifiedTime?: string;
+  },
+): ArticleOpenGraph;
+export function buildPageOpenGraph(
+  args: BuildPageOpenGraphBase & { type?: "website" },
+): WebsiteOpenGraph;
 export function buildPageOpenGraph({
   site,
   title,
   description,
   path,
   type = "website",
-}: BuildPageOpenGraphArgs): NonNullable<Metadata["openGraph"]> {
+  publishedTime,
+  modifiedTime,
+}: BuildPageOpenGraphArgs): ArticleOpenGraph | WebsiteOpenGraph {
   const ogImage = getDefaultOgImage(site);
-
-  return {
-    type,
+  const shared = {
     siteName: site.title,
     title,
     description,
@@ -80,6 +104,20 @@ export function buildPageOpenGraph({
           },
         ]
       : undefined,
+  };
+
+  if (type === "article") {
+    return {
+      type: "article",
+      ...shared,
+      ...(publishedTime ? { publishedTime } : {}),
+      ...(modifiedTime ? { modifiedTime } : {}),
+    };
+  }
+
+  return {
+    type: "website",
+    ...shared,
   };
 }
 

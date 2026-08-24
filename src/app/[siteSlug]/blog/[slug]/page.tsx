@@ -53,16 +53,14 @@ export async function generateMetadata({
     title: post.metaTitle,
     description: post.metaDescription,
     alternates: { canonical: path },
-    openGraph: {
-      ...buildPageOpenGraph({
-        site: siteData,
-        title: `${post.metaTitle} | ${siteData.title}`,
-        description: post.metaDescription,
-        path,
-        type: "article",
-      }),
+    openGraph: buildPageOpenGraph({
+      site: siteData,
+      title: `${post.metaTitle} | ${siteData.title}`,
+      description: post.metaDescription,
+      path,
+      type: "article",
       publishedTime: post.publishedAt,
-    },
+    }),
   };
 }
 
