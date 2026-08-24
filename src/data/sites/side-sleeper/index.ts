@@ -270,6 +270,7 @@ export const siteData: SiteData = {
         "Research-based pros and cons for Helix Midnight Luxe, WinkBeds, and Saatva Classic.",
       metaDescription:
         "Pros and cons for Helix Midnight Luxe, WinkBed, and Saatva Classic — research-based mattress picks for side sleepers from specs and owner feedback.",
+      inlineRelatedSlug: "best-mattress-topper-for-side-sleepers",
       intro: [
         "The internet is ripe with blog posts and articles on what's supposed to be the best mattresses for side sleepers. The problem is that it's hard to separate useful reviews from paid marketing in this space. That's why the Side Sleeper Guide team does its own research.",
         "When we checked out three of the mattresses that get recommended the most, we wanted to know what the people actually sleeping in the mattresses think. This is what we got:",
@@ -374,6 +375,7 @@ export const siteData: SiteData = {
         "Research-based pros and cons for Coop, Eli & Elm, and Beckham Hotel Collection.",
       metaDescription:
         "Pros and cons for Coop, Eli & Elm, and Beckham Hotel Collection — research-based pillow picks for side sleepers from specs and owner feedback.",
+      inlineRelatedSlug: "best-body-pillow-for-side-sleepers",
       intro: [
         "There are lots and lots of blog posts and articles on what's supposed to be the best pillow for side sleepers. The problem is that it's hard to separate useful reviews from paid marketing in this space. That's why the Side Sleeper Guide team does its own research.",
         "When we checked out three of the pillows that get recommended the most, we wanted to know what the people actually using them think. This is what we got:",

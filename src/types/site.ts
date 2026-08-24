@@ -64,6 +64,10 @@ type ArticleBase = {
   author?: string;
   /** Optional per-article social share image override */
   ogImage?: { src: string; alt: string };
+  /** One article slug to show as a mid-article related read. */
+  inlineRelatedSlug?: string;
+  /** Ordered slugs for the bottom related list (falls back to the same review category). */
+  relatedSlugs?: string[];
 };
 
 export type ArticleClosingGuide = {

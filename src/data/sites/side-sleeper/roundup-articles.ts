@@ -17,6 +17,7 @@ export const lowerBackPainMattressArticle: ProductRoundupArticle = {
     "Seven mattresses for lower back pain — from a budget firm hybrid to an orthopedic specialist bed — based on specs, policies, and recurring owner feedback.",
   metaDescription:
     "Seven mattresses for lower back pain — from a budget firm hybrid to an orthopedic specialist bed — based on specs, policies, and recurring owner feedback.",
+  inlineRelatedSlug: "best-mattresses-for-side-sleepers",
   intro: [
     "If you start every morning with a slow, groaning shuffle to the coffee machine, your mattress might be the culprit. A mattress that's too soft lets your hips sink lower than your shoulders, twisting your spine out of alignment all night. One that's too firm does the opposite, leaving gaps under your lower back with nothing to fill them.",
     "The best mattress for lower back pain finds the middle ground: enough give to cushion pressure points, enough support to keep your spine level from head to heel.",

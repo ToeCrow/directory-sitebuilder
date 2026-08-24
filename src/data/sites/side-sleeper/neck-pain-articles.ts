@@ -21,6 +21,13 @@ export const neckPainCubeLatexKapokArticle: ProductRoundupArticle = {
     "Pillow Cube, Brooklyn Bedding Talalay latex, and Layla Kapok compared for neck pain — specs, owner feedback, and side-sleeper fit.",
   metaDescription:
     "Pillow Cube, Brooklyn Bedding Talalay latex, and Layla Kapok compared for neck pain — specs, owner feedback, and which pick fits dedicated side sleepers.",
+  inlineRelatedSlug: "can-the-right-pillow-fix-your-neck-pain",
+  relatedSlugs: [
+    "best-pillows-for-neck-pain",
+    "best-pillows-for-shoulder-pain",
+    "best-pillows-for-side-sleepers",
+    "best-body-pillow-for-side-sleepers",
+  ],
   intro: [
     "A stiff neck usually means one of two things: You slept in a weird position … or your pillow has been quietly failing you for months.",
     "For side sleepers specifically, the gap between your ear and your shoulder needs real, consistent support, not a floppy stack of feathers that flattens out by 2 a.m.",
@@ -148,6 +155,13 @@ export const neckPainScienceArticle: EditorialArticle = {
     "Three studies on pillows and neck pain: latex and adaptable shapes help, one-size-fits-all often fails, and pain relief isn't the same as better sleep.",
   metaDescription:
     "Three studies on pillows and neck pain: latex and adaptable shapes help, one-size-fits-all often fails, and pain relief isn't the same as better sleep.",
+  inlineRelatedSlug: "best-pillow-for-neck-pain-cube-latex-kapok",
+  relatedSlugs: [
+    "best-pillows-for-neck-pain",
+    "sleep-quality-7-facts",
+    "best-pillows-for-shoulder-pain",
+    "best-pillows-for-side-sleepers",
+  ],
   intro: [
     "Neck pain affects a huge chunk of the population at some point in their lives, and a surprising amount of research has gone into figuring out whether the thing under your head at night is actually part of the problem.",
     "We dug into three studies spanning nearly three decades, from a classic 1997 clinical trial to a 2021 meta-analysis pooling data from hundreds of participants, to see what actually holds up.",

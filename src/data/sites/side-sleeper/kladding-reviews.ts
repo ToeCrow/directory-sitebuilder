@@ -19,6 +19,7 @@ export const mattressTopperArticle: ProductRoundupArticle = {
     "Five mattress toppers that add cushioning and pressure relief for side sleepers — from cooling memory foam to organic latex.",
   metaDescription:
     "Best mattress toppers for side sleepers: Saatva Graphite, Nolah, Helix Premium, Birch Plush Organic, and Silk & Snow — researched from specs and owner feedback.",
+  inlineRelatedSlug: "top-8-memory-foam-mattresses-for-side-sleepers",
   intro: [
     "If you sleep on your side, your hips and shoulders take the brunt of your body weight every night, and a mattress that's gone flat or firm can leave you waking up sore instead of rested. The good news: you don't need a brand new bed to fix it.",
     "The best mattress topper for side sleepers can add the cushioning and pressure relief your joints need while keeping your spine aligned, often for a fraction of the price of a new mattress. Below are five toppers that hold up under real scrutiny, whether you want plush memory foam, natural latex, or a hybrid cooling design.",
@@ -180,6 +181,7 @@ export const memoryFoamMattressesArticle: ProductRoundupArticle = {
     "Eight memory foam mattresses that contour to hips and shoulders — from budget picks to Tempur-Pedic — researched for side sleepers.",
   metaDescription:
     "Eight memory foam mattresses for side sleepers, from budget Siena to Tempur-Pedic — contouring, cooling, and price from specs and owner feedback.",
+  inlineRelatedSlug: "best-mattresses-for-lower-back-pain",
   intro: [
     "Memory foam mattresses use one or more layers of viscoelastic foam (sometimes paired with polyfoam) to create a deep, exacting hug around the body. For side sleepers, that dramatic contouring is exactly what cushions the hips and shoulders while keeping the spine level.",
   ],
@@ -409,6 +411,7 @@ export const bodyPillowArticle: ProductRoundupArticle = {
     "Five body pillows that keep hips, knees, and shoulders stacked for side sleepers — adjustable fill, cooling, and budget picks.",
   metaDescription:
     "Best body pillows for side sleepers: Coop Adjustable, Buffy Wiggle, Sleep Number Cool ComfortFit, Nest Bedding Easy Breather, and Snuggle-Pedic.",
+  inlineRelatedSlug: "best-pillows-for-side-sleepers",
   intro: [
     "If you're a side sleeper who tosses and turns chasing a comfortable position, the fix might not be your mattress at all. It might be the empty space between your knees, or the lack of something to hug through the night.",
     "A good body pillow fills that gap, quite literally, keeping your hips, knees, and shoulders stacked in alignment so your spine doesn't twist while you sleep. The best body pillow for side sleepers should be long enough to support you from shoulder to knee, adjustable enough to match your firmness preference, and durable enough to hold its shape for years. Here are five that do exactly that.",

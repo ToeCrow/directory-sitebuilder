@@ -1,17 +1,26 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { Fragment } from "react";
 import { notFound } from "next/navigation";
 import { AffiliateDisclosure } from "@/components/AffiliateDisclosure";
+import { InlineRelatedArticle } from "@/components/InlineRelatedArticle";
 import { JsonLd } from "@/components/JsonLd";
+import { RelatedArticles } from "@/components/RelatedArticles";
 import { buildArticleSchema } from "@/lib/schema";
 import { getArticleOgImage } from "@/lib/seo";
 import {
+  getArticlePath,
   getProductPath,
   getPublicPath,
   getReviewsIndexPath,
 } from "@/lib/paths";
 import { getRequestPublicBasePath } from "@/lib/request-paths";
+import {
+  getBottomRelatedArticles,
+  getInlineRelatedArticle,
+  getInlineRelatedInsertAfterIndex,
+} from "@/lib/related-articles";
 import { RoundupProductHeading } from "@/components/RoundupProductHeading";
 import { RoundupProductPageCta } from "@/components/RoundupProductPageCta";
 import {
@@ -164,6 +173,11 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
   const isRoundup = article.kind === "product-roundup";
   const publicBasePath = await getRequestPublicBasePath(siteSlug);
   const reviewsHref = getReviewsIndexPath(publicBasePath);
+  const inlineRelated = getInlineRelatedArticle(siteSlug, article);
+  const inlineRelatedHref = inlineRelated
+    ? getArticlePath(publicBasePath, inlineRelated.slug)
+    : null;
+  const relatedArticles = getBottomRelatedArticles(siteSlug, article);
 
   return (
     <main className="py-12 md:py-16">
@@ -220,10 +234,14 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
               const catalogProduct = product.productSlug
                 ? getProductBySlug(siteSlug, product.productSlug)
                 : undefined;
+              const showInlineRelated =
+                Boolean(inlineRelated && inlineRelatedHref) &&
+                index ===
+                  getInlineRelatedInsertAfterIndex(article.products.length);
 
               return (
+                <Fragment key={product.heading}>
                 <section
-                  key={product.heading}
                   aria-labelledby={`product-${index}-heading`}
                 >
                   <RoundupProductHeading
@@ -336,6 +354,13 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
                     <RoundupProductPageCta product={catalogProduct} />
                   )}
                 </section>
+                {showInlineRelated && inlineRelated && inlineRelatedHref && (
+                  <InlineRelatedArticle
+                    article={inlineRelated}
+                    href={inlineRelatedHref}
+                  />
+                )}
+                </Fragment>
               );
             })}
           </div>
@@ -394,9 +419,15 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
 
         {isEditorial && (
           <div className="mt-8 space-y-16">
-            {article.sections.map((section, index) => (
+            {article.sections.map((section, index) => {
+              const showInlineRelated =
+                Boolean(inlineRelated && inlineRelatedHref) &&
+                index ===
+                  getInlineRelatedInsertAfterIndex(article.sections.length);
+
+              return (
+                <Fragment key={section.heading}>
               <section
-                key={section.heading}
                 aria-labelledby={`editorial-${index}-heading`}
               >
                 <h2
@@ -486,9 +517,22 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
                   </p>
                 )}
               </section>
-            ))}
+                {showInlineRelated && inlineRelated && inlineRelatedHref && (
+                  <InlineRelatedArticle
+                    article={inlineRelated}
+                    href={inlineRelatedHref}
+                  />
+                )}
+                </Fragment>
+              );
+            })}
           </div>
         )}
+
+        <RelatedArticles
+          articles={relatedArticles}
+          publicBasePath={publicBasePath}
+        />
 
         <div className="mt-12 border-t border-slate-200 pt-8">
           <Link
