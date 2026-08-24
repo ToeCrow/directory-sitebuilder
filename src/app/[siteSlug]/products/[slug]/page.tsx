@@ -130,21 +130,21 @@ export default async function ProductPage({ params }: ProductPageProps) {
       <article className="mx-auto max-w-3xl px-4">
         <Link
           href={getProductsIndexPath(publicBasePath)}
-          className="text-sm font-medium text-blue-600 hover:text-blue-700"
+          className="text-sm font-medium text-ss-navy hover:text-ss-blue"
         >
           ← Back to products
         </Link>
 
-        <header className="mt-6 border-b border-slate-200 pb-8">
+        <header className="mt-6 pb-8">
           {product.badge && (
-            <span className="mb-3 inline-block rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700">
+            <span className="mb-3 inline-block bg-ss-mist px-2.5 py-0.5 text-xs font-medium text-ss-navy">
               {product.badge}
             </span>
           )}
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
+          <h1 className="text-3xl font-bold tracking-tight text-ss-navy md:text-4xl">
             {product.name}
           </h1>
-          <p className="mt-2 text-sm font-medium text-slate-500">
+          <p className="mt-2 text-sm font-medium text-ss-navy/60">
             {siteShowsProductRatings(siteSlug) ? (
               <>
                 Rating: {product.rating}/{siteData.ratingScale} ·{" "}
@@ -154,12 +154,17 @@ export default async function ProductPage({ params }: ProductPageProps) {
               product.priceDisplay
             )}
           </p>
-          <p className="mt-4 text-lg leading-relaxed text-slate-600">
+          <p className="mt-4 text-lg leading-relaxed text-ss-ink/80">
             {product.shortDescription}
           </p>
-          <p className="mt-4 text-sm text-slate-700">
-            <span className="font-medium">Best for:</span> {product.bestFor}
-          </p>
+          <div className="mt-5 border-l-[3px] border-ss-green bg-ss-green/10 px-4 py-3">
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-ss-ink">
+              Best for
+            </p>
+            <p className="mt-1 text-sm leading-relaxed text-ss-ink/85">
+              {product.bestFor}
+            </p>
+          </div>
         </header>
 
         <AffiliateDisclosure siteSlug={siteSlug} className="mt-6 px-0" />
@@ -175,18 +180,18 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <div>
               <h2
                 id="features-heading"
-                className="text-xl font-semibold text-slate-900"
+                className="text-xl font-semibold text-ss-navy"
               >
                 Key features
               </h2>
-              <ul className="mt-4 list-inside list-disc space-y-1 text-slate-600">
+              <ul className="mt-4 list-inside list-disc space-y-1 text-ss-ink/80">
                 {product.features.map((feature) => (
                   <li key={feature}>{feature}</li>
                 ))}
               </ul>
             </div>
             {product.image && (
-              <figure className="overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
+              <figure className="overflow-hidden bg-ss-mist">
                 <Image
                   src={product.image.src}
                   alt={product.image.alt}
@@ -200,18 +205,21 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </div>
         </section>
 
-        <div className="mt-10 grid gap-8 md:grid-cols-2">
-          <section aria-labelledby="pros-heading">
+        <div className="mt-10 grid gap-4 md:grid-cols-2">
+          <section
+            className="border-l-[3px] border-ss-green bg-ss-green/10 px-4 py-4"
+            aria-labelledby="pros-heading"
+          >
             <h2
               id="pros-heading"
-              className="text-xl font-semibold text-slate-900"
+              className="text-xs font-semibold uppercase tracking-[0.14em] text-ss-ink"
             >
               Pros
             </h2>
-            <ul className="mt-4 space-y-2">
+            <ul className="mt-3 space-y-2">
               {product.pros.map((pro) => (
-                <li key={pro} className="flex gap-2 text-sm text-slate-600">
-                  <span className="text-green-600" aria-hidden="true">
+                <li key={pro} className="flex gap-2 text-sm text-ss-ink/85">
+                  <span className="text-ss-green" aria-hidden="true">
                     ✓
                   </span>
                   {pro}
@@ -220,17 +228,20 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </ul>
           </section>
 
-          <section aria-labelledby="cons-heading">
+          <section
+            className="border-l-[3px] border-ss-terracotta bg-ss-terracotta/10 px-4 py-4"
+            aria-labelledby="cons-heading"
+          >
             <h2
               id="cons-heading"
-              className="text-xl font-semibold text-slate-900"
+              className="text-xs font-semibold uppercase tracking-[0.14em] text-ss-ink"
             >
               Cons
             </h2>
-            <ul className="mt-4 space-y-2">
+            <ul className="mt-3 space-y-2">
               {product.cons.map((con) => (
-                <li key={con} className="flex gap-2 text-sm text-slate-600">
-                  <span className="text-red-500" aria-hidden="true">
+                <li key={con} className="flex gap-2 text-sm text-ss-ink/85">
+                  <span className="text-ss-terracotta" aria-hidden="true">
                     ✗
                   </span>
                   {con}
@@ -242,12 +253,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
         {featuredGuides.length > 0 && (
           <section
-            className="mt-12 border-t border-slate-200"
+            className="mt-12 border-t border-ss-navy/10"
             aria-labelledby="featured-guides-heading"
           >
             <h2
               id="featured-guides-heading"
-              className="mt-10 text-xl font-semibold text-slate-900"
+              className="mt-10 text-xl font-semibold text-ss-navy"
             >
               Featured in our guides
             </h2>
@@ -264,8 +275,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </section>
         )}
 
-        <div className="mt-10 rounded-xl border border-slate-200 bg-slate-50 p-6">
-          <p className="text-sm text-slate-600">
+        <div className="mt-10 bg-ss-navy px-6 py-8 text-ss-paper">
+          <p className="text-sm leading-relaxed text-ss-mist">
             {siteHasMattressPillowNav(siteSlug)
               ? `Ready to try ${product.name}? Visit the official site to check availability and current price.`
               : `Ready to try ${product.name}? Visit the official site to learn more or request a demo.`}
@@ -274,7 +285,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             href={getBuyUrl(product)}
             target="_blank"
             rel={buyLinkRel(product)}
-            className="mt-4 inline-flex items-center rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
+            className="mt-4 inline-flex items-center rounded-lg bg-ss-paper px-6 py-3 text-sm font-semibold text-ss-navy transition-colors hover:bg-ss-mist"
           >
             Visit {product.name}
           </a>

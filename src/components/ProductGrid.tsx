@@ -29,12 +29,12 @@ export function ProductGrid({
       <div className="mx-auto max-w-6xl px-4">
         <h2
           id="top-picks-heading"
-          className="text-2xl font-bold tracking-tight text-slate-900 md:text-3xl"
+          className="text-2xl font-bold tracking-tight text-ss-navy md:text-3xl"
         >
           {titleOverride ?? siteData.topPicks.title}
         </h2>
         {siteData.topPicks.description && (
-          <p className="mt-2 max-w-2xl text-slate-600">
+          <p className="mt-2 max-w-2xl text-ss-ink/75">
             {siteData.topPicks.description}
           </p>
         )}

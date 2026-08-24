@@ -69,19 +69,19 @@ function SideSleeperHeroCtas({
     <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
       <Link
         href={getProductsIndexPath(publicBasePath, "mattress")}
-        className={primaryCtaClassName}
+        className="inline-flex items-center rounded-lg bg-ss-navy px-6 py-3 text-sm font-semibold text-ss-paper transition-colors hover:bg-ss-navy/90"
       >
         Browse Mattresses
       </Link>
       <Link
         href={getProductsIndexPath(publicBasePath, "pillow")}
-        className={primaryCtaClassName}
+        className="inline-flex items-center rounded-lg bg-ss-navy px-6 py-3 text-sm font-semibold text-ss-paper transition-colors hover:bg-ss-navy/90"
       >
         Browse Pillows
       </Link>
       <Link
         href={getBuyingGuidePath(publicBasePath)}
-        className={primaryCtaClassName}
+        className="inline-flex items-center rounded-lg border border-ss-navy/20 px-6 py-3 text-sm font-semibold text-ss-navy transition-colors hover:bg-ss-mist"
       >
         {buyingGuideLabel}
       </Link>
@@ -193,11 +193,11 @@ export function Hero({ siteSlug, className }: HeroProps) {
           )}
         </div>
 
-        <div className="mx-auto max-w-6xl bg-white px-4 py-10 text-center md:py-14">
-          <h1 className="mx-auto max-w-3xl text-3xl font-bold tracking-tight text-slate-900 md:text-5xl">
+        <div className="mx-auto max-w-6xl bg-ss-paper px-4 py-10 text-center md:py-14">
+          <h1 className="mx-auto max-w-3xl text-3xl font-bold tracking-tight text-ss-navy md:text-5xl">
             {hero.headline}
           </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-slate-600">
+          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-ss-ink/80">
             {hero.subheadline}
           </p>
           <HeroCtaGroup siteSlug={siteSlug} />

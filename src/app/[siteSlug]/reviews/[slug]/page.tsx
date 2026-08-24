@@ -4,9 +4,13 @@ import Link from "next/link";
 import { Fragment } from "react";
 import { notFound } from "next/navigation";
 import { AffiliateDisclosure } from "@/components/AffiliateDisclosure";
+import { ArticleFaq } from "@/components/ArticleFaq";
+import { ArticleVerdict } from "@/components/ArticleVerdict";
+import { BestForSkipIf } from "@/components/BestForSkipIf";
 import { InlineRelatedArticle } from "@/components/InlineRelatedArticle";
 import { JsonLd } from "@/components/JsonLd";
 import { RelatedArticles } from "@/components/RelatedArticles";
+import { ResearchNote } from "@/components/ResearchNote";
 import { buildArticleSchema } from "@/lib/schema";
 import { getArticleOgImage } from "@/lib/seo";
 import {
@@ -110,7 +114,7 @@ export async function generateMetadata({
 
 function EditorialFigureBlock({ figure }: { figure: EditorialFigure }) {
   return (
-    <figure className="mt-6 overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
+    <figure className="mt-6 overflow-hidden bg-ss-mist">
       <Image
         src={figure.src}
         alt={figure.alt}
@@ -119,7 +123,7 @@ function EditorialFigureBlock({ figure }: { figure: EditorialFigure }) {
         className="h-auto w-full"
       />
       {figure.caption && (
-        <figcaption className="border-t border-slate-200 px-4 py-3 text-sm leading-relaxed text-slate-500">
+        <figcaption className="px-1 py-3 text-sm leading-relaxed text-ss-ink/60">
           {figure.caption}
           {(figure.creditHref || figure.photographerHref) && (
             <span className="mt-1 block">
@@ -128,7 +132,7 @@ function EditorialFigureBlock({ figure }: { figure: EditorialFigure }) {
                   href={figure.photographerHref}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-medium text-blue-600 hover:text-blue-700"
+                  className="font-medium text-ss-navy hover:text-ss-blue"
                 >
                   Photographer
                 </a>
@@ -141,7 +145,7 @@ function EditorialFigureBlock({ figure }: { figure: EditorialFigure }) {
                   href={figure.creditHref}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-medium text-blue-600 hover:text-blue-700"
+                  className="font-medium text-ss-navy hover:text-ss-blue"
                 >
                   Source
                 </a>
@@ -191,20 +195,20 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
       <article className="mx-auto max-w-3xl px-4">
         <Link
           href={reviewsHref}
-          className="text-sm font-medium text-blue-600 hover:text-blue-700"
+          className="text-sm font-medium text-ss-navy hover:text-ss-blue"
         >
           ← Back to reviews
         </Link>
 
-        <header className="mt-6 border-b border-slate-200 pb-8">
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
+        <header className="mt-6 pb-8">
+          <h1 className="text-3xl font-bold tracking-tight text-ss-navy md:text-4xl">
             {article.title}
           </h1>
           <div className="mt-6 space-y-4">
             {article.intro.map((paragraph) => (
               <p
                 key={paragraph.slice(0, 48)}
-                className="text-lg leading-relaxed text-slate-600"
+                className="text-lg leading-relaxed text-ss-ink/80"
               >
                 {paragraph}
               </p>
@@ -216,14 +220,11 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
         </header>
 
         {isRoundup && (
-          <aside className="mt-8 rounded-xl border border-blue-100 bg-blue-50 p-6">
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-blue-800">
-              {article.researchNote.title}
-            </h2>
-            <p className="mt-2 text-sm leading-relaxed text-blue-900/80">
+          <div className="mt-10">
+            <ResearchNote title={article.researchNote.title}>
               {article.researchNote.content}
-            </p>
-          </aside>
+            </ResearchNote>
+          </div>
         )}
 
         <AffiliateDisclosure siteSlug={siteSlug} className="mt-8 px-0" />
@@ -242,6 +243,7 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
               return (
                 <Fragment key={product.heading}>
                 <section
+                  className="border-l-[3px] border-ss-navy/20 pl-5 md:pl-6"
                   aria-labelledby={`product-${index}-heading`}
                 >
                   <RoundupProductHeading
@@ -252,13 +254,13 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
                   />
 
                   {product.intro && (
-                    <p className="mt-4 text-base leading-relaxed text-slate-600">
+                    <p className="mt-4 text-base leading-relaxed text-ss-ink/80">
                       {product.intro}
                     </p>
                   )}
 
                   {product.image && (
-                    <figure className="mt-6 overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
+                    <figure className="mt-6 overflow-hidden bg-ss-mist">
                       {catalogProduct ? (
                         <Link
                           href={getProductPath(
@@ -288,25 +290,25 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
 
                   <div className="mt-8 space-y-8">
                     <div>
-                      <h3 className="text-lg font-semibold text-slate-900">
+                      <h3 className="text-lg font-semibold text-ss-navy">
                         What it is
                       </h3>
-                      <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                      <p className="mt-3 text-sm leading-relaxed text-ss-ink/80">
                         {product.whatItIs}
                       </p>
                     </div>
 
                     <div>
-                      <h3 className="text-lg font-semibold text-slate-900">
+                      <h3 className="text-lg font-semibold text-ss-navy">
                         Why it earns a spot on this list
                       </h3>
                       <ul className="mt-3 space-y-2">
                         {product.whyItEarnsASpot.map((item) => (
                           <li
                             key={item}
-                            className="flex gap-2 text-sm leading-relaxed text-slate-600"
+                            className="flex gap-2 text-sm leading-relaxed text-ss-ink/80"
                           >
-                            <span className="text-green-600" aria-hidden="true">
+                            <span className="text-ss-green" aria-hidden="true">
                               ✓
                             </span>
                             {item}
@@ -316,16 +318,16 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
                     </div>
 
                     <div>
-                      <h3 className="text-lg font-semibold text-slate-900">
+                      <h3 className="text-lg font-semibold text-ss-navy">
                         Where it falls short
                       </h3>
                       <ul className="mt-3 space-y-2">
                         {product.whereItFallsShort.map((item) => (
                           <li
                             key={item}
-                            className="flex gap-2 text-sm leading-relaxed text-slate-600"
+                            className="flex gap-2 text-sm leading-relaxed text-ss-ink/80"
                           >
-                            <span className="text-red-500" aria-hidden="true">
+                            <span className="text-ss-terracotta" aria-hidden="true">
                               ✗
                             </span>
                             {item}
@@ -334,20 +336,10 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
                       </ul>
                     </div>
 
-                    <div className="rounded-xl border border-slate-200 bg-slate-50 p-5">
-                      <p className="text-sm leading-relaxed text-slate-700">
-                        <span className="font-semibold text-slate-900">
-                          Best for:
-                        </span>{" "}
-                        {product.bestFor}
-                      </p>
-                      <p className="mt-3 text-sm leading-relaxed text-slate-700">
-                        <span className="font-semibold text-slate-900">
-                          Skip if:
-                        </span>{" "}
-                        {product.skipIf}
-                      </p>
-                    </div>
+                    <BestForSkipIf
+                      bestFor={product.bestFor}
+                      skipIf={product.skipIf}
+                    />
                   </div>
 
                   {catalogProduct && (
@@ -367,54 +359,11 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
         )}
 
         {isRoundup && article.closingGuide && (
-          <section className="mt-16 border-t border-slate-200 pt-12">
-            <h2 className="text-2xl font-bold tracking-tight text-slate-900">
-              {article.closingGuide.title}
-            </h2>
-            <ul className="mt-6 space-y-3">
-              {article.closingGuide.items.map((item) => (
-                <li
-                  key={item}
-                  className="flex gap-2 text-sm leading-relaxed text-slate-600"
-                >
-                  <span className="text-blue-600" aria-hidden="true">
-                    →
-                  </span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-            {article.closingGuide.closing && (
-              <p className="mt-6 text-base leading-relaxed text-slate-600">
-                {article.closingGuide.closing}
-              </p>
-            )}
-            {article.closingGuide.pricingNote && (
-              <p className="mt-4 text-sm leading-relaxed text-slate-500">
-                {article.closingGuide.pricingNote}
-              </p>
-            )}
-          </section>
+          <ArticleVerdict guide={article.closingGuide} />
         )}
 
         {isRoundup && article.faqs && article.faqs.length > 0 && (
-          <section className="mt-16 border-t border-slate-200 pt-12">
-            <h2 className="text-2xl font-bold tracking-tight text-slate-900">
-              Frequently Asked Questions
-            </h2>
-            <dl className="mt-6 space-y-6">
-              {article.faqs.map((faq) => (
-                <div key={faq.question}>
-                  <dt className="text-lg font-semibold text-slate-900">
-                    {faq.question}
-                  </dt>
-                  <dd className="mt-2 text-sm leading-relaxed text-slate-600">
-                    {faq.answer}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </section>
+          <ArticleFaq faqs={article.faqs} />
         )}
 
         {isEditorial && (
@@ -432,7 +381,7 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
               >
                 <h2
                   id={`editorial-${index}-heading`}
-                  className="text-2xl font-bold tracking-tight text-slate-900"
+                  className="text-2xl font-bold tracking-tight text-ss-navy"
                 >
                   {section.heading}
                 </h2>
@@ -441,7 +390,7 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
                   {section.paragraphs.map((paragraph) => (
                     <p
                       key={paragraph.slice(0, 64)}
-                      className="text-base leading-relaxed text-slate-600"
+                      className="text-base leading-relaxed text-ss-ink/80"
                     >
                       {paragraph}
                     </p>
@@ -453,7 +402,7 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
                     {section.bullets.map((item) => (
                       <li
                         key={item}
-                        className="text-base leading-relaxed text-slate-600"
+                        className="text-base leading-relaxed text-ss-ink/80"
                       >
                         {item}
                       </li>
@@ -466,21 +415,18 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
                 )}
 
                 {section.factBox && (
-                  <aside className="mt-6 rounded-xl border border-blue-100 bg-blue-50 p-6">
-                    <h3 className="text-sm font-semibold uppercase tracking-wide text-blue-800">
-                      {section.factBox.title}
-                    </h3>
-                    <ul className="mt-3 list-disc space-y-2 pl-5">
-                      {section.factBox.items.map((item) => (
-                        <li
-                          key={item.slice(0, 64)}
-                          className="text-sm leading-relaxed text-blue-900/80"
-                        >
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </aside>
+                  <div className="mt-6">
+                    <ResearchNote
+                      title={section.factBox.title}
+                      headingLevel="h3"
+                    >
+                      <ul className="list-disc space-y-2 pl-5">
+                        {section.factBox.items.map((item) => (
+                          <li key={item.slice(0, 64)}>{item}</li>
+                        ))}
+                      </ul>
+                    </ResearchNote>
+                  </div>
                 )}
 
                 {section.closingParagraphs &&
@@ -489,7 +435,7 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
                       {section.closingParagraphs.map((paragraph) => (
                         <p
                           key={paragraph.slice(0, 64)}
-                          className="text-base leading-relaxed text-slate-600"
+                          className="text-base leading-relaxed text-ss-ink/80"
                         >
                           {paragraph}
                         </p>
@@ -498,7 +444,7 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
                   )}
 
                 {section.citations && section.citations.length > 0 && (
-                  <p className="mt-4 text-sm text-slate-500">
+                  <p className="mt-4 text-sm text-ss-ink/55">
                     Source
                     {section.citations.length > 1 ? "s" : ""}:{" "}
                     {section.citations.map((citation, citationIndex) => (
@@ -508,7 +454,7 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
                           href={citation.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="font-medium text-blue-600 hover:text-blue-700"
+                          className="font-medium text-ss-navy hover:text-ss-blue"
                         >
                           {citation.label}
                         </a>
@@ -534,10 +480,10 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
           publicBasePath={publicBasePath}
         />
 
-        <div className="mt-12 border-t border-slate-200 pt-8">
+        <div className="mt-12 border-t border-ss-navy/10 pt-8">
           <Link
             href={reviewsHref}
-            className="text-sm font-medium text-blue-600 hover:text-blue-700"
+            className="text-sm font-medium text-ss-navy hover:text-ss-blue"
           >
             ← Back to reviews
           </Link>

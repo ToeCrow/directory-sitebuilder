@@ -19,7 +19,7 @@ export function AffiliateDisclosure({
   return (
     <p
       className={cn(
-        "px-4 py-3 text-center text-xs leading-relaxed text-slate-600 sm:text-sm",
+        "px-4 py-3 text-center text-xs leading-relaxed text-ss-ink/70 sm:text-sm",
         className,
       )}
       aria-label="Affiliate disclosure"
@@ -28,7 +28,7 @@ export function AffiliateDisclosure({
       with brands{" "}
       <Link
         href={getSitePath(publicBasePath, "/affiliate")}
-        className="font-medium text-blue-600 underline-offset-2 hover:underline"
+        className="font-medium text-ss-navy underline-offset-2 hover:underline"
       >
         here
       </Link>

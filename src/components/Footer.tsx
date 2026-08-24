@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useSiteContext } from "@/context/SiteContext";
 import { getSitePath } from "@/lib/paths";
+import { siteHasMattressPillowNav } from "@/lib/site";
 
 function FooterNavLink({ href, label }: { href: string; label: string }) {
   const isExternal =
@@ -26,11 +27,18 @@ function FooterNavLink({ href, label }: { href: string; label: string }) {
 }
 
 export function Footer() {
-  const { siteData, publicBasePath } = useSiteContext();
+  const { siteSlug, siteData, publicBasePath } = useSiteContext();
   const year = new Date().getFullYear();
+  const isSideSleeper = siteHasMattressPillowNav(siteSlug);
 
   return (
-    <footer className="mt-auto border-t border-slate-200 bg-slate-900 py-10 text-slate-400">
+    <footer
+      className={
+        isSideSleeper
+          ? "mt-auto bg-ss-navy py-10 text-ss-mist/70"
+          : "mt-auto border-t border-slate-200 bg-slate-900 py-10 text-slate-400"
+      }
+    >
       <div className="mx-auto max-w-6xl px-4">
         <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
           <div>

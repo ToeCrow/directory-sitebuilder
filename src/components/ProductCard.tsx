@@ -27,20 +27,20 @@ function ProductImagePlaceholder({ category }: { category: ProductCategory }) {
 
   return (
     <div
-      className="absolute inset-0 flex items-center justify-center overflow-hidden bg-linear-to-br from-slate-100 via-slate-50 to-blue-50"
+      className="absolute inset-0 flex items-center justify-center overflow-hidden bg-ss-mist"
       aria-hidden="true"
     >
       <div
         className="absolute inset-0 opacity-[0.35]"
         style={{
           backgroundImage:
-            "radial-gradient(circle at 1px 1px, rgb(148 163 184 / 0.45) 1px, transparent 0)",
+            "radial-gradient(circle at 1px 1px, rgb(22 50 79 / 0.18) 1px, transparent 0)",
           backgroundSize: "18px 18px",
         }}
       />
-      <div className="absolute -right-8 -top-10 h-36 w-36 rounded-full bg-blue-100/60 blur-2xl" />
-      <div className="absolute -bottom-12 -left-10 h-40 w-40 rounded-full bg-slate-200/70 blur-2xl" />
-      <div className="relative flex flex-col items-center gap-2 text-slate-400">
+      <div className="absolute -right-8 -top-10 h-36 w-36 rounded-full bg-ss-teal/20 blur-2xl" />
+      <div className="absolute -bottom-12 -left-10 h-40 w-40 rounded-full bg-ss-navy/10 blur-2xl" />
+      <div className="relative flex flex-col items-center gap-2 text-ss-navy/40">
         {category === "pillow" ? (
           <svg
             viewBox="0 0 48 48"
@@ -68,7 +68,7 @@ function ProductImagePlaceholder({ category }: { category: ProductCategory }) {
             <path d="M14 32v4M34 32v4" strokeLinecap="round" opacity="0.55" />
           </svg>
         )}
-        <span className="text-xs font-medium tracking-wide text-slate-400">
+        <span className="text-xs font-medium tracking-wide text-ss-navy/45">
           {label} photo coming soon
         </span>
       </div>
@@ -90,7 +90,7 @@ export function ProductCard({
   const headingId = `product-card-${product.slug}`;
 
   return (
-    <article className="group relative flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white p-0 shadow-sm transition-[border-color,box-shadow,transform] duration-200 ease-out hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md">
+    <article className="group relative flex flex-col overflow-hidden border border-ss-navy/10 bg-ss-paper transition-colors duration-200 hover:border-ss-navy/25">
       <Link
         href={productHref}
         className="absolute inset-0 z-0"
@@ -99,7 +99,7 @@ export function ProductCard({
         <span className="sr-only">View {product.name}</span>
       </Link>
 
-      <div className="pointer-events-none relative mb-4 aspect-4/3 overflow-hidden border-b border-slate-200 bg-slate-100">
+      <div className="pointer-events-none relative mb-4 aspect-4/3 overflow-hidden bg-ss-mist">
         {product.image ? (
           <Image
             src={product.image.src}
@@ -121,14 +121,14 @@ export function ProductCard({
       >
         <div className="mb-3">
           {product.badge && (
-            <span className="mb-2 inline-block rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700">
+            <span className="mb-2 inline-block bg-ss-mist px-2.5 py-0.5 text-xs font-medium text-ss-navy">
               {product.badge}
             </span>
           )}
           <h3
             id={headingId}
             className={cn(
-              "font-semibold text-slate-900 transition-colors group-hover:text-blue-600",
+              "font-semibold text-ss-navy transition-colors group-hover:text-ss-blue",
               isDirectory ? "text-lg" : "text-xl",
             )}
           >
@@ -139,10 +139,10 @@ export function ProductCard({
               className={cn(
                 "mt-2",
                 !isDirectory &&
-                  "rounded-lg border border-slate-200 bg-slate-50 px-3 py-2",
+                  "border-l-[3px] border-ss-navy/20 bg-ss-mist/80 px-3 py-2",
               )}
             >
-              <p className="mb-1 text-xs font-medium uppercase tracking-wide text-slate-500">
+              <p className="mb-1 text-xs font-medium uppercase tracking-wide text-ss-navy/60">
                 Rating
               </p>
               <StarRating
@@ -154,18 +154,22 @@ export function ProductCard({
           )}
         </div>
 
-        <p className="mb-4 flex-1 text-sm leading-relaxed text-slate-600">
+        <p className="mb-4 flex-1 text-sm leading-relaxed text-ss-ink/75">
           {product.shortDescription}
         </p>
 
-        <dl className="mb-6 space-y-2 text-sm">
-          <div>
-            <dt className="font-medium text-slate-500">Best for</dt>
-            <dd className="text-slate-800">{product.bestFor}</dd>
+        <dl className="mb-6 space-y-3 text-sm">
+          <div className="border-l-[3px] border-ss-green bg-ss-green/10 px-3 py-2">
+            <dt className="text-xs font-semibold uppercase tracking-[0.14em] text-ss-ink">
+              Best for
+            </dt>
+            <dd className="mt-1 text-ss-ink/85">{product.bestFor}</dd>
           </div>
           <div>
-            <dt className="font-medium text-slate-500">Price</dt>
-            <dd className="text-slate-800">{product.priceDisplay}</dd>
+            <dt className="text-xs font-semibold uppercase tracking-[0.14em] text-ss-navy/60">
+              Price
+            </dt>
+            <dd className="mt-1 text-ss-ink">{product.priceDisplay}</dd>
           </div>
         </dl>
 
@@ -174,7 +178,7 @@ export function ProductCard({
             href={buyHref}
             target="_blank"
             rel={buyLinkRel(product)}
-            className="inline-flex w-full items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
+            className="inline-flex w-full items-center justify-center rounded-lg bg-ss-navy px-4 py-2 text-sm font-semibold text-ss-paper transition-colors hover:bg-ss-navy/90"
           >
             Check price & availability
           </a>

@@ -91,7 +91,7 @@ export default async function ProductsIndexPage({
           <ProductsDirectoryScroll />
         </Suspense>
         <div className="mx-auto max-w-6xl px-4 pt-12 md:pt-16">
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
+          <h1 className="text-3xl font-bold tracking-tight text-ss-navy md:text-4xl">
             {heading}
           </h1>
           {activeCategory ? (
@@ -143,7 +143,7 @@ export default async function ProductsIndexPage({
         </Suspense>
       )}
       <div className="mx-auto max-w-6xl px-4 pt-12 md:pt-16">
-        <h1 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
+        <h1 className="text-3xl font-bold tracking-tight text-ss-navy md:text-4xl">
           {pageHeading}
         </h1>
       </div>

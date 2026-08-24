@@ -61,12 +61,12 @@ export function ProductDirectory({
       <div className="mx-auto max-w-6xl px-4">
         <h2
           id="directory-heading"
-          className="text-2xl font-bold tracking-tight text-slate-900 md:text-3xl"
+          className="text-2xl font-bold tracking-tight text-ss-navy md:text-3xl"
         >
           {productDirectory.title}
         </h2>
         {productDirectory.description && (
-          <p className="mt-2 max-w-2xl text-slate-600">
+          <p className="mt-2 max-w-2xl text-ss-ink/75">
             {productDirectory.description}
           </p>
         )}
@@ -83,8 +83,8 @@ export function ProductDirectory({
                   className={cn(
                     "rounded-lg px-3.5 py-2 text-sm font-medium transition-colors",
                     active
-                      ? "bg-blue-600 text-white"
-                      : "border border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50",
+                      ? "bg-ss-navy text-ss-paper"
+                      : "border border-ss-navy/15 bg-ss-paper text-ss-navy hover:bg-ss-mist",
                   )}
                   aria-current={active ? "page" : undefined}
                 >

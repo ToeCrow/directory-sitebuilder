@@ -4,7 +4,7 @@ import Link from "next/link";
 import type { SiteSlug } from "@/data/sites";
 import { ReviewListItem } from "@/components/ReviewListItem";
 import { usePublicBasePath } from "@/context/SiteContext";
-import { getFeaturedHomeReviews, getSiteData } from "@/lib/site";
+import { getFeaturedHomeReviews, getSiteData, siteHasMattressPillowNav } from "@/lib/site";
 import { cn } from "@/lib/cn";
 import { getArticlePath, getReviewsIndexPath } from "@/lib/paths";
 
@@ -16,6 +16,7 @@ type ArticleGridProps = {
 export function ArticleGrid({ siteSlug, className }: ArticleGridProps) {
   const publicBasePath = usePublicBasePath();
   const siteData = getSiteData(siteSlug);
+  const isSideSleeper = siteHasMattressPillowNav(siteSlug);
   const reviews = siteData.featuredReviewSlugs
     ? getFeaturedHomeReviews(siteSlug)
     : siteData.articles.slice(0, 6);
@@ -31,7 +32,9 @@ export function ArticleGrid({ siteSlug, className }: ArticleGridProps) {
     <section
       id="reviews"
       className={cn(
-        "border-t border-slate-200 bg-slate-50 py-16 md:py-20",
+        isSideSleeper
+          ? "border-t border-ss-navy/10 bg-ss-mist/60 py-16 md:py-20"
+          : "border-t border-slate-200 bg-slate-50 py-16 md:py-20",
         className,
       )}
       aria-labelledby="reviews-heading"
@@ -40,13 +43,21 @@ export function ArticleGrid({ siteSlug, className }: ArticleGridProps) {
         <div className="flex flex-wrap items-end justify-between gap-4">
           <h2
             id="reviews-heading"
-            className="text-2xl font-bold tracking-tight text-slate-900 md:text-3xl"
+            className={
+              isSideSleeper
+                ? "text-2xl font-bold tracking-tight text-ss-navy md:text-3xl"
+                : "text-2xl font-bold tracking-tight text-slate-900 md:text-3xl"
+            }
           >
             {heading}
           </h2>
           <Link
             href={getReviewsIndexPath(publicBasePath)}
-            className="text-sm font-medium text-blue-600 hover:text-blue-700"
+            className={
+              isSideSleeper
+                ? "text-sm font-medium text-ss-navy hover:text-ss-blue"
+                : "text-sm font-medium text-blue-600 hover:text-blue-700"
+            }
           >
             View all reviews →
           </Link>

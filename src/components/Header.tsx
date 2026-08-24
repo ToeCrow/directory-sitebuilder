@@ -141,7 +141,13 @@ export function Header() {
     : [{ href: getReviewsIndexPath(publicBasePath), label: "All reviews" }];
 
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-200 bg-white">
+    <header
+      className={
+        showMattressProductsNav
+          ? "sticky top-0 z-50 border-b border-ss-navy/10 bg-ss-paper/90 backdrop-blur-sm"
+          : "sticky top-0 z-50 border-b border-slate-200 bg-white"
+      }
+    >
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 md:py-4">
         <Link
           href={homeHref}

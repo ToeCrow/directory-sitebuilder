@@ -44,14 +44,14 @@ export function RoundupProductHeading({
   return (
     <h2
       id={headingId}
-      className="text-2xl font-bold tracking-tight text-slate-900"
+      className="text-2xl font-bold tracking-tight text-ss-navy"
     >
       {index + 1}){" "}
       {product ? (
         <>
           <Link
             href={getProductPath(publicBasePath, product.slug)}
-            className="text-blue-600 hover:text-blue-700"
+            className="text-ss-navy hover:text-ss-blue"
           >
             {name}
           </Link>

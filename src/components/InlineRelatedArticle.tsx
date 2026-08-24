@@ -1,6 +1,10 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { Article } from "@/types/site";
-import { getArticlePreviewBlurb } from "@/lib/article-preview";
+import {
+  getArticlePreviewBlurb,
+  getArticlePreviewImage,
+} from "@/lib/article-preview";
 
 type InlineRelatedArticleProps = {
   article: Article;
@@ -12,35 +16,53 @@ export function InlineRelatedArticle({
   href,
 }: InlineRelatedArticleProps) {
   const blurb = getArticlePreviewBlurb(article);
+  const preview = getArticlePreviewImage(article);
 
   return (
     <aside
-      className="rounded-xl border border-slate-200 bg-slate-50 p-6"
+      className="border-y border-ss-blue/30 py-6"
       aria-labelledby={`related-read-${article.slug}`}
     >
-      <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-ss-blue">
         Related read
       </p>
-      <p
-        id={`related-read-${article.slug}`}
-        className="mt-2 text-lg font-semibold tracking-tight text-slate-900"
-      >
-        <Link
-          href={href}
-          className="text-slate-900 underline-offset-2 hover:text-blue-600 hover:underline"
-        >
-          {article.title}
-        </Link>
-      </p>
-      {blurb && (
-        <p className="mt-2 text-sm leading-relaxed text-slate-600">{blurb}</p>
-      )}
-      <Link
-        href={href}
-        className="mt-4 inline-block text-sm font-medium text-blue-600 hover:text-blue-700"
-      >
-        Read article →
-      </Link>
+      <div className="mt-4 flex flex-col gap-5 sm:flex-row sm:items-start">
+        {preview && (
+          <Link
+            href={href}
+            className="relative aspect-4/3 w-full shrink-0 overflow-hidden sm:w-44"
+          >
+            <Image
+              src={preview.src}
+              alt={preview.alt}
+              fill
+              sizes="(max-width: 640px) 100vw, 11rem"
+              className="object-cover"
+            />
+          </Link>
+        )}
+        <div className="min-w-0 flex-1">
+          <p
+            id={`related-read-${article.slug}`}
+            className="text-xl font-semibold tracking-tight text-ss-navy"
+          >
+            <Link href={href} className="hover:text-ss-blue">
+              {article.title}
+            </Link>
+          </p>
+          {blurb && (
+            <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-ss-ink/75">
+              {blurb}
+            </p>
+          )}
+          <Link
+            href={href}
+            className="mt-3 inline-block text-sm font-medium text-ss-navy underline decoration-ss-blue/50 underline-offset-4 hover:text-ss-blue"
+          >
+            Continue reading
+          </Link>
+        </div>
+      </div>
     </aside>
   );
 }

@@ -13,7 +13,7 @@ import {
 } from "@/lib/schema";
 import { resolvePublicBasePath } from "@/lib/paths";
 import { getDefaultOgImage } from "@/lib/seo";
-import { getSiteBySlug, isValidSiteSlug } from "@/lib/site";
+import { getSiteBySlug, isValidSiteSlug, siteHasMattressPillowNav } from "@/lib/site";
 import { siteUsesEditorialCatalog } from "@/lib/directory-catalog";
 
 type SiteLayoutProps = {
@@ -105,6 +105,7 @@ export default async function SiteLayout({ children, params }: SiteLayoutProps) 
   const host = (await headers()).get("host") ?? "";
   const publicBasePath = resolvePublicBasePath(siteSlug, host);
   const isCustomDomain = publicBasePath === "";
+  const isSideSleeper = siteHasMattressPillowNav(siteSlug);
 
   return (
     <SiteProvider
@@ -112,6 +113,13 @@ export default async function SiteLayout({ children, params }: SiteLayoutProps) 
       publicBasePath={publicBasePath}
       isCustomDomain={isCustomDomain}
     >
+      <div
+        className={
+          isSideSleeper
+            ? "flex flex-1 flex-col bg-ss-paper text-ss-ink"
+            : "flex flex-1 flex-col"
+        }
+      >
       <JsonLd
         data={[buildWebSiteSchema(siteData), buildOrganizationSchema(siteData)]}
       />
@@ -119,6 +127,7 @@ export default async function SiteLayout({ children, params }: SiteLayoutProps) 
       <Header />
       {children}
       <Footer />
+      </div>
     </SiteProvider>
   );
 }
