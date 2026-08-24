@@ -62,7 +62,13 @@ export function ArticleGrid({ siteSlug, className }: ArticleGridProps) {
             View all reviews →
           </Link>
         </div>
-        <ul className="mt-6 border-t border-slate-200">
+        <ul
+          className={
+            isSideSleeper
+              ? "mt-6 border-t border-ss-navy/10"
+              : "mt-6 border-t border-slate-200"
+          }
+        >
           {reviews.map((article) => (
             <li key={article.slug}>
               <ReviewListItem

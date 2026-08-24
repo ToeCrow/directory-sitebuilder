@@ -72,8 +72,8 @@ export function ReviewDirectory({
                   className={cn(
                     "rounded-lg px-3.5 py-2 text-sm font-medium transition-colors",
                     active
-                      ? "bg-blue-600 text-white"
-                      : "border border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50",
+                      ? "bg-ss-navy text-ss-paper"
+                      : "border border-ss-navy/15 bg-ss-paper text-ss-navy hover:bg-ss-mist",
                   )}
                   aria-current={active ? "page" : undefined}
                 >
@@ -85,9 +85,9 @@ export function ReviewDirectory({
         )}
 
         {reviews.length === 0 ? (
-          <p className="mt-10 text-slate-600">No reviews in this category yet.</p>
+          <p className="mt-10 text-ss-ink/75">No reviews in this category yet.</p>
         ) : (
-          <ul className="mt-6 divide-y-0 border-t border-slate-200">
+          <ul className="mt-6 divide-y-0 border-t border-ss-navy/10">
             {reviews.map((article) => (
               <li key={article.slug}>
                 <ReviewListItem
@@ -100,7 +100,7 @@ export function ReviewDirectory({
         )}
 
         {!showCategoryFilters && siteData.articles.length === 0 && (
-          <p className="mt-10 text-slate-600">No reviews published yet.</p>
+          <p className="mt-10 text-ss-ink/75">No reviews published yet.</p>
         )}
       </div>
     </section>

@@ -140,6 +140,25 @@ export function Header() {
       ]
     : [{ href: getReviewsIndexPath(publicBasePath), label: "All reviews" }];
 
+  const navLinkClass = showMattressProductsNav
+    ? "text-sm font-medium text-ss-navy/75 transition-colors hover:text-ss-blue group-hover:text-ss-blue group-focus-within:text-ss-blue"
+    : "text-sm font-medium text-slate-600 transition-colors hover:text-blue-600 group-hover:text-blue-600 group-focus-within:text-blue-600";
+  const dropdownPanelClass = showMattressProductsNav
+    ? "min-w-64 border border-ss-navy/10 bg-ss-paper py-2 shadow-lg"
+    : "min-w-64 rounded-lg border border-slate-200 bg-white py-2 shadow-lg";
+  const dropdownItemClass = showMattressProductsNav
+    ? "block px-4 py-2.5 text-sm text-ss-ink transition-colors hover:bg-ss-mist hover:text-ss-navy"
+    : "block px-4 py-2.5 text-sm text-slate-700 transition-colors hover:bg-slate-50 hover:text-blue-600";
+  const mobileItemClass = showMattressProductsNav
+    ? "flex w-full items-center justify-between rounded-lg px-3 py-3 text-left text-sm font-medium text-ss-navy transition-colors hover:bg-ss-mist hover:text-ss-blue"
+    : "flex w-full items-center justify-between rounded-lg px-3 py-3 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-blue-600";
+  const mobileLinkClass = showMattressProductsNav
+    ? "block rounded-lg px-3 py-3 text-sm font-medium text-ss-navy transition-colors hover:bg-ss-mist hover:text-ss-blue"
+    : "block rounded-lg px-3 py-3 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-blue-600";
+  const mobileSubLinkClass = showMattressProductsNav
+    ? "block rounded-lg px-3 py-2.5 text-sm text-ss-ink/80 transition-colors hover:bg-ss-mist hover:text-ss-navy"
+    : "block rounded-lg px-3 py-2.5 text-sm text-slate-600 transition-colors hover:bg-slate-50 hover:text-blue-600";
+
   return (
     <header
       className={
@@ -164,7 +183,13 @@ export function Header() {
               className="h-9 w-auto max-w-[min(100%,280px)] bg-transparent object-contain object-left sm:h-10 sm:max-w-[320px] md:h-11 md:max-w-[380px]"
             />
           ) : (
-            <span className="block truncate text-lg font-semibold text-slate-900">
+            <span
+              className={
+                showMattressProductsNav
+                  ? "block truncate text-lg font-semibold text-ss-navy"
+                  : "block truncate text-lg font-semibold text-slate-900"
+              }
+            >
               {siteData.title}
             </span>
           )}
@@ -176,7 +201,7 @@ export function Header() {
               <li className="group relative">
                 <button
                   type="button"
-                  className="inline-flex items-center gap-1 text-sm font-medium text-slate-600 transition-colors hover:text-blue-600 group-hover:text-blue-600 group-focus-within:text-blue-600"
+                  className={`inline-flex items-center gap-1 ${navLinkClass}`}
                   aria-haspopup="true"
                 >
                   Products
@@ -186,7 +211,7 @@ export function Header() {
                   <div
                     role="menu"
                     aria-label="Products"
-                    className="min-w-64 rounded-lg border border-slate-200 bg-white py-2 shadow-lg"
+                    className={dropdownPanelClass}
                   >
                     <ul>
                       {productsMenu.map((item) => (
@@ -194,7 +219,7 @@ export function Header() {
                           <Link
                             role="menuitem"
                             href={item.href}
-                            className="block px-4 py-2.5 text-sm text-slate-700 transition-colors hover:bg-slate-50 hover:text-blue-600"
+                            className={dropdownItemClass}
                           >
                             {item.label}
                           </Link>
@@ -203,7 +228,13 @@ export function Header() {
                     </ul>
                     {featuredReviews.length > 0 && (
                       <>
-                        <p className="mt-1 border-t border-slate-100 px-4 pb-1 pt-3 text-xs font-semibold uppercase tracking-wide text-slate-400">
+                        <p
+                          className={
+                            showMattressProductsNav
+                              ? "mt-1 border-t border-ss-navy/10 px-4 pb-1 pt-3 text-xs font-semibold uppercase tracking-wide text-ss-navy/45"
+                              : "mt-1 border-t border-slate-100 px-4 pb-1 pt-3 text-xs font-semibold uppercase tracking-wide text-slate-400"
+                          }
+                        >
                           Featured Reviews
                         </p>
                         <ul>
@@ -212,7 +243,7 @@ export function Header() {
                               <Link
                                 role="menuitem"
                                 href={getProductPath(publicBasePath, product.slug)}
-                                className="block px-4 py-2.5 text-sm text-slate-700 transition-colors hover:bg-slate-50 hover:text-blue-600"
+                                className={dropdownItemClass}
                               >
                                 {product.name}
                               </Link>
@@ -232,14 +263,14 @@ export function Header() {
                   <HashNavLink
                     href={link.href}
                     siteSlug={siteSlug}
-                    className="text-sm font-medium text-slate-600 transition-colors hover:text-blue-600"
+                    className={navLinkClass}
                   >
                     {link.label}
                   </HashNavLink>
                 ) : (
                   <Link
                     href={link.href}
-                    className="text-sm font-medium text-slate-600 transition-colors hover:text-blue-600"
+                    className={navLinkClass}
                   >
                     {link.label}
                   </Link>
@@ -251,7 +282,7 @@ export function Header() {
               <li className="group relative">
                 <button
                   type="button"
-                  className="inline-flex items-center gap-1 text-sm font-medium text-slate-600 transition-colors hover:text-blue-600 group-hover:text-blue-600 group-focus-within:text-blue-600"
+                  className={`inline-flex items-center gap-1 ${navLinkClass}`}
                   aria-haspopup="true"
                 >
                   Reviews
@@ -261,14 +292,14 @@ export function Header() {
                   <ul
                     role="menu"
                     aria-label="Reviews"
-                    className="min-w-64 rounded-lg border border-slate-200 bg-white py-2 shadow-lg"
+                    className={dropdownPanelClass}
                   >
                     {reviewsMenu.map((item) => (
                       <li key={item.href} role="none">
                         <Link
                           role="menuitem"
                           href={item.href}
-                          className="block px-4 py-2.5 text-sm text-slate-700 transition-colors hover:bg-slate-50 hover:text-blue-600"
+                          className={dropdownItemClass}
                         >
                           {item.label}
                         </Link>
@@ -283,7 +314,11 @@ export function Header() {
 
         <button
           type="button"
-          className="inline-flex items-center justify-center rounded-lg p-2 text-slate-700 transition-colors hover:bg-slate-100 md:hidden"
+          className={
+            showMattressProductsNav
+              ? "inline-flex items-center justify-center rounded-lg p-2 text-ss-navy transition-colors hover:bg-ss-mist md:hidden"
+              : "inline-flex items-center justify-center rounded-lg p-2 text-slate-700 transition-colors hover:bg-slate-100 md:hidden"
+          }
           aria-expanded={menuOpen}
           aria-controls="mobile-nav"
           onClick={() => setMenuOpen((open) => !open)}
@@ -299,14 +334,18 @@ export function Header() {
         <nav
           id="mobile-nav"
           aria-label="Mobile navigation"
-          className="border-t border-slate-200 md:hidden"
+          className={
+            showMattressProductsNav
+              ? "border-t border-ss-navy/10 md:hidden"
+              : "border-t border-slate-200 md:hidden"
+          }
         >
           <ul className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-3">
             {showProductsNav && (
               <li>
                 <button
                   type="button"
-                  className="flex w-full items-center justify-between rounded-lg px-3 py-3 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-blue-600"
+                  className={mobileItemClass}
                   aria-expanded={mobileProductsOpen}
                   onClick={() => setMobileProductsOpen((open) => !open)}
                 >
@@ -314,12 +353,18 @@ export function Header() {
                   <ChevronIcon open={mobileProductsOpen} />
                 </button>
                 {mobileProductsOpen && (
-                  <ul className="mb-2 ml-2 border-l border-slate-200 pl-2">
+                  <ul
+                    className={
+                      showMattressProductsNav
+                        ? "mb-2 ml-2 border-l border-ss-navy/15 pl-2"
+                        : "mb-2 ml-2 border-l border-slate-200 pl-2"
+                    }
+                  >
                     {productsMenu.map((item) => (
                       <li key={item.href}>
                         <Link
                           href={item.href}
-                          className="block rounded-lg px-3 py-2.5 text-sm text-slate-600 transition-colors hover:bg-slate-50 hover:text-blue-600"
+                          className={mobileSubLinkClass}
                           onClick={closeMenu}
                         >
                           {item.label}
@@ -337,7 +382,7 @@ export function Header() {
                   <HashNavLink
                     href={link.href}
                     siteSlug={siteSlug}
-                    className="block rounded-lg px-3 py-3 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-blue-600"
+                    className={mobileLinkClass}
                     onNavigate={closeMenu}
                   >
                     {link.label}
@@ -345,7 +390,7 @@ export function Header() {
                 ) : (
                   <Link
                     href={link.href}
-                    className="block rounded-lg px-3 py-3 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-blue-600"
+                    className={mobileLinkClass}
                     onClick={closeMenu}
                   >
                     {link.label}
@@ -358,7 +403,7 @@ export function Header() {
               <li>
                 <button
                   type="button"
-                  className="flex w-full items-center justify-between rounded-lg px-3 py-3 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-blue-600"
+                  className={mobileItemClass}
                   aria-expanded={mobileReviewsOpen}
                   onClick={() => setMobileReviewsOpen((open) => !open)}
                 >
@@ -366,12 +411,18 @@ export function Header() {
                   <ChevronIcon open={mobileReviewsOpen} />
                 </button>
                 {mobileReviewsOpen && (
-                  <ul className="mb-2 ml-2 border-l border-slate-200 pl-2">
+                  <ul
+                    className={
+                      showMattressProductsNav
+                        ? "mb-2 ml-2 border-l border-ss-navy/15 pl-2"
+                        : "mb-2 ml-2 border-l border-slate-200 pl-2"
+                    }
+                  >
                     {reviewsMenu.map((item) => (
                       <li key={item.href}>
                         <Link
                           href={item.href}
-                          className="block rounded-lg px-3 py-2.5 text-sm text-slate-600 transition-colors hover:bg-slate-50 hover:text-blue-600"
+                          className={mobileSubLinkClass}
                           onClick={closeMenu}
                         >
                           {item.label}

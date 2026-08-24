@@ -85,11 +85,11 @@ export default async function ReviewsIndexPage({
   return (
     <main>
       <div className="mx-auto max-w-6xl px-4 pt-12 md:pt-16">
-        <h1 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
+        <h1 className="text-3xl font-bold tracking-tight text-ss-navy md:text-4xl">
           {pageHeading}
         </h1>
         {showCategoryFilters && (
-          <p className="mt-3 max-w-2xl text-slate-600">
+          <p className="mt-3 max-w-2xl text-ss-ink/75">
             Mattress reviews, pillow reviews, and science of sleep — researched
             from product specs, brand policies, and recurring owner feedback.
           </p>
