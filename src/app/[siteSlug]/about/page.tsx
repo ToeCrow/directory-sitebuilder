@@ -7,10 +7,6 @@ import { getPublicPath, getSitePath } from "@/lib/paths";
 import { getRequestPublicBasePath } from "@/lib/request-paths";
 import { buildPageOpenGraph } from "@/lib/seo";
 import { siteUsesAboutPage } from "@/lib/about";
-import {
-  RESEARCH_SCORE_LABEL,
-  getResearchScorePath,
-} from "@/lib/research-score";
 
 const PAGE_TITLE = "About | Side Sleeper Guide";
 const PAGE_DESCRIPTION =
@@ -72,7 +68,6 @@ export default async function AboutPage({ params }: AboutPageProps) {
   }
 
   const publicBasePath = await getRequestPublicBasePath(siteSlug);
-  const researchScoreHref = getResearchScorePath(publicBasePath);
 
   return (
     <main className="py-12 md:py-16">
@@ -137,14 +132,9 @@ export default async function AboutPage({ params }: AboutPageProps) {
               pricing, and recurring patterns in owner feedback.
             </p>
             <p className="mt-3">
-              Our{" "}
-              <Link
-                href={researchScoreHref}
-                className="font-medium text-blue-600 underline-offset-2 hover:underline"
-              >
-                {RESEARCH_SCORE_LABEL}
-              </Link>{" "}
-              explains the criteria we use to evaluate and compare products.
+              We evaluate products against the criteria that matter most for
+              side sleepers, including pressure relief, spinal support, cooling,
+              materials, trial periods, warranties, and overall value.
             </p>
           </section>
 
@@ -159,7 +149,7 @@ export default async function AboutPage({ params }: AboutPageProps) {
               Side Sleeper Guide may earn a commission when readers purchase
               products through certain links. This does not increase the price
               paid by the reader, and it does not change our research criteria or
-              product ratings.
+              how we review products.
             </p>
             <p className="mt-3">
               Our goal is simple: to make it easier for side sleepers to

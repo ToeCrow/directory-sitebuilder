@@ -7,9 +7,9 @@ import {
   getProducts,
   getSiteBySlug,
   isValidSiteSlug,
+  siteHasMattressPillowNav,
 } from "@/lib/site";
 import { siteUsesEditorialCatalog } from "@/lib/directory-catalog";
-import { siteUsesResearchScore } from "@/lib/research-score";
 import { getProductPath, getPublicPath, getSitePath } from "@/lib/paths";
 import { getRequestPublicBasePath } from "@/lib/request-paths";
 import { buildPageOpenGraph } from "@/lib/seo";
@@ -68,7 +68,7 @@ export default async function AffiliatePage({ params }: AffiliatePageProps) {
   }
 
   const products = getProducts(siteSlug as SiteSlug);
-  const usesResearchScore = siteUsesResearchScore(siteSlug);
+  const isSideSleeper = siteHasMattressPillowNav(siteSlug);
   const publicBasePath = await getRequestPublicBasePath(siteSlug);
 
   return (
@@ -86,7 +86,7 @@ export default async function AffiliatePage({ params }: AffiliatePageProps) {
             How we work with brands
           </h1>
           <p className="mt-4 text-base leading-relaxed text-slate-600">
-            {usesResearchScore ? (
+            {isSideSleeper ? (
               <>
                 When you buy through some links on {siteData.title}, we may earn
                 a commission at no extra cost to you. That never changes our

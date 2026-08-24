@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { ADMIN_SESSION_COOKIE, isValidAdminSession } from "@/lib/admin-auth";
 import { getArticlesToReviewsRedirectPath } from "@/lib/articles-redirect";
+import { getResearchScoreRedirectPath } from "@/lib/research-score-redirect";
 import { getSiteSlugFromHost } from "@/lib/domain-map";
 import {
   getCustomDomainRewritePath,
@@ -35,6 +36,13 @@ export function proxy(request: NextRequest) {
   if (articlesRedirect !== null) {
     const url = request.nextUrl.clone();
     url.pathname = articlesRedirect;
+    return NextResponse.redirect(url, 308);
+  }
+
+  const researchScoreRedirect = getResearchScoreRedirectPath(pathname);
+  if (researchScoreRedirect !== null) {
+    const url = request.nextUrl.clone();
+    url.pathname = researchScoreRedirect;
     return NextResponse.redirect(url, 308);
   }
 

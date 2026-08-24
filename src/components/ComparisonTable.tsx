@@ -1,15 +1,8 @@
 "use client";
 
 import type { SiteSlug } from "@/data/sites";
-import { usePublicBasePath } from "@/context/SiteContext";
 import { getComparisonProducts, getComparisonValue, getSiteData } from "@/lib/site";
 import { cn } from "@/lib/cn";
-import Link from "next/link";
-import {
-  RESEARCH_SCORE_HOWTO_LABEL,
-  getResearchScorePath,
-  siteUsesResearchScore,
-} from "@/lib/research-score";
 
 type ComparisonTableProps = {
   siteSlug: SiteSlug;
@@ -17,11 +10,9 @@ type ComparisonTableProps = {
 };
 
 export function ComparisonTable({ siteSlug, className }: ComparisonTableProps) {
-  const publicBasePath = usePublicBasePath();
   const siteData = getSiteData(siteSlug);
   const products = getComparisonProducts(siteSlug);
   const { comparisonTable } = siteData;
-  const showResearchScoreLink = siteUsesResearchScore(siteSlug);
 
   return (
     <section
@@ -42,18 +33,6 @@ export function ComparisonTable({ siteSlug, className }: ComparisonTableProps) {
         {comparisonTable.description && (
           <p className="mt-2 max-w-2xl text-slate-600">
             {comparisonTable.description}
-            {showResearchScoreLink && (
-              <>
-                {" "}
-                <Link
-                  href={getResearchScorePath(publicBasePath)}
-                  className="font-medium text-blue-600 underline-offset-2 hover:underline"
-                >
-                  {RESEARCH_SCORE_HOWTO_LABEL}
-                </Link>
-                .
-              </>
-            )}
           </p>
         )}
 

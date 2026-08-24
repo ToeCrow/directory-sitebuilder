@@ -6,11 +6,6 @@ import { usePublicBasePath } from "@/context/SiteContext";
 import { getSiteData } from "@/lib/site";
 import { getProductsIndexPath } from "@/lib/paths";
 import { cn } from "@/lib/cn";
-import {
-  RESEARCH_SCORE_HOWTO_LABEL,
-  getResearchScorePath,
-  siteUsesResearchScore,
-} from "@/lib/research-score";
 
 type BuyingGuideProps = {
   siteSlug: SiteSlug;
@@ -25,28 +20,6 @@ function isMethodologySection(title: string): boolean {
   );
 }
 
-function ResearchScoreSuffix({
-  show,
-  publicBasePath,
-}: {
-  show: boolean;
-  publicBasePath: string;
-}) {
-  if (!show) return null;
-  return (
-    <>
-      {" "}
-      <Link
-        href={getResearchScorePath(publicBasePath)}
-        className="font-medium text-blue-600 underline-offset-2 hover:underline"
-      >
-        {RESEARCH_SCORE_HOWTO_LABEL}
-      </Link>
-      .
-    </>
-  );
-}
-
 export function BuyingGuide({
   siteSlug,
   className,
@@ -55,7 +28,6 @@ export function BuyingGuide({
   const publicBasePath = usePublicBasePath();
   const siteData = getSiteData(siteSlug);
   const { buyingGuide } = siteData;
-  const showResearchScoreLink = siteUsesResearchScore(siteSlug);
   const TitleTag = asPage ? "h1" : "h2";
   const useHierarchy =
     Boolean(buyingGuide.chapters?.length) || Boolean(buyingGuide.intro?.length);
@@ -158,10 +130,6 @@ export function BuyingGuide({
                 {chapter.content && (
                   <p className="mt-3 text-sm leading-relaxed text-slate-600">
                     {chapter.content}
-                    <ResearchScoreSuffix
-                      show={showResearchScoreLink}
-                      publicBasePath={publicBasePath}
-                    />
                   </p>
                 )}
               </article>
@@ -182,13 +150,6 @@ export function BuyingGuide({
                 </h2>
                 <p className="mt-3 text-sm leading-relaxed text-slate-600">
                   {section.content}
-                  <ResearchScoreSuffix
-                    show={
-                      showResearchScoreLink &&
-                      isMethodologySection(section.title)
-                    }
-                    publicBasePath={publicBasePath}
-                  />
                 </p>
               </article>
             ))}

@@ -18,7 +18,6 @@ import { products } from "./products";
 
 const comparisonRows = [
   { key: "brand", label: "Brand", type: "text" as const },
-  { key: "rating", label: "Research Score", type: "text" as const },
   { key: "firmness", label: "Firmness", type: "text" as const },
   { key: "cooling", label: "Cooling", type: "text" as const },
   { key: "pressure-relief", label: "Pressure Relief", type: "text" as const },
@@ -43,7 +42,7 @@ export const siteData: SiteData = {
     eyebrow: "Research-based side sleeper guides",
     headline: "Reviews, Guides, and Research for Side Sleepers",
     subheadline:
-      "Side Sleeper Guide is a research-based knowledge site for side sleepers — covering mattresses, pillows, and buying decisions using product specs, brand policies, and recurring customer feedback.",
+      "You can find all of this information yourself — if you have the time to dig through specs, policies, reviews, and customer feedback. We do the digging for you and bring the useful parts together in one place.",
     primaryCta: "Browse Mattresses",
     secondaryCta: "Read Buying Guide",
     secondaryCtaHref: "/buying-guide",
@@ -57,7 +56,7 @@ export const siteData: SiteData = {
   topPicks: {
     title: "Top mattress picks for side sleepers",
     description:
-      "The three mattresses from our Best Mattresses for Side Sleepers guide — Helix Midnight Luxe, WinkBed, and Saatva Classic — ranked by Research Score from product specs and recurring owner feedback.",
+      "The three mattresses from our Best Mattresses for Side Sleepers guide — Helix Midnight Luxe, WinkBed, and Saatva Classic — chosen from product specs and recurring owner feedback.",
   },
 
   productDirectory: {
@@ -71,7 +70,7 @@ export const siteData: SiteData = {
   comparisonTable: {
     title: "Mattress comparison",
     description:
-      "Compare side-sleeper mattresses on Research Score, cooling, and pressure relief from specs and recurring owner feedback.",
+      "Compare side-sleeper mattresses on cooling, pressure relief, and support from specs and recurring owner feedback.",
     rowHeaderLabel: "Specification",
     rows: comparisonRows,
   },
@@ -156,7 +155,7 @@ export const siteData: SiteData = {
       {
         title: "How we evaluate mattresses, pillows, and toppers",
         content:
-          "At Side Sleeper Guide, we review product specifications and manufacturer information, then look for recurring patterns in verifiable customer feedback. We compare what matters most for side sleepers — including pressure relief, loft and support for pillows, cushioning from toppers, cooling, price, trials, and warranties — and summarize that work in our reviews and Research Score.",
+          "At Side Sleeper Guide, we review product specifications and manufacturer information, then look for recurring patterns in verifiable customer feedback. We compare what matters most for side sleepers — including pressure relief, loft and support for pillows, cushioning from toppers, cooling, price, trials, and warranties — and summarize that work in our reviews.",
       },
     ],
     productNav: {
@@ -782,10 +781,6 @@ export const siteData: SiteData = {
       {
         label: "Contact",
         href: "mailto:side.sleepers.admin@gmail.com",
-      },
-      {
-        label: "Research Score",
-        href: "/research-score",
       },
       {
         label: "Affiliate Disclosure",

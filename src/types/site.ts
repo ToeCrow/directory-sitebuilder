@@ -153,13 +153,8 @@ export type Product = {
   affiliateUrl?: string;
   /** Whether we currently have an active affiliate partnership for this product */
   hasAffiliatePartnership: boolean;
-  /** Overall score on the site’s ratingScale (Research Score for side-sleeper). */
+  /** Overall score on the site’s ratingScale. Unused in Side Sleeper UI. */
   rating: number;
-  /**
-   * Optional future per-criterion Research Score values (e.g. cooling, pressure relief).
-   * Not used in UI yet — reserved so the model can grow without reshaping Product.
-   */
-  researchScoreBreakdown?: Record<string, number>;
   badge?: string;
   featuredRank: number | null;
   directoryOrder: number;

@@ -18,6 +18,7 @@ import {
   siteUsesPublicPaths,
 } from "./paths";
 import { getArticlesToReviewsRedirectPath } from "./articles-redirect";
+import { getResearchScoreRedirectPath } from "./research-score-redirect";
 import { buildSiteSitemapEntries } from "./sitemap";
 import { getSiteSlugFromHost } from "./domain-map";
 
@@ -385,7 +386,10 @@ describe("sitemap", () => {
     assert.ok(urls.includes("https://side-sleepers.com/privacy-policy"));
     assert.ok(urls.includes("https://side-sleepers.com/about"));
     assert.ok(urls.includes("https://side-sleepers.com/affiliate"));
-    assert.ok(urls.includes("https://side-sleepers.com/research-score"));
+    assert.equal(
+      urls.includes("https://side-sleepers.com/research-score"),
+      false,
+    );
     assert.ok(urls.includes("https://side-sleepers.com/buying-guide"));
     assert.equal(
       urls.filter((u) => u === "https://side-sleepers.com/privacy-policy")
@@ -496,5 +500,20 @@ describe("articles to reviews redirect", () => {
       getReviewsIndexPath("/side-sleeper", "science"),
       "/side-sleeper/reviews?category=science",
     );
+  });
+});
+
+describe("research-score to about redirect", () => {
+  it("rewrites bare and site-prefixed /research-score paths", () => {
+    assert.equal(getResearchScoreRedirectPath("/research-score"), "/about");
+    assert.equal(
+      getResearchScoreRedirectPath("/research-score/"),
+      "/about/",
+    );
+    assert.equal(
+      getResearchScoreRedirectPath("/side-sleeper/research-score"),
+      "/side-sleeper/about",
+    );
+    assert.equal(getResearchScoreRedirectPath("/products"), null);
   });
 });

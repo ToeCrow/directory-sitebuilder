@@ -2,11 +2,6 @@
 
 import Link from "next/link";
 import { useSiteContext } from "@/context/SiteContext";
-import {
-  RESEARCH_SCORE_LABEL,
-  getResearchScorePath,
-  siteUsesResearchScore,
-} from "@/lib/research-score";
 import { getSitePath } from "@/lib/paths";
 
 function FooterNavLink({ href, label }: { href: string; label: string }) {
@@ -31,7 +26,7 @@ function FooterNavLink({ href, label }: { href: string; label: string }) {
 }
 
 export function Footer() {
-  const { siteSlug, siteData, publicBasePath } = useSiteContext();
+  const { siteData, publicBasePath } = useSiteContext();
   const year = new Date().getFullYear();
 
   return (
@@ -49,13 +44,9 @@ export function Footer() {
           <nav aria-label="Footer navigation">
             <ul className="flex flex-wrap gap-6 text-sm">
               {siteData.footer.links.map((link) => {
-                const href =
-                  link.label === RESEARCH_SCORE_LABEL &&
-                  siteUsesResearchScore(siteSlug)
-                    ? getResearchScorePath(publicBasePath)
-                    : link.href.startsWith("/")
-                      ? getSitePath(publicBasePath, link.href)
-                      : link.href;
+                const href = link.href.startsWith("/")
+                  ? getSitePath(publicBasePath, link.href)
+                  : link.href;
 
                 return (
                   <li key={link.label}>

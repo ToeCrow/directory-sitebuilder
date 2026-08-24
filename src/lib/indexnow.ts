@@ -7,7 +7,6 @@ import {
   siteUsesEditorialCatalog,
 } from "@/lib/directory-catalog";
 import { siteUsesPrivacyPolicy } from "@/lib/privacy-policy";
-import { siteUsesResearchScore } from "@/lib/research-score";
 import {
   getArticles,
   getArticlesFeaturingProduct,
@@ -292,12 +291,6 @@ export function getIndexNowUrlSnapshots(siteSlug: string): IndexNowUrlSnapshot[]
       affiliateDisclosure: siteData.affiliateDisclosure,
     }),
   );
-
-  if (siteUsesResearchScore(siteSlug)) {
-    snapshots.push(
-      snapshotFor(abs("/research-score"), chrome, { page: "research-score" }),
-    );
-  }
 
   for (const product of products) {
     snapshots.push(

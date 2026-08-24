@@ -42,7 +42,7 @@ type StarRatingProps = {
   rating: number;
   maxRating?: number;
   showValue?: boolean;
-  /** Accessible / branded label, e.g. "Research Score" or "Rating" */
+  /** Accessible label, e.g. "Rating" or a future customer-review label */
   label?: string;
 };
 

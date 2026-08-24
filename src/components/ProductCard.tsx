@@ -4,14 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import type { SiteSlug } from "@/data/sites";
 import { usePublicBasePath } from "@/context/SiteContext";
-import { getSiteData } from "@/lib/site";
+import { getSiteData, siteShowsProductRatings } from "@/lib/site";
 import type { Product, ProductCategory } from "@/types/site";
 import { StarRating } from "@/components/StarRating";
 import { cn } from "@/lib/cn";
-import {
-  RESEARCH_SCORE_LABEL,
-  siteUsesResearchScore,
-} from "@/lib/research-score";
 import { getProductPath } from "@/lib/paths";
 import { buyLinkRel, getBuyUrl } from "@/lib/product-links";
 
@@ -86,13 +82,11 @@ export function ProductCard({
   variant = "featured",
 }: ProductCardProps) {
   const publicBasePath = usePublicBasePath();
-  const siteData = getSiteData(siteSlug);
+  const showRating = siteShowsProductRatings(siteSlug);
+  const siteData = showRating ? getSiteData(siteSlug) : null;
   const productHref = getProductPath(publicBasePath, product.slug);
   const buyHref = getBuyUrl(product);
   const isDirectory = variant === "directory";
-  const scoreLabel = siteUsesResearchScore(siteSlug)
-    ? RESEARCH_SCORE_LABEL
-    : "Rating";
   const headingId = `product-card-${product.slug}`;
 
   return (
@@ -140,22 +134,24 @@ export function ProductCard({
           >
             {product.name}
           </h3>
-          <div
-            className={cn(
-              "mt-2",
-              !isDirectory &&
-                "rounded-lg border border-slate-200 bg-slate-50 px-3 py-2",
-            )}
-          >
-            <p className="mb-1 text-xs font-medium uppercase tracking-wide text-slate-500">
-              {scoreLabel}
-            </p>
-            <StarRating
-              rating={product.rating}
-              maxRating={siteData.ratingScale}
-              label={scoreLabel}
-            />
-          </div>
+          {showRating && siteData && (
+            <div
+              className={cn(
+                "mt-2",
+                !isDirectory &&
+                  "rounded-lg border border-slate-200 bg-slate-50 px-3 py-2",
+              )}
+            >
+              <p className="mb-1 text-xs font-medium uppercase tracking-wide text-slate-500">
+                Rating
+              </p>
+              <StarRating
+                rating={product.rating}
+                maxRating={siteData.ratingScale}
+                label="Rating"
+              />
+            </div>
+          )}
         </div>
 
         <p className="mb-4 flex-1 text-sm leading-relaxed text-slate-600">

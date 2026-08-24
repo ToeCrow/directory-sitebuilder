@@ -15,7 +15,6 @@ import {
   siteUsesEditorialCatalog,
 } from "@/lib/directory-catalog";
 import { siteUsesPrivacyPolicy } from "@/lib/privacy-policy";
-import { siteUsesResearchScore } from "@/lib/research-score";
 
 export function buildSiteSitemapEntries(
   siteSlug: string,
@@ -145,15 +144,6 @@ export function buildSiteSitemapEntries(
     changeFrequency: "monthly",
     priority: 0.4,
   });
-
-  if (siteUsesResearchScore(siteSlug)) {
-    entries.push({
-      url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, "/research-score"),
-      lastModified: now,
-      changeFrequency: "yearly",
-      priority: 0.5,
-    });
-  }
 
   for (const product of getProducts(siteSlug as SiteSlug)) {
     entries.push({

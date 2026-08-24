@@ -13,15 +13,9 @@ import {
   getSiteBySlug,
   isValidSiteSlug,
   siteHasMattressPillowNav,
+  siteShowsProductRatings,
 } from "@/lib/site";
 import { siteUsesEditorialCatalog } from "@/lib/directory-catalog";
-import {
-  RESEARCH_SCORE_HOWTO_LABEL,
-  RESEARCH_SCORE_LABEL,
-  formatScoreValue,
-  getResearchScorePath,
-  siteUsesResearchScore,
-} from "@/lib/research-score";
 import {
   getArticlePath,
   getPublicPath,
@@ -151,29 +145,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
             {product.name}
           </h1>
           <p className="mt-2 text-sm font-medium text-slate-500">
-            {siteUsesResearchScore(siteSlug) ? (
-              <>
-                {RESEARCH_SCORE_LABEL}:{" "}
-                {formatScoreValue(product.rating, siteData.ratingScale)} ·{" "}
-                {product.priceDisplay}
-              </>
-            ) : (
+            {siteShowsProductRatings(siteSlug) ? (
               <>
                 Rating: {product.rating}/{siteData.ratingScale} ·{" "}
                 {product.priceDisplay}
               </>
+            ) : (
+              product.priceDisplay
             )}
           </p>
-          {siteUsesResearchScore(siteSlug) && (
-            <p className="mt-2 text-sm text-slate-600">
-              <Link
-                href={getResearchScorePath(publicBasePath)}
-                className="font-medium text-blue-600 underline-offset-2 hover:underline"
-              >
-                {RESEARCH_SCORE_HOWTO_LABEL}
-              </Link>
-            </p>
-          )}
           <p className="mt-4 text-lg leading-relaxed text-slate-600">
             {product.shortDescription}
           </p>

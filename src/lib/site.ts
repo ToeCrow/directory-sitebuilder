@@ -161,6 +161,11 @@ export function siteHasMattressPillowNav(siteSlug: string): boolean {
   return siteSlug === "side-sleeper";
 }
 
+/** Editorial star ratings on product cards and product pages (not used on Side Sleeper). */
+export function siteShowsProductRatings(siteSlug: string): boolean {
+  return !siteHasMattressPillowNav(siteSlug);
+}
+
 export function getLegacyDirectorySiteSlugs(): SiteSlug[] {
   return siteSlugs.filter((slug) => !siteUsesEditorialCatalog(slug));
 }
