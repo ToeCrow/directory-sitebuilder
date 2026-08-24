@@ -83,16 +83,16 @@ export default async function DirectoryCategoryPage({
       <div className="mx-auto max-w-6xl px-4">
         <Link
           href={getSitePath(publicBasePath)}
-          className="text-sm font-medium text-blue-700 hover:text-blue-800"
+          className="text-sm font-medium text-fwn-gold hover:text-fwn-brass"
         >
           ← Back to home
         </Link>
 
-        <header className="mt-6 max-w-3xl border-b border-slate-200 pb-8">
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
+        <header className="mt-6 max-w-3xl border-b border-fwn-gold/15 pb-8">
+          <h1 className="text-3xl font-semibold tracking-tight text-fwn-ivory md:text-4xl">
             {category.name}
           </h1>
-          <p className="mt-4 text-base leading-relaxed text-slate-600">
+          <p className="mt-4 text-base leading-relaxed text-fwn-sand">
             {category.intro}
           </p>
         </header>
@@ -104,7 +104,7 @@ export default async function DirectoryCategoryPage({
         >
           <Link
             href={getProductsIndexPath(publicBasePath)}
-            className="rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:bg-slate-50"
+            className="rounded-sm border border-fwn-gold/25 px-3.5 py-2 text-sm font-medium tracking-wide text-fwn-sand transition-colors hover:border-fwn-gold hover:text-fwn-ivory"
           >
             All
           </Link>
@@ -115,10 +115,10 @@ export default async function DirectoryCategoryPage({
                 key={item.slug}
                 href={getDirectoryCategoryPath(publicBasePath, item.slug)}
                 className={cn(
-                  "rounded-lg px-3.5 py-2 text-sm font-medium transition-colors",
+                  "rounded-sm px-3.5 py-2 text-sm font-medium tracking-wide transition-colors",
                   active
-                    ? "bg-blue-600 text-white"
-                    : "border border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50",
+                    ? "bg-fwn-gold text-fwn-void"
+                    : "border border-fwn-gold/25 text-fwn-sand hover:border-fwn-gold hover:text-fwn-ivory",
                 )}
                 aria-current={active ? "page" : undefined}
               >

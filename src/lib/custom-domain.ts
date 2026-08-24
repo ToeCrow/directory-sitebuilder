@@ -37,6 +37,7 @@ export function shouldRewriteCustomDomainPath(
     !pathname.startsWith("/about") &&
     !pathname.startsWith("/privacy-policy") &&
     !pathname.startsWith("/affiliate-disclosure") &&
+    !pathname.startsWith("/blog") &&
     !pathname.startsWith("/sleep") &&
     !pathname.startsWith("/dental-health") &&
     !pathname.startsWith("/dietary-supplements") &&

@@ -104,20 +104,20 @@ export default async function DirectoryReviewPage({ params }: ReviewPageProps) {
     <main className="mx-auto max-w-3xl px-4 py-12 md:py-16">
       <Link
         href={categoryHref}
-        className="text-sm font-medium text-blue-700 hover:text-blue-800"
+        className="text-sm font-medium text-fwn-gold hover:text-fwn-brass"
       >
         ← Back to {categoryName}
       </Link>
 
-      <header className="mt-6 border-b border-slate-200 pb-8">
-        <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+      <header className="mt-6 border-b border-fwn-gold/15 pb-8">
+        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-fwn-gold">
           {product.typeLabel}
         </p>
-        <h1 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
+        <h1 className="mt-3 text-3xl font-semibold tracking-tight text-fwn-ivory md:text-4xl">
           {product.reviewTitle}
         </h1>
         {product.image && (
-          <div className="relative mt-6 aspect-4/3 overflow-hidden rounded-xl border border-slate-200 bg-slate-100 sm:aspect-video">
+          <div className="relative mt-6 aspect-4/3 overflow-hidden rounded-sm border border-fwn-gold/20 bg-fwn-ivory sm:aspect-video">
             <ProductMediaImage
               src={product.image.src}
               alt={product.image.alt}
@@ -127,18 +127,18 @@ export default async function DirectoryReviewPage({ params }: ReviewPageProps) {
             />
           </div>
         )}
-        <p className="mt-4 text-lg leading-relaxed text-slate-600">
+        <p className="mt-4 text-lg leading-relaxed text-fwn-sand">
           {product.heroDescription}
         </p>
-        <p className="mt-5 rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm leading-relaxed text-slate-600">
-          <span className="font-semibold text-slate-800">
+        <p className="mt-5 rounded-sm border border-fwn-gold/20 bg-fwn-panel px-4 py-3 text-sm leading-relaxed text-fwn-sand">
+          <span className="font-semibold text-fwn-ivory">
             Affiliate disclosure:
           </span>{" "}
           We may earn a commission if you purchase through links on this page,
           at no additional cost to you.{" "}
           <Link
             href={disclosureHref}
-            className="font-medium text-blue-700 hover:text-blue-800"
+            className="font-medium text-fwn-gold hover:text-fwn-brass"
           >
             Read the full disclosure
           </Link>
@@ -153,19 +153,19 @@ export default async function DirectoryReviewPage({ params }: ReviewPageProps) {
 
       {product.sections.map((section) => (
         <section key={section.heading} className="mt-10">
-          <h2 className="text-2xl font-semibold tracking-tight text-slate-900">
+          <h2 className="text-2xl font-semibold tracking-tight text-fwn-ivory">
             {section.heading}
           </h2>
           {section.paragraphs.map((paragraph) => (
             <p
               key={paragraph}
-              className="mt-4 text-base leading-relaxed text-slate-600"
+              className="mt-4 text-base leading-relaxed text-fwn-sand"
             >
               {paragraph}
             </p>
           ))}
           {section.bullets && section.bullets.length > 0 && (
-            <ul className="mt-4 list-disc space-y-2 pl-5 text-base leading-relaxed text-slate-600">
+            <ul className="mt-4 list-disc space-y-2 pl-5 text-base leading-relaxed text-fwn-sand">
               {section.bullets.map((item) => (
                 <li key={item}>{item}</li>
               ))}
@@ -174,11 +174,11 @@ export default async function DirectoryReviewPage({ params }: ReviewPageProps) {
         </section>
       ))}
 
-      <section className="mt-12 border-t border-slate-200 pt-8">
-        <h2 className="text-2xl font-semibold tracking-tight text-slate-900">
+      <section className="mt-12 border-t border-fwn-gold/15 pt-8">
+        <h2 className="text-2xl font-semibold tracking-tight text-fwn-ivory">
           Learn more
         </h2>
-        <p className="mt-4 text-base leading-relaxed text-slate-600">
+        <p className="mt-4 text-base leading-relaxed text-fwn-sand">
           If you want current details, pricing, or the full offer, visit the
           official {product.name} page. {siteData.title} may earn a commission
           from that visit, at no additional cost to you.

@@ -11,6 +11,8 @@ import {
   getBuyingGuidePath,
   getDirectoryCategoryPath,
   getDirectoryReviewPath,
+  getBlogIndexPath,
+  getBlogPostPath,
   getPublicAbsoluteUrl,
   getPublicPath,
   getReviewsIndexPath,
@@ -208,6 +210,16 @@ describe("path helpers", () => {
       getDirectoryReviewPath("/findworthnow", "sleep", "sleep-revive-review"),
       "/findworthnow/sleep/sleep-revive-review",
     );
+    assert.equal(getBlogIndexPath(""), "/blog");
+    assert.equal(getBlogIndexPath("/findworthnow"), "/findworthnow/blog");
+    assert.equal(
+      getBlogPostPath("", "why-sleep-supplements-can-help"),
+      "/blog/why-sleep-supplements-can-help",
+    );
+    assert.equal(
+      getBlogPostPath("/findworthnow", "why-sleep-supplements-can-help"),
+      "/findworthnow/blog/why-sleep-supplements-can-help",
+    );
   });
 
   it("never puts siteSlug in side-sleeper public absolute URLs", () => {
@@ -277,6 +289,14 @@ describe("custom domain rewrite helpers", () => {
     );
     assert.equal(
       shouldRewriteCustomDomainPath("/affiliate-disclosure", "findworthnow"),
+      true,
+    );
+    assert.equal(shouldRewriteCustomDomainPath("/blog", "findworthnow"), true);
+    assert.equal(
+      shouldRewriteCustomDomainPath(
+        "/blog/why-sleep-supplements-can-help",
+        "findworthnow",
+      ),
       true,
     );
     assert.equal(
@@ -453,6 +473,32 @@ describe("sitemap", () => {
       urls.includes("https://findworthnow.com/sleep/sleep-revive-review"),
     );
     assert.ok(urls.includes("https://findworthnow.com/affiliate-disclosure"));
+    assert.ok(urls.includes("https://findworthnow.com/blog"));
+    assert.ok(
+      urls.includes(
+        "https://findworthnow.com/blog/why-sleep-supplements-can-help",
+      ),
+    );
+    assert.ok(
+      urls.includes(
+        "https://findworthnow.com/blog/why-try-sleep-programs-beyond-supplements",
+      ),
+    );
+    assert.ok(
+      urls.includes(
+        "https://findworthnow.com/blog/prostate-health-what-you-can-do-yourself",
+      ),
+    );
+    assert.ok(
+      urls.includes(
+        "https://findworthnow.com/blog/testosterone-what-you-can-do-yourself",
+      ),
+    );
+    assert.ok(
+      urls.includes(
+        "https://findworthnow.com/blog/sexual-wellness-what-you-can-do-yourself",
+      ),
+    );
     assert.ok(
       urls.includes("https://findworthnow.com/dental-health/prodentim-review"),
     );

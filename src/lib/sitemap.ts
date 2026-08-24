@@ -14,6 +14,7 @@ import {
   getDirectoryProducts,
   siteUsesEditorialCatalog,
 } from "@/lib/directory-catalog";
+import { getDirectoryBlogPosts } from "@/lib/directory-blog";
 import { siteUsesPrivacyPolicy } from "@/lib/privacy-policy";
 
 export function buildSiteSitemapEntries(
@@ -71,6 +72,25 @@ export function buildSiteSitemapEntries(
         lastModified: now,
         changeFrequency: "weekly",
         priority: 0.9,
+      });
+    }
+
+    const blogPosts = getDirectoryBlogPosts(siteSlug);
+    if (blogPosts.length > 0) {
+      entries.push({
+        url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, "/blog"),
+        lastModified: now,
+        changeFrequency: "weekly",
+        priority: 0.7,
+      });
+    }
+
+    for (const post of blogPosts) {
+      entries.push({
+        url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, `/blog/${post.slug}`),
+        lastModified: now,
+        changeFrequency: "monthly",
+        priority: 0.65,
       });
     }
 

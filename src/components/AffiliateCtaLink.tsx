@@ -19,7 +19,7 @@ export function AffiliateCtaLink({
       target="_blank"
       rel={AFFILIATE_REL}
       className={cn(
-        "inline-flex items-center rounded-lg bg-slate-900 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-slate-800",
+        "inline-flex items-center rounded-sm bg-fwn-gold px-6 py-3 text-sm font-semibold tracking-wide text-fwn-void shadow-[0_12px_32px_-12px_rgba(196,163,106,0.7)] transition-colors hover:bg-fwn-brass",
         className,
       )}
     >

@@ -91,14 +91,14 @@ export default async function ProductsIndexPage({
           <ProductsDirectoryScroll />
         </Suspense>
         <div className="mx-auto max-w-6xl px-4 pt-12 md:pt-16">
-          <h1 className="text-3xl font-bold tracking-tight text-ss-navy md:text-4xl">
+          <h1 className="text-3xl font-semibold tracking-tight text-fwn-ivory md:text-4xl">
             {heading}
           </h1>
           {activeCategory ? (
-            <p className="mt-3 max-w-2xl text-slate-600">{activeCategory.intro}</p>
+            <p className="mt-3 max-w-2xl text-fwn-sand">{activeCategory.intro}</p>
           ) : (
             siteData.productDirectory.description && (
-              <p className="mt-3 max-w-2xl text-slate-600">
+              <p className="mt-3 max-w-2xl text-fwn-sand">
                 {siteData.productDirectory.description}
               </p>
             )

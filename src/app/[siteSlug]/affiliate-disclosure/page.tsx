@@ -67,27 +67,27 @@ export default async function AffiliateDisclosurePage({
     <main className="mx-auto max-w-3xl px-4 py-12 md:py-16">
       <Link
         href={getSitePath(publicBasePath)}
-        className="text-sm font-medium text-blue-700 hover:text-blue-800"
+        className="text-sm font-medium text-fwn-gold hover:text-fwn-brass"
       >
         ← Back to home
       </Link>
 
       <article className="mt-6">
-        <h1 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
+        <h1 className="text-3xl font-semibold tracking-tight text-fwn-ivory md:text-4xl">
           Affiliate disclosure
         </h1>
-        <p className="mt-6 text-base leading-relaxed text-slate-600">
+        <p className="mt-6 text-base leading-relaxed text-fwn-sand">
           Some links on {siteData.title} are affiliate links. We may earn a
           commission if you purchase through those links, at no additional cost
           to you.
         </p>
-        <p className="mt-4 text-base leading-relaxed text-slate-600">
+        <p className="mt-4 text-base leading-relaxed text-fwn-sand">
           {siteData.affiliateDisclosure} Affiliate relationships do not change
           the facts we present, and they are not a reason to treat any product
           as medical advice, a personal recommendation, or a guarantee of
           results.
         </p>
-        <p className="mt-4 text-base leading-relaxed text-slate-600">
+        <p className="mt-4 text-base leading-relaxed text-fwn-sand">
           If a page includes an affiliate link, we disclose that near the link.
         </p>
       </article>

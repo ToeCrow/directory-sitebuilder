@@ -106,6 +106,7 @@ export default async function SiteLayout({ children, params }: SiteLayoutProps) 
   const publicBasePath = resolvePublicBasePath(siteSlug, host);
   const isCustomDomain = publicBasePath === "";
   const isSideSleeper = siteHasMattressPillowNav(siteSlug);
+  const isEditorial = siteUsesEditorialCatalog(siteSlug);
 
   return (
     <SiteProvider
@@ -117,7 +118,9 @@ export default async function SiteLayout({ children, params }: SiteLayoutProps) 
         className={
           isSideSleeper
             ? "flex flex-1 flex-col bg-ss-paper text-ss-ink"
-            : "flex flex-1 flex-col"
+            : isEditorial
+              ? "flex flex-1 flex-col bg-fwn-void text-fwn-ivory"
+              : "flex flex-1 flex-col"
         }
       >
       <JsonLd

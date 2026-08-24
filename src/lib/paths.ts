@@ -124,6 +124,17 @@ export function getDirectoryReviewPath(
   return getAppPath(publicBasePath, `/${categorySlug}/${reviewSlug}`);
 }
 
+export function getBlogIndexPath(publicBasePath: string): string {
+  return getAppPath(publicBasePath, "/blog");
+}
+
+export function getBlogPostPath(
+  publicBasePath: string,
+  slug: string,
+): string {
+  return getAppPath(publicBasePath, `/blog/${slug}`);
+}
+
 /** Whether this host is a mapped custom domain (not the platform host). */
 export function isCustomDomainHost(host: string): boolean {
   return getSiteSlugFromHost(host) !== undefined;

@@ -59,6 +59,7 @@ export const siteData: SiteData = {
     tagline: "Discover what's worth it.",
     links: [
       { label: "Products", href: "/products" },
+      { label: "Blog", href: "/blog" },
       { label: "Affiliate Disclosure", href: "/affiliate-disclosure" },
     ],
   },

@@ -17,6 +17,12 @@
   --color-ss-ink: #25313c;
   --color-ss-green: #6f9477;
   --color-ss-terracotta: #b87563;
+  --color-fwn-void: #0c0b09;
+  --color-fwn-panel: #161410;
+  --color-fwn-ivory: #f3eee4;
+  --color-fwn-sand: #c9bba6;
+  --color-fwn-gold: #c4a36a;
+  --color-fwn-brass: #a67c42;
 }
 
 body {

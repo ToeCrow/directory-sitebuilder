@@ -98,6 +98,11 @@ describe("indexnow helpers", () => {
           snapshot.url === "https://findworthnow.com/sleep/sleep-revive-review",
       ),
     );
+    assert.ok(
+      snapshots.some(
+        (snapshot) => snapshot.url === "https://findworthnow.com/blog",
+      ),
+    );
   });
 
   it("validates INDEXNOW_KEY format", () => {

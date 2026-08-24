@@ -15,6 +15,7 @@ const RESERVED_TOP_LEVEL_PATHS = new Set([
   "about",
   "privacy-policy",
   "research-score",
+  "blog",
 ]);
 
 const catalogs: Record<string, DirectoryCatalog> = {
@@ -60,6 +61,15 @@ export function getDirectoryProductByReviewSlug(
 ): DirectoryProduct | undefined {
   return getDirectoryProducts(siteSlug, categorySlug).find(
     (product) => product.reviewSlug === reviewSlug,
+  );
+}
+
+export function getDirectoryProductBySlug(
+  siteSlug: string,
+  productSlug: string,
+): DirectoryProduct | undefined {
+  return getDirectoryProducts(siteSlug).find(
+    (product) => product.slug === productSlug,
   );
 }
 

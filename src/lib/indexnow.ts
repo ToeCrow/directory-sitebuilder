@@ -6,6 +6,7 @@ import {
   getDirectoryProducts,
   siteUsesEditorialCatalog,
 } from "@/lib/directory-catalog";
+import { getDirectoryBlogPosts } from "@/lib/directory-blog";
 import { siteUsesPrivacyPolicy } from "@/lib/privacy-policy";
 import {
   getArticles,
@@ -239,6 +240,24 @@ export function getIndexNowUrlSnapshots(siteSlug: string): IndexNowUrlSnapshot[]
           product,
         ),
       );
+    }
+
+    const blogPosts = getDirectoryBlogPosts(siteSlug);
+    if (blogPosts.length > 0) {
+      snapshots.push(
+        snapshotFor(abs("/blog"), chrome, {
+          posts: blogPosts.map((post) => ({
+            slug: post.slug,
+            title: post.title,
+            excerpt: post.excerpt,
+            publishedAt: post.publishedAt,
+          })),
+        }),
+      );
+    }
+
+    for (const post of blogPosts) {
+      snapshots.push(snapshotFor(abs(`/blog/${post.slug}`), chrome, post));
     }
 
     return snapshots;

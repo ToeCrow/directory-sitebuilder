@@ -47,14 +47,14 @@ export function DirectoryCatalogDirectory({
           id="directory-heading"
           className={
             title
-              ? "text-2xl font-bold tracking-tight text-slate-900 md:text-3xl"
+              ? "text-2xl font-semibold tracking-tight text-fwn-ivory md:text-3xl"
               : "sr-only"
           }
         >
           {title || "Product directory"}
         </h2>
         {description && (
-          <p className="mt-2 max-w-2xl text-slate-600">{description}</p>
+          <p className="mt-2 max-w-2xl text-fwn-sand">{description}</p>
         )}
 
         <div
@@ -70,10 +70,10 @@ export function DirectoryCatalogDirectory({
                 href={filter.href}
                 scroll={false}
                 className={cn(
-                  "rounded-lg px-3.5 py-2 text-sm font-medium transition-colors",
+                  "rounded-sm px-3.5 py-2 text-sm font-medium tracking-wide transition-colors",
                   active
-                    ? "bg-blue-600 text-white"
-                    : "border border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50",
+                    ? "bg-fwn-gold text-fwn-void"
+                    : "border border-fwn-gold/25 text-fwn-sand hover:border-fwn-gold hover:text-fwn-ivory",
                 )}
                 aria-current={active ? "page" : undefined}
               >
