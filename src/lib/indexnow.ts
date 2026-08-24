@@ -30,6 +30,18 @@ const PUBLIC_SITE_TEMPLATE_PREFIX = "src/app/[siteSlug]/";
 /** Default live site for IndexNow submissions. */
 export const INDEXNOW_DEFAULT_SITE_SLUG = "side-sleeper";
 
+/** Custom-domain sites that submit IndexNow with the shared INDEXNOW_KEY. */
+export const INDEXNOW_SITE_SLUGS = [
+  "side-sleeper",
+  "findworthnow",
+] as const;
+
+export type IndexNowSiteSlug = (typeof INDEXNOW_SITE_SLUGS)[number];
+
+export function isIndexNowSiteSlug(value: string): value is IndexNowSiteSlug {
+  return (INDEXNOW_SITE_SLUGS as readonly string[]).includes(value);
+}
+
 export type IndexNowSubmitResult = {
   ok: boolean;
   status: number;
@@ -67,6 +79,45 @@ export function getIndexNowKeyLocation(siteUrl: string, key: string): string {
 
 export function getIndexNowUrlList(siteSlug: string): string[] {
   return getIndexNowUrlSnapshots(siteSlug).map((entry) => entry.url);
+}
+
+/** Keep snapshots whose host matches the site. Ignores leftover URLs from older list scripts. */
+export function filterIndexNowSnapshotsForSite(
+  snapshots: IndexNowUrlSnapshot[],
+  siteSlug: string,
+): IndexNowUrlSnapshot[] {
+  const siteData = getSiteBySlug(siteSlug);
+  if (!siteData) {
+    return [];
+  }
+
+  const host = new URL(siteData.siteUrl).host;
+  return snapshots.filter((snapshot) => {
+    try {
+      return new URL(snapshot.url).host === host;
+    } catch {
+      return false;
+    }
+  });
+}
+
+export function indexNowSiteSlugForUrl(url: string): IndexNowSiteSlug | undefined {
+  let host: string;
+  try {
+    host = new URL(url).host;
+  } catch {
+    return undefined;
+  }
+
+  for (const siteSlug of INDEXNOW_SITE_SLUGS) {
+    const siteData = getSiteBySlug(siteSlug);
+    if (!siteData) continue;
+    if (new URL(siteData.siteUrl).host === host) {
+      return siteSlug;
+    }
+  }
+
+  return undefined;
 }
 
 export function isAuthorizedIndexNowSubmit(authHeader: string | null): boolean {

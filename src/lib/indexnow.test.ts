@@ -4,12 +4,16 @@ import { buildSiteSitemapEntries } from "./sitemap";
 import {
   applyPublicTemplateFallback,
   diffIndexNowSnapshots,
+  filterIndexNowSnapshotsForSite,
   getIndexNowKey,
   getIndexNowKeyLocation,
   getIndexNowUrlList,
   getIndexNowUrlSnapshots,
+  indexNowSiteSlugForUrl,
   indexNowUrlsToSubmit,
+  INDEXNOW_SITE_SLUGS,
   isAuthorizedIndexNowSubmit,
+  isIndexNowSiteSlug,
   isPublicSiteTemplatePath,
   pageTemplateHasCopyChange,
   parseIndexNowSnapshotList,
@@ -46,6 +50,13 @@ describe("indexnow helpers", () => {
         "abc12345def67890",
       ),
       "https://side-sleepers.com/abc12345def67890.txt",
+    );
+    assert.equal(
+      getIndexNowKeyLocation(
+        "https://findworthnow.com",
+        "abc12345def67890",
+      ),
+      "https://findworthnow.com/abc12345def67890.txt",
     );
   });
 
@@ -103,6 +114,31 @@ describe("indexnow helpers", () => {
         (snapshot) => snapshot.url === "https://findworthnow.com/blog",
       ),
     );
+  });
+
+  it("covers live custom-domain sites and filters snapshots by host", () => {
+    assert.deepEqual([...INDEXNOW_SITE_SLUGS], ["side-sleeper", "findworthnow"]);
+    assert.equal(isIndexNowSiteSlug("findworthnow"), true);
+    assert.equal(isIndexNowSiteSlug("construction-software"), false);
+    assert.equal(
+      indexNowSiteSlugForUrl("https://findworthnow.com/blog"),
+      "findworthnow",
+    );
+    assert.equal(
+      indexNowSiteSlugForUrl("https://side-sleepers.com/products"),
+      "side-sleeper",
+    );
+
+    const mixed = [
+      snap("https://side-sleepers.com/", "ss"),
+      snap("https://findworthnow.com/blog", "fwn"),
+    ];
+    assert.deepEqual(filterIndexNowSnapshotsForSite(mixed, "findworthnow"), [
+      snap("https://findworthnow.com/blog", "fwn"),
+    ]);
+    assert.deepEqual(filterIndexNowSnapshotsForSite(mixed, "side-sleeper"), [
+      snap("https://side-sleepers.com/", "ss"),
+    ]);
   });
 
   it("validates INDEXNOW_KEY format", () => {

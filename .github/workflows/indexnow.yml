@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - "src/data/sites/side-sleeper/**"
+      - "src/data/sites/findworthnow/**"
       - "src/app/**/page.tsx"
       - "src/lib/sitemap.ts"
       - "src/lib/indexnow.ts"
@@ -14,6 +15,8 @@ on:
       - "src/lib/about.ts"
       - "src/lib/privacy-policy.ts"
       - "src/lib/research-score.ts"
+      - "src/lib/directory-catalog.ts"
+      - "src/lib/directory-blog.ts"
       - "scripts/indexnow-on-push.ts"
       - "scripts/list-indexnow-urls.ts"
 
