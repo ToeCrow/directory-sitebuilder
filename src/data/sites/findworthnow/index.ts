@@ -27,7 +27,7 @@ export const siteData: SiteData = {
   productDirectory: {
     title: "Product reviews",
     description:
-      "Short overviews of products people are researching. Filter by category, then open a review for what the seller currently lists.",
+      "Short reviews of products people are comparing. Filter by category, then open one and decide.",
   },
 
   products: [],

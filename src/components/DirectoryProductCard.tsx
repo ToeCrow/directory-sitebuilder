@@ -24,7 +24,7 @@ export function DirectoryProductCard({
         className="absolute inset-0 z-0"
         aria-labelledby={headingId}
       >
-        <span className="sr-only">Read {product.name} overview</span>
+        <span className="sr-only">Read the {product.name} review</span>
       </Link>
 
       <div className="pointer-events-none relative mb-4 aspect-4/3 overflow-hidden border-b border-fwn-gold/15 bg-fwn-ivory">
@@ -54,7 +54,7 @@ export function DirectoryProductCard({
           {product.shortDescription}
         </p>
         <p className="mt-auto pt-5 text-sm font-medium tracking-wide text-fwn-gold group-hover:text-fwn-ivory">
-          Read overview →
+          Read the review →
         </p>
       </div>
     </article>

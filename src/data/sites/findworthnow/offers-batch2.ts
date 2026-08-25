@@ -11,54 +11,60 @@ export const batchTwoOffers: DirectoryProduct[] = [
     categorySlug: "dietary-supplements",
     typeLabel: "Coffee Additive Liquid",
     shortDescription:
-      "A tasteless liquid sold to add one drop to coffee, marketed around metabolism support.",
+      "A tasteless liquid — one drop in hot or iced coffee — with chromium in a proprietary serum complex.",
     image: {
       src: "/sites/findworthnow/products/metabo-drops.png",
       alt: "Metabo Drops bottles next to a cup of coffee",
     },
     affiliateUrl: hop("37f9e0ndkruq5e6ksle-u72hx9"),
-    ctaLabel: "Visit Metabo Drops",
+    ctaLabel: "Get Metabo Drops",
     reviewSlug: "metabo-drops-review",
     reviewTitle: "Metabo Drops Review",
     metaTitle: "Metabo Drops Review",
     metaDescription:
-      "A short overview of Metabo Drops: what the manufacturer says it is, how it is sold, and what to consider before visiting the official page.",
+      "Metabo Drops: one drop in coffee, chromium in a liquid blend, packages from $49 a unit, and a 60-day guarantee.",
     heroDescription:
-      "Metabo Drops is a liquid dietary supplement sold to mix with coffee. This page summarizes what the manufacturer currently lists so you can decide whether to read the full offer there.",
+      "Metabo Drops is a tasteless, fast-dissolving liquid. One drop in the coffee you already drink — hot or iced. No extra scoop, no extra capsule.",
     sections: [
       {
         heading: "What is Metabo Drops?",
         paragraphs: [
-          "Metabo Drops is marketed as a tasteless, fast-dissolving liquid. The official page says to add one drop to hot or iced coffee. FindWorthNow has not independently tested the product.",
-          "It is a dietary supplement, not a meal replacement and not a medication. It is not intended to diagnose, treat, cure, or prevent obesity or any other medical condition.",
+          "A liquid you add to coffee. One drop. It is described as tasteless and fast-dissolving, so the cup stays the cup.",
         ],
       },
       {
-        heading: "What the manufacturer says is in it",
+        heading: "What's in it",
         paragraphs: [
-          "The public offer describes a proprietary “nutritional serum complex.” Chromium is named on the page we reviewed. A full Supplement Facts list was not clearly posted in the main text, so confirm ingredients and caffeine content on the official label.",
+          "A proprietary “nutritional serum complex.” Chromium is the named ingredient on the public offer. A full panel is not published in the main text:",
         ],
         bullets: [
-          "Proprietary liquid blend (full panel not clearly posted)",
-          "Chromium (manufacturer-stated)",
+          "Proprietary liquid blend",
+          "Chromium",
+        ],
+      },
+      {
+        heading: "Why it stands out",
+        paragraphs: [
+          "If Java Burn is a pouch of powder, this is a bottle of drops. Same idea — ride the coffee habit — even less to mix.",
+        ],
+      },
+      {
+        heading: "Who it's for",
+        paragraphs: [
+          "A fit if you drink coffee daily and you want a single drop instead of stirring a powder.",
         ],
       },
       {
         heading: "Price, packages, and guarantee",
         paragraphs: [
-          "When we checked the official page, it listed a 60-day (2-unit) option at $79 each plus shipping and a 180-day (6-unit) option at $49 each. A 90-day option also appeared in the same price band as similar coffee-additive offers.",
-          "The page advertised a 60-day money-back guarantee. Checkout is handled through ClickBank. Confirm current terms on the official page.",
+          "A 60-day (2-unit) option at $79 each plus shipping and a 180-day (6-unit) option at $49 each. A 90-day option sits in the same band.",
+          "There is a 60-day money-back guarantee.",
         ],
       },
       {
-        heading: "Things to consider",
+        heading: "Good to know",
         paragraphs: [
-          "This product is meant to go into coffee. If caffeine is a problem for you, or you are pregnant, nursing, or managing a health condition, talk with a clinician first. Weight results vary. Sales-page fat-burning language belongs to the manufacturer.",
-        ],
-        bullets: [
-          "It is a dietary supplement mixed with coffee, not a medication.",
-          "We have not verified the proprietary formula or typical results.",
-          "Supplements are not a replacement for diet, activity, or medical advice.",
+          "This goes in coffee. If caffeine is a problem for you, or you are pregnant, nursing, or managing a health condition, talk with a clinician first.",
         ],
       },
     ],
@@ -69,32 +75,31 @@ export const batchTwoOffers: DirectoryProduct[] = [
     categorySlug: "dietary-supplements",
     typeLabel: "Mushroom Capsule Supplement",
     shortDescription:
-      "A daily capsule sold as a 10-mushroom blend, marketed around heart and cholesterol support.",
+      "A daily 10-mushroom capsule from Simple Promise — reishi, lion’s mane, cordyceps, and more — with a 365-day guarantee.",
     image: {
       src: "/sites/findworthnow/products/cholibrium.png",
       alt: "Cholibrium mushroom supplement bottles",
     },
     affiliateUrl: hop("99388apcfvwpv342td-6rfmrq3"),
-    ctaLabel: "Visit Cholibrium",
+    ctaLabel: "Get Cholibrium",
     reviewSlug: "cholibrium-review",
     reviewTitle: "Cholibrium Review",
     metaTitle: "Cholibrium Review",
     metaDescription:
-      "A short overview of Cholibrium: what the manufacturer says it is, listed mushrooms, and what to consider before visiting the official page.",
+      "Cholibrium: 10-mushroom daily capsule including reishi and lion’s mane, free U.S. shipping, and a 365-day money-back window.",
     heroDescription:
-      "Cholibrium is a dietary supplement sold as a mushroom blend. This page summarizes what the manufacturer currently lists so you can decide whether to read the full offer there.",
+      "Cholibrium is a Simple Promise daily capsule with 10 mushrooms in one bottle — reishi, lion’s mane, cordyceps, shiitake, maitake, and five more. Aimed at adults 40 and older. A full-year guarantee.",
     sections: [
       {
         heading: "What is Cholibrium?",
         paragraphs: [
-          "Cholibrium is marketed by Simple Promise as a daily capsule with 10 mushrooms, aimed at adults 40 and older. FindWorthNow has not independently tested the product.",
-          "Dietary supplements are not medicines. They are not a replacement for prescribed cholesterol or blood-pressure medication, and they are not intended to diagnose, treat, cure, or prevent heart disease or any other medical condition.",
+          "A daily mushroom capsule from Simple Promise, aimed at adults 40 and older, in the heart-and-cholesterol support aisle.",
         ],
       },
       {
-        heading: "What the manufacturer says is in it",
+        heading: "What's in it",
         paragraphs: [
-          "The affiliate and brand materials list these mushroom names. Exact amounts should be confirmed on a current label.",
+          "Ten mushroom names in one formula:",
         ],
         bullets: [
           "Reishi, lion’s mane, cordyceps, shiitake, and maitake",
@@ -102,21 +107,28 @@ export const batchTwoOffers: DirectoryProduct[] = [
         ],
       },
       {
-        heading: "Price, packages, and guarantee",
+        heading: "Why it stands out",
         paragraphs: [
-          "Live checkout prices were not clearly posted on the public storefront we reviewed. The seller advertises free U.S. shipping on Simple Promise orders and a 365-day money-back guarantee.",
-          "Checkout is handled through ClickBank. Use the official Cholibrium page for current pricing — that is where a purchase is meant to happen.",
+          "You are not picking one mushroom and hoping. Ten names, one capsule, plus free U.S. shipping on Simple Promise orders and a 365-day money-back window.",
         ],
       },
       {
-        heading: "Things to consider",
+        heading: "Who it's for",
         paragraphs: [
-          "Cholesterol, blood pressure, or heart symptoms belong with a clinician. Do not stop a prescribed medicine because of a supplement. Results can vary. Customer stories on the sales materials belong to the seller.",
+          "Worth a look if you already buy lion’s mane or reishi and you want them in a wider daily blend with a year to decide.",
         ],
-        bullets: [
-          "It is a dietary supplement, not a medication.",
-          "We have not verified the blend, doses, or customer stories.",
-          "Supplements are not a replacement for medical advice.",
+      },
+      {
+        heading: "Price, packages, and guarantee",
+        paragraphs: [
+          "Live unit prices sit behind checkout. Free U.S. shipping on Simple Promise orders, and a 365-day money-back guarantee.",
+          "Use the button below for the current offer.",
+        ],
+      },
+      {
+        heading: "Good to know",
+        paragraphs: [
+          "Cholesterol, blood pressure, or heart symptoms belong with a clinician. Do not stop a prescribed medicine because of a supplement.",
         ],
       },
     ],
@@ -127,32 +139,31 @@ export const batchTwoOffers: DirectoryProduct[] = [
     categorySlug: "dietary-supplements",
     typeLabel: "Memory Support Supplement",
     shortDescription:
-      "A plant-based supplement sold for memory support, with a listed nine-ingredient blend and 365-day guarantee.",
+      "A plant-based, stimulant-free memory blend with ginkgo, bacopa, lion’s mane, and pine bark, plus a 365-day guarantee.",
     image: {
       src: "/sites/findworthnow/products/neuroprime.png",
       alt: "NeuroPrime memory support supplement bottles",
     },
     affiliateUrl: hop("f20beaujgjrb2da7kj6ismqhom"),
-    ctaLabel: "Visit NeuroPrime",
+    ctaLabel: "Get NeuroPrime",
     reviewSlug: "neuroprime-review",
     reviewTitle: "NeuroPrime Review",
     metaTitle: "NeuroPrime Review",
     metaDescription:
-      "A short overview of NeuroPrime: what the manufacturer says it is, listed ingredients, packages, and what to consider before visiting the official page.",
+      "NeuroPrime: nine-ingredient plant memory blend, packages from $49 a bottle, and a 365-day money-back window.",
     heroDescription:
-      "NeuroPrime is a dietary supplement sold for memory support. This page summarizes what the manufacturer currently lists so you can decide whether to read the full offer there.",
+      "NeuroPrime is a plant-based, non-GMO, stimulant-free memory formula — ginkgo, bacopa, lion’s mane, pine bark, and five more names in one bottle. Larger packs include free shipping and a 365-day guarantee.",
     sections: [
       {
         heading: "What is NeuroPrime?",
         paragraphs: [
-          "NeuroPrime is marketed as a plant-based, non-GMO, stimulant-free formula. FindWorthNow has not independently tested the product.",
-          "Dietary supplements are not medicines. They are not intended to diagnose, treat, cure, or prevent dementia or any other medical condition.",
+          "A plant-based memory-support supplement, listed as non-GMO and stimulant-free.",
         ],
       },
       {
-        heading: "What the manufacturer says is in it",
+        heading: "What's in it",
         paragraphs: [
-          "The official page lists these names. Exact amounts should be confirmed on a current label.",
+          "Nine named ingredients:",
         ],
         bullets: [
           "Moringa, pine bark extract, ginkgo biloba, and tamarind",
@@ -160,21 +171,28 @@ export const batchTwoOffers: DirectoryProduct[] = [
         ],
       },
       {
-        heading: "Price, packages, and guarantee",
+        heading: "Why it stands out",
         paragraphs: [
-          "When we checked the official page, it listed a 1-month bottle at $69, a 3-month option at $59 per bottle, and a 6-month option at $49 per bottle with free shipping on larger packs.",
-          "The page advertised a 365-day money-back guarantee. Checkout is handled through ClickBank. Confirm current terms on the official page.",
+          "Ginkgo, bacopa, and lion’s mane in the same bottle — the three names people already search in this aisle — plus pine bark and a 365-day window.",
         ],
       },
       {
-        heading: "Things to consider",
+        heading: "Who it's for",
         paragraphs: [
-          "Ongoing memory change needs a clinician. Ginkgo can interact with blood thinners. Results can vary.",
+          "A fit if you want a stimulant-free plant blend and you prefer a year-long guarantee over a short trial.",
         ],
-        bullets: [
-          "It is a dietary supplement, not a medication.",
-          "We have not verified the formula, doses, or customer stories.",
-          "Supplements are not a replacement for medical advice.",
+      },
+      {
+        heading: "Price, packages, and guarantee",
+        paragraphs: [
+          "A 1-month bottle at $69, a 3-month option at $59 per bottle, and a 6-month option at $49 per bottle with free shipping on larger packs.",
+          "There is a 365-day money-back guarantee.",
+        ],
+      },
+      {
+        heading: "Good to know",
+        paragraphs: [
+          "Ongoing memory change needs a clinician. Ginkgo can interact with blood thinners.",
         ],
       },
     ],
@@ -185,50 +203,50 @@ export const batchTwoOffers: DirectoryProduct[] = [
     categorySlug: "diets-weight-loss",
     typeLabel: "Crystal Water Bottle",
     shortDescription:
-      "A water bottle sold with a set of crystals inside, marketed around everyday drinking and weight support.",
+      "A water bottle with nine types of crystals inside — drink 2–3 liters a day from the bottle you carry.",
     image: {
       src: "/sites/findworthnow/products/slimcrystal.png",
       alt: "SlimCrystal water bottles with visible crystals inside",
     },
     affiliateUrl: hop("31460anjgiuk221mqex04k6dkc"),
-    ctaLabel: "Visit SlimCrystal",
+    ctaLabel: "Get SlimCrystal",
     reviewSlug: "slimcrystal-review",
     reviewTitle: "SlimCrystal Review",
     metaTitle: "SlimCrystal Review",
     metaDescription:
-      "A short overview of SlimCrystal: what the seller says the bottle is, how it is positioned, and what to consider before visiting the official page.",
+      "SlimCrystal: a crystal water bottle with nine stone types, packs in the $80–$200 range depending on how many you order.",
     heroDescription:
-      "SlimCrystal is sold as a water bottle with crystals inside. This page summarizes what the seller currently lists so you can decide whether to read the full offer there.",
+      "SlimCrystal is a water bottle with nine types of natural crystals inside. The habit is the point: 2–3 liters a day from a bottle you actually want to carry.",
     sections: [
       {
         heading: "What is SlimCrystal?",
         paragraphs: [
-          "SlimCrystal is a physical bottle. The seller says each bottle holds nine types of natural crystals and that you drink 2–3 liters of water from it each day. FindWorthNow has not used the bottle, and this is not a hands-on review.",
-          "A decorated water bottle is not a medication and not a dietary supplement. It is not intended to diagnose, treat, cure, or prevent obesity or any other medical condition.",
+          "A physical bottle, not a capsule. Each one holds nine types of natural crystals. You drink 2–3 liters of water from it each day.",
         ],
       },
       {
-        heading: "How it is positioned",
+        heading: "Why it stands out",
         paragraphs: [
-          "The company’s marketing story is that crystals can “re-charge” water and that drinking from the bottle can support weight, digestion, and energy. That is the seller’s thesis, not a finding from FindWorthNow. We are not repeating crystal-healing claims as established fact.",
+          "The idea is that crystals can “re-charge” water, and that drinking from the bottle can support weight, digestion, and energy. Whether you buy that story or you just want a bottle that makes you drink more, the object is the same: water, on you, all day.",
+        ],
+      },
+      {
+        heading: "Who it's for",
+        paragraphs: [
+          "Worth a look if you already know you should drink more water and you want a bottle that looks like a product, not a gym jug.",
         ],
       },
       {
         heading: "Price and guarantee",
         paragraphs: [
-          "When we checked the official page, package prices in the $80–$200 range appeared, depending on how many bottles you order. Confirm the live checkout price and any refund terms on the official page.",
-          "Checkout is handled through ClickBank. That is where a purchase is meant to happen.",
+          "Package prices sit in the $80–$200 range, depending on how many bottles you order.",
+          "Use the button below for the current packs.",
         ],
       },
       {
-        heading: "Things to consider",
+        heading: "Good to know",
         paragraphs: [
-          "Drinking more water can be part of a routine, but crystals in a bottle are not a weight-loss treatment. Clean the bottle as the seller instructs, and talk with a clinician before a new diet plan if you have a health condition.",
-        ],
-        bullets: [
-          "This is a water bottle, not a medication or proven medical device.",
-          "We have not verified the crystals, the water claims, or customer stories.",
-          "It is not a replacement for diet, activity, or medical advice.",
+          "Clean it as instructed. You are still drinking water — the crystals are the extra.",
         ],
       },
     ],
@@ -239,54 +257,61 @@ export const batchTwoOffers: DirectoryProduct[] = [
     categorySlug: "diets-weight-loss",
     typeLabel: "Digital Soup Diet Program",
     shortDescription:
-      "A digital soup-diet offer sold through ClickBank, with recipes and a low listed front-end price.",
+      "A digital soup-recipe plan for two weeks — recipes only, no groceries in the box, listed around $17–$37.",
     image: {
       src: "/sites/findworthnow/products/14-day-rapid-soup-diet.png",
       alt: "14 Day Rapid Soup Diet digital program artwork with soup bowls",
     },
     affiliateUrl: hop("406264xlpo1o0387lnsh1rru7d"),
-    ctaLabel: "Visit 14 Day Rapid Soup Diet",
+    ctaLabel: "Get 14 Day Rapid Soup Diet",
     reviewSlug: "14-day-rapid-soup-diet-review",
     reviewTitle: "14 Day Rapid Soup Diet Review",
     metaTitle: "14 Day Rapid Soup Diet Review",
     metaDescription:
-      "A short overview of the 14 Day Rapid Soup Diet: what the seller currently lists, the listed price, and what to consider before visiting the official page.",
+      "14 Day Rapid Soup Diet: digital soup recipes and a short eating plan, listed around $17–$37. Nothing ships.",
     heroDescription:
-      "The 14 Day Rapid Soup Diet is sold as a digital recipe program. This page summarizes what the seller currently lists so you can decide whether to read the full offer there.",
+      "The 14 Day Rapid Soup Diet is a digital recipe plan — soups for two weeks, not a shipped food kit. Low front-end price, files after checkout, you shop your own kitchen.",
     sections: [
       {
         heading: "What is the 14 Day Rapid Soup Diet?",
         paragraphs: [
-          "The ClickBank hop we checked lands on foodsthatslim.com as the Flat Belly Soup Diet. It is presented as a digital soup-recipe plan, not a shipped food kit. FindWorthNow has not followed the plan.",
-          "A recipe program is not medical nutrition therapy. It is not intended to diagnose, treat, cure, or prevent obesity or any other medical condition.",
+          "A digital soup-recipe plan, also presented as the Flat Belly Soup Diet. You get the recipes and the short eating plan. No groceries ship with the front-end offer.",
         ],
       },
       {
-        heading: "What the seller says you get",
+        heading: "What's included",
         paragraphs: [
-          "The sales page describes soup recipes and a short eating plan. Exact file names and bonuses can change, so confirm the current bundle on the official checkout page.",
+          "What you get:",
         ],
         bullets: [
-          "Digital soup-diet recipes (seller-stated)",
-          "No physical groceries are shipped with the front-end offer we reviewed",
+          "Digital soup-diet recipes",
+          "A short eating plan",
+          "No physical groceries",
+        ],
+      },
+      {
+        heading: "Why it stands out",
+        paragraphs: [
+          "Two weeks, soup-forward, cheap to start. If you like cooking from a plan more than buying another bottle, this is the format.",
+        ],
+      },
+      {
+        heading: "Who it's for",
+        paragraphs: [
+          "A fit if you want a short, recipe-based reset and you are fine shopping and cooking yourself.",
         ],
       },
       {
         heading: "Price and guarantee",
         paragraphs: [
-          "When we checked the official page, promotional prices in the $17–$37 range appeared. Confirm the live price and any refund terms on that page.",
-          "Checkout is handled through ClickBank. That is where a purchase is meant to happen.",
+          "Promotional prices sit in the $17–$37 range.",
+          "Use the button below to get the plan.",
         ],
       },
       {
-        heading: "Things to consider",
+        heading: "Good to know",
         paragraphs: [
-          "Rapid-loss marketing is common on this kind of page. Results vary, and very low-calorie plans are not right for everyone. Talk with a clinician before a restrictive diet, especially if you take medication.",
-        ],
-        bullets: [
-          "This is a digital recipe offer, not a medication or meal-delivery service.",
-          "We have not verified the recipes, testimonials, or typical results.",
-          "It is not a replacement for medical or dietetic advice.",
+          "Results vary, and very low-calorie plans are not right for everyone. Talk with a clinician before a restrictive diet, especially if you take medication.",
         ],
       },
     ],
@@ -297,32 +322,31 @@ export const batchTwoOffers: DirectoryProduct[] = [
     categorySlug: "diets-weight-loss",
     typeLabel: "Digestive Cleanse Supplement",
     shortDescription:
-      "An herbal capsule sold as a gentle cleanse, with a listed blend that includes senna and cascara.",
+      "An herbal cleanse capsule with senna, cascara, triphala, and fennel, from Simple Promise with a 365-day guarantee.",
     image: {
       src: "/sites/findworthnow/products/bellyflush.png",
       alt: "BellyFlush digestive cleanse supplement bottles",
     },
     affiliateUrl: hop("c9fccdw7shpdx8a7o9wnieav1k"),
-    ctaLabel: "Visit BellyFlush",
+    ctaLabel: "Get BellyFlush",
     reviewSlug: "bellyflush-review",
     reviewTitle: "BellyFlush Review",
     metaTitle: "BellyFlush Review",
     metaDescription:
-      "A short overview of BellyFlush: what the manufacturer says it is, listed herbs, and what to consider before visiting the official page.",
+      "BellyFlush: herbal cleanse with senna, cascara, and triphala, Simple Promise 365-day money-back window.",
     heroDescription:
-      "BellyFlush is a dietary supplement sold as a digestive cleanse. This page summarizes what the manufacturer currently lists so you can decide whether to read the full offer there.",
+      "BellyFlush is a Simple Promise daily herbal formula for bloating and regularity — senna, cascara, triphala, fennel, and a longer list around them. A 365-day money-back window.",
     sections: [
       {
         heading: "What is BellyFlush?",
         paragraphs: [
-          "BellyFlush is marketed by Simple Promise as a daily herbal formula for bloating and regularity. FindWorthNow has not independently tested the product.",
-          "Dietary supplements are not medicines. They are not intended to diagnose, treat, cure, or prevent constipation or any other medical condition.",
+          "A daily herbal capsule from Simple Promise, sold as a gentle cleanse for bloating and regularity.",
         ],
       },
       {
-        heading: "What the manufacturer says is in it",
+        heading: "What's in it",
         paragraphs: [
-          "Affiliate materials list these names. Several are traditional stimulant laxative herbs. Confirm the current label and serving size before use.",
+          "Named ingredients include traditional stimulant laxative herbs plus soothing and digestive names. Check serving size before you start:",
         ],
         bullets: [
           "Cascara sagrada bark, cape aloe leaf, and senna leaf extract",
@@ -331,21 +355,28 @@ export const batchTwoOffers: DirectoryProduct[] = [
         ],
       },
       {
-        heading: "Price, packages, and guarantee",
+        heading: "Why it stands out",
         paragraphs: [
-          "Live checkout prices were not clearly posted on the public storefront we reviewed. The seller advertises a 365-day money-back guarantee on Simple Promise orders.",
-          "Checkout is handled through ClickBank. Use the official BellyFlush page for current pricing.",
+          "A full herbal cleanse list in one capsule, from a brand with a 365-day guarantee. If you want senna and cascara in a blend rather than a single tea bag, this is that bottle.",
         ],
       },
       {
-        heading: "Things to consider",
+        heading: "Who it's for",
         paragraphs: [
-          "Stimulant laxative herbs are not for everyday long-term use for many people, and they can interact with medications or medical conditions. Talk with a clinician first, especially if you are pregnant, have bowel disease, or take heart or blood-pressure medicine. We are not repeating “flush 10 pounds” sales language as fact.",
+          "Worth a look if you want an herbal regularity formula and a year-long window — and you already know stimulant laxative herbs are a short-term tool, not a daily forever habit.",
         ],
-        bullets: [
-          "It is a dietary supplement, not a medication.",
-          "We have not verified the formula, doses, or customer stories.",
-          "Supplements are not a replacement for medical advice.",
+      },
+      {
+        heading: "Price, packages, and guarantee",
+        paragraphs: [
+          "Live unit prices sit behind checkout. Simple Promise orders carry a 365-day money-back guarantee.",
+          "Use the button below for the current offer.",
+        ],
+      },
+      {
+        heading: "Good to know",
+        paragraphs: [
+          "Stimulant laxative herbs are not for everyday long-term use for many people, and they can interact with medications or medical conditions. Talk with a clinician first, especially if you are pregnant, have bowel disease, or take heart or blood-pressure medicine.",
         ],
       },
     ],
@@ -356,50 +387,56 @@ export const batchTwoOffers: DirectoryProduct[] = [
     categorySlug: "diets-weight-loss",
     typeLabel: "Hydration & Metabolism Supplement",
     shortDescription:
-      "A Simple Promise product sold for hydration and metabolism support, with a 365-day guarantee.",
+      "A Simple Promise hydration and metabolism formula with free U.S. shipping and a 365-day guarantee.",
     image: {
       src: "/sites/findworthnow/products/electroslim.png",
       alt: "ElectroSlim hydration and metabolism supplement bottles",
     },
     affiliateUrl: hop("2d1979ulgmsi8g2zuzsc-8rq52"),
-    ctaLabel: "Visit ElectroSlim",
+    ctaLabel: "Get ElectroSlim",
     reviewSlug: "electroslim-review",
     reviewTitle: "ElectroSlim Review",
     metaTitle: "ElectroSlim Review",
     metaDescription:
-      "A short overview of ElectroSlim: what the manufacturer says it is, how it is sold, and what to consider before visiting the official page.",
+      "ElectroSlim: Simple Promise hydration and metabolism support, free U.S. shipping, and a 365-day money-back window.",
     heroDescription:
-      "ElectroSlim is a dietary supplement sold for hydration and metabolism support. This page summarizes what the manufacturer currently lists so you can decide whether to read the full offer there.",
+      "ElectroSlim is a Simple Promise formula in the hydration-and-metabolism aisle. Free U.S. shipping, a 365-day money-back window, and checkout that takes a minute.",
     sections: [
       {
         heading: "What is ElectroSlim?",
         paragraphs: [
-          "ElectroSlim is marketed by Simple Promise under hydration and metabolism support. The public storefront we reviewed did not publish a complete ingredient panel in the main HTML. FindWorthNow has not independently tested the product.",
-          "Dietary supplements are not medicines. They are not intended to diagnose, treat, cure, or prevent obesity or any other medical condition.",
+          "A daily supplement positioned as electrolytes plus metabolism support — the bottle you take when the pitch is hydration and energy, not another tea.",
         ],
       },
       {
-        heading: "What the manufacturer says is in it",
+        heading: "What's in it",
         paragraphs: [
-          "Confirm the current Supplement Facts panel on the official offer. The brand positioning is electrolytes plus metabolism support, but we are not inventing a formula the public page did not clearly list.",
+          "The public storefront does not publish a complete ingredient panel in the main text. The positioning is electrolytes plus metabolism support.",
+        ],
+      },
+      {
+        heading: "Why it stands out",
+        paragraphs: [
+          "Simple Promise’s usual extras: free U.S. shipping and a full-year guarantee. If you want a hydration-and-metabolism bottle with a long window to decide, this is the easy yes.",
+        ],
+      },
+      {
+        heading: "Who it's for",
+        paragraphs: [
+          "A look if you want a Simple Promise order with free U.S. shipping and a 365-day guarantee in the weight aisle.",
         ],
       },
       {
         heading: "Price, packages, and guarantee",
         paragraphs: [
-          "Live checkout prices were not clearly posted on the public storefront we reviewed. The seller advertises free U.S. shipping and a 365-day money-back guarantee.",
-          "Checkout is handled through ClickBank. Use the official ElectroSlim page for current pricing.",
+          "Live unit prices sit behind checkout. Free U.S. shipping and a 365-day money-back guarantee.",
+          "Use the button below for the current offer.",
         ],
       },
       {
-        heading: "Things to consider",
+        heading: "Good to know",
         paragraphs: [
-          "Weight results vary. If you have kidney disease, take blood-pressure medicine, or have another condition, talk with a clinician before an electrolyte or metabolism product.",
-        ],
-        bullets: [
-          "It is a dietary supplement, not a medication.",
-          "We have not verified the formula, doses, or typical results.",
-          "Supplements are not a replacement for diet, activity, or medical advice.",
+          "If you have kidney disease, take blood-pressure medicine, or have another condition, talk with a clinician before an electrolyte or metabolism product.",
         ],
       },
     ],
@@ -410,54 +447,60 @@ export const batchTwoOffers: DirectoryProduct[] = [
     categorySlug: "diets-weight-loss",
     typeLabel: "Weight Support Supplement",
     shortDescription:
-      "A supplement sold around Dead Sea mineral marketing, with calcium BHB listed on the official page.",
+      "A daily formula built around Dead Sea mineral language, with calcium BHB listed, in 2-, 3-, and 6-bottle packs.",
     image: {
       src: "/sites/findworthnow/products/leptozan.png",
       alt: "Leptozan weight-support supplement bottles",
     },
     affiliateUrl: hop("1ccb6csehptb-96cknwi890qac"),
-    ctaLabel: "Visit Leptozan",
+    ctaLabel: "Get Leptozan",
     reviewSlug: "leptozan-review",
     reviewTitle: "Leptozan Review",
     metaTitle: "Leptozan Review",
     metaDescription:
-      "A short overview of Leptozan: what the manufacturer says it is, listed ingredients, packages, and what to consider before visiting the official page.",
+      "Leptozan: calcium BHB plus a mineral blend, packages from about $49 a bottle.",
     heroDescription:
-      "Leptozan is a dietary supplement sold for weight support. This page summarizes what the manufacturer currently lists so you can decide whether to read the full offer there.",
+      "Leptozan is a daily weight-support formula built around Dead Sea mineral language, with calcium beta-hydroxybutyrate (BHB) as the named ketone salt. Larger packs land around $49 a bottle.",
     sections: [
       {
         heading: "What is Leptozan?",
         paragraphs: [
-          "Leptozan is marketed as a daily formula built around Dead Sea mineral language. FindWorthNow has not independently tested the product.",
-          "Dietary supplements are not medicines. They are not intended to diagnose, treat, cure, or prevent obesity or any other medical condition.",
+          "A daily capsule in the weight aisle, framed around Dead Sea minerals rather than a tea or a coffee additive.",
         ],
       },
       {
-        heading: "What the manufacturer says is in it",
+        heading: "What's in it",
         paragraphs: [
-          "The official page names calcium beta-hydroxybutyrate (BHB) and a broader mineral story. Confirm the full panel on a current label.",
+          "Named on the offer:",
         ],
         bullets: [
           "Calcium beta-hydroxybutyrate (BHB)",
-          "Additional mineral blend (full list not clearly posted in the text we reviewed)",
+          "Additional mineral blend",
+        ],
+      },
+      {
+        heading: "Why it stands out",
+        paragraphs: [
+          "BHB is a ketone salt — a different object than senna, soup recipes, or a crystal bottle. If you want a mineral-and-ketone story in one daily formula, this is the one here.",
+        ],
+      },
+      {
+        heading: "Who it's for",
+        paragraphs: [
+          "Worth a look if you are already curious about BHB and you want a 2-, 3-, or 6-bottle pack instead of a single-serve experiment.",
         ],
       },
       {
         heading: "Price, packages, and guarantee",
         paragraphs: [
-          "When we checked the official page, it listed a 2-bottle option around $79 per bottle, a 3-bottle option around $69 per bottle, and a 6-bottle option around $49 per bottle.",
-          "Confirm shipping, bonuses, and any refund window on the official ClickBank checkout page.",
+          "A 2-bottle option around $79 per bottle, a 3-bottle option around $69 per bottle, and a 6-bottle option around $49 per bottle.",
+          "Use the button below for shipping and the current extras.",
         ],
       },
       {
-        heading: "Things to consider",
+        heading: "Good to know",
         paragraphs: [
-          "Ketone salts are not the same as a medically supervised ketogenic diet. Results vary. Talk with a clinician if you have diabetes, kidney disease, or take other supplements.",
-        ],
-        bullets: [
-          "It is a dietary supplement, not a medication.",
-          "We have not verified the formula, doses, or customer stories.",
-          "Supplements are not a replacement for diet, activity, or medical advice.",
+          "Ketone salts are not the same as a medically supervised ketogenic diet. Talk with a clinician if you have diabetes, kidney disease, or take other supplements.",
         ],
       },
     ],
@@ -468,55 +511,61 @@ export const batchTwoOffers: DirectoryProduct[] = [
     categorySlug: "diets-weight-loss",
     typeLabel: "Herbal Weight-Support Tea",
     shortDescription:
-      "A two-part herbal tea sold for weight, digestion, and evening wind-down, with listed tea and herb names.",
+      "A two-part herbal tea: morning blend with green tea, oolong, ginseng, and Garcinia, plus a separate evening tea.",
     image: {
       src: "/sites/findworthnow/products/all-day-slimming-tea.png",
       alt: "All Day Slimming Tea tins for morning and evening blends",
     },
     affiliateUrl: hop("f9f38ctfmmsk3553z9v-mqoq1k"),
-    ctaLabel: "Visit All Day Slimming Tea",
+    ctaLabel: "Get All Day Slimming Tea",
     reviewSlug: "all-day-slimming-tea-review",
     reviewTitle: "All Day Slimming Tea Review",
     metaTitle: "All Day Slimming Tea Review",
     metaDescription:
-      "A short overview of All Day Slimming Tea: what the seller says is in the blends, how it is sold, and what to consider before visiting the official page.",
+      "All Day Slimming Tea: morning and evening herbal blends with green tea, oolong, ginseng, and Garcinia.",
     heroDescription:
-      "All Day Slimming Tea is an herbal tea sold for everyday weight and digestion support. This page summarizes what the seller currently lists so you can decide whether to read the full offer there.",
+      "All Day Slimming Tea is two blends, not a capsule — a morning tea with green tea, oolong, ginseng, and Garcinia, and a separate evening tea for wind-down. Tied to a Nicoya peninsula recipe story.",
     sections: [
       {
         heading: "What is All Day Slimming Tea?",
         paragraphs: [
-          "The offer is a tea, not a capsule. The seller describes a morning blend and an evening blend, and associates the recipe with the Nicoya peninsula in Costa Rica. FindWorthNow has not tasted or tested the tea.",
-          "Tea is not a medication. It is not intended to diagnose, treat, cure, or prevent obesity or any other medical condition.",
+          "A tea, not a pill. You get a morning blend and an evening blend. The recipe is associated with the Nicoya peninsula in Costa Rica.",
         ],
       },
       {
-        heading: "What the seller says is in it",
+        heading: "What's in it",
         paragraphs: [
-          "These names appeared on the public page we reviewed. Exact amounts and caffeine per cup should be confirmed on the official label.",
+          "The blends include:",
         ],
         bullets: [
-          "Green tea, oolong tea, ginseng root, and Garcinia cambogia (morning-positioned)",
-          "Ginger and dandelion leaf (digestion-positioned)",
-          "A separate evening tea the seller says is for detox and sleep",
+          "Green tea, oolong tea, ginseng root, and Garcinia cambogia (morning)",
+          "Ginger and dandelion leaf (digestion)",
+          "A separate evening tea for wind-down and an evening cup",
+        ],
+      },
+      {
+        heading: "Why it stands out",
+        paragraphs: [
+          "Morning caffeine-and-garcinia in one tin, a calmer cup at night. If you already drink tea and you do not want another capsule, this is the ritual version of a weight-support offer.",
+        ],
+      },
+      {
+        heading: "Who it's for",
+        paragraphs: [
+          "A fit if you want two daily cups instead of a bottle, and you like green tea and oolong already.",
         ],
       },
       {
         heading: "Price, packages, and shipping",
         paragraphs: [
-          "Live prices were not clearly extracted from the public page we reviewed. The UK affiliate materials say some funnels ship from a UK warehouse and mention no VAT on tea in the UK. Confirm current pricing, shipping country, and refund terms on the official page.",
-          "Checkout is handled through ClickBank.",
+          "Some funnels ship from a UK warehouse, with no VAT on tea in the UK on those materials.",
+          "Use the button below for the current packs.",
         ],
       },
       {
-        heading: "Things to consider",
+        heading: "Good to know",
         paragraphs: [
-          "The sales page uses strong pound-loss language. We are not repeating those numbers as typical results. Garcinia and caffeinated teas are not right for everyone. Talk with a clinician if you are pregnant, have liver concerns, or take medication.",
-        ],
-        bullets: [
-          "This is an herbal tea, not a medication.",
-          "We have not verified the blends, caffeine, or customer stories.",
-          "It is not a replacement for diet, activity, or medical advice.",
+          "Garcinia and caffeinated teas are not right for everyone — skip it if you are pregnant, have liver concerns, or already drink a lot of tea.",
         ],
       },
     ],
@@ -527,32 +576,31 @@ export const batchTwoOffers: DirectoryProduct[] = [
     categorySlug: "mens-health",
     typeLabel: "Prostate Support Supplement",
     shortDescription:
-      "A capsule supplement sold as a 20-plus ingredient prostate formula, with saw palmetto and pygeum listed.",
+      "A 20-plus ingredient prostate capsule with saw palmetto and pygeum, in 2-, 3-, and 6-bottle packs.",
     image: {
       src: "/sites/findworthnow/products/prosta-peak.png",
       alt: "Prosta Peak prostate support supplement bottles",
     },
     affiliateUrl: hop("72b5d8shqixcv97eta4nniqxz5"),
-    ctaLabel: "Visit Prosta Peak",
+    ctaLabel: "Get Prosta Peak",
     reviewSlug: "prosta-peak-review",
     reviewTitle: "Prosta Peak Review",
     metaTitle: "Prosta Peak Review",
     metaDescription:
-      "A short overview of Prosta Peak: what the manufacturer says it is, listed ingredients, packages, and what to consider before visiting the official page.",
+      "Prosta Peak: 20-plus ingredient prostate formula with saw palmetto and pygeum, packages from $49 a bottle.",
     heroDescription:
-      "Prosta Peak is a dietary supplement sold for prostate support. This page summarizes what the manufacturer currently lists so you can decide whether to read the full offer there.",
+      "Prosta Peak is a daily capsule with a proprietary 20-plus ingredient blend led by saw palmetto and pygeum — the two names most people already look up in this aisle. Six-bottle packs land at $49 each.",
     sections: [
       {
         heading: "What is Prosta Peak?",
         paragraphs: [
-          "Prosta Peak is marketed as a daily capsule with a proprietary 20-plus ingredient blend. FindWorthNow has not independently tested the product.",
-          "Dietary supplements are not medicines. They are not intended to diagnose, treat, cure, or prevent prostate disease or any other medical condition.",
+          "A daily prostate-support capsule with a wide proprietary blend rather than a two-ingredient bottle.",
         ],
       },
       {
-        heading: "What the manufacturer says is in it",
+        heading: "What's in it",
         paragraphs: [
-          "These names appeared on the official page. Exact amounts should be confirmed on a current label.",
+          "Named ingredients include:",
         ],
         bullets: [
           "Saw palmetto and pygeum",
@@ -560,21 +608,28 @@ export const batchTwoOffers: DirectoryProduct[] = [
         ],
       },
       {
-        heading: "Price, packages, and guarantee",
+        heading: "Why it stands out",
         paragraphs: [
-          "When we checked the official page, it listed a 2-bottle option at $79 per bottle, a 3-bottle option at $69 per bottle, and a 6-bottle option at $49 per bottle.",
-          "Confirm shipping and refund terms on the official ClickBank checkout page.",
+          "Saw palmetto and pygeum in a 20-plus mix, so you are not buying those two alone and then stacking the rest. Larger packs are the usual $49-a-bottle landing spot in this catalog.",
         ],
       },
       {
-        heading: "Things to consider",
+        heading: "Who it's for",
         paragraphs: [
-          "Urinary symptoms or blood in urine need a clinician. Affiliate emails for this offer use much stronger “shrink your prostate” language. This overview does not repeat those claims.",
+          "Worth a look if you want saw palmetto and pygeum in a wider daily capsule and you like buying 90 or 180 days at once.",
         ],
-        bullets: [
-          "It is a dietary supplement, not a medication.",
-          "We have not verified the blend, doses, or customer stories.",
-          "Supplements are not a replacement for medical advice.",
+      },
+      {
+        heading: "Price, packages, and guarantee",
+        paragraphs: [
+          "A 2-bottle option at $79 per bottle, a 3-bottle option at $69 per bottle, and a 6-bottle option at $49 per bottle.",
+          "Use the button below for shipping and the current terms.",
+        ],
+      },
+      {
+        heading: "Good to know",
+        paragraphs: [
+          "Urinary symptoms or blood in urine need a clinician.",
         ],
       },
     ],
@@ -585,32 +640,31 @@ export const batchTwoOffers: DirectoryProduct[] = [
     categorySlug: "mens-health",
     typeLabel: "Prostate Support Supplement",
     shortDescription:
-      "A vegan capsule sold for prostate and bladder support, with saw palmetto and other listed herbs.",
+      "A vegan, non-GMO prostate and bladder capsule with saw palmetto, ginseng, and a wider herbal list.",
     image: {
       src: "/sites/findworthnow/products/protoflow.png",
       alt: "Protoflow prostate support supplement bottles",
     },
     affiliateUrl: hop("f6fdb4t8noxb26be6a6joculc3"),
-    ctaLabel: "Visit Protoflow",
+    ctaLabel: "Get Protoflow",
     reviewSlug: "protoflow-review",
     reviewTitle: "Protoflow Review",
     metaTitle: "Protoflow Review",
     metaDescription:
-      "A short overview of Protoflow: what the manufacturer says it is, listed ingredients, packages, and what to consider before visiting the official page.",
+      "Protoflow: vegan prostate-support capsule with saw palmetto and ginseng, packages from $49 a bottle.",
     heroDescription:
-      "Protoflow is a dietary supplement sold for prostate support. This page summarizes what the manufacturer currently lists so you can decide whether to read the full offer there.",
+      "Protoflow is a non-GMO, vegan, gluten-free capsule for prostate and bladder support — saw palmetto and Chinese ginseng up front, with a wider herbal list behind them. Six-bottle packs at $49 each.",
     sections: [
       {
         heading: "What is Protoflow?",
         paragraphs: [
-          "Protoflow is marketed as a non-GMO, vegan, gluten-free capsule. FindWorthNow has not independently tested the product.",
-          "Dietary supplements are not medicines. They are not intended to diagnose, treat, cure, or prevent prostate disease or any other medical condition.",
+          "A daily vegan capsule in the prostate-and-bladder aisle, listed as non-GMO and gluten-free.",
         ],
       },
       {
-        heading: "What the manufacturer says is in it",
+        heading: "What's in it",
         paragraphs: [
-          "The official page lists these names. Exact amounts should be confirmed on a current label.",
+          "Named ingredients include:",
         ],
         bullets: [
           "Saw palmetto, Chinese ginseng, and cayenne pepper",
@@ -618,21 +672,28 @@ export const batchTwoOffers: DirectoryProduct[] = [
         ],
       },
       {
-        heading: "Price, packages, and guarantee",
+        heading: "Why it stands out",
         paragraphs: [
-          "When we checked the official page, it listed a 2-bottle option at $79 per bottle, a 3-bottle option at $59 per bottle, and a 6-bottle option at $49 per bottle.",
-          "Confirm shipping and refund terms on the official ClickBank checkout page.",
+          "Saw palmetto sits next to men’s-vitality herbs — damiana, muira puama, epimedium — so the bottle is prostate-plus, not prostate-only. Vegan and gluten-free if that is a filter for you.",
         ],
       },
       {
-        heading: "Things to consider",
+        heading: "Who it's for",
         paragraphs: [
-          "Urinary symptoms need a clinician. We are not repeating sales-page stories about overnight flow changes.",
+          "A fit if you want a vegan prostate capsule and you like seeing ginseng and saw palmetto on the same list.",
         ],
-        bullets: [
-          "It is a dietary supplement, not a medication.",
-          "We have not verified the formula, doses, or customer stories.",
-          "Supplements are not a replacement for medical advice.",
+      },
+      {
+        heading: "Price, packages, and guarantee",
+        paragraphs: [
+          "A 2-bottle option at $79 per bottle, a 3-bottle option at $59 per bottle, and a 6-bottle option at $49 per bottle.",
+          "Use the button below for shipping and the current terms.",
+        ],
+      },
+      {
+        heading: "Good to know",
+        paragraphs: [
+          "Urinary symptoms need a clinician.",
         ],
       },
     ],
@@ -643,54 +704,60 @@ export const batchTwoOffers: DirectoryProduct[] = [
     categorySlug: "mens-health",
     typeLabel: "Prostate Support Supplement",
     shortDescription:
-      "A 14-ingredient capsule sold for prostate and bladder support, with a 60-day guarantee.",
+      "A 14-ingredient vegan prostate-and-bladder capsule made in a U.S. GMP facility, with a 60-day guarantee.",
     image: {
       src: "/sites/findworthnow/products/fluxactive.png",
       alt: "Fluxactive Complete prostate support supplement bottles",
     },
     affiliateUrl: hop("2075fdvcissmz1290m67mixtjk"),
-    ctaLabel: "Visit Fluxactive Complete",
+    ctaLabel: "Get Fluxactive Complete",
     reviewSlug: "fluxactive-review",
     reviewTitle: "Fluxactive Complete Review",
     metaTitle: "Fluxactive Complete Review",
     metaDescription:
-      "A short overview of Fluxactive Complete: what the manufacturer says it is, listed ingredients, packages, and what to consider before visiting the official page.",
+      "Fluxactive Complete: 14-in-1 vegan prostate formula, U.S. GMP, packages around $49–$79 a bottle, 60-day guarantee.",
     heroDescription:
-      "Fluxactive Complete is a dietary supplement sold for prostate support. This page summarizes what the manufacturer currently lists so you can decide whether to read the full offer there.",
+      "Fluxactive Complete is a 14-in-1 vegan, non-GMO, gluten-free prostate-and-bladder formula, made in a GMP facility in the United States. Chinese ginseng is the named lead.",
     sections: [
       {
         heading: "What is Fluxactive Complete?",
         paragraphs: [
-          "Fluxactive Complete is marketed as a 14-in-1 vegan, non-GMO, gluten-free formula made in a GMP facility in the United States. FindWorthNow has not independently tested the product.",
-          "Dietary supplements are not medicines. They are not intended to diagnose, treat, cure, or prevent prostate disease or any other medical condition.",
+          "A 14-ingredient daily capsule for prostate and bladder support, listed as vegan, non-GMO, and gluten-free, made in a U.S. GMP facility.",
         ],
       },
       {
-        heading: "What the manufacturer says is in it",
+        heading: "What's in it",
         paragraphs: [
-          "The official page highlights Chinese ginseng and a proprietary group of 14 herbs, vitamins, and minerals. Confirm the full panel on a current label.",
+          "Named on the offer:",
         ],
         bullets: [
-          "Chinese ginseng (manufacturer-stated)",
-          "Additional proprietary prostate-positioned blend (14 ingredients total, seller-stated)",
+          "Chinese ginseng",
+          "Proprietary blend of 14 herbs, vitamins, and minerals",
+        ],
+      },
+      {
+        heading: "Why it stands out",
+        paragraphs: [
+          "Fourteen in one, vegan, made in the United States. If you want a single prostate-and-bladder capsule instead of stacking bottles, this is the compact option.",
+        ],
+      },
+      {
+        heading: "Who it's for",
+        paragraphs: [
+          "Worth a look if you want a U.S.-made vegan formula and a 60-day window on a 14-ingredient blend.",
         ],
       },
       {
         heading: "Price, packages, and guarantee",
         paragraphs: [
-          "When we checked the official page, multi-bottle options appeared around $79, $59, and $49 per bottle depending on pack size.",
-          "The page advertised a 60-day money-back guarantee. Checkout is handled through ClickBank. Confirm current terms on the official page.",
+          "Multi-bottle options sit around $79, $59, and $49 per bottle depending on pack size.",
+          "There is a 60-day money-back guarantee.",
         ],
       },
       {
-        heading: "Things to consider",
+        heading: "Good to know",
         paragraphs: [
-          "Urinary symptoms need a clinician. Affiliate emails for this offer use strong disease language. This overview does not repeat those claims.",
-        ],
-        bullets: [
-          "It is a dietary supplement, not a medication.",
-          "We have not verified the formula, doses, or customer stories.",
-          "Supplements are not a replacement for medical advice.",
+          "Urinary symptoms need a clinician.",
         ],
       },
     ],
@@ -701,50 +768,56 @@ export const batchTwoOffers: DirectoryProduct[] = [
     categorySlug: "mens-health",
     typeLabel: "Men's Wellness Supplement",
     shortDescription:
-      "A plant-based capsule sold in the men's sexual-wellness category, with digital bonuses on larger packs.",
+      "A plant-based, stimulant-free men’s wellness capsule, with free U.S. shipping and digital bonuses on larger packs.",
     image: {
       src: "/sites/findworthnow/products/endopeak.png",
       alt: "EndoPeak men's wellness supplement bottles",
     },
     affiliateUrl: hop("36ee5-jkgn1l0652s62jkwxq5l"),
-    ctaLabel: "Visit EndoPeak",
+    ctaLabel: "Get EndoPeak",
     reviewSlug: "endopeak-review",
     reviewTitle: "EndoPeak Review",
     metaTitle: "EndoPeak Review",
     metaDescription:
-      "A short overview of EndoPeak: what the manufacturer says it is, how it is sold, and what to consider before visiting the official page.",
+      "EndoPeak: plant-based men’s wellness capsule, 3- and 6-bottle packs, free U.S. shipping on the six-pack.",
     heroDescription:
-      "EndoPeak is a dietary supplement sold for men's wellness. This page summarizes what the manufacturer currently lists so you can decide whether to read the full offer there.",
+      "EndoPeak is a plant-based, non-GMO, stimulant-free capsule in the men’s sexual-wellness aisle. Three- and six-bottle packs, free U.S. shipping on the six, plus two digital bonuses.",
     sections: [
       {
         heading: "What is EndoPeak?",
         paragraphs: [
-          "EndoPeak is marketed as a plant-based, non-GMO, stimulant-free capsule. FindWorthNow has not independently tested the product.",
-          "Dietary supplements are not medicines. They are not intended to diagnose, treat, cure, or prevent sexual dysfunction or any other medical condition. This page does not treat the product as a prescription alternative.",
+          "A daily plant-based capsule, listed as non-GMO and stimulant-free, sold for men’s wellness.",
         ],
       },
       {
-        heading: "What the manufacturer says is in it",
+        heading: "What's in it",
         paragraphs: [
-          "The public page we reviewed described a herbal blend but did not clearly publish a complete Supplement Facts list in the main text. Confirm ingredients on the official label.",
+          "The public offer describes a herbal blend. A complete Supplement Facts list is not published in the main text.",
+        ],
+      },
+      {
+        heading: "Why it stands out",
+        paragraphs: [
+          "Stimulant-free and plant-based, with a six-bottle pack that includes free U.S. shipping and two digital bonuses — an easy stock-up if you already want this category.",
+        ],
+      },
+      {
+        heading: "Who it's for",
+        paragraphs: [
+          "A fit if you want a stimulant-free men’s wellness capsule and you like buying a 90- or 180-day supply with shipping included.",
         ],
       },
       {
         heading: "Price, packages, and extras",
         paragraphs: [
-          "The official page advertises 3- and 6-bottle packs, free U.S. shipping on the 6-bottle option, and two digital bonuses on multi-bottle orders. Confirm live prices on the checkout page.",
-          "Checkout is handled through ClickBank. Do not treat bonus e-book titles as medical instruction.",
+          "3- and 6-bottle packs, free U.S. shipping on the 6-bottle option, and two digital bonuses on multi-bottle orders.",
+          "Use the button below for the current checkout.",
         ],
       },
       {
-        heading: "Things to consider",
+        heading: "Good to know",
         paragraphs: [
-          "Sexual-health symptoms can have medical causes. Talk with a clinician, especially if you take heart or blood-pressure medication. We are not repeating performance guarantees from the sales page.",
-        ],
-        bullets: [
-          "It is a dietary supplement, not a medication.",
-          "We have not verified the formula, doses, or customer stories.",
-          "Supplements are not a replacement for medical advice.",
+          "Sexual-health symptoms can have medical causes. Talk with a clinician, especially if you take heart or blood-pressure medication.",
         ],
       },
     ],
@@ -755,32 +828,31 @@ export const batchTwoOffers: DirectoryProduct[] = [
     categorySlug: "mens-health",
     typeLabel: "Testosterone Support Supplement",
     shortDescription:
-      "A two-capsule-a-day formula from Critical Nutrition Labs, with tongkat ali, DIM, and acacetin listed.",
+      "Two capsules in the morning from Critical Nutrition Labs — tongkat ali, DIM, and acacetin as the named trio.",
     image: {
       src: "/sites/findworthnow/products/critical-t.png",
       alt: "Critical T testosterone support supplement bottles",
     },
     affiliateUrl: hop("0ed756sjsn-l87abzhxgs9vodf"),
-    ctaLabel: "Visit Critical T",
+    ctaLabel: "Get Critical T",
     reviewSlug: "critical-t-review",
     reviewTitle: "Critical T Review",
     metaTitle: "Critical T Review",
     metaDescription:
-      "A short overview of Critical T: what the manufacturer says it is, listed ingredients, packages, and what to consider before visiting the official page.",
+      "Critical T: tongkat ali, DIM, and acacetin, two capsules in the morning, from Critical Nutrition Labs.",
     heroDescription:
-      "Critical T is a dietary supplement sold for testosterone support. This page summarizes what the manufacturer currently lists so you can decide whether to read the full offer there.",
+      "Critical T is two capsules in the morning from Critical Nutrition Labs — a “testosterone trio” of tongkat ali, DIM, and acacetin inside a 10-ingredient formula.",
     sections: [
       {
         heading: "What is Critical T?",
         paragraphs: [
-          "Critical T is associated with Critical Nutrition Labs. The official page describes two capsules in the morning. FindWorthNow has not independently tested the product.",
-          "Dietary supplements are not medicines. They are not intended to diagnose, treat, cure, or prevent low testosterone or any other medical condition, and they are not a replacement for prescribed hormone therapy.",
+          "A daily testosterone-support capsule from Critical Nutrition Labs. Serving is two capsules in the morning.",
         ],
       },
       {
-        heading: "What the manufacturer says is in it",
+        heading: "What's in it",
         paragraphs: [
-          "The official page names a “testosterone trio” plus a broader 10-ingredient story. These names appeared on the page we reviewed.",
+          "A “testosterone trio” plus a broader 10-ingredient story. Named leads:",
         ],
         bullets: [
           "Tongkat ali (Eurycoma longifolia)",
@@ -789,21 +861,29 @@ export const batchTwoOffers: DirectoryProduct[] = [
         ],
       },
       {
-        heading: "Price, packages, and extras",
+        heading: "Why it stands out",
         paragraphs: [
-          "When we checked the official page, a single-bottle figure around $69 appeared, with multi-bottle totals in the $177–$209 range depending on the pack. Confirm the live checkout price.",
-          "Checkout is handled through ClickBank.",
+          "Tongkat ali is the name people already search. DIM and acacetin sit next to it as the rest of the trio — a tighter pitch than a 20-herb proprietary wall.",
+          "Same lab family as Sleep Revive, if you already like that line.",
         ],
       },
       {
-        heading: "Things to consider",
+        heading: "Who it's for",
         paragraphs: [
-          "Fatigue, mood change, or suspected hormone issues belong with a clinician. We are not repeating “flush toxic estrogen” sales language as established fact.",
+          "Worth a look if you want a morning two-capsule habit with tongkat ali named up front.",
         ],
-        bullets: [
-          "It is a dietary supplement, not a medication.",
-          "We have not verified the formula, doses, or cited studies.",
-          "Supplements are not a replacement for medical advice.",
+      },
+      {
+        heading: "Price, packages, and extras",
+        paragraphs: [
+          "A single-bottle figure around $69, with multi-bottle totals in the $177–$209 range depending on the pack.",
+          "Use the button below for the current offer.",
+        ],
+      },
+      {
+        heading: "Good to know",
+        paragraphs: [
+          "Fatigue, mood change, or suspected hormone issues belong with a clinician.",
         ],
       },
     ],
@@ -814,49 +894,56 @@ export const batchTwoOffers: DirectoryProduct[] = [
     categorySlug: "mens-health",
     typeLabel: "Men's Wellness Supplement",
     shortDescription:
-      "A men's wellness capsule sold around testosterone and sexual-performance marketing, from Prime 2.0 Nutrition.",
+      "A men’s wellness capsule from Prime 2.0 Nutrition, positioned around a brain-related hook rather than an environmental-toxin story.",
     image: {
       src: "/sites/findworthnow/products/neurotest.png",
       alt: "NeuroTest men's wellness supplement bottles",
     },
     affiliateUrl: hop("fbf80cl8nu0n2e1gol-9wzwe8r"),
-    ctaLabel: "Visit NeuroTest",
+    ctaLabel: "Get NeuroTest",
     reviewSlug: "neurotest-review",
     reviewTitle: "NeuroTest Review",
     metaTitle: "NeuroTest Review",
     metaDescription:
-      "A short overview of NeuroTest: what the seller says it is, how it is sold, and what to consider before visiting the official page.",
+      "NeuroTest: Prime 2.0 Nutrition men’s wellness capsule in the testosterone and sexual-performance aisle.",
     heroDescription:
-      "NeuroTest is a dietary supplement sold for men's wellness. This page summarizes what the seller currently lists so you can decide whether to read the full offer there.",
+      "NeuroTest is a men’s wellness capsule from Prime 2.0 Nutrition, in the testosterone and sexual-performance aisle. The hook is a brain-related mechanism — not another environmental-toxin story.",
     sections: [
       {
         heading: "What is NeuroTest?",
         paragraphs: [
-          "NeuroTest is marketed by Prime 2.0 Nutrition in the testosterone and men's sexual-wellness category. The seller’s affiliate page says the hook is a brain-related mechanism rather than an “environmental toxin” story. FindWorthNow has not independently tested the product.",
-          "Dietary supplements are not medicines. They are not intended to diagnose, treat, cure, or prevent sexual dysfunction, low testosterone, or any other medical condition.",
+          "A daily capsule from Prime 2.0 Nutrition, sold for testosterone and men’s sexual wellness, with a brain-related pitch rather than a toxin-cleanup story.",
         ],
       },
       {
-        heading: "What the manufacturer says is in it",
+        heading: "What's in it",
         paragraphs: [
-          "The public materials we reviewed did not publish a clear, complete Supplement Facts list. Confirm ingredients and doses on the official label before buying.",
+          "Public materials do not publish a clear, complete Supplement Facts list. You are choosing the positioning and the brand more than a named milligram panel.",
+        ],
+      },
+      {
+        heading: "Why it stands out",
+        paragraphs: [
+          "If every other bottle in this aisle is “toxins” or a 20-herb wall, NeuroTest is the one that leads with a brain-related mechanism. That is the reason to open it.",
+        ],
+      },
+      {
+        heading: "Who it's for",
+        paragraphs: [
+          "A look if you want a Prime 2.0 Nutrition men’s capsule and you prefer a brain-framed pitch to a detox-framed one.",
         ],
       },
       {
         heading: "Price and how it is sold",
         paragraphs: [
-          "Confirm current packages, shipping, and refund terms on the official NeuroTest page. Checkout is handled through ClickBank. That is where a purchase is meant to happen.",
+          "Packages, shipping, and refund terms sit on the current checkout.",
+          "Use the button below to see the offer.",
         ],
       },
       {
-        heading: "Things to consider",
+        heading: "Good to know",
         paragraphs: [
-          "Sexual-health or hormone symptoms need a clinician. We are not repeating performance guarantees from the sales funnel.",
-        ],
-        bullets: [
-          "It is a dietary supplement, not a medication.",
-          "We have not verified the formula, doses, or customer stories.",
-          "Supplements are not a replacement for medical advice.",
+          "Sexual-health or hormone symptoms need a clinician.",
         ],
       },
     ],
@@ -867,50 +954,56 @@ export const batchTwoOffers: DirectoryProduct[] = [
     categorySlug: "mens-health",
     typeLabel: "Men's Wellness Supplement",
     shortDescription:
-      "A plant-based capsule sold in the men's sexual-wellness category, with digital bonuses on larger packs.",
+      "A plant-based, stimulant-free men’s wellness capsule, with free U.S. shipping and digital bonuses on larger packs.",
     image: {
       src: "/sites/findworthnow/products/erecprime.png",
       alt: "ErecPrime men's wellness supplement bottles",
     },
     affiliateUrl: hop("0ad595r7slzp1d6607i9-6w11i"),
-    ctaLabel: "Visit ErecPrime",
+    ctaLabel: "Get ErecPrime",
     reviewSlug: "erecprime-review",
     reviewTitle: "ErecPrime Review",
     metaTitle: "ErecPrime Review",
     metaDescription:
-      "A short overview of ErecPrime: what the manufacturer says it is, how it is sold, and what to consider before visiting the official page.",
+      "ErecPrime: plant-based men’s wellness capsule, 3- and 6-bottle packs, free U.S. shipping on the six-pack.",
     heroDescription:
-      "ErecPrime is a dietary supplement sold for men's wellness. This page summarizes what the manufacturer currently lists so you can decide whether to read the full offer there.",
+      "ErecPrime is a plant-based, non-GMO, stimulant-free capsule in the men’s sexual-wellness aisle. Three- and six-bottle packs, free U.S. shipping on the six, plus two digital bonuses.",
     sections: [
       {
         heading: "What is ErecPrime?",
         paragraphs: [
-          "ErecPrime is marketed as a plant-based, non-GMO, stimulant-free capsule. FindWorthNow has not independently tested the product.",
-          "Dietary supplements are not medicines. They are not intended to diagnose, treat, cure, or prevent sexual dysfunction or any other medical condition. This page does not treat the product as a prescription alternative.",
+          "A daily plant-based capsule, listed as non-GMO and stimulant-free, sold for men’s wellness.",
         ],
       },
       {
-        heading: "What the manufacturer says is in it",
+        heading: "What's in it",
         paragraphs: [
-          "The public page we reviewed described a herbal blend but did not clearly publish a complete Supplement Facts list in the main text. Confirm ingredients on the official label.",
+          "The public offer describes a herbal blend. A complete Supplement Facts list is not published in the main text.",
+        ],
+      },
+      {
+        heading: "Why it stands out",
+        paragraphs: [
+          "Same shape as EndoPeak: stimulant-free, plant-based, and a six-bottle pack with free U.S. shipping and two digital bonuses. Easy to stock if this is the aisle you are already in.",
+        ],
+      },
+      {
+        heading: "Who it's for",
+        paragraphs: [
+          "A fit if you want a stimulant-free men’s wellness capsule and a 6-bottle order with shipping included.",
         ],
       },
       {
         heading: "Price, packages, and extras",
         paragraphs: [
-          "The official page advertises 3- and 6-bottle packs, free U.S. shipping on the 6-bottle option, and two digital bonuses on multi-bottle orders. Confirm live prices on the checkout page.",
-          "The affiliate page lists countries the seller does not ship to. Confirm shipping on the official offer. Checkout is handled through ClickBank.",
+          "3- and 6-bottle packs, free U.S. shipping on the 6-bottle option, and two digital bonuses on multi-bottle orders.",
+          "Use the button below for the current checkout.",
         ],
       },
       {
-        heading: "Things to consider",
+        heading: "Good to know",
         paragraphs: [
-          "Sexual-health symptoms can have medical causes. Talk with a clinician, especially if you take heart or blood-pressure medication. We are not repeating performance guarantees from the sales page.",
-        ],
-        bullets: [
-          "It is a dietary supplement, not a medication.",
-          "We have not verified the formula, doses, or customer stories.",
-          "Supplements are not a replacement for medical advice.",
+          "Sexual-health symptoms can have medical causes. Talk with a clinician, especially if you take heart or blood-pressure medication.",
         ],
       },
     ],

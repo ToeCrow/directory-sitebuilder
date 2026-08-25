@@ -176,12 +176,11 @@ export default async function DirectoryReviewPage({ params }: ReviewPageProps) {
 
       <section className="mt-12 border-t border-fwn-gold/15 pt-8">
         <h2 className="text-2xl font-semibold tracking-tight text-fwn-ivory">
-          Learn more
+          Ready to try {product.name}?
         </h2>
         <p className="mt-4 text-base leading-relaxed text-fwn-sand">
-          If you want current details, pricing, or the full offer, visit the
-          official {product.name} page. {siteData.title} may earn a commission
-          from that visit, at no additional cost to you.
+          Current packages and checkout are one click away. {siteData.title} may
+          earn a commission if you buy, at no extra cost to you.
         </p>
         <div className="mt-6">
           <AffiliateCtaLink href={product.affiliateUrl}>

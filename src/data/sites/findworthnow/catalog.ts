@@ -8,78 +8,78 @@ export const catalog: DirectoryCatalog = {
       slug: "sleep",
       name: "Sleep",
       description:
-        "Products, tools, and approaches related to better sleep.",
+        "Capsules, bedtime programs, and lucid-dreaming courses for a better night.",
       intro:
-        "This section explores products, tools, and approaches related to better sleep. We look at options people are researching — without treating any of them as medical advice.",
+        "Sleep supplements, bedtime programs, and lucid-dreaming courses people are comparing right now.",
       metaTitle: "Sleep Products & Resources",
       metaDescription:
-        "Explore sleep products, tools, and approaches on FindWorthNow.",
+        "Sleep capsules, bedtime programs, and lucid-dreaming courses — ingredients, bundles, and current prices.",
     },
     {
       slug: "dental-health",
       name: "Dental Health",
       description:
-        "Oral-care supplements people are researching, from chewable probiotics to postbiotic tablets.",
+        "Chewable probiotics and postbiotic tablets for teeth, gums, and breath.",
       intro:
-        "This section looks at oral-care supplements sold for teeth, gums, and breath. None of this is dental advice, and none of it replaces a dentist.",
+        "Oral-care supplements for teeth, gums, and breath — chewable probiotics and postbiotic tablets.",
       metaTitle: "Dental Health Products",
       metaDescription:
-        "Explore oral-care supplements and what manufacturers currently list on FindWorthNow.",
+        "Chewable oral probiotics and postbiotic tablets — strains, packages, and current prices.",
     },
     {
       slug: "dietary-supplements",
       name: "Dietary Supplements",
       description:
-        "Capsules, powders, and liquids sold for everyday health topics — listed as the manufacturer describes them.",
+        "Capsules, powders, and liquids for everyday health — joints, hearing, blood sugar, and more.",
       intro:
-        "This section covers dietary supplements people are comparing. We summarize what the seller currently lists. Supplements are not medicines, and this is not medical advice.",
+        "Capsules, powders, and liquids for everyday health topics, with the current offer laid out in one place.",
       metaTitle: "Dietary Supplements",
       metaDescription:
-        "Explore dietary supplements on FindWorthNow, with short overviews of what manufacturers currently list.",
+        "Everyday supplements — formulas, packages, and current prices in one place.",
     },
     {
       slug: "diets-weight-loss",
       name: "Diets & Weight Loss",
       description:
-        "Teas, cleanses, digital diet plans, and other offers people compare when they are researching weight.",
+        "Teas, cleanses, coffee add-ins, and digital diet plans.",
       intro:
-        "This section looks at diet and weight-loss offers — teas, supplements, bottles, and digital plans. We summarize what the seller currently lists. None of this is a weight-loss guarantee, and none of it is medical advice.",
+        "Teas, cleanses, bottles, and digital diet plans for anyone comparing weight-support offers.",
       metaTitle: "Diets & Weight Loss",
       metaDescription:
-        "Explore diet and weight-loss offers on FindWorthNow, with short overviews of what sellers currently list.",
+        "Weight-support teas, cleanses, bottles, and digital diet plans — what’s inside and what it costs.",
     },
     {
       slug: "mens-health",
       name: "Men's Health",
       description:
-        "Supplements marketed toward prostate support and men's wellness.",
+        "Prostate, testosterone, and men’s wellness supplements.",
       intro:
-        "This section looks at supplements sold in the men's-health category. We summarize the official offer. This is not medical advice, and these products are not treatments for any disease.",
+        "Supplements for prostate support, testosterone, and men’s wellness — packages and pitches in one place.",
       metaTitle: "Men's Health Products",
       metaDescription:
-        "Explore men's-health supplements on FindWorthNow, with short overviews of what manufacturers currently list.",
+        "Prostate, testosterone, and men’s wellness supplements — formulas, packages, and current prices.",
     },
     {
       slug: "mental-health",
       name: "Mental Health",
       description:
-        "Products marketed around memory, clarity, and everyday mental wellness.",
+        "Formulas sold around memory, clarity, and everyday mental wellness.",
       intro:
-        "This section looks at products sold around memory and mental wellness. We summarize what the seller currently lists. This is not mental-health care, and it is not a substitute for a clinician.",
+        "Products for memory, clarity, and everyday mental wellness.",
       metaTitle: "Mental Health Products",
       metaDescription:
-        "Explore memory and mental-wellness products on FindWorthNow, with short overviews of what sellers currently list.",
+        "Memory and mental-wellness products — ingredients, packages, and current prices.",
     },
     {
       slug: "health-fitness",
       name: "Health & Fitness",
       description:
-        "Programs and tools sold around focus, fitness, and everyday performance.",
+        "Digital programs and tools for focus, fitness, and everyday performance.",
       intro:
-        "This section covers health-and-fitness offers that are not a standard supplement bottle — for example digital audio routines. We summarize what the seller currently lists.",
+        "Health-and-fitness offers that aren’t a standard bottle — including short daily audio routines.",
       metaTitle: "Health & Fitness",
       metaDescription:
-        "Explore health and fitness programs on FindWorthNow, with short overviews of what sellers currently list.",
+        "Digital fitness and focus programs — what you get and what they cost.",
     },
   ],
   products: [
@@ -89,34 +89,33 @@ export const catalog: DirectoryCatalog = {
       categorySlug: "sleep",
       typeLabel: "Sleep Support Supplement",
       shortDescription:
-        "A dietary supplement sold on sleeprevive.org and marketed to support sleep.",
+        "A five-ingredient bedtime capsule with lemon balm, valerian, L-theanine, and magnesium glycinate.",
       image: {
         src: "/sites/findworthnow/products/sleep-revive.png",
         alt: "Three Sleep Revive supplement bottles from Critical Nutrition Labs",
       },
       affiliateUrl:
         "https://sleeprevive.org/?hopId=0b6f12e4-2400-4154-ae89-975447d57b68&traffic_source=tiktok",
-      ctaLabel: "Visit Sleep Revive",
+      ctaLabel: "Get Sleep Revive",
       reviewSlug: "sleep-revive-review",
       reviewTitle: "Sleep Revive Review",
       metaTitle: "Sleep Revive Review",
       metaDescription:
-        "A short overview of Sleep Revive: what the manufacturer says it is, listed ingredients, packages, and what to consider before visiting the official page.",
+        "Sleep Revive: five named ingredients, 2-capsule bedtime serving, packages from $39 a bottle, and a 60-day money-back window.",
       heroDescription:
-        "Sleep Revive is a dietary supplement sold on sleeprevive.org. This page summarizes what the manufacturer currently lists — ingredients, how it is sold, and what to keep in mind — so you can decide whether to read the full offer there.",
+        "Sleep Revive is a vegetarian capsule you take 30–45 minutes before bed. Five named ingredients, a clear serving, and packages that drop to $39 a bottle if you stock up.",
       sections: [
         {
           heading: "What is Sleep Revive?",
           paragraphs: [
-            "Sleep Revive is marketed as a dietary supplement intended to support sleep. On the official page it is presented by Zach Zenios and associated with Critical Nutrition Labs. FindWorthNow has not independently tested the product, and this is not a hands-on review.",
-            "The manufacturer describes each bottle as 60 vegetarian capsules and says a serving is 2 capsules, taken 30–45 minutes before bed with water. It also states that the product is non-GMO, Prop 65 compliant, and made in a GMP-certified facility in the United States. We have not verified those manufacturing claims.",
-            "Dietary supplements are not medicines. They are not intended to diagnose, treat, cure, or prevent insomnia, sleep apnea, or any other medical condition.",
+            "Sleep Revive is a sleep-support capsule from Critical Nutrition Labs. Each bottle holds 60 vegetarian capsules. A serving is two capsules with water, 30–45 minutes before you turn in.",
+            "The formula is listed as non-GMO, Prop 65 compliant, and made in a GMP-certified facility in the United States.",
           ],
         },
         {
-          heading: "What the manufacturer says is in it",
+          heading: "What's in it",
           paragraphs: [
-            "The sales page lists a five-ingredient formula. The names below are taken from that page. The manufacturer does not clearly publish exact milligram amounts on the public offer we reviewed, and FindWorthNow has not confirmed the formula against a label in hand.",
+            "Five ingredients. Milligram amounts are not published on the public offer, so you are choosing a named blend rather than a fully dosed label:",
           ],
           bullets: [
             "Rutaecarpine",
@@ -127,38 +126,33 @@ export const catalog: DirectoryCatalog = {
           ],
         },
         {
-          heading: "How it is positioned",
+          heading: "Why it stands out",
           paragraphs: [
-            "The manufacturer’s marketing story is that everyday plastic-related chemicals (it names BPA and phthalates) can disrupt sleep, and that Sleep Revive is designed around clearing those “sleep disruptors” and supporting circadian rhythm. That is the company’s thesis, not a finding from FindWorthNow.",
-            "The same presenter also promotes a separate program, Breathing for Sleep. That is a different offer, with its own page on FindWorthNow.",
+            "Most sleep bottles lead with melatonin. This one doesn’t. It leans on lemon balm, valerian, L-theanine, and magnesium glycinate — the kind of mix people already look up when they want to wind down without a hormone.",
+            "The idea behind the formula is that everyday plastic-related chemicals (BPA and phthalates are named) can get in the way of rest, and that clearing those “sleep disruptors” helps circadian rhythm settle. If that story matches how you think about sleep, the ingredient list is short enough to actually read.",
           ],
         },
         {
-          heading: "Who might want to look further",
+          heading: "Who it's for",
           paragraphs: [
-            "This may be worth opening on the official site if you are already comparing sleep-support supplements and want to see the full ingredient story, current packages, and checkout terms. It is not a substitute for sleep habits, and it is not a treatment plan.",
+            "A good fit if you want a bedtime capsule with a short, named list — not a 30-ingredient proprietary blend — and a 60-day window to change your mind.",
           ],
           bullets: [
-            "People researching sleep-support supplements",
-            "People who want to read the manufacturer’s offer before deciding",
+            "You already take or research lemon balm, valerian, L-theanine, or magnesium at night",
+            "You want a two-capsule serving you can drop into an existing wind-down",
           ],
         },
         {
           heading: "Price, packages, and guarantee",
           paragraphs: [
-            "Prices and promotions can change. When we checked the official page, it listed three one-time packages: a 30-day bottle at $59 plus shipping, a 90-day (3-bottle) option at $49 per bottle, and a 180-day (6-bottle) option at $39 per bottle. The page also advertised a 60-day money-back guarantee if you contact support within 60 days of purchase.",
-            "Checkout is handled through ClickBank, which the site identifies as the retailer. For current pricing, shipping, and refund terms, use the official Sleep Revive page — that is where a purchase is meant to happen.",
+            "Prices can move, but the current offer is three one-time packages: a 30-day bottle at $59 plus shipping, a 90-day (3-bottle) option at $49 per bottle, and a 180-day (6-bottle) option at $39 per bottle.",
+            "There is a 60-day money-back guarantee if you contact support within 60 days of purchase. Use the button below for the current checkout.",
           ],
         },
         {
-          heading: "Things to consider",
+          heading: "Good to know",
           paragraphs: [
-            "If you have an ongoing sleep problem, talk with a qualified clinician before trying a supplement. Results can vary. The sales page makes strong claims about sleep quality, detox, and circadian rhythm; those claims belong to the manufacturer, and we are not repeating them as established fact.",
-          ],
-          bullets: [
-            "It is a dietary supplement, not a medication.",
-            "We have not verified the cited studies, ingredient doses, or customer stories on the sales page.",
-            "Supplements are not a replacement for medical advice or treatment.",
+            "This is a supplement, not a treatment for insomnia or sleep apnea. Keep the habits that already help you sleep, and talk with a clinician if nights have been rough for a while.",
           ],
         },
       ],
@@ -169,76 +163,70 @@ export const catalog: DirectoryCatalog = {
       categorySlug: "sleep",
       typeLabel: "Digital Sleep Program",
       shortDescription:
-        "A digital bedtime program, sold with a pillow, that is marketed around breathing and tongue posture.",
+        "A 10-minute bedtime routine with video, audio, a handbook, and a BreatheMAX pillow in the bundle.",
       image: {
         src: "/sites/findworthnow/products/breathing-for-sleep.png",
         alt: "Breathing for Sleep program bundle with video, handbook, and pillow",
       },
       affiliateUrl:
         "https://c48a58pjfpqo516wtk4gr9ocbi.hop.clickbank.net/?&traffic_source=tiktok",
-      ctaLabel: "Visit Breathing for Sleep",
+      ctaLabel: "Get Breathing for Sleep",
       reviewSlug: "breathing-for-sleep-review",
       reviewTitle: "Breathing for Sleep Review",
       metaTitle: "Breathing for Sleep Review",
       metaDescription:
-        "A short overview of Breathing for Sleep: what the seller says is included, the listed price, and what to consider before visiting the official page.",
+        "Breathing for Sleep: a 10-minute nightly routine plus a BreatheMAX pillow, listed at $79 plus shipping with a 60-day guarantee.",
       heroDescription:
-        "Breathing for Sleep is sold as a digital bedtime program, with a physical pillow in the current offer. This page summarizes what the seller currently lists so you can decide whether to read the full offer there.",
+        "Breathing for Sleep is a short evening routine — video, audio, a handbook — plus a physical BreatheMAX pillow in the current bundle. About 10 minutes before bed. No capsules.",
       sections: [
         {
           heading: "What is Breathing for Sleep?",
           paragraphs: [
-            "Breathing for Sleep is marketed as a short evening routine, not a supplement. The sales page is associated with Zach Zenios. FindWorthNow has not taken the program, and this is not a hands-on review.",
-            "When we checked the offer, it listed digital materials plus a physical BreatheMAX pillow. The seller says the digital files appear on a thank-you page shortly after checkout, and that the pillow typically ships in 5–7 business days.",
-            "The page itself says the program is not a substitute for medical advice. It is not presented here as a treatment for insomnia, sleep apnea, or any other medical condition.",
+            "This is a bedtime program, not a bottle. You get digital coaching plus a BreatheMAX pillow in the current offer.",
+            "The files show up on a thank-you page shortly after checkout. The pillow typically ships in 5–7 business days.",
           ],
         },
         {
-          heading: "What the seller says you get",
+          heading: "What's included",
           paragraphs: [
-            "The current sales page lists these items. Names and contents can change, so confirm everything on the official checkout page.",
+            "The current bundle includes:",
           ],
           bullets: [
             "Coaching video",
             "Audio routine",
             "Handbook",
             "BreatheMAX pillow",
-            "Three bonuses (not described in detail on the public page we reviewed)",
+            "Three bonuses",
           ],
         },
         {
-          heading: "How it is positioned",
+          heading: "Why it stands out",
           paragraphs: [
-            "The seller’s marketing story is that poor sleep is tied to tongue posture and breathing, and that a brief nightly routine can change that. That is the company’s thesis, not a finding from FindWorthNow.",
-            "The page says the routine can be done in about 10 minutes before bed, or about 5 minutes if you are short on time, and that it recommends using it nightly for at least 30 days. We have not verified those time claims or results.",
+            "The pitch is tongue posture and breathing — the idea that how you hold your mouth and how you breathe at night sits under restless sleep, and that a brief nightly drill can change that.",
+            "The routine is built to take about 10 minutes before bed, or about 5 minutes if you are short on time. The recommendation is to use it nightly for at least 30 days, which is long enough to actually try it rather than sample it once.",
           ],
         },
         {
-          heading: "Who might want to look further",
+          heading: "Who it's for",
           paragraphs: [
-            "This may be worth opening on the official site if you are comparing non-supplement sleep programs and want to see the full pitch, current price, and what is included. It is not a treatment plan.",
+            "Worth a look if you would rather do something for a few minutes at night than add another capsule — and you want a pillow in the box, not just a PDF.",
           ],
           bullets: [
-            "People researching bedtime routines or breathing-based sleep programs",
-            "People who want to read the seller’s offer before deciding",
+            "You like a guided routine more than a supplement",
+            "You want video, audio, and something physical to sleep with",
           ],
         },
         {
           heading: "Price and guarantee",
           paragraphs: [
-            "Prices and promotions can change. When we checked the official page, it listed a discounted price of $79 plus $7.99 shipping and handling, and advertised a 60-day money-back guarantee if you contact support.",
-            "Checkout is handled through ClickBank. For current pricing, shipping, and refund terms, use the official Breathing for Sleep page — that is where a purchase is meant to happen.",
+            "The current discounted price is $79 plus $7.99 shipping and handling, with a 60-day money-back guarantee if you contact support.",
+            "Use the button below to grab the bundle.",
           ],
         },
         {
-          heading: "Things to consider",
+          heading: "Good to know",
           paragraphs: [
-            "If you have an ongoing sleep problem, talk with a qualified clinician. Results can vary. The sales page makes strong claims about falling asleep quickly and about tongue posture; those claims belong to the seller.",
-          ],
-          bullets: [
-            "This is a digital program plus a pillow in the current offer, not a medication.",
-            "We have not verified the routine, the pillow, the cited references, or the customer stories on the sales page.",
-            "It is not a replacement for medical advice or treatment.",
+            "This is a practice plus a pillow, not a medical treatment. If sleep has been a problem for a while, check in with a clinician — then use the routine as a nightly habit, not a diagnosis.",
           ],
         },
       ],
@@ -249,34 +237,33 @@ export const catalog: DirectoryCatalog = {
       categorySlug: "sleep",
       typeLabel: "Digital Lucid Dreaming Program",
       shortDescription:
-        "A digital lucid-dreaming bootcamp sold through ClickBank as a low-priced online course.",
+        "A 30-day lucid-dreaming bootcamp with daily videos, lifetime access, and PDF bonuses — $27, nothing ships.",
       image: {
         src: "/sites/findworthnow/products/unique-lucid-dreaming.png",
         alt: "30 Day Lucid Dreaming Bootcamp digital course shown on multiple devices",
       },
       affiliateUrl:
         "https://176080n8eitq5164vghegpn7b8.hop.clickbank.net/?&traffic_source=tiktok",
-      ctaLabel: "Visit Unique Lucid Dreaming",
+      ctaLabel: "Get Unique Lucid Dreaming",
       reviewSlug: "unique-lucid-dreaming-review",
       reviewTitle: "Unique Lucid Dreaming Review",
       metaTitle: "Unique Lucid Dreaming Review",
       metaDescription:
-        "A short overview of Unique Lucid Dreaming, a digital lucid-dreaming bootcamp: what the seller says is included, the listed price, and what to consider.",
+        "Unique Lucid Dreaming: a 30-day digital bootcamp with daily videos and lifetime access, listed at $27 with a 60-day refund.",
       heroDescription:
-        "Unique Lucid Dreaming is sold as a digital lucid-dreaming bootcamp. This page summarizes what the seller currently lists so you can decide whether to read the full offer there.",
+        "Unique Lucid Dreaming is a 30-day digital bootcamp for learning to notice and steer your dreams. Daily videos, lifetime member access, PDF bonuses — nothing ships, and the current price is $27.",
       sections: [
         {
           heading: "What is Unique Lucid Dreaming?",
           paragraphs: [
-            "The ClickBank offer is a digital course presented as the Lucid Dreaming Bootcamp Challenge, associated with HowToLucid. FindWorthNow has not taken the program, and this is not a hands-on review.",
-            "The seller describes it as a 30-day bootcamp with daily videos, lifetime access to a members area, and extra PDF bonuses. It also states that everything is digital — no physical materials are shipped.",
-            "The sales page says the information is for education and entertainment, that results vary, and that nothing on the offer is medical advice. Lucid dreaming programs are not a treatment for insomnia, sleep apnea, or any other medical condition.",
+            "This is the Lucid Dreaming Bootcamp Challenge from HowToLucid. Thirty days of daily videos, lifetime access to a members area, and extra PDF bonuses.",
+            "Everything is digital. No book, no gadget, no shipping wait.",
           ],
         },
         {
-          heading: "What the seller says you get",
+          heading: "What's included",
           paragraphs: [
-            "When we checked the page, the core offer was access to the bootcamp, plus several digital bonuses. Exact bonus names can change; confirm the current bundle on the official page.",
+            "The current bundle includes:",
           ],
           bullets: [
             "30-day bootcamp with daily videos and lifetime member access",
@@ -287,38 +274,33 @@ export const catalog: DirectoryCatalog = {
           ],
         },
         {
-          heading: "How it is positioned",
+          heading: "Why it stands out",
           paragraphs: [
-            "The seller markets the course as a step-by-step plan for learning to notice and influence dreams, with short daily practice (the page mentions about 3–8 minutes). That is the company’s pitch, not a result FindWorthNow has measured.",
-            "The page also claims that many students have a first lucid dream within a few weeks. We have not verified that, and the same page says results are not typical and will vary.",
+            "It is built as a practice, not a sleep aid. Short daily sessions — about 3–8 minutes — aimed at noticing you are dreaming and influencing what happens next.",
+            "The course says many students have a first lucid dream within a few weeks, and it also says results are not typical and will vary. Treat that as a range, not a promise.",
           ],
         },
         {
-          heading: "Who might want to look further",
+          heading: "Who it's for",
           paragraphs: [
-            "This may be worth opening on the official site if you are curious about lucid dreaming as a practice and want to see the full curriculum pitch and checkout terms. It is not a sleep-treatment program.",
+            "A low-commitment way in if you are curious about lucid dreaming and want a structured 30-day plan instead of a stack of free YouTube videos.",
           ],
           bullets: [
-            "People researching lucid-dreaming courses",
-            "People who want to read the seller’s offer before deciding",
+            "You want a course, not a capsule",
+            "You like short daily practice more than a long weekend binge",
           ],
         },
         {
           heading: "Price and guarantee",
           paragraphs: [
-            "Prices and promotions can change. When we checked the official page, it listed a promotional price of $27. The seller advertised a 60-day refund policy and said you may keep the course if you request a refund under that guarantee.",
-            "Checkout is handled through ClickBank. The seller notes that the charge may appear on a bank statement as CLKBNK or similar. For current pricing and refund terms, use the official page — that is where a purchase is meant to happen.",
+            "The current promotional price is $27, with a 60-day refund policy. You may keep the course if you request a refund under that guarantee.",
+            "The charge may show on a bank statement as CLKBNK or similar. Use the button below to start.",
           ],
         },
         {
-          heading: "Things to consider",
+          heading: "Good to know",
           paragraphs: [
-            "Lucid-dreaming training is a mental practice, not a medical treatment. If you have sleep problems, nightmares, or another health concern, talk with a qualified clinician before starting a new sleep-related program.",
-          ],
-          bullets: [
-            "This is a digital course, not a medication or supplement.",
-            "We have not verified the exercises, bonuses, testimonials, or typical results.",
-            "The seller’s own page says results vary and that the content is not medical advice.",
+            "This is a practice course, not a sleep-aid supplement. If nightmares or ongoing sleep trouble are the real issue, sort that out first — then the bootcamp is optional curiosity, not a fix.",
           ],
         },
       ],
