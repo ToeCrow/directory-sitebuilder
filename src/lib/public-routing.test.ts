@@ -476,6 +476,11 @@ describe("sitemap", () => {
     assert.ok(urls.includes("https://findworthnow.com/blog"));
     assert.ok(
       urls.includes(
+        "https://findworthnow.com/blog/how-to-fall-asleep-fast",
+      ),
+    );
+    assert.ok(
+      urls.includes(
         "https://findworthnow.com/blog/why-sleep-supplements-can-help",
       ),
     );

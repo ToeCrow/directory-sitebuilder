@@ -2,6 +2,136 @@ import type { DirectoryBlogPost } from "@/types/directory-blog";
 
 export const posts: DirectoryBlogPost[] = [
   {
+    slug: "how-to-fall-asleep-fast",
+    title:
+      "How to Fall Asleep Fast: 12 Practical Ways to Wind Down and Sleep Better",
+    excerpt:
+      "Falling asleep faster is usually a wind-down problem, not a willpower problem. Twelve things you can do tonight — from light and caffeine to a short routine and a bedtime capsule.",
+    metaTitle: "How to Fall Asleep Fast: 12 Practical Ways",
+    metaDescription:
+      "Twelve practical ways to wind down and fall asleep faster: light, caffeine, the room, a short breathing routine, and when a bedtime capsule is worth trying.",
+    publishedAt: "2026-08-25",
+    intro: [
+      "Most people who “cannot fall asleep” are not broken. They are still switched on: bright light, late caffeine, a phone in the hand, a room that is too warm, and a brain that is still at work. Falling asleep faster is less about forcing it and more about giving your body a clear off-ramp.",
+      "These twelve steps are the practical kind — things you can change tonight or this week. None of them is a treatment for insomnia or sleep apnea. If nights have been rough for a long time, you snore and gasp, or sleep suddenly fell apart, talk with a clinician. For everyone else, start here.",
+    ],
+    relatedProductSlugs: ["sleep-revive", "breathing-for-sleep"],
+    relatedPostSlugs: [
+      "why-sleep-supplements-can-help",
+      "why-try-sleep-programs-beyond-supplements",
+    ],
+    sections: [
+      {
+        heading: "1. Keep the same wake time",
+        paragraphs: [
+          "A drifting wake-up is one of the fastest ways to push bedtime later. Your body clock sets more from the morning than from the night. If you sleep in until 10 on Saturday after a 6:30 alarm all week, Sunday night often feels impossible — not because you “ruined the weekend,” but because you shifted the whole schedule.",
+          "Pick a wake time you can keep most days, then protect it. Weekends can flex by about an hour. More than that and you are running a mini jet-lag every Monday. Put the alarm across the room if you need the walk. The first minute is the whole fight.",
+          "If you slept badly, still get up. A long lie-in feels kind and usually steals the next night: you were less sleepy at bedtime, so you stare at the ceiling again. A short, ugly morning beats a two-hour catch-up that resets nothing.",
+          "Give this one a week before you judge it. The first two days can feel rough. By day four or five, bedtime often starts to arrive on its own — which is the point of a stable wake time in the first place.",
+        ],
+      },
+      {
+        heading: "2. Get bright light in the morning",
+        paragraphs: [
+          "Ten to twenty minutes of outdoor light after you wake is one of the cheapest sleep tools there is. It tells your body the day has started. That morning signal is what makes evening wind-down more likely to show up on time later.",
+          "You do not need a perfect sunrise walk. Step outside with coffee. Walk the dog. Stand on a balcony. Cloudy still counts — outdoor light is much brighter than a lamp, even when the sky looks grey. A bright window helps if you cannot get out, but it is a backup, not the main move.",
+          "If you work nights or wake before dawn, use the brightest indoor light you can stand for those first minutes, then take real daylight as soon as it exists. The goal is a clear “day has started” cue, not a wellness aesthetic.",
+          "Save the cave for night. Heavy sunglasses, a dim kitchen, and a phone under the duvet in the morning all do the opposite of what you want if falling asleep at a decent hour is the job.",
+        ],
+      },
+      {
+        heading: "3. Cut caffeine by early afternoon",
+        paragraphs: [
+          "Caffeine can still be in your system six to eight hours later. That 4 p.m. coffee is a common reason 11 p.m. feels “tired but wired”: you want to sleep, your nervous system does not agree, and you start hunting for a fix that was sitting in the mug.",
+          "It is not only coffee. Energy drinks, pre-workout, cola, strong tea, and some pain tablets carry caffeine too. If you are experimenting, read the afternoon, not just the espresso machine. A 3 p.m. “just one more” is still an evening problem for a lot of people.",
+          "If you want a clean test, stop caffeine after lunch for a week. Keep the morning cup if you like it. The experiment is the afternoon, not your identity as a coffee person. Some people can drink later and still drop off. You find out by cutting it, not by arguing with a clock.",
+          "If cutting it gives you a headache for a couple of days, that is usually withdrawal, not proof you “need” the 4 p.m. dose to function. Shift the last serving earlier rather than quitting overnight if that is more realistic. The win is a quieter 11 p.m., not a perfect streak.",
+        ],
+      },
+      {
+        heading: "4. Give alcohol a last-call",
+        paragraphs: [
+          "A drink can make you drowsy and still fragment the second half of the night. You fall asleep faster, then you wake at 2 or 3, hot, thirsty, and unrested. That pattern feels like a sleep disorder even when the cause was the glass.",
+          "Alcohol is a sedative, not a sleep aid. It can knock down the time it takes to drift off and still steal the deeper, more restorative stretch later. If you “sleep” seven hours after two drinks and feel wrecked, the night was not seven hours of good sleep.",
+          "Move the last drink earlier, or skip it on nights you actually care about. A glass with dinner is a different bet than a nightcap in bed. Water in between helps the headache. It does not fix the broken second half of the night.",
+          "This is a better first move than adding another product on top of a nightcap. If you want a capsule or a routine to work, give it a night that is not already competing with alcohol. Try a week of earlier last-calls and see whether falling asleep — and staying down — gets easier before you change anything else.",
+        ],
+      },
+      {
+        heading: "5. Leave a gap after dinner",
+        paragraphs: [
+          "A heavy meal close to bed keeps digestion busy when you want the opposite. Heartburn, a packed stomach, and that “too full to get comfortable” feeling all delay the drop-off. Aim for a couple of hours between the last large plate and lights-out.",
+          "Late spice, late tomato sauce, and late fried food are frequent offenders if you already get reflux at night. Sitting up for a bit after eating beats lying down immediately. If evenings are your only time to eat, make the plate smaller and earlier rather than skipping food and then raiding the kitchen at 10:30.",
+          "A small snack is fine if you wake hungry or you train late. A banana, yogurt, or a few crackers is a different object than a second dinner. The test is simple: you should be able to lie down without feeling like you are still chewing.",
+          "Caffeine hides in chocolate and some desserts too. If you already cut coffee and you still feel wired, look at the 9 p.m. sweet. It does not have to be a moral rule. It has to stop competing with sleep.",
+        ],
+      },
+      {
+        heading: "6. Make the bedroom cool, dark, and dull",
+        paragraphs: [
+          "Sleep likes a room that is a bit cool, properly dark, and boring. A bedroom that doubles as an office, cinema, and charging station keeps your brain on the wrong channel. Blackout the streetlight, drop the thermostat a notch, and keep work and TV out of the bed if you can.",
+          "Dark matters more than people think. A bright hallway, an LED on a charger, or a streetlamp through thin curtains is enough to keep you slightly “on.” An eye mask is a cheap test if you cannot change the window yet. Thick curtains or a simple blackout panel usually beat another gadget.",
+          "Cool is personal, but most people sleep easier a little cooler than their daytime living room. If you wake sweaty, the room or the duvet is too much. If you lie there shivering, add a layer, not a hotter thermostat that then cooks you at 3 a.m.",
+          "Dull is the unglamorous part. The bed is for sleep and sex. Laptops, spreadsheets, and a second screen train the mattress to mean “still working.” Your phone charger does not belong on the nightstand if the goal is falling asleep fast. Charge it across the room or in another room — which is the same move as step 8, and it starts with the furniture.",
+        ],
+      },
+      {
+        heading: "7. Build a 30-minute off-ramp",
+        paragraphs: [
+          "You cannot sprint from Slack into unconsciousness. The body needs a downshift: lights lower, pace slower, no new problems. Give yourself a half hour that is the same most nights. That window is the cue. Without it, bedtime is just “whenever I finally close the laptop.”",
+          "Pick three things you will actually repeat. A shower, a stretch on the floor, a paper book, washing your face, laying out tomorrow’s clothes. Skip the elaborate twelve-step routine you will abandon on Thursday. Boring and repeatable beats impressive and rare.",
+          "Dim the house during that half hour. Overhead LEDs at full blast tell your brain it is still daytime. Lamps, warm bulbs, or the lowest setting you can still see with are enough. If you live with other people, this is also when you stop starting new conversations about money, the calendar, or the fight from lunch.",
+          "Start the off-ramp at a clock time, not “when I feel ready.” Feeling ready is often 40 minutes of more scrolling. Set it like an appointment. After a week of the same sequence, you will notice the yawn arriving earlier — which is the whole reason to build the ramp instead of hoping sleep shows up on command.",
+        ],
+      },
+      {
+        heading: "8. Put the phone out of reach",
+        paragraphs: [
+          "The issue is not only blue light. It is novelty — one more scroll, one more argument, one more thing to solve. If the phone is in your hand, your brain is still at work. Night mode and a warmer screen help a little. They do not stop a news alert from lighting up your nervous system at 10:47.",
+          "Park it before the off-ramp starts, not after you are already in bed “for a minute.” Charge it in the kitchen, the hallway, or the far side of the room. Buy a cheap alarm clock if you use the phone as a clock. That purchase pays for itself the first week you stop bargaining with the lock screen.",
+          "If you need the phone as an alarm and you will not move it, at least leave it face down, on Do Not Disturb, off the mattress. Notifications from group chats and email are optional at night. Almost none of them are more important than falling asleep.",
+          "“Just checking” is how 20 minutes becomes 70. The feed is designed to deny a stopping point. You will not out-will a product that is built to hold you. Distance is the tactic. Put it where standing up is required, and most nights you will not bother.",
+        ],
+      },
+      {
+        heading: "9. Get up if you are not sleeping",
+        paragraphs: [
+          "Lying there angry at the ceiling trains the bed to mean “struggle.” The longer you stay, the more the mattress gets paired with frustration, clock-watching, and a rising heart rate. That is the opposite of a place you fall asleep fast.",
+          "If you have been awake for a stretch — a common rule of thumb is about 20 minutes, or whenever you know you are spinning — get up. Keep the lights low. Do something dull: a paper book you have already read, a few stretches, folding laundry you do not care about. Go back when sleepy shows up, not when you have “served your time.”",
+          "Do not turn on a bright kitchen. Do not open the feed, the news, or a work tab. Those reward the waking brain. Boredom is the feature. If you need a landing spot, a chair in low light is better than the bed while you are still wired.",
+          "This can feel like giving up. It is the opposite. You are protecting the bed as a place sleep actually happens. The first nights you may get up more than once. That still beats two hours of silent arguing with the pillow, and it usually shortens over a week if you keep the rest of this list in play.",
+        ],
+      },
+      {
+        heading: "10. Move during the day, skip the late nap",
+        paragraphs: [
+          "Daytime walking or lifting makes nighttime sleep easier for a lot of people. You spend sleep pressure during the day; you want enough of it left at bedtime. A day of sitting, then a desperate hope that you will “be tired,” often ends in a second wind at 10 p.m.",
+          "You do not need a heroic training plan. A brisk walk, a short lift, a bike ride — something that raises your heart rate and is done with a few hours to spare before bed. Very hard workouts right before lights-out can leave some people too amped. If evening is your only slot, finish, then use the off-ramp to come down instead of collapsing straight into bed still buzzing.",
+          "A long nap after 3 p.m. steals the sleep pressure you wanted at bedtime. You wake groggy, then you are not sleepy at 11, then you call it insomnia. If you need a nap, keep it short — 10 to 20 minutes — and early. Set an alarm. Sitting in a chair beats a two-hour sink into the sofa.",
+          "If you are exhausted because nights are already bad, a late nap can feel like the only relief. Treat it as a patch, not a habit. Protect the evening first. The walk at lunch does more for tonight than another hour on the couch at 5.",
+        ],
+      },
+      {
+        heading: "11. Empty your head on paper",
+        paragraphs: [
+          "A lot of “I cannot fall asleep” is unfinished tomorrow. The brain treats an open loop as a job: replay the meeting, draft the email, remember the form, re-run the argument. Two minutes with a pen is often enough to park it until morning.",
+          "Keep a pad on the off-ramp, not on the pillow. Write tomorrow’s list, the one thing you are chewing on, and anything you are afraid you will forget. Ugly handwriting counts. The point is to get it out of working memory, not to produce a beautiful planner spread.",
+          "If the loop is a worry, not a to-do, still write it. One sentence: what it is, and what you will do about it tomorrow — even if the action is “call the clinic” or “decide at 9 a.m.” The brain often lets go when it trusts the item is captured.",
+          "Do not do this after you are already in bed staring at the dark. That is when the list grows and the clock becomes the enemy. Park the thoughts during the 30-minute downshift. Then the bed only has to do one job.",
+        ],
+      },
+      {
+        heading: "12. Add a wind-down extra if the basics are already in place",
+        paragraphs: [
+          "If the room, the caffeine, and the phone are already handled and you still want one more input, you have two useful shapes: a short practice, or a bedtime capsule. Extras work best on top of the off-ramp, not instead of it. A bottle cannot out-vote a 10 p.m. espresso and a bright phone.",
+          "Breathing for Sleep is a roughly 10-minute evening routine — coaching video, audio, a handbook — plus a physical BreatheMAX pillow in the current bundle. The idea is tongue posture and breathing, and a brief nightly drill you can run in about 10 minutes, or about 5 if you are short on time. Files show up after checkout; the pillow typically ships in 5–7 business days. Current listing is $79 plus $7.99 shipping, with a 60-day money-back window. If you would rather do something for a few minutes than swallow a serving, that is the one to open.",
+          "Sleep Revive is a vegetarian capsule you take 30–45 minutes before bed with water. Each bottle is 60 capsules; a serving is two. The named list is lemon balm, valerian, L-theanine, magnesium glycinate, and rutaecarpine — a wind-down mix without melatonin as the headline. Packages are a 30-day bottle at $59 plus shipping, three bottles at $49 each, or six at $39 each, with a 60-day money-back window if you contact support. If you already look up those ingredients, this is a clean way to try them together.",
+          "You do not have to buy both. Match the extra to the job: a practice if you want a habit you keep using, a capsule if you want a short named formula in the last stretch of the evening. Neither replaces a clinician if sleep has been a problem for months, you snore and gasp, or something suddenly changed. For a normal wired-at-midnight night, they are the optional twelfth step — after the lights are already low.",
+        ],
+      },
+    ],
+  },
+  {
     slug: "why-sleep-supplements-can-help",
     title: "Why a Sleep Supplement Can Be the Piece That Finally Helps",
     excerpt:
@@ -16,7 +146,10 @@ export const posts: DirectoryBlogPost[] = [
       "This is not medical advice. Dietary supplements are not medicines, and they are not intended to diagnose, treat, cure, or prevent insomnia, sleep apnea, or any other condition. FindWorthNow has not independently tested the products mentioned here.",
     ],
     relatedProductSlugs: ["sleep-revive"],
-    relatedPostSlugs: ["why-try-sleep-programs-beyond-supplements"],
+    relatedPostSlugs: [
+      "how-to-fall-asleep-fast",
+      "why-try-sleep-programs-beyond-supplements",
+    ],
     sections: [
       {
         heading: "Habits first — then a possible extra",
@@ -68,7 +201,10 @@ export const posts: DirectoryBlogPost[] = [
       "This is not medical advice, and FindWorthNow has not taken either program. Nothing here is a treatment for insomnia, sleep apnea, or any other condition. The point is narrower: if you only compare bottles, you never see the “practice” side of the category.",
     ],
     relatedProductSlugs: ["breathing-for-sleep", "unique-lucid-dreaming"],
-    relatedPostSlugs: ["why-sleep-supplements-can-help"],
+    relatedPostSlugs: [
+      "how-to-fall-asleep-fast",
+      "why-sleep-supplements-can-help",
+    ],
     sections: [
       {
         heading: "A program sells a habit you keep using",
