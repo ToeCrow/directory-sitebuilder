@@ -37,7 +37,7 @@ export function ComparisonTable({ siteSlug, className }: ComparisonTableProps) {
         )}
 
         <div className="mt-10 overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm">
-          <table className="w-full min-w-[640px] text-left text-sm">
+          <table className="w-full min-w-160 text-left text-sm">
             <thead>
               <tr className="border-b border-slate-200 bg-slate-50">
                 <th

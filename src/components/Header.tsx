@@ -195,7 +195,7 @@ export function Header() {
               width={468}
               height={80}
               priority
-              className="h-9 w-auto max-w-[min(100%,280px)] bg-transparent object-contain object-left sm:h-10 sm:max-w-[320px] md:h-11 md:max-w-[380px]"
+              className="h-9 w-auto max-w-[min(100%,280px)] bg-transparent object-contain object-left sm:h-10 sm:max-w-[320px] md:h-11 md:max-w-95"
             />
           ) : (
             <span

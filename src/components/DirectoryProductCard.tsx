@@ -46,11 +46,11 @@ export function DirectoryProductCard({
         </p>
         <h2
           id={headingId}
-          className="mt-2 line-clamp-2 min-h-[3.5rem] text-xl font-semibold tracking-tight text-fwn-ivory transition-colors group-hover:text-fwn-gold"
+          className="mt-2 line-clamp-2 min-h-14 text-xl font-semibold tracking-tight text-fwn-ivory transition-colors group-hover:text-fwn-gold"
         >
           {product.name}
         </h2>
-        <p className="mt-3 line-clamp-3 min-h-[4.125rem] text-sm leading-relaxed text-fwn-sand">
+        <p className="mt-3 line-clamp-3 min-h-16.5 text-sm leading-relaxed text-fwn-sand">
           {product.shortDescription}
         </p>
         <p className="mt-auto pt-5 text-sm font-medium tracking-wide text-fwn-gold group-hover:text-fwn-ivory">

@@ -154,7 +154,7 @@ export function Hero({ siteSlug, className }: HeroProps) {
     return (
       <section
         className={cn(
-          "border-b border-slate-200 bg-white pt-[30px]",
+          "border-b border-slate-200 bg-white pt-7.5",
           className,
         )}
       >
