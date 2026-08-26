@@ -128,6 +128,8 @@ export const newCatalogProducts: Product[] = [
     shortDescription:
       'An 11" all-foam mattress with 34% renewable BioLux memory foam and an organic cotton cover.',
     metaTitle: "BedInABox Eco-Lux Review for Side Sleepers",
+    metaDescription:
+      'An 11" all-foam BedInABox with 34% renewable BioLux memory foam and an organic cotton cover. Eco specs, contouring, Queen pricing, and side-sleeper fit.',
     bestFor:
       "Side sleepers who want verified eco-credentials and are willing to pay for them",
     priceFrom: 2079,
@@ -429,6 +431,8 @@ export const newCatalogProducts: Product[] = [
     shortDescription:
       'A 20" x 54" shredded memory foam body pillow with a Kool-Flow bamboo-blend cover at a budget price.',
     metaTitle: "Snuggle-Pedic Body Pillow Review",
+    metaDescription:
+      'A 20" x 54" shredded memory foam body pillow with a Kool-Flow bamboo-blend cover at a budget price. Side-sleeper fit, fill, and what you get for the money.',
     bestFor:
       "Budget-conscious side sleepers who want shredded memory foam comfort without a premium price tag",
     priceFrom: 59.99,

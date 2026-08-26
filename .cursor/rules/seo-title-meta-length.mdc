@@ -1,0 +1,32 @@
+---
+description: Keep SEO title and meta description lengths in the ranges search results actually show
+globs: "src/data/**/*.{ts,tsx},src/app/**/*.tsx"
+alwaysApply: false
+---
+
+# SEO title and meta description length
+
+Resolved `<title>` and meta description must fit typical SERP limits. Do not ship a short card blurb as the meta description.
+
+| Field | Target | Hard limits |
+| --- | --- | --- |
+| Title (`metaTitle`, else `title`) | 50–60 characters | 30–60 |
+| Meta description | 140–155 characters | 120–160 |
+
+```ts
+// ❌ BAD — title truncates in Google (~73 characters)
+title: "Best Pillow for Neck Pain: Pillow Cube vs. Talalay Latex vs. Layla Kapok"
+
+// ✅ GOOD — keep the long H1 in `title`, put the SERP title in `metaTitle`
+title: "Best Pillow for Neck Pain: Pillow Cube vs. Talalay Latex vs. Layla Kapok"
+metaTitle: "Best Pillow for Neck Pain: Cube vs Latex vs Kapok"
+
+// ❌ BAD — product `shortDescription` used as meta (too short)
+shortDescription: 'A 20" x 54" shredded memory foam body pillow with a Kool-Flow bamboo-blend cover at a budget price.'
+
+// ✅ GOOD — dedicated metaDescription in range
+metaDescription:
+  'A 20" x 54" shredded memory foam body pillow with a Kool-Flow bamboo-blend cover at a budget price. Side-sleeper fit, fill, and what you get for the money.'
+```
+
+Count the **resolved** strings after fallbacks (`metaTitle ?? title`, `metaDescription ?? shortDescription`). Site-name suffixes are not added on Side Sleeper product/review pages (`title.absolute`). Do not append `| Site` inside `metaTitle` on sites that already use a title template.

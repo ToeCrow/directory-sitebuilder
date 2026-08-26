@@ -51,6 +51,8 @@ type ArticleBase = {
   title: string;
   slug: string;
   excerpt?: string;
+  /** Optional SEO document title; falls back to title. Keep 50–60 characters. */
+  metaTitle?: string;
   /** Optional SEO meta description; falls back to excerpt or intro. */
   metaDescription?: string;
   intro: string[];

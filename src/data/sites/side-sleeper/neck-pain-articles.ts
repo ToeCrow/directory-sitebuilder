@@ -19,6 +19,7 @@ export const neckPainCubeLatexKapokArticle: ProductRoundupArticle = {
   author: "Side Sleeper Team",
   excerpt:
     "Pillow Cube, Brooklyn Bedding Talalay latex, and Layla Kapok compared for neck pain — specs, owner feedback, and side-sleeper fit.",
+  metaTitle: "Best Pillow for Neck Pain: Cube vs Latex vs Kapok",
   metaDescription:
     "Pillow Cube, Brooklyn Bedding Talalay latex, and Layla Kapok compared for neck pain — specs, owner feedback, and which pick fits dedicated side sleepers.",
   inlineRelatedSlug: "can-the-right-pillow-fix-your-neck-pain",

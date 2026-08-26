@@ -67,6 +67,7 @@ export async function generateMetadata({
     return { title: "Review not found" };
   }
 
+  const title = article.metaTitle ?? article.title;
   const description =
     article.metaDescription ?? article.excerpt ?? article.intro[0];
   const path = getPublicPath(siteSlug, `/reviews/${slug}`);
@@ -74,7 +75,7 @@ export async function generateMetadata({
 
   return {
     title: {
-      absolute: article.title,
+      absolute: title,
     },
     description,
     alternates: {
@@ -83,7 +84,7 @@ export async function generateMetadata({
     openGraph: {
       type: "article",
       siteName: siteData.title,
-      title: article.title,
+      title,
       description,
       url: path,
       images: [
@@ -100,7 +101,7 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: article.title,
+      title,
       description,
       images: [
         {
