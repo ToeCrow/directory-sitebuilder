@@ -1,26 +1,41 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AffiliateDisclosure } from "@/components/AffiliateDisclosure";
-import { getDefaultOgImage } from "@/lib/seo";
+import { ReviewListItem } from "@/components/ReviewListItem";
+import { getDefaultOgImage, OG_IMAGE_HEIGHT, OG_IMAGE_WIDTH } from "@/lib/seo";
 import {
+  getArticlesFeaturingProduct,
+  getLegacyDirectorySiteSlugs,
   getProductBySlug,
   getSiteBySlug,
+  getStaticProducts,
   isValidSiteSlug,
+  siteHasMattressPillowNav,
+  siteShowsProductRatings,
 } from "@/lib/site";
+import { siteUsesEditorialCatalog } from "@/lib/directory-catalog";
 import {
-  RESEARCH_SCORE_HOWTO_LABEL,
-  RESEARCH_SCORE_LABEL,
-  formatScoreValue,
-  getResearchScorePath,
-  siteUsesResearchScore,
-} from "@/lib/research-score";
-
-export const dynamic = "force-dynamic";
+  getArticlePath,
+  getPublicPath,
+  getProductsIndexPath,
+} from "@/lib/paths";
+import { getRequestPublicBasePath } from "@/lib/request-paths";
+import { buyLinkRel, getBuyUrl } from "@/lib/product-links";
 
 type ProductPageProps = {
   params: Promise<{ siteSlug: string; slug: string }>;
 };
+
+export function generateStaticParams() {
+  return getLegacyDirectorySiteSlugs().flatMap((siteSlug) =>
+    getStaticProducts(siteSlug).map((product) => ({
+      siteSlug,
+      slug: product.slug,
+    })),
+  );
+}
 
 export async function generateMetadata({
   params,
@@ -38,10 +53,23 @@ export async function generateMetadata({
     return { title: "Product not found" };
   }
 
-  const title = `${product.name} Review`;
-  const description = product.shortDescription;
-  const path = `/${siteSlug}/products/${slug}`;
-  const ogImage = getDefaultOgImage(siteData);
+  const title = product.metaTitle ?? `${product.name} Review`;
+  const description = product.metaDescription ?? product.shortDescription;
+  const path = getPublicPath(siteSlug, `/products/${slug}`);
+  const fallbackOg = getDefaultOgImage(siteData) ?? {
+    url: `/sites/${siteData.slug}/og-default.png`,
+    width: OG_IMAGE_WIDTH,
+    height: OG_IMAGE_HEIGHT,
+    alt: siteData.title,
+  };
+  const ogImage = product.image
+    ? {
+        url: product.image.src,
+        width: fallbackOg.width,
+        height: fallbackOg.height,
+        alt: product.image.alt,
+      }
+    : fallbackOg;
 
   return {
     title: {
@@ -83,7 +111,7 @@ export async function generateMetadata({
 export default async function ProductPage({ params }: ProductPageProps) {
   const { siteSlug, slug } = await params;
 
-  if (!(await isValidSiteSlug(siteSlug))) {
+  if (!(await isValidSiteSlug(siteSlug)) || siteUsesEditorialCatalog(siteSlug)) {
     notFound();
   }
 
@@ -94,85 +122,104 @@ export default async function ProductPage({ params }: ProductPageProps) {
     notFound();
   }
 
+  const publicBasePath = await getRequestPublicBasePath(siteSlug);
+  const featuredGuides = await getArticlesFeaturingProduct(siteSlug, product.slug);
+
   return (
     <main className="py-12 md:py-16">
       <article className="mx-auto max-w-3xl px-4">
         <Link
-          href={`/${siteSlug}`}
-          className="text-sm font-medium text-blue-600 hover:text-blue-700"
+          href={getProductsIndexPath(publicBasePath)}
+          className="text-sm font-medium text-ss-navy hover:text-ss-blue"
         >
-          ← Back to comparison
+          ← Back to products
         </Link>
 
-        <header className="mt-6 border-b border-slate-200 pb-8">
+        <header className="mt-6 pb-8">
           {product.badge && (
-            <span className="mb-3 inline-block rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700">
+            <span className="mb-3 inline-block bg-ss-mist px-2.5 py-0.5 text-xs font-medium text-ss-navy">
               {product.badge}
             </span>
           )}
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
+          <h1 className="text-3xl font-bold tracking-tight text-ss-navy md:text-4xl">
             {product.name}
           </h1>
-          <p className="mt-2 text-sm font-medium text-slate-500">
-            {siteUsesResearchScore(siteData) ? (
+          <p className="mt-2 text-sm font-medium text-ss-navy/60">
+            {siteShowsProductRatings(siteSlug) ? (
               <>
-                {RESEARCH_SCORE_LABEL}:{" "}
-                {formatScoreValue(product.rating, siteData.ratingScale)} · From{" "}
-                {product.priceFrom}
+                Rating: {product.rating}/{siteData.ratingScale} ·{" "}
+                {product.priceDisplay}
               </>
             ) : (
-              <>
-                Rating: {product.rating}/{siteData.ratingScale} · From{" "}
-                {product.priceFrom}
-              </>
+              product.priceDisplay
             )}
           </p>
-          {siteUsesResearchScore(siteData) && (
-            <p className="mt-2 text-sm text-slate-600">
-              <Link
-                href={getResearchScorePath(siteSlug)}
-                className="font-medium text-blue-600 underline-offset-2 hover:underline"
-              >
-                {RESEARCH_SCORE_HOWTO_LABEL}
-              </Link>
-            </p>
-          )}
-          <p className="mt-4 text-lg leading-relaxed text-slate-600">
+          <p className="mt-4 text-lg leading-relaxed text-ss-ink/80">
             {product.shortDescription}
           </p>
-          <p className="mt-4 text-sm text-slate-700">
-            <span className="font-medium">Best for:</span> {product.bestFor}
-          </p>
+          <div className="mt-5 border-l-[3px] border-ss-green bg-ss-green/10 px-4 py-3">
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-ss-ink">
+              Best for
+            </p>
+            <p className="mt-1 text-sm leading-relaxed text-ss-ink/85">
+              {product.bestFor}
+            </p>
+          </div>
         </header>
 
         <AffiliateDisclosure siteSlug={siteSlug} className="mt-6 px-0" />
 
         <section className="mt-8" aria-labelledby="features-heading">
-          <h2
-            id="features-heading"
-            className="text-xl font-semibold text-slate-900"
+          <div
+            className={
+              product.image
+                ? "grid gap-8 md:grid-cols-2 md:items-start"
+                : undefined
+            }
           >
-            Key features
-          </h2>
-          <ul className="mt-4 list-inside list-disc space-y-1 text-slate-600">
-            {product.features.map((feature) => (
-              <li key={feature}>{feature}</li>
-            ))}
-          </ul>
+            <div>
+              <h2
+                id="features-heading"
+                className="text-xl font-semibold text-ss-navy"
+              >
+                Key features
+              </h2>
+              <ul className="mt-4 list-inside list-disc space-y-1 text-ss-ink/80">
+                {product.features.map((feature) => (
+                  <li key={feature}>{feature}</li>
+                ))}
+              </ul>
+            </div>
+            {product.image && (
+              <figure className="overflow-hidden bg-ss-mist">
+                <Image
+                  src={product.image.src}
+                  alt={product.image.alt}
+                  width={1200}
+                  height={900}
+                  className="h-auto w-full object-cover"
+                  priority
+                />
+              </figure>
+            )}
+          </div>
         </section>
 
-        <div className="mt-10 grid gap-8 md:grid-cols-2">
-          <section aria-labelledby="pros-heading">
+        <div className="mt-10 grid gap-4 md:grid-cols-2">
+          <section
+            className="border-l-[3px] border-ss-green bg-ss-green/10 px-4 py-4"
+            aria-labelledby="pros-heading"
+          >
             <h2
               id="pros-heading"
-              className="text-xl font-semibold text-slate-900"
+              className="text-xs font-semibold uppercase tracking-[0.14em] text-ss-ink"
             >
               Pros
             </h2>
-            <ul className="mt-4 space-y-2">
+            <ul className="mt-3 space-y-2">
               {product.pros.map((pro) => (
-                <li key={pro} className="flex gap-2 text-sm text-slate-600">
-                  <span className="text-green-600" aria-hidden="true">
+                <li key={pro} className="flex gap-2 text-sm text-ss-ink/85">
+                  <span className="text-ss-green" aria-hidden="true">
                     ✓
                   </span>
                   {pro}
@@ -181,17 +228,20 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </ul>
           </section>
 
-          <section aria-labelledby="cons-heading">
+          <section
+            className="border-l-[3px] border-ss-terracotta bg-ss-terracotta/10 px-4 py-4"
+            aria-labelledby="cons-heading"
+          >
             <h2
               id="cons-heading"
-              className="text-xl font-semibold text-slate-900"
+              className="text-xs font-semibold uppercase tracking-[0.14em] text-ss-ink"
             >
               Cons
             </h2>
-            <ul className="mt-4 space-y-2">
+            <ul className="mt-3 space-y-2">
               {product.cons.map((con) => (
-                <li key={con} className="flex gap-2 text-sm text-slate-600">
-                  <span className="text-red-500" aria-hidden="true">
+                <li key={con} className="flex gap-2 text-sm text-ss-ink/85">
+                  <span className="text-ss-terracotta" aria-hidden="true">
                     ✗
                   </span>
                   {con}
@@ -201,16 +251,41 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </section>
         </div>
 
-        <div className="mt-10 rounded-xl border border-slate-200 bg-slate-50 p-6">
-          <p className="text-sm text-slate-600">
-            Ready to try {product.name}? Visit the official site to learn more
-            or request a demo.
+        {featuredGuides.length > 0 && (
+          <section
+            className="mt-12 border-t border-ss-navy/10"
+            aria-labelledby="featured-guides-heading"
+          >
+            <h2
+              id="featured-guides-heading"
+              className="mt-10 text-xl font-semibold text-ss-navy"
+            >
+              Featured in our guides
+            </h2>
+            <ul className="mt-2">
+              {featuredGuides.map((article) => (
+                <li key={article.slug}>
+                  <ReviewListItem
+                    article={article}
+                    href={getArticlePath(publicBasePath, article.slug)}
+                  />
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        <div className="mt-10 bg-ss-navy px-6 py-8 text-ss-paper">
+          <p className="text-sm leading-relaxed text-ss-mist">
+            {siteHasMattressPillowNav(siteSlug)
+              ? `Ready to try ${product.name}? Visit the official site to check availability and current price.`
+              : `Ready to try ${product.name}? Visit the official site to learn more or request a demo.`}
           </p>
           <a
-            href={product.affiliateUrl}
+            href={getBuyUrl(product)}
             target="_blank"
-            rel="noopener sponsored"
-            className="mt-4 inline-flex items-center rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
+            rel={buyLinkRel(product)}
+            className="mt-4 inline-flex items-center rounded-lg bg-ss-paper px-6 py-3 text-sm font-semibold text-ss-navy transition-colors hover:bg-ss-mist"
           >
             Visit {product.name}
           </a>

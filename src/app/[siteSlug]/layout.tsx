@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { SiteProvider } from "@/context/SiteContext";
 import { Header } from "@/components/Header";
@@ -9,8 +10,14 @@ import {
   buildOrganizationSchema,
   buildWebSiteSchema,
 } from "@/lib/schema";
+import { resolvePublicBasePath } from "@/lib/paths";
 import { getDefaultOgImage } from "@/lib/seo";
-import { getSiteBySlug, isValidSiteSlug } from "@/lib/site";
+import {
+  getSiteBySlug,
+  isValidSiteSlug,
+  siteHasMattressPillowNav,
+} from "@/lib/site";
+import { siteUsesEditorialCatalog } from "@/lib/directory-catalog";
 
 export const dynamic = "force-dynamic";
 
@@ -54,26 +61,36 @@ export async function generateMetadata({
       title: siteData.metaTitle,
       description: siteData.metaDescription,
       url: siteData.siteUrl,
-      images: [
-        {
-          url: ogImage.url,
-          width: ogImage.width,
-          height: ogImage.height,
-          alt: ogImage.alt,
-        },
-      ],
+      images: ogImage
+        ? [
+            {
+              url: ogImage.url,
+              width: ogImage.width,
+              height: ogImage.height,
+              alt: ogImage.alt,
+            },
+          ]
+        : undefined,
     },
     twitter: {
-      card: "summary_large_image",
+      card: ogImage ? "summary_large_image" : "summary",
       title: siteData.metaTitle,
       description: siteData.metaDescription,
-      images: [
-        {
-          url: ogImage.url,
-          alt: ogImage.alt,
-        },
-      ],
+      images: ogImage
+        ? [
+            {
+              url: ogImage.url,
+              alt: ogImage.alt,
+            },
+          ]
+        : undefined,
     },
+    icons: siteData.favicon
+      ? {
+          icon: [{ url: siteData.favicon, type: "image/png" }],
+          apple: [{ url: siteData.favicon, type: "image/png" }],
+        }
+      : undefined,
   };
 }
 
@@ -90,15 +107,36 @@ export default async function SiteLayout({ children, params }: SiteLayoutProps) 
     notFound();
   }
 
+  const host = (await headers()).get("host") ?? "";
+  const publicBasePath = resolvePublicBasePath(siteSlug, host);
+  const isCustomDomain = publicBasePath === "";
+  const isSideSleeper = siteHasMattressPillowNav(siteSlug);
+  const isEditorial = siteUsesEditorialCatalog(siteSlug);
+
   return (
-    <SiteProvider siteSlug={siteSlug} siteData={siteData}>
-      <JsonLd
-        data={[buildWebSiteSchema(siteData), buildOrganizationSchema(siteData)]}
-      />
-      <AdSenseScript />
-      <Header />
-      {children}
-      <Footer />
+    <SiteProvider
+      siteSlug={siteSlug}
+      siteData={siteData}
+      publicBasePath={publicBasePath}
+      isCustomDomain={isCustomDomain}
+    >
+      <div
+        className={
+          isSideSleeper
+            ? "flex flex-1 flex-col bg-ss-paper text-ss-ink"
+            : isEditorial
+              ? "flex flex-1 flex-col bg-fwn-void text-fwn-ivory"
+              : "flex flex-1 flex-col"
+        }
+      >
+        <JsonLd
+          data={[buildWebSiteSchema(siteData), buildOrganizationSchema(siteData)]}
+        />
+        {!siteUsesEditorialCatalog(siteSlug) && <AdSenseScript />}
+        <Header />
+        {children}
+        <Footer />
+      </div>
     </SiteProvider>
   );
 }

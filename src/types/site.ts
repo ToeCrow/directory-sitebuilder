@@ -10,15 +10,54 @@ export type ArticleProductSection = {
   whereItFallsShort: string[];
   bestFor: string;
   skipIf: string;
+  /** Catalog product slug when this section maps to a Product. */
+  productSlug?: string;
+  /** Variant label when the section describes a specific configuration of the catalog product. */
+  productVariant?: string;
 };
 
-export type Article = {
+export type ArticleCitation = {
+  label: string;
+  href: string;
+};
+
+export type EditorialFigure = {
+  src: string;
+  alt: string;
+  caption?: string;
+  /** Unsplash (or other) photo page */
+  creditHref?: string;
+  /** Photographer profile page */
+  photographerHref?: string;
+};
+
+export type EditorialSection = {
+  heading: string;
+  paragraphs: string[];
+  bullets?: string[];
+  /** Extra paragraphs after bullets / mid-section image */
+  closingParagraphs?: string[];
+  image?: EditorialFigure;
+  factBox?: {
+    title: string;
+    items: string[];
+  };
+  citations?: ArticleCitation[];
+};
+
+export type ReviewCategory = "mattress" | "pillow" | "science";
+
+type ArticleBase = {
   title: string;
   slug: string;
   excerpt?: string;
+  /** Optional SEO document title; falls back to title. Keep 50–60 characters. */
+  metaTitle?: string;
+  /** Optional SEO meta description; falls back to excerpt or intro. */
+  metaDescription?: string;
   intro: string[];
-  researchNote: { title: string; content: string };
-  products: ArticleProductSection[];
+  /** Filter bucket on /reviews (side-sleeper). */
+  reviewCategory?: ReviewCategory;
   /** ISO 8601 date string, e.g. "2026-03-15" */
   publishedAt?: string;
   /** ISO 8601 date string, e.g. "2026-03-15" */
@@ -27,9 +66,58 @@ export type Article = {
   author?: string;
   /** Optional per-article social share image override */
   ogImage?: { src: string; alt: string };
+  /** One article slug to show as a mid-article related read. */
+  inlineRelatedSlug?: string;
+  /** Ordered slugs for the bottom related list (falls back to the same review category). */
+  relatedSlugs?: string[];
 };
 
+export type ArticleClosingGuide = {
+  title: string;
+  items: string[];
+  closing?: string;
+  pricingNote?: string;
+};
+
+export type ProductRoundupArticle = ArticleBase & {
+  kind: "product-roundup";
+  researchNote: { title: string; content: string };
+  products: ArticleProductSection[];
+  /** Optional post-list “How to choose” guide */
+  closingGuide?: ArticleClosingGuide;
+  /** Optional FAQ block after the product list */
+  faqs?: FAQ[];
+};
+
+export type EditorialArticle = ArticleBase & {
+  kind: "editorial";
+  introImage?: EditorialFigure;
+  sections: EditorialSection[];
+};
+
+export type Article = ProductRoundupArticle | EditorialArticle;
+
 export type BuyingGuideSection = { title: string; content: string };
+
+export type BuyingGuideSubsection = { title: string; content: string };
+
+export type BuyingGuideChapter = {
+  title: string;
+  /** Optional body when the chapter has no subsections (e.g. methodology). */
+  content?: string;
+  subsections?: BuyingGuideSubsection[];
+};
+
+export type BuyingGuideProductNavItem = {
+  category: "mattress" | "pillow" | "topper";
+  title: string;
+  description: string;
+};
+
+export type BuyingGuideProductNav = {
+  title: string;
+  items: BuyingGuideProductNavItem[];
+};
 
 export type ComparisonRow = {
   key: string;
@@ -37,33 +125,48 @@ export type ComparisonRow = {
   type?: "text" | "boolean";
 };
 
-// TODO: add optional category field (mattress | pillow | topper) for multi-category directories.
+export type ProductCategory = "mattress" | "pillow" | "topper" | "software";
+
 // TODO: load products from PostgreSQL via admin/CMS instead of static site data.
 
 export type Product = {
   name: string;
   slug: string;
+  category: ProductCategory;
+  /** Product photo shown on the product page (and OG when set). */
+  image?: { src: string; alt: string };
   shortDescription: string;
+  /** Optional SEO meta description; falls back to shortDescription. */
+  metaDescription?: string;
+  /** Optional SEO document title; falls back to "{name} Review". */
+  metaTitle?: string;
   bestFor: string;
-  priceFrom: string;
+  /**
+   * Numeric floor for sorting/filtering (USD).
+   * Null/undefined when price is unknown (e.g. custom quote).
+   */
+  priceFrom?: number | null;
+  /** Visitor-facing price string; mattress prices should state Queen (or other size). */
+  priceDisplay: string;
+  /** ISO date when price was last verified against the official product page. */
+  priceUpdatedAt?: string;
   features: string[];
   pros: string[];
   cons: string[];
-  affiliateUrl: string;
+  /** Always the official manufacturer/product page. */
+  productUrl: string;
+  /** Real affiliate tracking URL only when a partnership exists. */
+  affiliateUrl?: string;
   /** Whether we currently have an active affiliate partnership for this product */
   hasAffiliatePartnership: boolean;
-  /** Overall score on the site’s ratingScale (Research Score for side-sleeper). */
+  /** Overall score on the site’s ratingScale. Unused in Side Sleeper UI. */
   rating: number;
-  /**
-   * Optional future per-criterion Research Score values (e.g. cooling, pressure relief).
-   * Not used in UI yet — reserved so the model can grow without reshaping Product.
-   */
-  researchScoreBreakdown?: Record<string, number>;
   badge?: string;
   featuredRank: number | null;
-  comparisonRank: number;
   directoryOrder: number;
-  comparison: Record<string, string | boolean>;
+  /** Present only for products included in the comparison table. */
+  comparisonRank?: number;
+  comparison?: Record<string, string | boolean>;
 };
 
 export type SiteData = {
@@ -76,6 +179,8 @@ export type SiteData = {
   ratingScale: 5 | 10;
   /** Optional header logo+wordmark image (e.g. /sites/side-sleeper/header-brand.png) */
   headerBrandImage?: string;
+  /** Optional tab icon (e.g. /sites/findworthnow/favicon.png) */
+  favicon?: string;
   hero: {
     eyebrow?: string;
     headline: string;
@@ -106,10 +211,27 @@ export type SiteData = {
   };
   buyingGuide: {
     title: string;
-    sections: BuyingGuideSection[];
+    /** Short intro paragraphs (hierarchical guides, e.g. Side Sleeper). */
+    intro?: string[];
+    /**
+     * Hierarchical chapters (H2) with optional H3 subsections.
+     * When present, preferred over flat `sections` for page rendering.
+     */
+    chapters?: BuyingGuideChapter[];
+    /** Category entry points into the product catalogue. */
+    productNav?: BuyingGuideProductNav;
+    /** Flat sections (e.g. Construction Software). */
+    sections?: BuyingGuideSection[];
   };
   faqs: FAQ[];
   articles: Article[];
+  /**
+   * Homepage Featured Reviews: priority keyword guides (Search Console).
+   * Combined with scienceArticleSlug + latest-published logic in getFeaturedHomeReviews.
+   */
+  featuredReviewSlugs?: string[];
+  /** Science / editorial article always included in Featured Reviews when set. */
+  scienceArticleSlug?: string;
   newsletter: {
     title: string;
     description: string;

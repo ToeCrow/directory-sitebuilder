@@ -1,15 +1,27 @@
-import { getFeaturedProducts, getSiteData } from "@/lib/site";
+"use client";
+
+import { featuredProductsFrom } from "@/lib/site";
+import { useSiteData } from "@/context/SiteContext";
 import { ProductCard } from "@/components/ProductCard";
 import { cn } from "@/lib/cn";
 
 type ProductGridProps = {
   siteSlug: string;
   className?: string;
+  titleOverride?: string;
 };
 
-export async function ProductGrid({ siteSlug, className }: ProductGridProps) {
-  const siteData = await getSiteData(siteSlug);
-  const featuredProducts = await getFeaturedProducts(siteSlug);
+export function ProductGrid({
+  siteSlug,
+  className,
+  titleOverride,
+}: ProductGridProps) {
+  const siteData = useSiteData();
+  const featuredProducts = featuredProductsFrom(siteData);
+
+  if (featuredProducts.length === 0) {
+    return null;
+  }
 
   return (
     <section
@@ -19,12 +31,12 @@ export async function ProductGrid({ siteSlug, className }: ProductGridProps) {
       <div className="mx-auto max-w-6xl px-4">
         <h2
           id="top-picks-heading"
-          className="text-2xl font-bold tracking-tight text-slate-900 md:text-3xl"
+          className="text-2xl font-bold tracking-tight text-ss-navy md:text-3xl"
         >
-          {siteData.topPicks.title}
+          {titleOverride ?? siteData.topPicks.title}
         </h2>
         {siteData.topPicks.description && (
-          <p className="mt-2 max-w-2xl text-slate-600">
+          <p className="mt-2 max-w-2xl text-ss-ink/75">
             {siteData.topPicks.description}
           </p>
         )}

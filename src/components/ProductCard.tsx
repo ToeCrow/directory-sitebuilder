@@ -1,12 +1,14 @@
+"use client";
+
+import Image from "next/image";
 import Link from "next/link";
-import { getSiteData } from "@/lib/site";
-import type { Product } from "@/types/site";
+import { usePublicBasePath, useSiteData } from "@/context/SiteContext";
+import { siteShowsProductRatings } from "@/lib/site";
+import type { Product, ProductCategory } from "@/types/site";
 import { StarRating } from "@/components/StarRating";
 import { cn } from "@/lib/cn";
-import {
-  RESEARCH_SCORE_LABEL,
-  siteUsesResearchScore,
-} from "@/lib/research-score";
+import { getProductPath } from "@/lib/paths";
+import { buyLinkRel, getBuyUrl } from "@/lib/product-links";
 
 type ProductCardProps = {
   siteSlug: string;
@@ -14,80 +16,172 @@ type ProductCardProps = {
   variant?: "featured" | "directory";
 };
 
-export async function ProductCard({
+function ProductImagePlaceholder({ category }: { category: ProductCategory }) {
+  const label =
+    category === "pillow"
+      ? "Pillow"
+      : category === "topper"
+        ? "Topper"
+        : "Mattress";
+
+  return (
+    <div
+      className="absolute inset-0 flex items-center justify-center overflow-hidden bg-ss-mist"
+      aria-hidden="true"
+    >
+      <div
+        className="absolute inset-0 opacity-[0.35]"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 1px 1px, rgb(22 50 79 / 0.18) 1px, transparent 0)",
+          backgroundSize: "18px 18px",
+        }}
+      />
+      <div className="absolute -right-8 -top-10 h-36 w-36 rounded-full bg-ss-teal/20 blur-2xl" />
+      <div className="absolute -bottom-12 -left-10 h-40 w-40 rounded-full bg-ss-navy/10 blur-2xl" />
+      <div className="relative flex flex-col items-center gap-2 text-ss-navy/40">
+        {category === "pillow" ? (
+          <svg
+            viewBox="0 0 48 48"
+            className="h-12 w-12"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          >
+            <path
+              d="M8 22c0-5 4-9 10-9h12c6 0 10 4 10 9v4c0 5-4 9-10 9H18c-6 0-10-4-10-9v-4Z"
+              strokeLinejoin="round"
+            />
+            <path d="M12 22h24" strokeLinecap="round" opacity="0.5" />
+          </svg>
+        ) : (
+          <svg
+            viewBox="0 0 48 48"
+            className="h-12 w-12"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          >
+            <rect x="6" y="16" width="36" height="16" rx="4" />
+            <path d="M10 24h28" strokeLinecap="round" opacity="0.45" />
+            <path d="M14 32v4M34 32v4" strokeLinecap="round" opacity="0.55" />
+          </svg>
+        )}
+        <span className="text-xs font-medium tracking-wide text-ss-navy/45">
+          {label} photo coming soon
+        </span>
+      </div>
+    </div>
+  );
+}
+
+export function ProductCard({
   siteSlug,
   product,
   variant = "featured",
 }: ProductCardProps) {
-  const siteData = await getSiteData(siteSlug);
-  const productHref = `/${siteSlug}/products/${product.slug}`;
+  const publicBasePath = usePublicBasePath();
+  const siteData = useSiteData();
+  const showRating = siteShowsProductRatings(siteSlug);
+  const productHref = getProductPath(publicBasePath, product.slug);
+  const buyHref = getBuyUrl(product);
   const isDirectory = variant === "directory";
-  const scoreLabel = siteUsesResearchScore(siteData)
-    ? RESEARCH_SCORE_LABEL
-    : "Rating";
+  const headingId = `product-card-${product.slug}`;
 
   return (
-    <article
-      className={cn(
-        "flex flex-col rounded-xl border border-slate-200 bg-white shadow-sm transition-shadow hover:shadow-md",
-        isDirectory ? "p-4" : "p-6",
-      )}
-    >
-      <div className="mb-3 flex items-start justify-between gap-4">
-        <div className="min-w-0">
+    <article className="group relative flex flex-col overflow-hidden border border-ss-navy/10 bg-ss-paper transition-colors duration-200 hover:border-ss-navy/25">
+      <Link
+        href={productHref}
+        className="absolute inset-0 z-0"
+        aria-labelledby={headingId}
+      >
+        <span className="sr-only">View {product.name}</span>
+      </Link>
+
+      <div className="pointer-events-none relative mb-4 aspect-4/3 overflow-hidden bg-ss-mist">
+        {product.image ? (
+          <Image
+            src={product.image.src}
+            alt={product.image.alt}
+            fill
+            sizes="(max-width: 768px) 100vw, 25vw"
+            className="object-cover object-center scale-[1.22] transition-transform duration-300 group-hover:scale-[1.28]"
+          />
+        ) : (
+          <ProductImagePlaceholder category={product.category} />
+        )}
+      </div>
+
+      <div
+        className={cn(
+          "pointer-events-none relative flex flex-1 flex-col",
+          isDirectory ? "px-4 pb-4" : "px-6 pb-6",
+        )}
+      >
+        <div className="mb-3">
           {product.badge && (
-            <span className="mb-2 inline-block rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700">
+            <span className="mb-2 inline-block bg-ss-mist px-2.5 py-0.5 text-xs font-medium text-ss-navy">
               {product.badge}
             </span>
           )}
           <h3
+            id={headingId}
             className={cn(
-              "font-semibold text-slate-900",
+              "font-semibold text-ss-navy transition-colors group-hover:text-ss-blue",
               isDirectory ? "text-lg" : "text-xl",
             )}
           >
-            <Link href={productHref} className="hover:text-blue-600">
-              {product.name}
-            </Link>
+            {product.name}
           </h3>
+          {showRating && siteData && (
+            <div
+              className={cn(
+                "mt-2",
+                !isDirectory &&
+                  "border-l-[3px] border-ss-navy/20 bg-ss-mist/80 px-3 py-2",
+              )}
+            >
+              <p className="mb-1 text-xs font-medium uppercase tracking-wide text-ss-navy/60">
+                Rating
+              </p>
+              <StarRating
+                rating={product.rating}
+                maxRating={siteData.ratingScale}
+                label="Rating"
+              />
+            </div>
+          )}
         </div>
-        <StarRating
-          rating={product.rating}
-          maxRating={siteData.ratingScale}
-          label={scoreLabel}
-        />
-      </div>
 
-      <p className="mb-4 flex-1 text-sm leading-relaxed text-slate-600">
-        {product.shortDescription}
-      </p>
+        <p className="mb-4 flex-1 text-sm leading-relaxed text-ss-ink/75">
+          {product.shortDescription}
+        </p>
 
-      <dl className="mb-6 space-y-2 text-sm">
-        <div>
-          <dt className="font-medium text-slate-500">Best for</dt>
-          <dd className="text-slate-800">{product.bestFor}</dd>
+        <dl className="mb-6 space-y-3 text-sm">
+          <div className="border-l-[3px] border-ss-green bg-ss-green/10 px-3 py-2">
+            <dt className="text-xs font-semibold uppercase tracking-[0.14em] text-ss-ink">
+              Best for
+            </dt>
+            <dd className="mt-1 text-ss-ink/85">{product.bestFor}</dd>
+          </div>
+          <div>
+            <dt className="text-xs font-semibold uppercase tracking-[0.14em] text-ss-navy/60">
+              Price
+            </dt>
+            <dd className="mt-1 text-ss-ink">{product.priceDisplay}</dd>
+          </div>
+        </dl>
+
+        <div className="pointer-events-auto relative z-10 mt-auto">
+          <a
+            href={buyHref}
+            target="_blank"
+            rel={buyLinkRel(product)}
+            className="inline-flex w-full items-center justify-center rounded-lg bg-ss-navy px-4 py-2 text-sm font-semibold text-ss-paper transition-colors hover:bg-ss-navy/90"
+          >
+            Check price & availability
+          </a>
         </div>
-        <div>
-          <dt className="font-medium text-slate-500">Price from</dt>
-          <dd className="text-slate-800">{product.priceFrom}</dd>
-        </div>
-      </dl>
-
-      <div className="mt-auto flex flex-col gap-2 sm:flex-row">
-        <Link
-          href={productHref}
-          className="inline-flex items-center justify-center rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-400 hover:bg-slate-50"
-        >
-          Read review
-        </Link>
-        <a
-          href={product.affiliateUrl}
-          target="_blank"
-          rel="noopener sponsored"
-          className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
-        >
-          Visit site
-        </a>
       </div>
     </article>
   );

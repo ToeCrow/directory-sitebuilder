@@ -1,12 +1,19 @@
 import type { Metadata } from "next";
+import { siteSlugs } from "@/data/sites";
 import { HomePageLayout } from "@/components/HomePageLayout";
+import type { SiteSlug } from "@/data/sites";
+import { siteUsesEditorialCatalog } from "@/lib/directory-catalog";
+import { getPublicPath } from "@/lib/paths";
+import { buildPageOpenGraph } from "@/lib/seo";
 import { getSiteBySlug } from "@/lib/site";
-
-export const dynamic = "force-dynamic";
 
 type SitePageProps = {
   params: Promise<{ siteSlug: string }>;
 };
+
+export function generateStaticParams() {
+  return siteSlugs.map((siteSlug) => ({ siteSlug }));
+}
 
 export async function generateMetadata({
   params,
@@ -18,15 +25,25 @@ export async function generateMetadata({
     return {};
   }
 
-  // Public homepage on custom domain is `/` (rewritten), not `/{siteSlug}`.
+  // Public homepage path: `/` on custom-domain sites, `/{siteSlug}` on platform-only sites.
+  const path = getPublicPath(siteSlug, "/");
+  const isEditorial = siteUsesEditorialCatalog(siteSlug);
+  const title = isEditorial
+    ? { absolute: siteData.metaTitle }
+    : siteData.title;
+
   return {
-    title: siteData.title,
+    title,
+    description: siteData.metaDescription,
     alternates: {
-      canonical: "/",
+      canonical: path,
     },
-    openGraph: {
-      url: "/",
-    },
+    openGraph: buildPageOpenGraph({
+      site: siteData,
+      title: siteData.metaTitle,
+      description: siteData.metaDescription,
+      path,
+    }),
   };
 }
 
@@ -35,7 +52,7 @@ export default async function SitePage({ params }: SitePageProps) {
 
   return (
     <main>
-      <HomePageLayout siteSlug={siteSlug} />
+      <HomePageLayout siteSlug={siteSlug as SiteSlug} />
     </main>
   );
 }

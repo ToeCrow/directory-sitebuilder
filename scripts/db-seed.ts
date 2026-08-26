@@ -70,6 +70,7 @@ async function insertSite(tx: DbClient, siteData: SiteData) {
       siteUrl: siteData.siteUrl,
       ratingScale: siteData.ratingScale,
       headerBrandImage: siteData.headerBrandImage ?? null,
+      favicon: siteData.favicon ?? null,
       affiliateDisclosure: siteData.affiliateDisclosure,
       newsletterTitle: siteData.newsletter.title,
       newsletterDescription: siteData.newsletter.description,
@@ -79,8 +80,11 @@ async function insertSite(tx: DbClient, siteData: SiteData) {
       adsSecondary: siteData.ads?.slots.secondary ?? null,
       status: "published",
       publishedAt: now,
-      features:
-        siteData.slug === "side-sleeper" ? { researchScorePage: true } : {},
+      features: {
+        ...(siteData.features ?? {}),
+        featuredReviewSlugs: siteData.featuredReviewSlugs,
+        scienceArticleSlug: siteData.scienceArticleSlug,
+      },
     })
     .returning();
 
@@ -131,6 +135,11 @@ async function insertSite(tx: DbClient, siteData: SiteData) {
       siteId: site.id,
       sectionKey: "buying-guide",
       title: siteData.buyingGuide.title,
+      config: {
+        intro: siteData.buyingGuide.intro,
+        chapters: siteData.buyingGuide.chapters,
+        productNav: siteData.buyingGuide.productNav,
+      },
     },
     {
       siteId: site.id,
@@ -190,9 +199,10 @@ async function insertSite(tx: DbClient, siteData: SiteData) {
     );
   }
 
-  if (siteData.buyingGuide.sections.length > 0) {
+  const buyingGuideSectionsData = siteData.buyingGuide.sections ?? [];
+  if (buyingGuideSectionsData.length > 0) {
     await tx.insert(buyingGuideSections).values(
-      siteData.buyingGuide.sections.map((section, index) => ({
+      buyingGuideSectionsData.map((section, index) => ({
         siteId: site.id,
         title: section.title,
         content: section.content,
@@ -220,7 +230,7 @@ async function insertSite(tx: DbClient, siteData: SiteData) {
       .values(mapArticle(site.id, article))
       .returning({ id: articles.id });
 
-    if (article.products.length > 0) {
+    if (article.kind === "product-roundup" && article.products.length > 0) {
       await tx.insert(articleProductSections).values(
         article.products.map((section, index) => {
           articleProductSectionCount += 1;
@@ -235,7 +245,7 @@ async function insertSite(tx: DbClient, siteData: SiteData) {
     products: siteData.products.length,
     topPicks: topPickRows.length,
     faqs: siteData.faqs.length,
-    buyingGuideSections: siteData.buyingGuide.sections.length,
+    buyingGuideSections: buyingGuideSectionsData.length,
     footerLinks: siteData.footer.links.length,
     articles: siteData.articles.length,
     articleProductSections: articleProductSectionCount,
@@ -250,35 +260,65 @@ function mapProduct(siteId: string, product: Product) {
     slug: product.slug,
     shortDescription: product.shortDescription,
     bestFor: product.bestFor,
-    priceFrom: product.priceFrom,
+    priceFrom:
+      product.priceFrom != null
+        ? String(product.priceFrom)
+        : product.priceDisplay,
     features: product.features,
     pros: product.pros,
     cons: product.cons,
-    affiliateUrl: product.affiliateUrl,
+    affiliateUrl: product.affiliateUrl ?? product.productUrl,
     hasAffiliatePartnership: product.hasAffiliatePartnership,
     rating: ratingToNumeric(product.rating),
-    researchScoreBreakdown: product.researchScoreBreakdown ?? null,
+    researchScoreBreakdown: null,
     badge: product.badge ?? null,
-    comparisonRank: product.comparisonRank,
+    comparisonRank: product.comparisonRank ?? 0,
     directorySortOrder: product.directoryOrder,
-    comparison: product.comparison,
+    comparison: product.comparison ?? {},
+    content: {
+      category: product.category,
+      image: product.image,
+      priceDisplay: product.priceDisplay,
+      productUrl: product.productUrl,
+      metaTitle: product.metaTitle,
+      metaDescription: product.metaDescription,
+      priceUpdatedAt: product.priceUpdatedAt,
+    },
     status: "published" as const,
     publishedAt: new Date(),
   };
 }
 
 function mapArticle(siteId: string, article: Article) {
+  const researchNote =
+    article.kind === "product-roundup"
+      ? article.researchNote
+      : { title: "", content: "" };
+
   return {
     siteId,
     title: article.title,
     slug: article.slug,
     excerpt: article.excerpt ?? null,
     intro: article.intro,
-    researchNoteTitle: article.researchNote.title,
-    researchNoteContent: article.researchNote.content,
+    researchNoteTitle: researchNote.title,
+    researchNoteContent: researchNote.content,
     author: article.author ?? null,
     ogImageSrc: article.ogImage?.src ?? null,
     ogImageAlt: article.ogImage?.alt ?? null,
+    content: {
+      kind: article.kind,
+      reviewCategory: article.reviewCategory,
+      metaTitle: article.metaTitle,
+      metaDescription: article.metaDescription,
+      inlineRelatedSlug: article.inlineRelatedSlug,
+      relatedSlugs: article.relatedSlugs,
+      introImage: article.kind === "editorial" ? article.introImage : undefined,
+      sections: article.kind === "editorial" ? article.sections : undefined,
+      closingGuide:
+        article.kind === "product-roundup" ? article.closingGuide : undefined,
+      faqs: article.kind === "product-roundup" ? article.faqs : undefined,
+    },
     status: "published" as const,
     publishedAt: parseIsoDate(article.publishedAt) ?? new Date(),
     updatedAtContent: parseIsoDate(article.updatedAt),
@@ -287,7 +327,7 @@ function mapArticle(siteId: string, article: Article) {
 
 function mapArticleProductSection(
   articleId: string,
-  section: Article["products"][number],
+  section: Extract<Article, { kind: "product-roundup" }>["products"][number],
   sortOrder: number,
 ) {
   return {
@@ -301,6 +341,8 @@ function mapArticleProductSection(
     whereItFallsShort: section.whereItFallsShort,
     bestFor: section.bestFor,
     skipIf: section.skipIf,
+    productSlug: section.productSlug ?? null,
+    productVariant: section.productVariant ?? null,
     sortOrder,
   };
 }

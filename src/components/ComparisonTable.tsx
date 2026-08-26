@@ -1,28 +1,24 @@
-import { getComparisonProducts, getComparisonValue, getSiteData } from "@/lib/site";
+"use client";
+
+import { comparisonProductsFrom, getComparisonValue } from "@/lib/site";
+import { useSiteData } from "@/context/SiteContext";
 import { cn } from "@/lib/cn";
-import Link from "next/link";
-import {
-  RESEARCH_SCORE_HOWTO_LABEL,
-  getResearchScorePath,
-  siteUsesResearchScore,
-} from "@/lib/research-score";
 
 type ComparisonTableProps = {
   siteSlug: string;
   className?: string;
 };
 
-export async function ComparisonTable({ siteSlug, className }: ComparisonTableProps) {
-  const siteData = await getSiteData(siteSlug);
-  const products = await getComparisonProducts(siteSlug);
+export function ComparisonTable({ siteSlug, className }: ComparisonTableProps) {
+  const siteData = useSiteData();
+  const products = comparisonProductsFrom(siteData);
   const { comparisonTable } = siteData;
-  const showResearchScoreLink = siteUsesResearchScore(siteData);
 
   return (
     <section
       id="compare"
       className={cn(
-        "border-y border-slate-200 bg-slate-50 py-16 md:py-20",
+        "scroll-mt-24 border-y border-slate-200 bg-slate-50 py-16 md:py-20",
         className,
       )}
       aria-labelledby="compare-heading"
@@ -37,23 +33,11 @@ export async function ComparisonTable({ siteSlug, className }: ComparisonTablePr
         {comparisonTable.description && (
           <p className="mt-2 max-w-2xl text-slate-600">
             {comparisonTable.description}
-            {showResearchScoreLink && (
-              <>
-                {" "}
-                <Link
-                  href={getResearchScorePath(siteSlug)}
-                  className="font-medium text-blue-600 underline-offset-2 hover:underline"
-                >
-                  {RESEARCH_SCORE_HOWTO_LABEL}
-                </Link>
-                .
-              </>
-            )}
           </p>
         )}
 
         <div className="mt-10 overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm">
-          <table className="w-full min-w-[640px] text-left text-sm">
+          <table className="w-full min-w-160 text-left text-sm">
             <thead>
               <tr className="border-b border-slate-200 bg-slate-50">
                 <th

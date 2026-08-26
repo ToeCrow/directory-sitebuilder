@@ -1,11 +1,15 @@
 "use client";
 
 import Script from "next/script";
+import { usePathname } from "next/navigation";
+import { isPrivacyPolicyPath } from "@/lib/privacy-policy";
 
 const clientId = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
 
 export function AdSenseScript() {
-  if (!clientId) {
+  const pathname = usePathname();
+
+  if (!clientId || isPrivacyPolicyPath(pathname)) {
     return null;
   }
 

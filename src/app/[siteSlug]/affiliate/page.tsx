@@ -1,18 +1,30 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import type { SiteSlug } from "@/data/sites";
 import {
+  getLegacyDirectorySiteSlugs,
   getProducts,
   getSiteBySlug,
   isValidSiteSlug,
+  siteHasMattressPillowNav,
 } from "@/lib/site";
-import { siteUsesResearchScore } from "@/lib/research-score";
+import { siteUsesEditorialCatalog } from "@/lib/directory-catalog";
+import { getProductPath, getPublicPath, getSitePath } from "@/lib/paths";
+import { getRequestPublicBasePath } from "@/lib/request-paths";
+import { buildPageOpenGraph } from "@/lib/seo";
 
-export const dynamic = "force-dynamic";
+const AFFILIATE_TITLE = "How we work with brands";
+const AFFILIATE_DESCRIPTION =
+  "See every product we cover and whether Side Sleeper Guide currently has an affiliate partnership when you buy through our links.";
 
 type AffiliatePageProps = {
   params: Promise<{ siteSlug: string }>;
 };
+
+export function generateStaticParams() {
+  return getLegacyDirectorySiteSlugs().map((siteSlug) => ({ siteSlug }));
+}
 
 export async function generateMetadata({
   params,
@@ -24,22 +36,29 @@ export async function generateMetadata({
     return { title: "Affiliate partnerships" };
   }
 
+  const path = getPublicPath(siteSlug, "/affiliate");
+
   return {
     title: {
-      absolute: "How we work with brands",
+      absolute: AFFILIATE_TITLE,
     },
-    description:
-      "See which products we cover and whether we currently have an affiliate partnership.",
+    description: AFFILIATE_DESCRIPTION,
     alternates: {
-      canonical: `/${siteSlug}/affiliate`,
+      canonical: path,
     },
+    openGraph: buildPageOpenGraph({
+      site: siteData,
+      title: AFFILIATE_TITLE,
+      description: AFFILIATE_DESCRIPTION,
+      path,
+    }),
   };
 }
 
 export default async function AffiliatePage({ params }: AffiliatePageProps) {
   const { siteSlug } = await params;
 
-  if (!(await isValidSiteSlug(siteSlug))) {
+  if (!(await isValidSiteSlug(siteSlug)) || siteUsesEditorialCatalog(siteSlug)) {
     notFound();
   }
 
@@ -48,14 +67,15 @@ export default async function AffiliatePage({ params }: AffiliatePageProps) {
     notFound();
   }
 
-  const products = await getProducts(siteSlug);
-  const usesResearchScore = siteUsesResearchScore(siteData);
+  const products = await getProducts(siteSlug as SiteSlug);
+  const isSideSleeper = siteHasMattressPillowNav(siteSlug);
+  const publicBasePath = await getRequestPublicBasePath(siteSlug);
 
   return (
     <main className="py-12 md:py-16">
       <div className="mx-auto max-w-3xl px-4">
         <Link
-          href={`/${siteSlug}`}
+          href={getSitePath(publicBasePath)}
           className="text-sm font-medium text-blue-600 hover:text-blue-700"
         >
           ← Back to home
@@ -66,7 +86,7 @@ export default async function AffiliatePage({ params }: AffiliatePageProps) {
             How we work with brands
           </h1>
           <p className="mt-4 text-base leading-relaxed text-slate-600">
-            {usesResearchScore ? (
+            {isSideSleeper ? (
               <>
                 When you buy through some links on {siteData.title}, we may earn
                 a commission at no extra cost to you. That never changes our
@@ -101,7 +121,7 @@ export default async function AffiliatePage({ params }: AffiliatePageProps) {
                 >
                   <td className="py-3 pr-4">
                     <Link
-                      href={`/${siteSlug}/products/${product.slug}`}
+                      href={getProductPath(publicBasePath, product.slug)}
                       className="font-medium text-slate-900 hover:text-blue-600"
                     >
                       {product.name}

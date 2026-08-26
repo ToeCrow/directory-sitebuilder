@@ -1,15 +1,16 @@
 import type { MetadataRoute } from "next";
+import { getSiteBySlug, siteSlugs } from "@/data/sites";
+import { siteHasMattressPillowNav } from "@/lib/site";
+import { getPublicAbsoluteUrl, siteUsesPublicPaths } from "@/lib/paths";
+import { siteUsesAboutPage } from "@/lib/about";
 import {
-  getAllSites,
-  getSiteBySlug,
-  siteSlugs,
-  type SiteSlug,
-} from "@/data/sites";
+  getDirectoryCategories,
+  getDirectoryProducts,
+  siteUsesEditorialCatalog,
+} from "@/lib/directory-catalog";
+import { getDirectoryBlogPosts } from "@/lib/directory-blog";
+import { siteUsesPrivacyPolicy } from "@/lib/privacy-policy";
 
-/**
- * Sitemap reads the static seed modules — no build-time DB access.
- * TODO after Neon: DB-backed sitemap + force-dynamic / on-demand revalidation.
- */
 export function buildSiteSitemapEntries(
   siteSlug: string,
 ): MetadataRoute.Sitemap {
@@ -18,34 +19,190 @@ export function buildSiteSitemapEntries(
     return [];
   }
 
-  const base = siteData.siteUrl.replace(/\/$/, "");
   const now = new Date();
+
+  if (siteUsesEditorialCatalog(siteSlug)) {
+    const entries: MetadataRoute.Sitemap = [
+      {
+        url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, "/"),
+        lastModified: now,
+        changeFrequency: "weekly",
+        priority: 1,
+      },
+      {
+        url: getPublicAbsoluteUrl(
+          siteSlug,
+          siteData.siteUrl,
+          "/affiliate-disclosure",
+        ),
+        lastModified: now,
+        changeFrequency: "yearly",
+        priority: 0.3,
+      },
+      {
+        url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, "/products"),
+        lastModified: now,
+        changeFrequency: "weekly",
+        priority: 0.85,
+      },
+    ];
+
+    for (const category of getDirectoryCategories(siteSlug)) {
+      entries.push({
+        url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, `/${category.slug}`),
+        lastModified: now,
+        changeFrequency: "weekly",
+        priority: 0.8,
+      });
+    }
+
+    for (const product of getDirectoryProducts(siteSlug)) {
+      entries.push({
+        url: getPublicAbsoluteUrl(
+          siteSlug,
+          siteData.siteUrl,
+          `/${product.categorySlug}/${product.reviewSlug}`,
+        ),
+        lastModified: now,
+        changeFrequency: "weekly",
+        priority: 0.9,
+      });
+    }
+
+    const blogPosts = getDirectoryBlogPosts(siteSlug);
+    if (blogPosts.length > 0) {
+      entries.push({
+        url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, "/blog"),
+        lastModified: now,
+        changeFrequency: "weekly",
+        priority: 0.7,
+      });
+    }
+
+    for (const post of blogPosts) {
+      entries.push({
+        url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, `/blog/${post.slug}`),
+        lastModified: now,
+        changeFrequency: "monthly",
+        priority: 0.65,
+      });
+    }
+
+    if (siteUsesPublicPaths(siteSlug)) {
+      const badPrefix = `${siteData.siteUrl.replace(/\/$/, "")}/${siteSlug}/`;
+      for (const entry of entries) {
+        if (entry.url.startsWith(badPrefix)) {
+          throw new Error(
+            `Sitemap URL incorrectly includes siteSlug prefix: ${entry.url}`,
+          );
+        }
+      }
+    }
+
+    return entries;
+  }
 
   const entries: MetadataRoute.Sitemap = [
     {
-      url: `${base}/`,
+      url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, "/"),
       lastModified: now,
       changeFrequency: "weekly",
       priority: 1,
     },
+    {
+      url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, "/products"),
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
   ];
+
+  // Construction-software (and similar) keep /comparisons; Side Sleeper does not.
+  if (!siteHasMattressPillowNav(siteSlug)) {
+    entries.push({
+      url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, "/comparisons"),
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.75,
+    });
+  }
+
+  entries.push({
+    url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, "/buying-guide"),
+    lastModified: now,
+    changeFrequency: "monthly",
+    priority: 0.7,
+  });
+
+  if (siteUsesAboutPage(siteSlug)) {
+    entries.push({
+      url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, "/about"),
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.4,
+    });
+  }
+
+  if (siteUsesPrivacyPolicy(siteSlug)) {
+    entries.push({
+      url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, "/privacy-policy"),
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.3,
+    });
+  }
+
+  entries.push({
+    url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, "/affiliate"),
+    lastModified: now,
+    changeFrequency: "monthly",
+    priority: 0.4,
+  });
 
   for (const product of siteData.products) {
     entries.push({
-      url: `${base}/${siteSlug}/products/${product.slug}`,
+      url: getPublicAbsoluteUrl(
+        siteSlug,
+        siteData.siteUrl,
+        `/products/${product.slug}`,
+      ),
       lastModified: now,
       changeFrequency: "weekly",
       priority: 0.7,
     });
   }
 
+  if (siteData.articles.length > 0) {
+    entries.push({
+      url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, "/reviews"),
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.75,
+    });
+  }
+
   for (const article of siteData.articles) {
     entries.push({
-      url: `${base}/${siteSlug}/articles/${article.slug}`,
+      url: getPublicAbsoluteUrl(
+        siteSlug,
+        siteData.siteUrl,
+        `/reviews/${article.slug}`,
+      ),
       lastModified: now,
-      changeFrequency: "monthly",
+      changeFrequency: "weekly",
       priority: 0.6,
     });
+  }
+
+  if (siteUsesPublicPaths(siteSlug)) {
+    const badPrefix = `${siteData.siteUrl.replace(/\/$/, "")}/${siteSlug}/`;
+    for (const entry of entries) {
+      if (entry.url.startsWith(badPrefix)) {
+        throw new Error(
+          `Sitemap URL incorrectly includes siteSlug prefix: ${entry.url}`,
+        );
+      }
+    }
   }
 
   return entries;
@@ -54,6 +211,3 @@ export function buildSiteSitemapEntries(
 export function buildAllSitesSitemapEntries(): MetadataRoute.Sitemap {
   return siteSlugs.flatMap((slug) => buildSiteSitemapEntries(slug));
 }
-
-export { getAllSites };
-export type { SiteSlug };

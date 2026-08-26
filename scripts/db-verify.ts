@@ -34,7 +34,9 @@ function expectedCounts() {
       (total, site) =>
         total +
         site.articles.reduce(
-          (articleTotal, article) => articleTotal + article.products.length,
+          (articleTotal, article) =>
+            articleTotal +
+            (article.kind === "product-roundup" ? article.products.length : 0),
           0,
         ),
       0,
@@ -228,9 +230,9 @@ async function checkHydrationAndSpotChecks(): Promise<CheckResult> {
   ] as const;
 
   for (const key of booleanKeys) {
-    if (typeof procore.comparison[key] !== "boolean") {
+    if (typeof procore.comparison?.[key] !== "boolean") {
       return fail(
-        `construction-software/procore comparison.${key} expected boolean, got ${typeof procore.comparison[key]}`,
+        `construction-software/procore comparison.${key} expected boolean, got ${typeof procore.comparison?.[key]}`,
       );
     }
   }

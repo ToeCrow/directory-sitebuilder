@@ -45,6 +45,7 @@ export const sites = pgTable(
     siteUrl: text("site_url").notNull(),
     ratingScale: smallint("rating_scale").notNull(),
     headerBrandImage: text("header_brand_image"),
+    favicon: text("favicon"),
     affiliateDisclosure: text("affiliate_disclosure").notNull(),
     newsletterTitle: text("newsletter_title").notNull(),
     newsletterDescription: text("newsletter_description").notNull(),
@@ -169,6 +170,10 @@ export const products = pgTable(
       .$type<Record<string, string | boolean>>()
       .notNull()
       .default(sql`'{}'::jsonb`),
+    content: jsonb("content")
+      .$type<Record<string, unknown>>()
+      .notNull()
+      .default(sql`'{}'::jsonb`),
     status: publishStatusEnum("status").notNull().default("draft"),
     publishedAt: timestamp("published_at", { withTimezone: true }),
     ...timestamps,
@@ -252,6 +257,10 @@ export const articles = pgTable(
     author: text("author"),
     ogImageSrc: text("og_image_src"),
     ogImageAlt: text("og_image_alt"),
+    content: jsonb("content")
+      .$type<Record<string, unknown>>()
+      .notNull()
+      .default(sql`'{}'::jsonb`),
     status: publishStatusEnum("status").notNull().default("draft"),
     publishedAt: timestamp("published_at", { withTimezone: true }),
     updatedAtContent: timestamp("content_updated_at", { withTimezone: true }),
@@ -281,7 +290,9 @@ export const articleProductSections = pgTable("article_product_sections", {
     .notNull()
     .default(sql`'{}'::text[]`),
   bestFor: text("best_for").notNull(),
-  skipIf: text("skip_if").notNull(),
-  sortOrder: integer("sort_order").notNull(),
+    skipIf: text("skip_if").notNull(),
+    productSlug: text("product_slug"),
+    productVariant: text("product_variant"),
+    sortOrder: integer("sort_order").notNull(),
   ...timestamps,
 });

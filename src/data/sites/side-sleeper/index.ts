@@ -1,10 +1,23 @@
 // Future: replace static import with PostgreSQL query (pg driver + Flyway migrations).
 
 import type { SiteData } from "@/types/site";
+import {
+  bodyPillowArticle,
+  mattressTopperArticle,
+  memoryFoamMattressesArticle,
+} from "./kladding-reviews";
+import {
+  neckPainCubeLatexKapokArticle,
+  neckPainScienceArticle,
+} from "./neck-pain-articles";
+import {
+  lowerBackPainMattressArticle,
+  shoulderPainPillowArticle,
+} from "./roundup-articles";
+import { products } from "./products";
 
 const comparisonRows = [
   { key: "brand", label: "Brand", type: "text" as const },
-  { key: "rating", label: "Research Score", type: "text" as const },
   { key: "firmness", label: "Firmness", type: "text" as const },
   { key: "cooling", label: "Cooling", type: "text" as const },
   { key: "pressure-relief", label: "Pressure Relief", type: "text" as const },
@@ -29,10 +42,10 @@ export const siteData: SiteData = {
     eyebrow: "Research-based side sleeper guides",
     headline: "Reviews, Guides, and Research for Side Sleepers",
     subheadline:
-      "Side Sleeper Guide is a research-based knowledge site for side sleepers — covering mattresses, pillows, and buying decisions using product specs, brand policies, and recurring customer feedback.",
-    primaryCta: "Compare Mattresses",
+      "You can find all of this information yourself — if you have the time to dig through specs, policies, reviews, and customer feedback. We do the digging for you and bring the useful parts together in one place.",
+    primaryCta: "Browse Mattresses",
     secondaryCta: "Read Buying Guide",
-    secondaryCtaHref: "#buying-guide",
+    secondaryCtaHref: "/buying-guide",
     image: {
       src: "/sites/side-sleeper/hero.png",
       srcMobile: "/sites/side-sleeper/hero-mobile.png",
@@ -41,555 +54,223 @@ export const siteData: SiteData = {
   },
 
   topPicks: {
-    title: "Top picks",
+    title: "Top mattress picks for side sleepers",
     description:
-      "At Side Sleeper Guide, these are our highest-rated mattress reviews for side sleepers — based on product research, specs, and recurring owner feedback around pressure relief, support, and cooling.",
+      "The three mattresses from our Best Mattresses for Side Sleepers guide — Helix Midnight Luxe, WinkBed, and Saatva Classic — chosen from product specs and recurring owner feedback.",
   },
 
   productDirectory: {
     title: "Browse Our Complete Side Sleeper Directory",
     description:
-      "Compare every mattress Side Sleeper Guide has reviewed for side-sleeper suitability.",
+      "Browse Side Sleeper Guide mattress, pillow, and topper reviews for pressure relief, support, and cooling — based on specs and owner feedback.",
   },
 
-  products: [
-    {
-      name: "WinkBed",
-      slug: "winkbed",
-      badge: "Best Overall",
-      shortDescription:
-        "A premium hybrid with zoned support and a plush pillow-top feel that cushions shoulders and hips without feeling stuck.",
-      bestFor: "Most side sleepers who want strong pressure relief and support",
-      priceFrom: "$1,149",
-      features: [
-        "Zoned lumbar support",
-        "Pillow-top comfort layer",
-        "Multiple firmness options",
-        "Edge support coils",
-        "Free shipping and returns",
-      ],
-      pros: [
-        "Often praised for shoulder and hip pressure relief",
-        "Durable hybrid construction",
-        "Strong edge support for sitting",
-      ],
-      cons: [
-        "Higher price than budget options",
-        "May feel too soft for strict stomach sleepers",
-        "Heavy and harder to move alone",
-      ],
-      affiliateUrl: "https://www.winkbeds.com/pages/shop-winkbed",
-      hasAffiliatePartnership: false,
-      rating: 4.8,
-      featuredRank: 1,
-      comparisonRank: 1,
-      directoryOrder: 1,
-      comparison: {
-        brand: "WinkBed",
-        rating: "4.8 / 5",
-        firmness: "Medium Firm",
-        cooling: "Good",
-        "pressure-relief": "Excellent",
-        trial: "120 nights",
-        warranty: "Lifetime",
-        price: "$1,149",
-        "best-for": "Most side sleepers",
-      },
-    },
-    {
-      name: "Saatva Classic",
-      slug: "saatva-classic",
-      badge: "Luxury Pick",
-      shortDescription:
-        "An innerspring hybrid with a hotel-style feel, organic cotton cover, and multiple firmness levels for personalized comfort.",
-      bestFor: "Side sleepers who want a premium hotel-style mattress",
-      priceFrom: "$1,395",
-      features: [
-        "Dual coil system",
-        "Organic cotton cover",
-        "Free white-glove delivery",
-        "Three firmness levels",
-        "Reinforced edge support",
-      ],
-      pros: [
-        "Luxurious, responsive feel",
-        "Excellent build quality",
-        "White-glove setup included",
-      ],
-      cons: [
-        "Premium pricing",
-        "Less contouring than all-foam options",
-        "Limited motion isolation vs foam hybrids",
-      ],
-      affiliateUrl: "https://www.saatva.com/mattresses/saatva-classic",
-      hasAffiliatePartnership: false,
-      rating: 4.7,
-      featuredRank: 2,
-      comparisonRank: 2,
-      directoryOrder: 2,
-      comparison: {
-        brand: "Saatva Classic",
-        rating: "4.7 / 5",
-        firmness: "Plush Soft / Luxury Firm / Firm",
-        cooling: "Very Good",
-        "pressure-relief": "Very Good",
-        trial: "365 nights",
-        warranty: "Lifetime",
-        price: "$1,395",
-        "best-for": "Luxury side sleepers",
-      },
-    },
-    {
-      name: "Helix Midnight Luxe",
-      slug: "helix-midnight-luxe",
-      badge: "Best Cooling",
-      shortDescription:
-        "A cooling hybrid designed for side sleepers and couples, with plush memory foam layers and reinforced coil support.",
-      bestFor: "Hot side sleepers and couples",
-      priceFrom: "$1,099",
-      features: [
-        "GlacioTex cooling cover",
-        "Memory foam comfort layers",
-        "Pocketed coils",
-        "Reinforced perimeter",
-        "100-night trial",
-      ],
-      pros: [
-        "Sleeps cooler than most memory foam",
-        "Great for couples sharing a bed",
-        "Balanced pressure relief and bounce",
-      ],
-      cons: [
-        "Not the deepest pressure relief for very light sleepers",
-        "Premium tier pricing",
-        "May be soft for heavier stomach sleepers",
-      ],
-      affiliateUrl: "https://helixsleep.com/products/midnight-luxe",
-      hasAffiliatePartnership: false,
-      rating: 4.7,
-      featuredRank: 3,
-      comparisonRank: 3,
-      directoryOrder: 3,
-      comparison: {
-        brand: "Helix Midnight Luxe",
-        rating: "4.7 / 5",
-        firmness: "Medium",
-        cooling: "Excellent",
-        "pressure-relief": "Very Good",
-        trial: "100 nights",
-        warranty: "15 years",
-        price: "$1,099",
-        "best-for": "Hot side sleepers",
-      },
-    },
-    {
-      name: "Nolah Natural",
-      slug: "nolah-natural",
-      badge: "Best Organic",
-      shortDescription:
-        "A latex hybrid built with natural materials that offers responsive support and breathable comfort for eco-conscious side sleepers.",
-      bestFor: "Side sleepers looking for natural materials",
-      priceFrom: "$1,199",
-      features: [
-        "GOLS organic latex",
-        "Organic cotton cover",
-        "Recycled steel coils",
-        "Breathable design",
-        "120-night trial",
-      ],
-      pros: [
-        "Natural, breathable materials",
-        "Responsive latex feel",
-        "Good for allergy-sensitive sleepers",
-      ],
-      cons: [
-        "Less body-hugging than memory foam",
-        "Higher price point",
-        "Latex feel is not for everyone",
-      ],
-      affiliateUrl: "https://www.nolahsleep.com/products/nolah-natural-11",
-      hasAffiliatePartnership: false,
-      rating: 4.6,
-      featuredRank: null,
-      comparisonRank: 4,
-      directoryOrder: 4,
-      comparison: {
-        brand: "Nolah Natural",
-        rating: "4.6 / 5",
-        firmness: "Medium",
-        cooling: "Very Good",
-        "pressure-relief": "Good",
-        trial: "120 nights",
-        warranty: "Lifetime",
-        price: "$1,199",
-        "best-for": "Eco-conscious sleepers",
-      },
-    },
-    {
-      name: "Bear Elite Hybrid",
-      slug: "bear-elite-hybrid",
-      badge: "Best Pressure Relief",
-      shortDescription:
-        "A hybrid with copper-infused foam and zoned coils designed to relieve pressure at the shoulders and hips for side sleepers.",
-      bestFor: "Side sleepers with shoulder or hip pressure",
-      priceFrom: "$1,299",
-      features: [
-        "Copper-infused foam",
-        "Zoned coil support",
-        "Three firmness options",
-        "Celliant cover option",
-        "120-night trial",
-      ],
-      pros: [
-        "Often praised for shoulder and hip pressure relief",
-        "Owners often note solid support at contact points",
-        "Multiple firmness choices",
-      ],
-      cons: [
-        "Premium pricing",
-        "Can sleep warm without cooling sheets",
-        "Heavier than all-foam beds",
-      ],
-      affiliateUrl: "https://www.bearmattress.com/products/elite-hybrid-mattress",
-      hasAffiliatePartnership: false,
-      rating: 4.6,
-      featuredRank: null,
-      comparisonRank: 5,
-      directoryOrder: 5,
-      comparison: {
-        brand: "Bear Elite Hybrid",
-        rating: "4.6 / 5",
-        firmness: "Soft / Medium / Firm",
-        cooling: "Good",
-        "pressure-relief": "Excellent",
-        trial: "120 nights",
-        warranty: "Lifetime",
-        price: "$1,299",
-        "best-for": "Shoulder & hip pain",
-      },
-    },
-    {
-      name: "Leesa Sapira",
-      slug: "leesa-sapira",
-      badge: "Best Motion Isolation",
-      shortDescription:
-        "A balanced hybrid combining memory foam comfort with pocket springs for couples who need motion isolation and side-sleeper cushioning.",
-      bestFor: "Couples and combination sleepers",
-      priceFrom: "$1,349",
-      features: [
-        "Memory foam top layer",
-        "Pocket springs",
-        "Reinforced edges",
-        "Medium-firm feel",
-        "100-night trial",
-      ],
-      pros: [
-        "Excellent motion isolation",
-        "Versatile for combination sleepers",
-        "Good value for hybrid quality",
-      ],
-      cons: [
-        "Cooling feedback is mixed compared with dedicated cooling hybrids",
-        "Limited firmness options",
-        "May lack deep contour for lighter sleepers",
-      ],
-      affiliateUrl: "https://www.leesa.com/products/leesa-hybrid-mattress",
-      hasAffiliatePartnership: false,
-      rating: 4.5,
-      featuredRank: null,
-      comparisonRank: 6,
-      directoryOrder: 6,
-      comparison: {
-        brand: "Leesa Sapira",
-        rating: "4.5 / 5",
-        firmness: "Medium Firm",
-        cooling: "Good",
-        "pressure-relief": "Good",
-        trial: "100 nights",
-        warranty: "10 years",
-        price: "$1,349",
-        "best-for": "Couples",
-      },
-    },
-    {
-      name: "Brooklyn Bedding Aurora Luxe",
-      slug: "brooklyn-bedding-aurora-luxe",
-      badge: "Best Hybrid",
-      shortDescription:
-        "A customizable hybrid with cooling phase-change material and three firmness options to match different side-sleeper preferences.",
-      bestFor: "Side sleepers who want cooling and firmness options",
-      priceFrom: "$999",
-      features: [
-        "Phase-change cooling cover",
-        "Three firmness levels",
-        "Pocketed coils",
-        "Made in the USA",
-        "120-night trial",
-      ],
-      pros: [
-        "Affordable for a premium hybrid",
-        "Customizable firmness",
-        "Good cooling technology",
-      ],
-      cons: [
-        "Less luxurious feel than top-tier brands",
-        "Edge support is average",
-        "Can feel bouncy for some sleepers",
-      ],
-      affiliateUrl: "https://brooklynbedding.com/products/aurora",
-      hasAffiliatePartnership: false,
-      rating: 4.5,
-      featuredRank: null,
-      comparisonRank: 7,
-      directoryOrder: 7,
-      comparison: {
-        brand: "Brooklyn Bedding Aurora Luxe",
-        rating: "4.5 / 5",
-        firmness: "Soft / Medium / Firm",
-        cooling: "Very Good",
-        "pressure-relief": "Good",
-        trial: "120 nights",
-        warranty: "10 years",
-        price: "$999",
-        "best-for": "Customizable comfort",
-      },
-    },
-    {
-      name: "Nectar Premier",
-      slug: "nectar-premier",
-      badge: "Best Budget",
-      shortDescription:
-        "A memory foam mattress with enhanced contouring and a long trial period, ideal for budget-conscious side sleepers who like a hugging feel.",
-      bestFor: "Budget-conscious side sleepers who like foam",
-      priceFrom: "$949",
-      features: [
-        "Gel memory foam",
-        "Enhanced contouring",
-        "365-night trial",
-        "Forever warranty",
-        "Free shipping",
-      ],
-      pros: [
-        "Excellent value for money",
-        "Deep contouring that many side sleepers find pressure-relieving",
-        "Industry-leading trial and warranty",
-      ],
-      cons: [
-        "Sleeps warmer than hybrids",
-        "Slow response can feel stuck",
-        "Less support for very heavy sleepers",
-      ],
-      affiliateUrl: "https://www.nectarsleep.com/mattresses/premier-memory-foam-mattress",
-      hasAffiliatePartnership: false,
-      rating: 4.4,
-      featuredRank: null,
-      comparisonRank: 8,
-      directoryOrder: 8,
-      comparison: {
-        brand: "Nectar Premier",
-        rating: "4.4 / 5",
-        firmness: "Medium Firm",
-        cooling: "Fair",
-        "pressure-relief": "Very Good",
-        trial: "365 nights",
-        warranty: "Forever warranty",
-        price: "$949",
-        "best-for": "Budget foam lovers",
-      },
-    },
-    {
-      name: "DreamCloud Premier",
-      slug: "dreamcloud-premier",
-      badge: "Best Value",
-      shortDescription:
-        "A luxury hybrid at a mid-range price with cashmere blend cover and strong support for side sleepers who want premium feel for less.",
-      bestFor: "Side sleepers who want a luxury feel for less",
-      priceFrom: "$899",
-      features: [
-        "Cashmere blend cover",
-        "Memory foam layers",
-        "Pocketed coils",
-        "365-night trial",
-        "Lifetime warranty",
-      ],
-      pros: [
-        "Outstanding value for a hybrid",
-        "Luxurious cover and feel",
-        "Long trial and warranty",
-      ],
-      cons: [
-        "Can sleep warm in summer",
-        "Heavier and harder to move",
-        "Less contouring than all-foam",
-      ],
-      affiliateUrl: "https://www.dreamcloudsleep.com/mattresses/premier-hybrid-mattress",
-      hasAffiliatePartnership: false,
-      rating: 4.5,
-      featuredRank: null,
-      comparisonRank: 9,
-      directoryOrder: 9,
-      comparison: {
-        brand: "DreamCloud Premier",
-        rating: "4.5 / 5",
-        firmness: "Medium Firm",
-        cooling: "Good",
-        "pressure-relief": "Good",
-        trial: "365 nights",
-        warranty: "Lifetime",
-        price: "$899",
-        "best-for": "Value seekers",
-      },
-    },
-    {
-      name: "Avocado Green",
-      slug: "avocado-green",
-      badge: "Eco Friendly",
-      shortDescription:
-        "An organic latex hybrid with GOLS-certified materials and optional pillow-top for side sleepers who prioritize sustainability.",
-      bestFor: "Eco-conscious side sleepers",
-      priceFrom: "$1,399",
-      features: [
-        "GOLS organic latex",
-        "Organic wool and cotton",
-        "Recycled steel coils",
-        "Optional pillow-top",
-        "365-night trial",
-      ],
-      pros: [
-        "Certified organic materials",
-        "Durable, long-lasting build",
-        "Breathable and responsive",
-      ],
-      cons: [
-        "Firm feel without pillow-top",
-        "Premium price point",
-        "Heavy and requires strong foundation",
-      ],
-      affiliateUrl: "https://www.avocadogreenmattress.com/products/green-natural-organic-mattress",
-      hasAffiliatePartnership: false,
-      rating: 4.4,
-      featuredRank: null,
-      comparisonRank: 10,
-      directoryOrder: 10,
-      comparison: {
-        brand: "Avocado Green",
-        rating: "4.4 / 5",
-        firmness: "Medium Firm",
-        cooling: "Very Good",
-        "pressure-relief": "Good",
-        trial: "365 nights",
-        warranty: "25 years",
-        price: "$1,399",
-        "best-for": "Eco-conscious sleepers",
-      },
-    },
-  ],
+  products,
 
   comparisonTable: {
     title: "Mattress comparison",
     description:
-      "Compare side-sleeper mattresses across the features that matter most. Research Score reflects Side Sleeper Guide’s review criteria; Cooling and Pressure Relief are research notes from specs and recurring owner feedback.",
+      "Compare side-sleeper mattresses on cooling, pressure relief, and support from specs and recurring owner feedback.",
     rowHeaderLabel: "Specification",
     rows: comparisonRows,
   },
 
   buyingGuide: {
-    title: "Side sleeper mattress buying guide",
-    sections: [
+    title: "Side Sleeper Buying Guide",
+    intro: [
+      "Side sleeping concentrates weight on the shoulders and hips. Without enough cushioning at those points, pressure can build and the spine can fall out of a comfortable line — so side sleepers often need a setup that contours to curves while still supporting the midsection.",
+      "The right mattress, pillow, or topper depends on cushioning, support, body weight, sleeping preferences, and how your current bed already feels. This guide walks through what to compare before you browse the catalogue.",
+    ],
+    chapters: [
       {
-        title: "Why side sleepers need a different mattress",
-        content:
-          "Side sleeping concentrates weight on your shoulders and hips. Without enough cushioning, pressure builds at those points and your spine can fall out of alignment. Side sleepers need a mattress that contours to curves while keeping the midsection supported.",
+        title: "Choosing a mattress for side sleeping",
+        subsections: [
+          {
+            title: "Firmness",
+            content:
+              "Medium to medium-soft is a common starting point for many side sleepers, but body weight, body shape, and personal preference matter. Too firm and you may feel pressure at the shoulder and hip; too soft and the torso can sink, twisting the spine.",
+          },
+          {
+            title: "Pressure relief and support",
+            content:
+              "A helpful side-sleeper mattress fills the gap at the waist while letting the shoulder and hip sink slightly, which can keep the spine closer to a neutral line from neck to tailbone.",
+          },
+          {
+            title: "Memory foam vs hybrid",
+            content:
+              "Memory foam excels at pressure relief and contouring but can sleep warm and feel slow to respond. Hybrids combine foam comfort layers with coils for better airflow, bounce, and edge support. Combination sleepers often prefer hybrids.",
+          },
+          {
+            title: "Body weight",
+            content:
+              "Lighter side sleepers (under 130 lbs) often need softer surfaces for adequate contouring. Average-weight sleepers may suit medium firmness. Heavier side sleepers (over 230 lbs) often need firmer support layers to prevent excessive sinkage while still cushioning pressure points.",
+          },
+          {
+            title: "Zoned support",
+            content:
+              "Some mattresses use zoned support that is softer at the shoulders and firmer at the hips — a feature worth comparing when you want more cushioning at pressure points without losing midsection support.",
+          },
+        ],
       },
       {
-        title: "Best firmness for side sleepers",
-        content:
-          "Most side sleepers do best on medium to medium-soft mattresses. Too firm and you feel pressure at the shoulder and hip. Too soft and your torso sinks, twisting your spine. Look for zoned support that is softer at the shoulders and firmer at the hips.",
+        title: "Choosing a pillow for side sleeping",
+        subsections: [
+          {
+            title: "Loft",
+            content:
+              "On your side, your head sits farther from the mattress than when you sleep on your back. A pillow that is too low lets the neck drop toward the mattress; one that is too high pushes the head up and can strain the shoulder. Many side sleepers need medium-to-high loft so the neck stays roughly level with the spine — and adjustable-fill pillows let you dial that height in over a few nights.",
+          },
+          {
+            title: "Fill and adjustability",
+            content:
+              "Shredded memory foam or fiber blends are common in adjustable pillows: unzip, add or remove fill, and change loft for side sleeping. Latex fills often feel firmer and cooler and may hold loft longer; shredded memory foam tends to contour more. Molded or contoured foam pillows keep a fixed cervical shape — useful if you want consistent support, less ideal if you change positions often. Body pillows can help keep hips and shoulders stacked by supporting the upper arm and top knee.",
+          },
+          {
+            title: "Neck and shoulder position",
+            content:
+              "A side-sleeper pillow should fill the gap between ear and mattress without forcing the chin into the chest or rolling the shoulder forward. Pair loft with mattress firmness: a firmer mattress may need a slightly higher pillow, while a plush surface may need less. Pillow choice can affect comfort at the neck and shoulder, but it is not a medical treatment — if you have ongoing pain, talk with a qualified clinician.",
+          },
+        ],
       },
       {
-        title: "Hybrid vs memory foam for side sleepers",
-        content:
-          "Memory foam excels at pressure relief and contouring but can sleep warm and feel slow to respond. Hybrids combine foam comfort layers with coils for better airflow, bounce, and edge support. Combination sleepers often prefer hybrids.",
+        title: "When a mattress topper makes sense",
+        subsections: [
+          {
+            title: "Topper vs replacing the mattress",
+            content:
+              "A mattress topper can help if your current mattress feels too firm but is otherwise in good condition. Memory foam or latex toppers may improve cushioning at the shoulders and hips without replacing the whole mattress. A topper cannot fix a mattress that is worn out, sagging, or lacking support underneath — if you see deep body impressions, broken coils, or worse sleep over time, replacement is usually the better long-term path.",
+          },
+          {
+            title: "Memory foam vs latex",
+            content:
+              "Memory foam toppers are popular for pressure relief because they contour around the shoulder and hip. Latex toppers often feel more responsive and sleep cooler for people who find foam too sinky or warm.",
+          },
+          {
+            title: "Thickness and firmness",
+            content:
+              "Thickness and density matter as much as material: a thin, soft topper may not change feel much, while a thick soft topper on an already soft mattress can let the hips sink too far for side sleeping. If a medium-firm mattress needs more cushioning for side sleeping, a 2–3 inch medium-soft foam or latex topper is a common starting point in product specs and owner feedback. If the mattress already feels soft, a firmer or thinner topper (or no topper) may keep the spine from dipping. Check your mattress warranty before adding a topper, as warranty terms vary by manufacturer.",
+          },
+        ],
       },
       {
-        title: "Pressure relief and spinal alignment",
+        title: "How we evaluate mattresses, pillows, and toppers",
         content:
-          "A good side-sleeper mattress fills the gap at your waist while letting your shoulder and hip sink slightly. This keeps your spine in a neutral line from neck to tailbone. Zoned coils and layered foams are designed specifically for this.",
-      },
-      {
-        title: "How to choose based on body weight",
-        content:
-          "Lighter side sleepers (under 130 lbs) often need softer surfaces for adequate contouring. Average-weight sleepers suit medium firmness. Heavier side sleepers (over 230 lbs) need firmer support layers to prevent excessive sinkage while still cushioning pressure points.",
-      },
-      {
-        title: "How we compare mattresses",
-        content:
-          "At Side Sleeper Guide, we review product specifications and manufacturer information, then look for recurring patterns in verifiable customer feedback. We compare what matters most for side sleepers — including pressure relief, cooling, support, price, trials, and warranties — and summarize that work in our reviews and Research Score.",
+          "At Side Sleeper Guide, we review product specifications and manufacturer information, then look for recurring patterns in verifiable customer feedback. We compare what matters most for side sleepers — including pressure relief, loft and support for pillows, cushioning from toppers, cooling, price, trials, and warranties — and summarize that work in our reviews.",
       },
     ],
+    productNav: {
+      title: "Find the right product",
+      items: [
+        {
+          category: "mattress",
+          title: "Mattresses",
+          description:
+            "Compare side-sleeper mattresses for pressure relief, support, and cooling in the catalogue.",
+        },
+        {
+          category: "pillow",
+          title: "Pillows",
+          description:
+            "Browse pillows by loft, fill, and shape suited to side sleeping.",
+        },
+        {
+          category: "topper",
+          title: "Mattress toppers",
+          description:
+            "Explore toppers that add cushioning when your mattress is firm but still structurally sound.",
+        },
+      ],
+    },
   },
 
   faqs: [
     {
+      question: "Is it better to sleep on your left or right side?",
+      answer:
+        "There is no single best side for everyone. Sleeping on the left side may be preferable for people with nighttime acid reflux and is commonly recommended during later pregnancy, while sleeping on the opposite side of a sore shoulder may be more comfortable. For most people, the better side is the one that allows comfortable, uninterrupted sleep without creating pain or numbness.",
+    },
+    {
+      question: "Why does my shoulder hurt when I sleep on my side?",
+      answer:
+        "Side sleeping places more direct pressure on the shoulder against the mattress. A mattress that is too firm, a pillow with the wrong height, or sleeping directly on an already sore shoulder can all contribute to discomfort. Pillow loft matters because your head and neck need enough support to avoid pulling the shoulder and neck out of a comfortable position.\n\nIf your pillow may be part of the problem, see our [Best Pillows for Shoulder Pain](/reviews/best-pillows-for-shoulder-pain).",
+    },
+    {
+      question: "Why does my hip hurt when I sleep on my side?",
+      answer:
+        "Side sleeping concentrates more pressure around the hip and shoulder. A very firm mattress may not cushion the hip enough, while a mattress that is too soft can allow the pelvis to sink too deeply. Mattress comfort is only one possible factor, however, so persistent or significant hip pain should not automatically be blamed on your bed.\n\nSee our [Best Mattresses for Side Sleepers](/reviews/best-mattresses-for-side-sleepers) for mattresses we researched with pressure relief and support in mind.",
+    },
+    {
+      question: "Why does my arm go numb when I sleep on my side?",
+      answer:
+        "Temporary numbness or tingling can happen when your sleeping position puts pressure on an arm or nerve. Changing position and avoiding sleeping directly on the arm may help, while a pillow that properly supports the head and neck can reduce how much weight ends up on the shoulder. Frequent, persistent numbness — especially with weakness or other symptoms — should be discussed with a healthcare professional.\n\nOur [Best Pillows for Side Sleepers](/reviews/best-pillows-for-side-sleepers) compares different approaches to loft, shape and adjustability.",
+    },
+    {
+      question: "Should side sleepers sleep with a pillow between their knees?",
+      answer:
+        "A pillow between the knees can help keep the hips, pelvis and spine in a more neutral position while side sleeping. It may be especially useful if your upper leg tends to rotate forward during the night. A regular pillow works, but a full-length body pillow can support both the upper body and legs at the same time.\n\nSee our [Best Body Pillows for Side Sleepers](/reviews/best-body-pillow-for-side-sleepers) for the options we researched.",
+    },
+    {
       question: "What mattress firmness is best for side sleepers?",
       answer:
-        "Most side sleepers sleep best on a medium to medium-soft mattress, typically rated between 4 and 6.5 out of 10 on the firmness scale. A mattress that is too firm can create painful pressure on the shoulders and hips, while one that is too soft may allow the spine to fall out of alignment. The ideal firmness also depends on your body weight. Lightweight sleepers usually prefer softer mattresses, while heavier individuals often need slightly firmer support to maintain healthy spinal alignment without sacrificing pressure relief.",
+        "There is no universal firmness that works for every side sleeper. Medium to medium-firm is a common starting point, but lighter sleepers often need more cushioning to sink in enough at the shoulder and hip, while heavier sleepers may need a firmer surface for support. Your body weight, shape and personal preference all matter.\n\nSee our [Best Mattresses for Side Sleepers](/reviews/best-mattresses-for-side-sleepers) for the firmness options and trade-offs we found in our research.",
     },
     {
-      question: "Are hybrid mattresses better for side sleepers?",
+      question: "Is memory foam or a hybrid mattress better for side sleepers?",
       answer:
-        "Hybrid mattresses are often considered one of the best options for side sleepers because they combine supportive pocket coils with pressure-relieving foam layers. This combination helps cushion the shoulders and hips while keeping the spine properly aligned throughout the night. Compared to traditional memory foam mattresses, hybrids usually sleep cooler, offer stronger edge support, and make it easier to change sleeping positions. However, the best mattress always depends on your body type, sleeping habits, and personal comfort preferences.",
-    },
-    {
-      question: "Is memory foam good for side sleepers?",
-      answer:
-        "Yes, memory foam can be an excellent choice for side sleepers because it contours closely to the body's natural curves. This helps reduce pressure on the shoulders and hips, which are common pain points when sleeping on your side. Memory foam also minimizes motion transfer, making it a popular option for couples. The main downside is that some memory foam mattresses retain heat. Fortunately, many modern models include cooling gel, breathable covers, or hybrid coil systems to improve airflow and temperature regulation.",
-    },
-    {
-      question: "Can the wrong mattress cause shoulder pain?",
-      answer:
-        "Yes. A mattress that is too firm may place excessive pressure on your shoulder, while a mattress that is too soft can allow your body to sink unevenly, causing poor spinal alignment. Both situations may contribute to shoulder discomfort or make existing pain worse. Side sleepers usually benefit from mattresses that provide enough cushioning for the shoulder while still supporting the rest of the body. Choosing the right pillow height is equally important for reducing pressure and keeping the neck aligned.",
-    },
-    {
-      question: "Can the wrong mattress cause hip pain?",
-      answer:
-        "Yes. Hip pain is a common complaint among side sleepers using a mattress that doesn't provide adequate support or pressure relief. A mattress that is too firm can create painful pressure points around the hips, while one that is too soft may cause the hips to sink too deeply, putting stress on the lower back. Medium or medium-soft mattresses with high-quality comfort layers often provide the best balance between pressure relief and spinal support for most side sleepers.",
-    },
-    {
-      question: "Why do my arms go numb when sleeping on my side?",
-      answer:
-        "Arm numbness while sleeping on your side is often caused by excessive pressure on the shoulder, which can temporarily compress nerves and reduce blood flow. A mattress that is too firm may increase this pressure, while a pillow that is too low or too high can place additional strain on the neck and shoulder. Choosing a mattress with good pressure relief and a pillow that keeps your head and neck properly aligned may help reduce numbness and improve overall sleep comfort.",
-    },
-    {
-      question: "What is the best cooling mattress for side sleepers?",
-      answer:
-        "The best cooling mattress for side sleepers combines effective pressure relief with excellent airflow. Hybrid mattresses are often the preferred choice because their pocket coil systems allow heat to escape more easily than all-foam mattresses. Features such as breathable covers, gel-infused memory foam, natural latex, and phase-change materials can further improve temperature regulation. If you frequently sleep hot, look for mattresses specifically designed with cooling technology rather than relying on standard foam alone.",
+        "Both can work well, but they feel different. Memory foam tends to contour closely around the shoulders and hips, while hybrids combine comfort layers with a coil support system that usually gives the bed more bounce and airflow. The better choice depends on whether you prefer a deeper, slower-moving feel or a more responsive sleep surface.\n\nIf you prefer the close contour of foam, see our [Top 8 Memory Foam Mattresses for Side Sleepers](/reviews/top-8-memory-foam-mattresses-for-side-sleepers).",
     },
     {
       question: "Do heavier side sleepers need a firmer mattress?",
       answer:
-        "In most cases, yes. Heavier side sleepers generally benefit from a slightly firmer mattress because additional body weight compresses the comfort layers more deeply. A firmer support system helps maintain proper spinal alignment while still allowing enough cushioning for the shoulders and hips. Many mattress manufacturers also offer reinforced or plus-sized models designed specifically for sleepers over 230 lbs (105 kg), providing better durability and long-term support.",
+        "Often, yes — but not simply because “firmer is better.” A heavier sleeper generally sinks farther into the same mattress than a lighter sleeper, so additional firmness and stronger support can help prevent excessive sinkage while still allowing cushioning around the shoulders and hips. Individual body shape and comfort preferences still matter.\n\nOur [Best Mattresses for Side Sleepers](/reviews/best-mattresses-for-side-sleepers) includes mattresses with different firmness options, including models aimed at heavier sleepers.",
     },
     {
-      question: "How long should a mattress last?",
+      question: "What pillow loft is best for side sleepers?",
       answer:
-        "Most quality mattresses last between 7 and 10 years, although the lifespan depends on the materials, construction, and how the mattress is used. Premium latex and hybrid mattresses often last longer than lower-quality foam models. If your mattress develops noticeable sagging, body impressions, increased aches and pains, or no longer provides restful sleep, it may be time for a replacement—even if the warranty is still active.",
+        "Side sleepers usually need more loft than back or stomach sleepers because the pillow has to fill the space between the head and mattress created by the shoulder. Medium-to-high loft is a common starting point, but broad shoulders may require more height while a softer mattress that lets the shoulder sink deeply may require less. Adjustable pillows can make finding the right height easier.\n\nSee our [Best Pillows for Side Sleepers](/reviews/best-pillows-for-side-sleepers) for adjustable, shaped and traditional options.",
+    },
+    {
+      question: "What type of pillow is best for side sleepers?",
+      answer:
+        "There is no single material that is best for everyone. Adjustable shredded-foam pillows let you change the loft, molded or contoured foam keeps a more consistent shape, and latex tends to feel more responsive than memory foam. The important part is finding a pillow that fills the shoulder-to-head gap without pushing the head too far upward.\n\nOur [Best Pillows for Side Sleepers](/reviews/best-pillows-for-side-sleepers) compares several of these approaches and their trade-offs.",
+    },
+    {
+      question: "Are body pillows good for side sleepers?",
+      answer:
+        "They can be. A body pillow gives side sleepers something to support the upper arm and place between the knees, which can help keep the hips and pelvis from rotating as much during sleep. The best shape and firmness depend on whether you mainly want leg support, something to hug, or support along most of the body.\n\nSee our [Best Body Pillows for Side Sleepers](/reviews/best-body-pillow-for-side-sleepers) for the models we researched.",
     },
     {
       question: "Should side sleepers use a mattress topper?",
       answer:
-        "A mattress topper can be a great solution if your current mattress feels too firm but is otherwise in good condition. Adding a high-quality memory foam or latex topper can improve pressure relief around the shoulders and hips without the cost of replacing the entire mattress. However, a topper cannot fix a mattress that is worn out, sagging, or lacks proper support. If your mattress is old or damaged, replacing it is usually the better long-term solution.",
+        "A topper can make sense when your mattress feels too firm but is otherwise supportive and in good condition. Memory foam, latex and other cushioning materials can change the surface feel and provide more room for the shoulders and hips to sink in. A topper cannot repair a sagging or structurally worn-out mattress, so replacement is usually the better option when the support underneath has failed.\n\nSee our [Best Mattress Toppers for Side Sleepers](/reviews/best-mattress-topper-for-side-sleepers) for the options we researched.",
+    },
+    {
+      question: "How thick should a mattress topper be for side sleepers?",
+      answer:
+        "Most mattress toppers are roughly 1 to 4 inches thick, and thickness determines how much they change the feel of the mattress. A thicker topper can provide a more noticeable cushioning change when a mattress is much too firm, while a thinner topper may be enough when only a small adjustment is needed. Body weight, topper firmness and the condition of the mattress underneath are just as important as thickness alone.\n\nSee our [Best Mattress Toppers for Side Sleepers](/reviews/best-mattress-topper-for-side-sleepers) for the materials, thicknesses and trade-offs we found.",
     },
   ],
 
+  featuredReviewSlugs: [
+    "best-mattresses-for-side-sleepers",
+    "best-pillows-for-side-sleepers",
+    "best-mattresses-for-lower-back-pain",
+  ],
+  scienceArticleSlug: "sleep-quality-7-facts",
+
   articles: [
     {
+      kind: "product-roundup",
       title: "The Three Best Mattresses for Side Sleepers: Pros and Cons",
       slug: "best-mattresses-for-side-sleepers",
+      reviewCategory: "mattress",
       publishedAt: "2026-07-20",
       author: "Side Sleeper Team",
       excerpt:
         "Research-based pros and cons for Helix Midnight Luxe, WinkBeds, and Saatva Classic.",
+      metaDescription:
+        "Pros and cons for Helix Midnight Luxe, WinkBed, and Saatva Classic — research-based mattress picks for side sleepers from specs and owner feedback.",
+      inlineRelatedSlug: "best-mattress-topper-for-side-sleepers",
       intro: [
         "The internet is ripe with blog posts and articles on what's supposed to be the best mattresses for side sleepers. The problem is that it's hard to separate useful reviews from paid marketing in this space. That's why the Side Sleeper Guide team does its own research.",
         "When we checked out three of the mattresses that get recommended the most, we wanted to know what the people actually sleeping in the mattresses think. This is what we got:",
@@ -610,7 +291,7 @@ export const siteData: SiteData = {
             alt: "Helix Midnight Luxe mattress layer diagram",
           },
           whatItIs:
-            "A medium-feel (6/10) hybrid built for side sleepers and tossers-and-turners. Helix pairs dense SupremeSupport memory foam with a zoned coil system, up to 1,000 individually wrapped coils reinforced under the hips and perimeter, to cradle shoulders and hips without letting your spine fold like a taco. Add-ons include a GlacioTex cooling cover and an ErgoAlign layer for lower back pain. Expect around $1,900 for a queen: R&D pricing, not budget pricing.",
+            "A medium-feel (6/10) hybrid built for side sleepers and tossers-and-turners. Helix pairs dense SupremeSupport memory foam with a zoned coil system, up to 1,000 individually wrapped coils reinforced under the hips and perimeter, to cradle shoulders and hips without letting your spine fold like a taco. Add-ons include a GlacioTex cooling cover and an ErgoAlign layer for lower back pain. Current sale pricing starts from about $1,119 (Queen is higher).",
           whyItEarnsASpot: [
             "Real engineering for side sleepers, not just a label: reinforced hip coils and zoned lumbar support are deliberate design choices.",
             "Low-risk trial: 120 nights (30-night minimum break-in) plus a Limited Lifetime Warranty.",
@@ -625,6 +306,7 @@ export const siteData: SiteData = {
             "Side sleepers wanting targeted hip and shoulder relief, fine with a medium feel and a real break-in period.",
           skipIf:
             "You want firm support, judge mattresses by showroom feel alone, or prioritize durability over day-one plushness.",
+          productSlug: "helix-midnight-luxe",
         },
         {
           heading:
@@ -636,7 +318,7 @@ export const siteData: SiteData = {
             alt: "WinkBed mattress in a bedroom setting",
           },
           whatItIs:
-            "A hybrid mattress with individually wrapped coils, a gel-infused Euro pillow top, a Tencel cover, and a 3-Step Back-Relief lumbar system with reinforced Extra-Edge perimeter support. It comes in four firmness levels (Softer, Luxury Firm, Firmer, and Plus for heavier sleepers), so it's built to flex across body types and sleep positions rather than one specific position. Queen runs around $1,500 to $1,800 depending on the sale, with a 120-night trial and lifetime warranty.",
+            "A hybrid mattress with individually wrapped coils, a gel-infused Euro pillow top, a Tencel cover, and a 3-Step Back-Relief lumbar system with reinforced Extra-Edge perimeter support. It comes in four firmness levels (Softer, Luxury Firm, Firmer, and Plus for heavier sleepers), so it's built to flex across body types and sleep positions rather than one specific position. Queen is currently about $1,499 (ref. about $1,799), with a 120-night trial and lifetime warranty.",
           whyItEarnsASpot: [
             "Firmness options for everyone, including a Plus tier specifically for heavier sleepers who often get shortchanged elsewhere.",
             "A genuine long track record: multiple owners report 2 to 5+ years of solid performance, no sagging.",
@@ -651,6 +333,7 @@ export const siteData: SiteData = {
             "Shoppers who want a firmness option for their specific body type and are comfortable trusting a home trial over a showroom test.",
           skipIf:
             "You're a dedicated side sleeper chasing hip and shoulder pressure relief specifically, or you want ironclad odds against sagging.",
+          productSlug: "winkbed",
         },
         {
           heading:
@@ -662,7 +345,7 @@ export const siteData: SiteData = {
             alt: "Saatva Classic mattress on a platform bed",
           },
           whatItIs:
-            'An innerspring hybrid with a 3" Euro pillow top, over 1,000 tempered steel coils, and patented, chiropractor-approved Lumbar Zone Technology for spinal alignment. It comes in three firmness levels: Plush Soft (which Saatva itself markets specifically for side sleepers), Luxury Firm (5-7/10, the "everyone" option), and Firm (for stomach sleepers and heavier bodies). A queen Luxury Firm runs around $1,900 to $2,200, with a 365-night trial and lifetime warranty.',
+            'An innerspring hybrid with a 3" Euro pillow top, over 1,000 tempered steel coils, and patented, chiropractor-approved Lumbar Zone Technology for spinal alignment. It comes in three firmness levels: Plush Soft (which Saatva itself markets specifically for side sleepers), Luxury Firm (5-7/10, the "everyone" option), and Firm (for stomach sleepers and heavier bodies). A queen Luxury Firm is currently about $1,904 (sale; ref. about $2,229), with a 365-night trial and lifetime warranty.',
           whyItEarnsASpot: [
             "Genuinely plush top layer that several owners describe as hotel-quality on arrival.",
             "Long trial window, among the most generous in the category, to test real side-sleeping comfort.",
@@ -677,16 +360,22 @@ export const siteData: SiteData = {
             "Side sleepers set on trying Saatva who lean toward Plush Soft, or Luxury Firm buyers willing to add a topper if needed.",
           skipIf:
             "You want guaranteed pressure relief on day one without adjustments, or zero risk of firmness surprises.",
+          productSlug: "saatva-classic",
         },
       ],
     },
     {
+      kind: "product-roundup",
       title: "The Three Best Pillows for Side Sleepers: Pros and Cons",
       slug: "best-pillows-for-side-sleepers",
+      reviewCategory: "pillow",
       publishedAt: "2026-07-20",
       author: "Side Sleeper Team",
       excerpt:
         "Research-based pros and cons for Coop, Eli & Elm, and Beckham Hotel Collection.",
+      metaDescription:
+        "Pros and cons for Coop, Eli & Elm, and Beckham Hotel Collection — research-based pillow picks for side sleepers from specs and owner feedback.",
+      inlineRelatedSlug: "best-body-pillow-for-side-sleepers",
       intro: [
         "There are lots and lots of blog posts and articles on what's supposed to be the best pillow for side sleepers. The problem is that it's hard to separate useful reviews from paid marketing in this space. That's why the Side Sleeper Guide team does its own research.",
         "When we checked out three of the pillows that get recommended the most, we wanted to know what the people actually using them think. This is what we got:",
@@ -722,6 +411,7 @@ export const siteData: SiteData = {
             "Side sleepers willing to spend a week or two fine-tuning fill level, or who go straight for the Crescent shape.",
           skipIf:
             "You want a pillow that works perfectly right out of the box with zero adjusting.",
+          productSlug: "coop-original-adjustable",
         },
         {
           heading:
@@ -748,6 +438,7 @@ export const siteData: SiteData = {
             "Side sleepers who want a shape engineered specifically for that position and are willing to pick the right fill type.",
           skipIf:
             "You've had migration issues with shredded-fill pillows before, or want guaranteed firmness without any settling.",
+          productSlug: "eli-elm-side-sleeper",
         },
         {
           heading:
@@ -759,7 +450,7 @@ export const siteData: SiteData = {
             alt: "Beckham Hotel Collection pillow pair",
           },
           whatItIs:
-            'A down-alternative pillow pair (queen/standard, $59.99 for two on Amazon) with a 250-thread-count cotton cover and 1,050g of hollow-fiber fill per pillow, landing around 8" of loft at medium-firm. It\'s OEKO-TEX certified and machine washable. No sleep trial or brand warranty, just Amazon\'s standard 30-day return window.',
+            'A down-alternative pillow pair (queen/standard, sold as a set of 2 on Amazon) with a 250-thread-count cotton cover and hollow-fiber fill. Amazon pricing changes often — check the live listing before buying. No sleep trial or brand warranty, just Amazon’s standard return window.',
           whyItEarnsASpot: [
             "Comfortable from day one for most buyers, with several reviewers reporting less neck pain than pillows they'd previously tried.",
             "Exceptional value, often dropping well below full price during sales, cheap enough to replace rather than fuss over.",
@@ -775,16 +466,21 @@ export const siteData: SiteData = {
             "Side sleepers on a budget who want a soft, huggable pillow and don't need maximum firmness.",
           skipIf:
             "You want guaranteed firm support, consistent quality order to order, or low-maintenance washing.",
+          productSlug: "beckham-hotel-collection",
         },
       ],
     },
     {
-      title: "The Best Pillow for Neck Pain: Our Top 3 Picks",
+      kind: "product-roundup",
+      title: "The Best Pillow for Neck Pain: Our Top 3 Picks (2026)",
       slug: "best-pillows-for-neck-pain",
+      reviewCategory: "pillow",
       publishedAt: "2026-07-22",
       author: "Side Sleeper Team",
       excerpt:
         "Research-based pros and cons for TEMPUR-Neck, Avocado Green, and Eli & Elm.",
+      metaDescription:
+        "Pros and cons for TEMPUR-Neck, Avocado Green, and Eli & Elm — research-based pillow picks for neck pain from specs, owner feedback, and side-sleeper fit.",
       intro: [
         "There are myriads of magazine articles and blog posts claiming that this is the best pillow for neck pain. However, it is hard to separate useful reviews from paid marketing online, especially in this space. That's why the Side Sleeper Guide team does its own research.",
         "When we checked out three of the pillows that get recommended the most, we wanted to know what the people actually using them think. This is what we got:",
@@ -803,7 +499,7 @@ export const siteData: SiteData = {
             alt: "TEMPUR-Neck pillows in different sizes",
           },
           whatItIs:
-            "Tempur-Pedic's contoured, single-piece memory foam neck pillow, built for side and back sleepers who need real cervical support. Starting at $129 for the medium profile, with small, large, and cooling versions available.",
+            "Tempur-Pedic's contoured, single-piece memory foam neck pillow, built for side and back sleepers who need real cervical support. Currently from about $114 for the medium profile, with small, large, and cooling versions available.",
           whyItEarnsASpot: [
             "Genuine ergonomic shape — the contour is engineered around the natural curve of the head and neck, not just marketing language, and long-term users report years of relief.",
             "Holds its shape — unlike down or fiber-fill, this one doesn't flatten out after a few months.",
@@ -818,6 +514,7 @@ export const siteData: SiteData = {
             "Side or back sleepers wanting proven, doctor-informed contouring who don't mind a firmer feel.",
           skipIf:
             "You want to test-drive before committing — the no-returns policy is a real risk if firmness is a dealbreaker for you.",
+          productSlug: "tempur-neck",
         },
         {
           heading:
@@ -827,7 +524,7 @@ export const siteData: SiteData = {
             alt: "Avocado Green Pillow with customizable fill",
           },
           whatItIs:
-            "An organic latex-and-kapok fiber pillow with a zip-open design so you can add or remove filling to dial in your ideal loft. Starts at $125 for the standard size.",
+            "An organic latex-and-kapok fiber pillow with a zip-open design so you can add or remove filling to dial in your ideal loft. Starts at about $118 for the standard size on sale (ref. about $139).",
           whyItEarnsASpot: [
             "Genuinely adjustable — unzip and pull filling until you hit your ideal loft, which real owners confirm actually works.",
             "Sleeps cool — the latex-and-kapok blend breathes, with zero reviewer complaints about overheating.",
@@ -842,6 +539,7 @@ export const siteData: SiteData = {
             "Combination sleepers who want a customizable, eco-friendly pillow and don't mind some trial-and-error.",
           skipIf:
             "Neck pain is your main issue — the adjustable fill won't hold cervical support as reliably as a molded or contoured pillow.",
+          productSlug: "avocado-green-pillow",
         },
         {
           heading:
@@ -851,7 +549,7 @@ export const siteData: SiteData = {
             alt: "Eli & Elm Cooling Side Sleeper Pillow for neutral neck position",
           },
           whatItIs:
-            "A U-shaped, contoured latex-and-polyester pillow built specifically for side sleepers, aimed at easing neck pain through spinal alignment. Currently $109.99 (marked down from $129.99) — worth double-checking at checkout, since this pillow's price has bounced around a lot over the years, from around $124 up past $200 at various points.",
+            "A U-shaped, contoured Side Sleeper Pillow sold with Eli & Elm’s Cooling Pillowcase—same pillow construction as the standalone Side Sleeper Pillow, bundled with the cooling case rather than a different pillow build. Currently about $123.99 for the pillow-plus-case package.",
           whyItEarnsASpot: [
             "Purpose-built U-shape — designed specifically to cradle the head and neck for side sleepers, not a generic rectangle stretched into a marketing claim.",
             "Adjustable fill — unzip to remove or add the latex-and-polyester blend for custom height and firmness.",
@@ -865,9 +563,203 @@ export const siteData: SiteData = {
             "Side sleepers wanting a purpose-built, adjustable contour pillow at a currently discounted price.",
           skipIf:
             "You want your buying decision backed by verified independent reviews rather than a brand-run survey.",
+          productSlug: "eli-elm-cooling-side-sleeper",
         },
       ],
     },
+    lowerBackPainMattressArticle,
+    shoulderPainPillowArticle,
+    mattressTopperArticle,
+    memoryFoamMattressesArticle,
+    bodyPillowArticle,
+    neckPainCubeLatexKapokArticle,
+    {
+      kind: "editorial",
+      title:
+        "Science Has Spoken: 7 Facts You Didn't Know About Sleep Quality",
+      slug: "sleep-quality-7-facts",
+      reviewCategory: "science",
+      publishedAt: "2026-07-25",
+      author: "Side Sleeper Team",
+      excerpt:
+        "Your sleeping position isn't just comfort — research shows why mattress and pillow support matter more as we age.",
+      metaDescription:
+        "Seven research-backed facts about sleep quality: why side-sleeping alignment, mattress support, and pillow loft matter more as we get older.",
+      ogImage: {
+        src: "/sites/side-sleeper/articles/sleep-quality-7-facts/intro-vitaly-gariev.jpg",
+        alt: "Man in a superhero costume sleeping on a sofa",
+      },
+      intro: [
+        "Your sleeping position isn't just a matter of comfort—it's basically a biological clock. Research shows why choosing the right mattress and pillow get more important as we age.",
+      ],
+      introImage: {
+        src: "/sites/side-sleeper/articles/sleep-quality-7-facts/intro-vitaly-gariev.jpg",
+        alt: "Man in a superhero costume sleeping on a sofa",
+        caption:
+          "Let Side Sleeper Guide be your caped crusader in all things sleep. Photo by Vitaly Gariev on Unsplash",
+        creditHref:
+          "https://unsplash.com/photos/man-in-superhero-costume-sleeping-on-sofa-GjHclZLV2N4",
+        photographerHref: "https://unsplash.com/@silverkblack",
+      },
+      sections: [
+        {
+          heading: "#1 Older and calmer",
+          paragraphs: [
+            'A landmark study tracking sleepers aged 3 to 80 found that we get progressively "stiller" as we age: toddlers and kids toss and turn as often as 4-5 times an hour, while the 65-80 crowd settles down to roughly half that, around 2 changes per hour. And it\'s not just fewer shifts—older sleepers also hold each position longer, with far more stretches of 30+ minutes of complete stillness.',
+            "So if you've noticed you don't flip around as much as you used to, it's not just in your head (or your mattress)—it's a well-documented part of getting older. Which is exactly why choosing the right position (and the right support for it) matters more with age, not less: fewer natural adjustments throughout the night means less opportunity to self-correct out of a bad spinal alignment.",
+          ],
+          citations: [
+            {
+              label: "landmark study (De Koninck et al.)",
+              href: "https://www.researchgate.net/profile/Joseph-De-Koninck/publication/21575518_Sleep_Positions_and_Position_Shifts_in_Five_Age_Groups_An_Ontogenetic_Picture/links/589fbcf8a6fdccf5e96d360e/Sleep-Positions-and-Position-Shifts-in-Five-Age-Groups-An-Ontogenetic-Picture.pdf",
+            },
+          ],
+        },
+        {
+          heading: "#2 Side vs back",
+          paragraphs: [
+            "Science may have just settled the age-old side-vs-back debate—and side sleeping wins.",
+            "A 2022 study from China using flexible wearable sensors tracked 13 healthy adults across 15 nights and found that side sleepers consistently out-slept their back-sleeping counterparts, with right-side sleepers coming out on top, left-side sleepers close behind, and back sleepers trailing in last place.",
+            "The side sleepers weren't just imagining it, either:",
+          ],
+          bullets: [
+            "They woke up less often",
+            "Spent more time in deep, restorative slow-wave sleep",
+            "And reported feeling noticeably more refreshed in the morning",
+          ],
+          closingParagraphs: [
+            "There's a second piece to the puzzle too—how much you toss and turn matters just as much as which position you land in. The study found a clear link between restlessness and poor sleep quality: the more you shift around at night, the worse you tend to feel the next day.",
+            "So if you're a side sleeper who still wakes up groggy, the fix might not be your position at all—it might be what's underneath you. A mattress and pillow that actually hold you still in that position (instead of letting you fidget your way to a bad night) could be doing more heavy lifting than you think.",
+          ],
+          image: {
+            src: "/sites/side-sleeper/articles/sleep-quality-7-facts/sensor-diagram.png",
+            alt: "Wearable sleep sensor on a subject and a labeled diagram of the monitoring device",
+            caption:
+              "One of the subjects wearing the sensor (a) and the diagram of the monitoring device (b). Image: Screenshot from the research paper.",
+            creditHref: "https://www.mdpi.com/1424-8220/22/16/6220",
+          },
+          citations: [
+            {
+              label: "2022 wearable-sensor study (MDPI Sensors)",
+              href: "https://www.mdpi.com/1424-8220/22/16/6220",
+            },
+          ],
+        },
+        {
+          heading: "#3 Personalized advice works",
+          paragraphs: [
+            'Turns out your grandma\'s advice to "just sleep on it right" might have actual science behind it. A 2016 pilot study out of Portugal followed a group of physically active older women (average age 63) who were struggling with back pain, splitting them into two groups: one that got personalized coaching on how to sleep based on their specific pain points, and one that didn\'t.',
+          ],
+          citations: [
+            {
+              label: "Portugal pilot study (Desouzart et al., 2016)",
+              href: "https://doi.org/10.3233/WOR-152243",
+            },
+          ],
+        },
+        {
+          heading: "#4 Quick results",
+          paragraphs: [
+            "After just four weeks, the group that received sleep position guidance reported significantly fewer back pain complaints than the group left to their own devices. No new mattress, no fancy gadget—just being shown the right way to lie down made a measurable difference.",
+            "If simply knowing the right position can ease pain that much, imagine what pairing that knowledge with a mattress and pillow actually built to support it could do.",
+          ],
+          image: {
+            src: "/sites/side-sleeper/articles/sleep-quality-7-facts/sleep-positions.png",
+            alt: "Diagram of recommended side and back sleep positions versus not-recommended stomach sleep",
+            caption:
+              "Recommended sleeping positions and pillow orientation (A — lateral position and B — supine sleep position). Not recommended prone sleep position (C — prone sleep position). Image: Screenshot from the research paper.",
+            creditHref: "https://doi.org/10.3233/WOR-152243",
+          },
+          closingParagraphs: [
+            "What's striking is how fast the results showed up. We're talking about a month-long intervention producing a statistically significant drop in pain—which suggests your body starts \"listening\" to better sleep posture almost immediately, rather than needing months of habit-building.",
+            'Of course, this was a small pilot study, so it\'s more proof-of-concept than gospel truth. But it lines up with the bigger picture: your sleep position isn\'t a "nice to have," it\'s doing real, measurable work on your spine every single night.',
+          ],
+          citations: [
+            {
+              label: "Portugal pilot study (Desouzart et al., 2016)",
+              href: "https://doi.org/10.3233/WOR-152243",
+            },
+          ],
+        },
+        {
+          heading: "#5 Side sleepers beware",
+          paragraphs: [
+            'If you\'ve ever been told "just sleep on your side, it\'s the best position for your back," here\'s a plot twist: a Finnish 2024 study of 375 chronic low back pain patients found that there\'s no universal magic position that works for everyone.',
+            "Side sleeping was by far the most popular choice, with the vast majority of patients favoring it, but that popularity didn't make it painless — a meaningful chunk of side sleepers still reported it aggravating their symptoms.",
+          ],
+          image: {
+            src: "/sites/side-sleeper/articles/sleep-quality-7-facts/individual-position-david-clode.jpg",
+            alt: "Koala sleeping on a tree branch",
+            caption:
+              'The "best" sleeping position is highly individual. Photo by David Clode on Unsplash',
+            creditHref:
+              "https://unsplash.com/photos/koala-bear-sleeping-on-tree-Yg_sNKOiXvY",
+            photographerHref: "https://unsplash.com/@davidclode",
+          },
+          citations: [
+            {
+              label: "Finnish 2024 Cureus study (chronic LBP)",
+              href: "https://assets.cureus.com/uploads/original_article/pdf/238621/20240606-27320-1z0niuw.pdf",
+            },
+          ],
+        },
+        {
+          heading: "#6 The worst position",
+          paragraphs: [
+            'Stomach sleeping got the most votes for "position I can\'t tolerate," and interestingly, it was mostly younger patients who could still stomach it (pun intended), with a clear trend of people ditching the position as they aged. Back sleeping wasn\'t off the hook either, with over a third of patients avoiding it due to pain.',
+          ],
+          factBox: {
+            title: "Key findings",
+            items: [
+              "The majority of patients (87%) reported sleeping in a side-lying position, followed by supine (47%) and prone (22%) positions.",
+              "A negative correlation was found between age and preference for the prone position — younger patients were more likely to sleep on their stomachs.",
+              'Pain wasn\'t tied to one "villain" position: 42% of patients avoided the prone position, 35% avoided the back, 15% avoided the left side, and 13% avoided the right side due to pain.',
+              "While the prone position was most commonly linked with pain, especially among women, the findings suggest that any sleeping position could potentially exacerbate pain in individuals with chronic lower back pain.",
+              "Sleep disruption from back pain was nearly universal: 77% had disturbed sleep due to lower back pain, and 92% overall struggled with sleeping or rising because of it.",
+            ],
+          },
+          closingParagraphs: [
+            'The real takeaway here isn\'t "position X is bad, position Y is good"—it\'s that back pain and sleep position is a deeply individual equation. Nearly everyone in the study (over 90%) struggled with sleep disruption or difficulty getting up because of their back, which is a sobering reminder of just how much a single overlooked variable—how you\'re lying down for eight hours a night—can dominate your daily quality of life.',
+            "The researchers themselves landed on personalized guidance as the real solution, not a blanket recommendation.",
+            'Translation for your bedroom: rather than forcing yourself into whatever position is trending as "healthiest," the smarter move is finding the position (and the support system underneath it) that actually keeps your specific pain quiet.',
+          ],
+          citations: [
+            {
+              label: "Finnish 2024 Cureus study (chronic LBP)",
+              href: "https://assets.cureus.com/uploads/original_article/pdf/238621/20240606-27320-1z0niuw.pdf",
+            },
+          ],
+        },
+        {
+          heading: "#7 Specially engineered mattress",
+          paragraphs: [
+            'Here\'s a finding that might reshape how you think about "getting the right sleep position": it\'s not actually the position that matters most—it\'s what\'s underneath it.',
+            "A small but well-controlled study conducted in 2022 had chronic back pain sufferers spend a few nights on their own mattress, then swap onto a specially engineered mattress designed to keep the spine straight while side sleeping, then swap back. The result? Pain while lying down dropped by nearly a fifth, and comfort ratings jumped by a quarter—all without the participants changing their favorite sleeping position, which for the vast majority (a whopping 93%) was side sleeping anyway.",
+          ],
+          image: {
+            src: "/sites/side-sleeper/articles/sleep-quality-7-facts/mattress-butaforya.jpg",
+            alt: "Yellow mattress on a white table",
+            caption:
+              "Well engineered mattresses are important, but not the only factor to consider. Photo by BUTAFORYA on Unsplash",
+            creditHref:
+              "https://unsplash.com/photos/a-yellow-mattress-sitting-on-top-of-a-white-table-LwEF07KtwEg",
+            photographerHref: "https://unsplash.com/@butaforya",
+          },
+          closingParagraphs: [
+            'The takeaway? The mattress engineering did the heavy lifting, not a lecture on "correct" sleep posture.',
+            'Even more telling: which specific position someone slept in—left side, right side, even on their back—had no meaningful connection to their pain levels. What did matter was how much they tossed and turned (again with the "tossing and turning"). The more restless a person\'s night, the more pain and stiffness they reported upon waking.',
+            "Put simply: side sleeping isn't the magic bullet, and stillness might be just as important as position. This is exactly the argument for investing in a mattress that actively supports your spine's natural alignment while you sleep on your side, rather than one that lets your hips or shoulders sink and force you into a night of fidgeting. The right support system doesn't just make side sleeping possible—it makes it actually restorative.",
+          ],
+          citations: [
+            {
+              label: "2022 engineered-mattress study (Springer)",
+              href: "https://link.springer.com/content/pdf/10.1186/s41606-022-00073-x.pdf",
+            },
+          ],
+        },
+      ],
+    },
+    neckPainScienceArticle,
   ],
 
   newsletter: {
@@ -885,24 +777,28 @@ export const siteData: SiteData = {
     tagline: "Research-based guides and mattress reviews for side sleepers.",
     links: [
       {
+        label: "About",
+        href: "/about",
+      },
+      {
         label: "Contact",
         href: "mailto:side.sleepers.admin@gmail.com",
       },
       {
-        label: "Research Score",
-        href: "/side-sleeper/research-score",
+        label: "Affiliate Disclosure",
+        href: "/affiliate",
       },
       {
-        label: "Affiliate Disclosure",
-        href: "/side-sleeper/affiliate",
+        label: "Privacy Policy",
+        href: "/privacy-policy",
       },
     ],
   },
 
   ads: {
     slots: {
-      primary: "",
-      secondary: "",
+      primary: "7798730398",
+      secondary: "6296992173",
     },
   },
 };

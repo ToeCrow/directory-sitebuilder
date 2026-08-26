@@ -1,44 +1,79 @@
+"use client";
+
 import Link from "next/link";
-import { getSiteData } from "@/lib/site";
+import { ReviewListItem } from "@/components/ReviewListItem";
+import { usePublicBasePath, useSiteData } from "@/context/SiteContext";
+import { featuredHomeReviewsFrom, siteHasMattressPillowNav } from "@/lib/site";
 import { cn } from "@/lib/cn";
+import { getArticlePath, getReviewsIndexPath } from "@/lib/paths";
 
 type ArticleGridProps = {
   siteSlug: string;
   className?: string;
 };
 
-export async function ArticleGrid({ siteSlug, className }: ArticleGridProps) {
-  const siteData = await getSiteData(siteSlug);
+export function ArticleGrid({ siteSlug, className }: ArticleGridProps) {
+  const publicBasePath = usePublicBasePath();
+  const siteData = useSiteData();
+  const isSideSleeper = siteHasMattressPillowNav(siteSlug);
+  const reviews = siteData.featuredReviewSlugs
+    ? featuredHomeReviewsFrom(siteData)
+    : siteData.articles.slice(0, 6);
+  const heading = siteData.featuredReviewSlugs
+    ? "Featured Reviews"
+    : "Reviews";
+
+  if (reviews.length === 0) {
+    return null;
+  }
 
   return (
     <section
-      id="articles"
-      className={cn("border-t border-slate-200 bg-slate-50 py-16 md:py-20", className)}
-      aria-labelledby="articles-heading"
+      id="reviews"
+      className={cn(
+        isSideSleeper
+          ? "border-t border-ss-navy/10 bg-ss-mist/60 py-16 md:py-20"
+          : "border-t border-slate-200 bg-slate-50 py-16 md:py-20",
+        className,
+      )}
+      aria-labelledby="reviews-heading"
     >
       <div className="mx-auto max-w-6xl px-4">
-        <h2
-          id="articles-heading"
-          className="text-2xl font-bold tracking-tight text-slate-900 md:text-3xl"
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <h2
+            id="reviews-heading"
+            className={
+              isSideSleeper
+                ? "text-2xl font-bold tracking-tight text-ss-navy md:text-3xl"
+                : "text-2xl font-bold tracking-tight text-slate-900 md:text-3xl"
+            }
+          >
+            {heading}
+          </h2>
+          <Link
+            href={getReviewsIndexPath(publicBasePath)}
+            className={
+              isSideSleeper
+                ? "text-sm font-medium text-ss-navy hover:text-ss-blue"
+                : "text-sm font-medium text-blue-600 hover:text-blue-700"
+            }
+          >
+            View all reviews →
+          </Link>
+        </div>
+        <ul
+          className={
+            isSideSleeper
+              ? "mt-6 border-t border-ss-navy/10"
+              : "mt-6 border-t border-slate-200"
+          }
         >
-          Related guides
-        </h2>
-        <ul className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {siteData.articles.map((article) => (
+          {reviews.map((article) => (
             <li key={article.slug}>
-              <Link
-                href={`/${siteSlug}/articles/${article.slug}`}
-                className="block h-full rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
-              >
-                <h3 className="font-semibold text-slate-900 hover:text-blue-600">
-                  {article.title}
-                </h3>
-                {article.excerpt && (
-                  <p className="mt-2 text-sm leading-relaxed text-slate-600">
-                    {article.excerpt}
-                  </p>
-                )}
-              </Link>
+              <ReviewListItem
+                article={article}
+                href={getArticlePath(publicBasePath, article.slug)}
+              />
             </li>
           ))}
         </ul>

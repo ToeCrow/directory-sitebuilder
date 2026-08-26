@@ -1,4 +1,6 @@
 import type { Article, SiteData } from "@/types/site";
+import type { Metadata } from "next";
+import { siteUsesEditorialCatalog } from "@/lib/directory-catalog";
 
 export const OG_IMAGE_WIDTH = 1200;
 export const OG_IMAGE_HEIGHT = 630;
@@ -11,7 +13,11 @@ export type OgImage = {
 };
 
 /** Relative path resolved to an absolute URL via site metadataBase. */
-export function getDefaultOgImage(site: SiteData): OgImage {
+export function getDefaultOgImage(site: SiteData): OgImage | undefined {
+  if (siteUsesEditorialCatalog(site.slug)) {
+    return undefined;
+  }
+
   return {
     url: `/sites/${site.slug}/og-default.png`,
     width: OG_IMAGE_WIDTH,
@@ -30,7 +36,89 @@ export function getArticleOgImage(site: SiteData, article: Article): OgImage {
     };
   }
 
-  return getDefaultOgImage(site);
+  return (
+    getDefaultOgImage(site) ?? {
+      url: `/sites/${site.slug}/og-default.png`,
+      width: OG_IMAGE_WIDTH,
+      height: OG_IMAGE_HEIGHT,
+      alt: site.title,
+    }
+  );
+}
+
+type BuildPageOpenGraphBase = {
+  site: SiteData;
+  title: string;
+  description: string;
+  path: string;
+};
+
+type ArticleOpenGraph = Extract<
+  NonNullable<Metadata["openGraph"]>,
+  { type: "article" }
+>;
+type WebsiteOpenGraph = Extract<
+  NonNullable<Metadata["openGraph"]>,
+  { type: "website" }
+>;
+
+type BuildPageOpenGraphArgs = BuildPageOpenGraphBase & {
+  type?: "website" | "article";
+  publishedTime?: string;
+  modifiedTime?: string;
+};
+
+/** Complete Open Graph tags for indexable site pages. */
+export function buildPageOpenGraph(
+  args: BuildPageOpenGraphBase & {
+    type: "article";
+    publishedTime?: string;
+    modifiedTime?: string;
+  },
+): ArticleOpenGraph;
+export function buildPageOpenGraph(
+  args: BuildPageOpenGraphBase & { type?: "website" },
+): WebsiteOpenGraph;
+export function buildPageOpenGraph({
+  site,
+  title,
+  description,
+  path,
+  type = "website",
+  publishedTime,
+  modifiedTime,
+}: BuildPageOpenGraphArgs): ArticleOpenGraph | WebsiteOpenGraph {
+  const ogImage = getDefaultOgImage(site);
+  const shared = {
+    siteName: site.title,
+    title,
+    description,
+    url: path,
+    images: ogImage
+      ? [
+          {
+            url: ogImage.url,
+            width: ogImage.width,
+            height: ogImage.height,
+            alt: ogImage.alt,
+          },
+        ]
+      : undefined,
+  };
+
+  if (type === "article") {
+    return {
+      type: "article",
+      ...shared,
+      ...(publishedTime ? { publishedTime } : {}),
+      ...(modifiedTime ? { modifiedTime } : {}),
+    };
+  }
+
+  return {
+    type: "website",
+    ...shared,
+  };
 }
 
 export function toAbsoluteUrl(siteUrl: string, pathOrUrl: string): string {

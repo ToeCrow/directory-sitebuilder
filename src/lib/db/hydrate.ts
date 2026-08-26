@@ -2,8 +2,17 @@ import { and, asc, eq, inArray } from "drizzle-orm";
 import type {
   Article,
   ArticleProductSection,
+  BuyingGuideChapter,
+  BuyingGuideProductNav,
   ComparisonRow,
+  EditorialArticle,
+  EditorialFigure,
+  EditorialSection,
+  FAQ,
   Product,
+  ProductCategory,
+  ProductRoundupArticle,
+  ReviewCategory,
   SiteData,
 } from "@/types/site";
 import { getDb } from "./index";
@@ -38,6 +47,55 @@ function sectionText(value: string | null | undefined): string | undefined {
     return undefined;
   }
   return value;
+}
+
+type ProductContent = {
+  category?: ProductCategory;
+  image?: { src: string; alt: string };
+  priceDisplay?: string;
+  productUrl?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  priceUpdatedAt?: string;
+};
+
+type ArticleContent = {
+  kind?: Article["kind"];
+  reviewCategory?: ReviewCategory;
+  metaTitle?: string;
+  metaDescription?: string;
+  inlineRelatedSlug?: string;
+  relatedSlugs?: string[];
+  introImage?: EditorialFigure;
+  sections?: EditorialSection[];
+  closingGuide?: ProductRoundupArticle["closingGuide"];
+  faqs?: FAQ[];
+};
+
+type SiteFeatureFlags = {
+  researchScorePage?: unknown;
+  featuredReviewSlugs?: string[];
+  scienceArticleSlug?: string;
+};
+
+type BuyingGuideConfig = {
+  intro?: string[];
+  chapters?: BuyingGuideChapter[];
+  productNav?: BuyingGuideProductNav;
+};
+
+function parsePriceFrom(value: string): number | null {
+  const parsed = Number.parseFloat(value.replace(/[^0-9.]/g, ""));
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
+function isProductCategory(value: unknown): value is ProductCategory {
+  return (
+    value === "mattress" ||
+    value === "pillow" ||
+    value === "topper" ||
+    value === "software"
+  );
 }
 
 export async function hydrateSiteData(
@@ -162,20 +220,36 @@ export async function hydrateSiteData(
       topPick?.badgeOverride != null && topPick.badgeOverride !== ""
         ? topPick.badgeOverride
         : row.badge ?? undefined;
+    const content = (row.content ?? {}) as ProductContent;
+    const productUrl =
+      content.productUrl && content.productUrl.length > 0
+        ? content.productUrl
+        : row.affiliateUrl;
 
     return {
       name: row.name,
       slug: row.slug,
+      category: isProductCategory(content.category)
+        ? content.category
+        : "software",
+      image: content.image,
       shortDescription: row.shortDescription,
+      metaDescription: content.metaDescription,
+      metaTitle: content.metaTitle,
       bestFor: row.bestFor,
-      priceFrom: row.priceFrom,
+      priceFrom: parsePriceFrom(row.priceFrom),
+      priceDisplay: content.priceDisplay || row.priceFrom,
+      priceUpdatedAt: content.priceUpdatedAt,
       features: row.features,
       pros: row.pros,
       cons: row.cons,
-      affiliateUrl: row.affiliateUrl,
+      productUrl,
+      affiliateUrl:
+        row.hasAffiliatePartnership && row.affiliateUrl
+          ? row.affiliateUrl
+          : undefined,
       hasAffiliatePartnership: row.hasAffiliatePartnership,
       rating: Number(row.rating),
-      researchScoreBreakdown: row.researchScoreBreakdown ?? undefined,
       badge,
       featuredRank: topPick?.sortOrder ?? null,
       comparisonRank: row.comparisonRank,
@@ -185,6 +259,7 @@ export async function hydrateSiteData(
   });
 
   const hydratedArticles: Article[] = articleRows.map((row) => {
+    const content = (row.content ?? {}) as ArticleContent;
     const productSectionRows = articleSectionsByArticleId.get(row.id) ?? [];
     const articleProducts: ArticleProductSection[] = productSectionRows.map(
       (section) => {
@@ -196,6 +271,8 @@ export async function hydrateSiteData(
           whereItFallsShort: section.whereItFallsShort,
           bestFor: section.bestFor,
           skipIf: section.skipIf,
+          productSlug: section.productSlug ?? undefined,
+          productVariant: section.productVariant ?? undefined,
         };
 
         if (section.imageSrc && section.imageAlt) {
@@ -209,29 +286,47 @@ export async function hydrateSiteData(
       },
     );
 
-    const mapped: Article = {
+    const base = {
       title: row.title,
       slug: row.slug,
       excerpt: row.excerpt ?? undefined,
+      metaTitle: content.metaTitle,
+      metaDescription: content.metaDescription,
       intro: row.intro,
+      reviewCategory: content.reviewCategory,
+      publishedAt: toIsoDate(row.publishedAt),
+      updatedAt: toIsoDate(row.updatedAtContent),
+      author: row.author ?? undefined,
+      inlineRelatedSlug: content.inlineRelatedSlug,
+      relatedSlugs: content.relatedSlugs,
+      ogImage:
+        row.ogImageSrc && row.ogImageAlt
+          ? { src: row.ogImageSrc, alt: row.ogImageAlt }
+          : undefined,
+    };
+
+    if (content.kind === "editorial") {
+      const editorial: EditorialArticle = {
+        ...base,
+        kind: "editorial",
+        introImage: content.introImage,
+        sections: content.sections ?? [],
+      };
+      return editorial;
+    }
+
+    const roundup: ProductRoundupArticle = {
+      ...base,
+      kind: "product-roundup",
       researchNote: {
         title: row.researchNoteTitle,
         content: row.researchNoteContent,
       },
       products: articleProducts,
-      publishedAt: toIsoDate(row.publishedAt),
-      updatedAt: toIsoDate(row.updatedAtContent),
-      author: row.author ?? undefined,
+      closingGuide: content.closingGuide,
+      faqs: content.faqs,
     };
-
-    if (row.ogImageSrc && row.ogImageAlt) {
-      mapped.ogImage = {
-        src: row.ogImageSrc,
-        alt: row.ogImageAlt,
-      };
-    }
-
-    return mapped;
+    return roundup;
   });
 
   const comparisonTableSection = sectionsByKey["comparison-table"];
@@ -248,7 +343,11 @@ export async function hydrateSiteData(
   const topPicksSection = sectionsByKey["top-picks"];
   const productDirectorySection = sectionsByKey["product-directory"];
   const buyingGuideSection = sectionsByKey["buying-guide"];
+  const buyingGuideConfig = buyingGuideSection?.config as
+    | BuyingGuideConfig
+    | undefined;
   const footerSection = sectionsByKey["footer"];
+  const featureFlags = (site.features ?? {}) as SiteFeatureFlags;
 
   const siteData: SiteData = {
     slug: site.slug,
@@ -259,6 +358,7 @@ export async function hydrateSiteData(
     siteUrl: site.siteUrl,
     ratingScale: site.ratingScale as 5 | 10,
     headerBrandImage: site.headerBrandImage ?? undefined,
+    favicon: site.favicon ?? undefined,
     hero: {
       eyebrow: heroRow.eyebrow ?? undefined,
       headline: heroRow.headline,
@@ -292,6 +392,9 @@ export async function hydrateSiteData(
     },
     buyingGuide: {
       title: buyingGuideSection?.title ?? "Buying guide",
+      intro: buyingGuideConfig?.intro,
+      chapters: buyingGuideConfig?.chapters,
+      productNav: buyingGuideConfig?.productNav,
       sections: buyingGuideRows.map((row) => ({
         title: row.title,
         content: row.content,
@@ -302,6 +405,8 @@ export async function hydrateSiteData(
       answer: row.answer,
     })),
     articles: hydratedArticles,
+    featuredReviewSlugs: featureFlags.featuredReviewSlugs,
+    scienceArticleSlug: featureFlags.scienceArticleSlug,
     newsletter: {
       title: site.newsletterTitle,
       description: site.newsletterDescription,
@@ -317,10 +422,7 @@ export async function hydrateSiteData(
       })),
     },
     features: {
-      researchScorePage: Boolean(
-        (site.features as { researchScorePage?: unknown } | null)
-          ?.researchScorePage,
-      ),
+      researchScorePage: Boolean(featureFlags.researchScorePage),
     },
   };
 
