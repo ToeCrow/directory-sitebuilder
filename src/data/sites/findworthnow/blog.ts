@@ -2,6 +2,259 @@ import type { DirectoryBlogPost } from "@/types/directory-blog";
 
 export const posts: DirectoryBlogPost[] = [
   {
+    slug: "why-do-i-keep-waking-up-at-night",
+    title: "Why Do I Keep Waking Up at Night? 8 Common Reasons",
+    excerpt:
+      "Waking at 2 or 3 a.m. is common. Eight reasons nights break apart — stress, alcohol, caffeine, the room, the bathroom — and what can help you stay asleep.",
+    metaTitle: "Why Do I Keep Waking Up at Night? 8 Common Reasons",
+    metaDescription:
+      "Waking up at night even when you were exhausted? Eight common reasons sleep breaks, practical things that can help you stay asleep, and when to get it checked.",
+    publishedAt: "2026-08-26",
+    intro: [
+      "Falling asleep is only half the night. Plenty of people drift off without much trouble and then find themselves staring at the ceiling at 2:17, wide awake, doing the math on how many hours are left.",
+      "A brief wake-up is not automatically a disaster. The problem is when those wake-ups stretch, stack, or start to steal the next day.",
+      "Here are eight common reasons nights break apart — and what is worth trying before you assume something is seriously wrong.",
+    ],
+    relatedProductSlugs: ["sleep-revive", "breathing-for-sleep"],
+    relatedPostSlugs: [
+      "why-cant-i-sleep-even-when-im-tired",
+      "how-to-fall-asleep-fast",
+    ],
+    sections: [
+      {
+        heading: "Why waking up briefly can be normal",
+        paragraphs: [
+          "Sleep is not a solid block. You cycle through lighter and deeper stages, and a short arousal between cycles is common. Many people do not remember those moments at all.",
+          "You notice them when something keeps you from dropping back down: a thought, a full bladder, a hot room, a partner’s snore, a phone lighting up. The wake-up was ordinary. The staying-awake is the part that needs a look.",
+          "Clock-watching makes it worse. Once you know it is 3:04, the night becomes a countdown. If you can, turn the clock away. The job is to get back to sleep, not to audit how badly the night is going.",
+        ],
+      },
+      {
+        heading: "Stress and an active mind",
+        paragraphs: [
+          "Stress is one of the most common reasons a night fragments. The day had enough noise to keep the worries in the background. At 2 a.m. there is nothing else to look at, so the mind starts a meeting with itself.",
+          "Worrying about sleep is a loop of its own. You wake, you panic that you are awake, your heart rate climbs, and now you really are awake. That pattern is well known in insomnia, and it does not mean you are “bad at sleeping.” It means the bed has started to mean alertness.",
+          "A simple close-the-day habit helps more than arguing with the thought at 3 a.m. Write tomorrow’s list before you get into bed. If you wake and the loop starts, get up in low light and do something dull until sleepy returns, rather than rehearsing the week in the dark.",
+        ],
+      },
+      {
+        heading: "Alcohol",
+        paragraphs: [
+          "A drink can help you fall asleep and still be the reason you wake later. Alcohol is a sedative, not a sleep aid. It can knock down the time it takes to drift off, then fragment the second half of the night.",
+          "The typical pattern is familiar: you drop off easily, then you are hot, thirsty, and unrested at 2 or 3. You “slept” seven hours and still feel wrecked, because the later stretch was not good sleep.",
+          "If night wakings are the complaint, try a week with an earlier last-call — or none on the nights you actually care about. A glass with dinner is a different bet than a nightcap. Water helps the headache. It does not glue the second half of the night back together.",
+        ],
+      },
+      {
+        heading: "Caffeine too late",
+        paragraphs: [
+          "Caffeine can still be working hours after you feel tired. The NHLBI notes that its effects can last up to eight hours. That 3 p.m. coffee is still a plausible guest at 11 p.m. — and sometimes at 2 a.m., when sleep is lighter and easier to break.",
+          "It is not only coffee. Energy drinks, pre-workout, strong tea, cola, and some pain tablets carry caffeine too. Chocolate in the evening is a quieter source people forget.",
+          "If you keep waking, move the last caffeinated serving earlier for a week and see whether the second half of the night settles. Keep the morning cup if you like it. The experiment is the afternoon, not your identity as a coffee person.",
+        ],
+      },
+      {
+        heading: "Bedroom temperature, noise, and light",
+        paragraphs: [
+          "A room that is too warm is a classic 3 a.m. alarm. Core temperature needs to drop for sleep to stay deep. A stuffy bedroom, a heavy duvet, or a partner who sleeps hot can be enough to surface you.",
+          "Light and noise do the same job. A streetlamp through thin curtains, an LED on a charger, a hallway left on, a TV in the next room — any of those can turn a normal brief arousal into a full wake-up. An eye mask and thicker curtains are cheap tests if you cannot change the window yet.",
+          "The target is boring: cool, dark, and quiet enough that staying awake has nothing to look at. Charge the phone out of arm’s reach. If someone else’s noise is the problem, earplugs or a steady fan are more useful than another hour of resentment.",
+        ],
+      },
+      {
+        heading: "Going to bed at inconsistent times",
+        paragraphs: [
+          "Your body likes a pattern. Weekday 6:30 and Saturday 10:30 is a small weekly jet-lag. Bedtime that wanders from 10 p.m. to 2 a.m. does the same thing to the clock that decides when sleep is deep and when it is fragile.",
+          "When the schedule keeps moving, you can fall asleep at an odd hour and still wake in the night because the internal night is not aligned with the clock on the wall.",
+          "A regular sleep and wake time is one of the most consistently recommended habits for a reason. Protect the wake-up even after a bad night. A long lie-in often steals the next evening and sets up another broken night.",
+        ],
+      },
+      {
+        heading: "Needing to use the bathroom",
+        paragraphs: [
+          "A full bladder is a practical reason, and it is an easy one to train without noticing. Large drinks late, alcohol, and caffeine all send you to the bathroom. Once you are up, the lights, the phone, and the cold floor can finish the job of waking you fully.",
+          "Try pulling fluids earlier in the evening and skipping the extra glass “just in case” right before bed. Empty your bladder as part of the off-ramp, then keep the trip back dark and dull if you do need to get up.",
+          "If you are up several times every night, if this is new, or if you also have pain, blood in the urine, or a weak stream, that is a clinician conversation — not a sleep-gadget problem. Nighttime urination can have medical causes that a wind-down routine will not fix.",
+        ],
+      },
+      {
+        heading: "Discomfort from mattress, pillow, or sleeping position",
+        paragraphs: [
+          "Pain is a reliable alarm clock. A mattress that sags, a pillow that has gone flat, a shoulder that has nowhere to go, or a neck that is cranked toward a screen-height stack of pillows will surface you even if everything else is quiet.",
+          "Heat trapped in foam, a partner who takes the middle, and a position you only use because you fell asleep on the sofa all count. If you wake on the same side with the same ache, the furniture is part of the night.",
+          "You do not need a perfect setup. You need one that does not hurt. Swap the dead pillow before you buy a new mattress. If side-sleeping leaves an arm numb, give the shoulder a little more space. Comfort is not a luxury category here — it is whether you stay down after 2 a.m.",
+        ],
+      },
+      {
+        heading: "A phone that turns a brief wake into a full one",
+        paragraphs: [
+          "A normal arousal lasts seconds if there is nothing to look at. A phone on the nightstand turns it into a session: the time, the messages, one more scroll. Light in the face, novelty in the brain, and now you are up.",
+          "Night mode does not fix that. Distance does. Charge it across the room, or in another room, and use a cheap alarm clock if you need one. If you must keep the phone nearby, leave it face down, on Do Not Disturb, off the mattress.",
+          "This is the eighth common reason because it is so easy to miss. The night broke. The feed is what kept it broken.",
+        ],
+      },
+      {
+        heading: "What can help you stay asleep",
+        paragraphs: [
+          "Start with the boring list, because it is the one that actually moves the night: a stable wake time, caffeine parked by early afternoon, alcohol earlier or not at all, a cooler darker room, fluids earlier, and a bed that does not hurt. You do not have to fix every item at once. Pick the two that sound most like your 3 a.m. and give them a week.",
+          "If you wake and cannot drop back, get up. Low light, something dull, back to bed when sleepy shows up. Lying there angry at the clock trains the mattress to mean struggle. That is the same stimulus-control idea used in insomnia care, and it is free.",
+          "A 30-minute off-ramp before the first sleep helps the second half too. Dim lights, no new problems, phone out of reach. You are less likely to surface at 2 a.m. if you did not go in still switched on.",
+        ],
+      },
+      {
+        heading: "When repeated waking deserves medical attention",
+        paragraphs: [
+          "An occasional broken night is a rough night. Repeated waking that lasts weeks, steals your concentration, or comes with loud snoring, gasping, chest pain, or depression is in a different category.",
+          "Chronic insomnia is generally defined as trouble falling asleep, staying asleep, or getting restful sleep at least three nights a week for three months or longer, despite having the chance to sleep. That is worth a proper conversation, not another round of guessing.",
+          "Persistent daytime sleepiness after what should have been enough hours in bed can have causes beyond “I should try harder.” Get it checked if the basics have had a fair run and the night is still falling apart.",
+        ],
+      },
+      {
+        heading: "Sleep-support options worth exploring",
+        paragraphs: [
+          "If the room, the caffeine, and the alcohol are already handled and you still want one more input, there are two useful shapes: a short evening practice, or a bedtime capsule. Neither is a treatment for a sleep disorder, and neither out-votes a nightcap and a bright phone.",
+          "Breathing for Sleep is a roughly 10-minute routine — video, audio, a handbook — plus a BreatheMAX pillow in the current bundle. Sleep Revive is a two-capsule serving 30–45 minutes before bed, with lemon balm, valerian, L-theanine, magnesium glycinate, and rutaecarpine. Details, packages, and current prices are in those reviews.",
+          "If you want to compare the sleep-support options we cover in one place:",
+        ],
+        cta: {
+          label: "Explore sleep-support options",
+          path: "/sleep",
+        },
+      },
+    ],
+  },
+  {
+    slug: "why-cant-i-sleep-even-when-im-tired",
+    title: "Why Can't I Sleep Even When I'm Tired?",
+    excerpt:
+      "Exhausted but unable to fall asleep? Common reasons you may feel tired but still struggle to sleep, plus practical things you can try.",
+    metaTitle: "Why Can't I Sleep Even When I'm Tired?",
+    metaDescription:
+      "Exhausted but unable to fall asleep? Explore common reasons you may feel tired but still struggle to sleep, plus practical things you can try.",
+    publishedAt: "2026-08-26",
+    intro: [
+      "Few things are more frustrating than feeling exhausted all evening, finally getting into bed, and suddenly discovering that you cannot sleep.",
+      "Your body feels tired.",
+      "Your eyes feel tired.",
+      "Yet your brain seems completely uninterested in shutting down.",
+      "The reason is that feeling tired and being ready to sleep are not always the same thing. Your sleep is influenced by your internal body clock, habits, light exposure, stimulants, stress, and the environment around you.",
+      "Here are some of the most common things worth looking at.",
+    ],
+    relatedProductSlugs: ["sleep-revive", "breathing-for-sleep"],
+    relatedPostSlugs: [
+      "why-do-i-keep-waking-up-at-night",
+      "how-to-fall-asleep-fast",
+      "why-sleep-supplements-can-help",
+    ],
+    sections: [
+      {
+        heading: "Your brain is still in daytime mode",
+        paragraphs: [
+          "You may physically be in bed while your brain is still processing the day.",
+          "Work, social media, gaming, messages, news, and other stimulating activities can keep your attention switched on right until bedtime.",
+          "Bright artificial light in the evening can also interfere with the signals involved in your sleep-wake cycle. The NHLBI recommends reducing bright screen exposure before bed and using the period before sleep for quieter activities.",
+          "Try giving yourself a buffer between the active part of your day and sleep.",
+          "Even 30–60 minutes of lower stimulation can create a clearer transition.",
+        ],
+      },
+      {
+        heading: "Your sleep schedule keeps moving",
+        paragraphs: [
+          "Maybe you wake at 6:30 during the week but sleep until 10:30 on Saturday.",
+          "Or perhaps bedtime ranges anywhere from 10 PM to 2 AM.",
+          "Your body likes patterns.",
+          "Large shifts in sleeping and waking times can disrupt the rhythm that helps determine when you naturally feel alert and when you begin feeling sleepy.",
+          "A regular sleep and wake schedule is one of the most consistently recommended healthy sleep habits.",
+        ],
+      },
+      {
+        heading: "You are tired—but still stimulated by caffeine",
+        paragraphs: [
+          "It is entirely possible to feel exhausted while caffeine is still making it harder to fall asleep.",
+          "The tiredness you feel does not necessarily mean the stimulant has stopped affecting you.",
+          "According to the NHLBI, caffeine's effects can last up to eight hours.",
+          "If you regularly struggle to sleep, try moving coffee, energy drinks, tea, cola, and other caffeinated products earlier and see whether your evenings change.",
+        ],
+      },
+      {
+        heading: "Stress waits until the room becomes quiet",
+        paragraphs: [
+          "During the day, there are distractions everywhere.",
+          "Then the lights go out.",
+          "Suddenly your mind has plenty of space to think about tomorrow, money, work, relationships, things you forgot, and things that may never happen.",
+          "Stress and worrying are recognized risk factors for insomnia, and even worrying specifically about whether you will sleep can make the problem worse.",
+          "A simple pre-bed routine can help.",
+          "Write down tomorrow's priorities, prepare anything you need for the morning, and give yourself some quiet time before getting into bed.",
+          "You are essentially closing the day rather than bringing it into bed with you.",
+        ],
+      },
+      {
+        heading: "Your bedroom is working against you",
+        paragraphs: [
+          "Sometimes the explanation is surprisingly practical.",
+          "The room is too warm.",
+          "Streetlights shine through the curtains.",
+          "Your phone lights up.",
+          "Someone is watching television.",
+          "Your pillow is uncomfortable.",
+          "Your bedroom should make staying awake boring and sleeping easy.",
+          "A cool, quiet, dark environment is consistently recommended as part of healthy sleep habits.",
+        ],
+      },
+      {
+        heading: "You are spending too much awake time in bed",
+        paragraphs: [
+          "If you regularly lie in bed scrolling, watching television, working, or spending long periods trying unsuccessfully to sleep, your brain can begin associating the bed with wakefulness rather than sleep.",
+          "One technique used as part of cognitive behavioral therapy for insomnia is stimulus control.",
+          "The basic idea is to use the bed primarily for sleep, go to bed when sleepy, and get up for a quiet activity if you cannot sleep rather than becoming increasingly frustrated in bed.",
+        ],
+      },
+      {
+        heading: "Your daytime habits matter too",
+        paragraphs: [
+          "Sleep is not an isolated eight-hour event.",
+          "Daylight, exercise, naps, meal timing, caffeine, and your daily schedule can all affect what happens later that night.",
+          "Regular daytime physical activity and exposure to daylight can support a healthier sleep-wake rhythm. Long or late naps, on the other hand, may make it harder for some people to fall asleep at night.",
+          "That means improving tonight's sleep may actually begin tomorrow morning.",
+        ],
+      },
+      {
+        heading: "Should you try a sleep-support product?",
+        paragraphs: [
+          "There is no shortage of products marketed around sleep.",
+          "These include dietary supplements, breathing programs, relaxation techniques, apps, sound products, and other approaches.",
+          "Some people find certain options useful as part of their routine, but it is worth keeping expectations realistic. A sleep-support product should not automatically be treated as a solution to persistent insomnia or another sleep disorder.",
+          "If you want to explore some of the different approaches available, we collect them in one place:",
+          "If you are considering dietary supplements, remember that supplements can have risks and interactions. The NHLBI recommends discussing supplements with a healthcare provider when appropriate.",
+        ],
+        cta: {
+          label: "Explore sleep-support options",
+          path: "/sleep",
+          afterParagraph: 4,
+        },
+      },
+      {
+        heading: "When should you talk to someone about your sleep?",
+        paragraphs: [
+          "If this happens occasionally, it may simply be a rough night.",
+          "If it keeps happening, begins affecting your concentration or daytime functioning, or continues for months, it deserves more attention.",
+          "Insomnia involves problems falling asleep, staying asleep, or getting good-quality sleep despite having the opportunity to sleep. Chronic insomnia is generally defined as occurring at least three nights per week for three months or longer.",
+          "Persistent daytime sleepiness can also have causes beyond simply going to bed too late, so professional assessment can be useful when the problem does not improve.",
+        ],
+      },
+      {
+        heading: "The bottom line",
+        paragraphs: [
+          "When you are thinking “I'm exhausted, so why can't I sleep?”, the answer is often not that you are simply “not tired enough.”",
+          "Your body may be tired while your schedule, caffeine, stress, light exposure, environment, or habits are still telling your brain to stay awake.",
+          "Start with the basics.",
+          "Make the evening quieter, keep your schedule more predictable, reduce late stimulation, and create an environment where sleep has fewer things competing with it.",
+          "Sometimes a few boring changes are exactly what your sleep needs.",
+        ],
+      },
+    ],
+  },
+  {
     slug: "how-to-fall-asleep-fast",
     title:
       "How to Fall Asleep Fast: 12 Practical Ways to Wind Down and Sleep Better",
@@ -17,6 +270,8 @@ export const posts: DirectoryBlogPost[] = [
     ],
     relatedProductSlugs: ["sleep-revive", "breathing-for-sleep"],
     relatedPostSlugs: [
+      "why-do-i-keep-waking-up-at-night",
+      "why-cant-i-sleep-even-when-im-tired",
       "why-sleep-supplements-can-help",
       "why-try-sleep-programs-beyond-supplements",
     ],
@@ -147,6 +402,7 @@ export const posts: DirectoryBlogPost[] = [
     ],
     relatedProductSlugs: ["sleep-revive"],
     relatedPostSlugs: [
+      "why-cant-i-sleep-even-when-im-tired",
       "how-to-fall-asleep-fast",
       "why-try-sleep-programs-beyond-supplements",
     ],

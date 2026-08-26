@@ -13,6 +13,7 @@ import {
   siteUsesEditorialCatalog,
 } from "@/lib/directory-catalog";
 import {
+  getAppPath,
   getBlogIndexPath,
   getBlogPostPath,
   getDirectoryReviewPath,
@@ -143,28 +144,41 @@ export default async function DirectoryBlogPostPage({
           </p>
         </header>
 
-        {post.sections.map((section) => (
-          <section key={section.heading} className="mt-10">
-            <h2 className="text-2xl font-semibold tracking-tight text-fwn-ivory">
-              {section.heading}
-            </h2>
-            {section.paragraphs.map((paragraph) => (
-              <p
-                key={paragraph.slice(0, 48)}
-                className="mt-4 text-base leading-relaxed text-fwn-sand"
-              >
-                {paragraph}
-              </p>
-            ))}
-            {section.bullets && section.bullets.length > 0 && (
-              <ul className="mt-4 list-disc space-y-2 pl-5 text-base leading-relaxed text-fwn-sand">
-                {section.bullets.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            )}
-          </section>
-        ))}
+        {post.sections.map((section) => {
+          const ctaAfter = section.cta?.afterParagraph ?? section.paragraphs.length;
+
+          return (
+            <section key={section.heading} className="mt-10">
+              <h2 className="text-2xl font-semibold tracking-tight text-fwn-ivory">
+                {section.heading}
+              </h2>
+              {section.paragraphs.map((paragraph, index) => (
+                <div key={paragraph.slice(0, 48)}>
+                  <p className="mt-4 text-base leading-relaxed text-fwn-sand">
+                    {paragraph}
+                  </p>
+                  {section.cta && index + 1 === ctaAfter ? (
+                    <p className="mt-4">
+                      <Link
+                        href={getAppPath(publicBasePath, section.cta.path)}
+                        className="font-medium text-fwn-gold hover:text-fwn-brass"
+                      >
+                        {section.cta.label}
+                      </Link>
+                    </p>
+                  ) : null}
+                </div>
+              ))}
+              {section.bullets && section.bullets.length > 0 && (
+                <ul className="mt-4 list-disc space-y-2 pl-5 text-base leading-relaxed text-fwn-sand">
+                  {section.bullets.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          );
+        })}
       </article>
 
       {relatedProducts.length > 0 && (
