@@ -29,7 +29,7 @@ export async function FindWorthNowHome({
     <div className="relative mx-auto max-w-6xl overflow-hidden px-4 py-16 md:py-24">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -top-24 left-1/2 h-80 w-[40rem] -translate-x-1/2 rounded-full bg-fwn-gold/12 blur-3xl"
+        className="pointer-events-none absolute -top-24 left-1/2 h-80 w-160 -translate-x-1/2 rounded-full bg-fwn-gold/12 blur-3xl"
       />
       {siteData.hero.eyebrow && (
         <p className="relative text-xs font-semibold uppercase tracking-[0.28em] text-fwn-gold">
