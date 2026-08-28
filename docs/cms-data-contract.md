@@ -23,7 +23,6 @@ A product referenced by a top pick cannot be unpublished or deleted until the to
 | SiteData path | Storage | Notes |
 |---------------|---------|-------|
 | `slug`, `title`, `metaTitle`, `metaDescription`, `niche`, `siteUrl` | `sites` columns | |
-| `ratingScale` | `sites.rating_scale` smallint CHECK (5\|10) | |
 | `headerBrandImage` | `sites.header_brand_image` | public asset path |
 | `affiliateDisclosure` | `sites.affiliate_disclosure` | |
 | `newsletter.*` | `sites.newsletter_*` columns | |

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { ReviewListItem } from "@/components/ReviewListItem";
 import { usePublicBasePath, useSiteData } from "@/context/SiteContext";
-import { articlesByReviewCategoryFrom } from "@/lib/site";
+import { articlesByReviewCategoryFrom } from "@/lib/site-view";
 import type { ReviewCategory } from "@/types/site";
 import { cn } from "@/lib/cn";
 import { getArticlePath, getReviewsIndexPath } from "@/lib/paths";

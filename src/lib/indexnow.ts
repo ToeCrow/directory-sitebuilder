@@ -1,13 +1,10 @@
 import { createHash } from "node:crypto";
 import { getPublicAbsoluteUrl } from "@/lib/paths";
-import { siteUsesAboutPage } from "@/lib/about";
 import {
   getDirectoryCategories,
   getDirectoryProducts,
-  siteUsesEditorialCatalog,
 } from "@/lib/directory-catalog";
 import { getDirectoryBlogPosts } from "@/lib/directory-blog";
-import { siteUsesPrivacyPolicy } from "@/lib/privacy-policy";
 import { getSiteBySlug, isValidSiteSlug } from "@/data/sites";
 import {
   articlesFeaturingProductFrom,
@@ -15,8 +12,9 @@ import {
   featuredHomeReviewsFrom,
   featuredProductsFrom,
   productBySlugFrom,
-  siteHasMattressPillowNav,
 } from "@/lib/site";
+import { canAccessRoute } from "@/lib/site-routes";
+import { siteHasFeature } from "@/lib/site-config";
 import type { Article, Product, SiteData } from "@/types/site";
 
 const INDEXNOW_ENDPOINT = "https://api.indexnow.org/indexnow";
@@ -196,7 +194,6 @@ function siteChrome(siteData: SiteData) {
     headerBrandImage: siteData.headerBrandImage,
     footer: siteData.footer,
     siteUrl: siteData.siteUrl,
-    ratingScale: siteData.ratingScale,
   };
 }
 
@@ -254,7 +251,7 @@ export function getIndexNowUrlSnapshots(siteSlug: string): IndexNowUrlSnapshot[]
   const abs = (path: string) =>
     getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, path);
 
-  if (siteUsesEditorialCatalog(siteSlug)) {
+  if (siteHasFeature(siteSlug, "catalog")) {
     const snapshots: IndexNowUrlSnapshot[] = [
       snapshotFor(abs("/"), chrome, {
         hero: siteData.hero,
@@ -329,7 +326,7 @@ export function getIndexNowUrlSnapshots(siteSlug: string): IndexNowUrlSnapshot[]
     }),
   ];
 
-  if (!siteHasMattressPillowNav(siteSlug)) {
+  if (canAccessRoute(siteSlug, "comparisons")) {
     snapshots.push(
       snapshotFor(abs("/comparisons"), chrome, {
         comparisonTable: siteData.comparisonTable,
@@ -342,11 +339,11 @@ export function getIndexNowUrlSnapshots(siteSlug: string): IndexNowUrlSnapshot[]
     snapshotFor(abs("/buying-guide"), chrome, siteData.buyingGuide),
   );
 
-  if (siteUsesAboutPage(siteSlug)) {
+  if (canAccessRoute(siteSlug, "about")) {
     snapshots.push(snapshotFor(abs("/about"), chrome, { page: "about" }));
   }
 
-  if (siteUsesPrivacyPolicy(siteSlug)) {
+  if (canAccessRoute(siteSlug, "privacy")) {
     snapshots.push(
       snapshotFor(abs("/privacy-policy"), chrome, { page: "privacy-policy" }),
     );

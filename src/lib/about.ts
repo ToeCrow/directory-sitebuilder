@@ -1,4 +1,5 @@
-/** Side Sleeper Guide is the only site with a dedicated About page. */
+import { siteHasFeature } from "@/lib/site-config";
+
 export function siteUsesAboutPage(siteSlug: string): boolean {
-  return siteSlug === "side-sleeper";
+  return siteHasFeature(siteSlug, "about");
 }

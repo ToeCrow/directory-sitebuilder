@@ -40,7 +40,6 @@ export default async function AdminProductEditPage({
       <div className="mt-8">
         <ProductEditForm
           productId={product.id}
-          ratingScale={product.ratingScale}
           isTopPick={product.isTopPick}
           initial={{
             name: product.name,
@@ -53,7 +52,6 @@ export default async function AdminProductEditPage({
             consText: product.cons.join("\n"),
             affiliateUrl: product.affiliateUrl,
             hasAffiliatePartnership: product.hasAffiliatePartnership,
-            rating: product.rating,
             badge: product.badge ?? "",
             comparisonRank: product.comparisonRank,
             directorySortOrder: product.directorySortOrder,

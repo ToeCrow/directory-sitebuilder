@@ -1,6 +1,7 @@
-/** Side Sleeper Guide is the only site with a dedicated privacy policy page. */
+import { siteHasFeature } from "@/lib/site-config";
+
 export function siteUsesPrivacyPolicy(siteSlug: string): boolean {
-  return siteSlug === "side-sleeper";
+  return siteHasFeature(siteSlug, "privacy");
 }
 
 /** Matches both public `/privacy-policy` and internal `/{siteSlug}/privacy-policy`. */

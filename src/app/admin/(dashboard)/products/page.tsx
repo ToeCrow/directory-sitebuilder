@@ -38,7 +38,7 @@ export default async function AdminProductsPage({
             Products
           </h1>
           <p className="mt-2 text-slate-600">
-            Edit listings, ratings, affiliate flags, and publish status. Saving
+            Edit listings, affiliate flags, and publish status. Saving
             a published product updates the public site immediately.
           </p>
         </div>
@@ -101,7 +101,6 @@ export default async function AdminProductsPage({
               <tr>
                 <th className="px-4 py-3 font-medium">Product</th>
                 <th className="px-4 py-3 font-medium">Site</th>
-                <th className="px-4 py-3 font-medium">Rating</th>
                 <th className="px-4 py-3 font-medium">Status</th>
                 <th className="px-4 py-3 font-medium">Affiliate</th>
                 <th className="px-4 py-3 font-medium">Actions</th>
@@ -124,9 +123,6 @@ export default async function AdminProductsPage({
                   </td>
                   <td className="px-4 py-3 text-slate-600">
                     {product.siteTitle}
-                  </td>
-                  <td className="px-4 py-3 text-slate-700">
-                    {product.rating.toFixed(1)} / {product.ratingScale}
                   </td>
                   <td className="px-4 py-3">
                     <StatusControls

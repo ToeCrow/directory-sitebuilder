@@ -1,5 +1,5 @@
 import type { Article, SiteData } from "@/types/site";
-import { articleBySlugFrom } from "@/lib/site";
+import { articleBySlugFrom } from "@/lib/site-view";
 
 const BOTTOM_RELATED_LIMIT = 4;
 

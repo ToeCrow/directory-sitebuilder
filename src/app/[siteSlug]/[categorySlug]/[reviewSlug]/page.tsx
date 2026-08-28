@@ -8,7 +8,6 @@ import {
   getDirectoryCategory,
   getDirectoryProductByReviewSlug,
   getDirectoryProducts,
-  siteUsesEditorialCatalog,
 } from "@/lib/directory-catalog";
 import {
   getDirectoryCategoryPath,
@@ -18,6 +17,7 @@ import {
 import { getRequestPublicBasePath } from "@/lib/request-paths";
 import { buildPageOpenGraph } from "@/lib/seo";
 import { getSiteBySlug, isValidSiteSlug } from "@/lib/site";
+import { canAccessRoute } from "@/lib/site-routes";
 
 type ReviewPageProps = {
   params: Promise<{
@@ -73,7 +73,7 @@ export async function generateMetadata({
 export default async function DirectoryReviewPage({ params }: ReviewPageProps) {
   const { siteSlug, categorySlug, reviewSlug } = await params;
 
-  if (!(await isValidSiteSlug(siteSlug)) || !siteUsesEditorialCatalog(siteSlug)) {
+  if (!(await isValidSiteSlug(siteSlug)) || !canAccessRoute(siteSlug, "catalog")) {
     notFound();
   }
 

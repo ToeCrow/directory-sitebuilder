@@ -10,7 +10,6 @@ import {
 } from "@/lib/directory-blog";
 import {
   getDirectoryProductBySlug,
-  siteUsesEditorialCatalog,
 } from "@/lib/directory-catalog";
 import {
   getAppPath,
@@ -23,6 +22,7 @@ import {
 import { getRequestPublicBasePath } from "@/lib/request-paths";
 import { buildPageOpenGraph } from "@/lib/seo";
 import { getSiteBySlug, isValidSiteSlug } from "@/lib/site";
+import { canAccessRoute } from "@/lib/site-routes";
 
 type BlogPostPageProps = {
   params: Promise<{ siteSlug: string; slug: string }>;
@@ -81,7 +81,7 @@ export default async function DirectoryBlogPostPage({
 }: BlogPostPageProps) {
   const { siteSlug, slug } = await params;
 
-  if (!(await isValidSiteSlug(siteSlug)) || !siteUsesEditorialCatalog(siteSlug)) {
+  if (!(await isValidSiteSlug(siteSlug)) || !canAccessRoute(siteSlug, "blog")) {
     notFound();
   }
 

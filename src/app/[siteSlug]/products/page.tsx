@@ -9,17 +9,13 @@ import { ProductsDirectoryScroll } from "@/components/ProductsDirectoryScroll";
 import {
   getDirectoryCategories,
   getDirectoryProducts,
-  siteUsesEditorialCatalog,
 } from "@/lib/directory-catalog";
 import { siteSlugs, type SiteSlug } from "@/data/sites";
-import {
-  getSiteBySlug,
-  isValidSiteSlug,
-  siteHasMattressPillowNav,
-} from "@/lib/site";
+import { getSiteBySlug, isValidSiteSlug } from "@/lib/site";
 import { getPublicPath } from "@/lib/paths";
 import { getRequestPublicBasePath } from "@/lib/request-paths";
 import { buildPageOpenGraph } from "@/lib/seo";
+import { siteHasFeature } from "@/lib/site-config";
 
 type ProductsIndexProps = {
   params: Promise<{ siteSlug: string }>;
@@ -38,7 +34,7 @@ export async function generateMetadata({
   if (!siteData) return { title: "Products" };
 
   const path = getPublicPath(siteSlug, "/products");
-  const description = siteUsesEditorialCatalog(siteSlug)
+  const description = siteHasFeature(siteSlug, "catalog")
     ? (siteData.productDirectory.description ??
       "Browse product reviews and filter by category.")
     : (siteData.productDirectory.description ?? "");
@@ -73,7 +69,7 @@ export default async function ProductsIndexPage({
     notFound();
   }
 
-  if (siteUsesEditorialCatalog(siteSlug)) {
+  if (siteHasFeature(siteSlug, "catalog")) {
     const publicBasePath = await getRequestPublicBasePath(siteSlug);
     const categories = getDirectoryCategories(siteSlug);
     const activeCategory = categories.find(
@@ -117,7 +113,7 @@ export default async function ProductsIndexPage({
     );
   }
 
-  const showCategoryFilters = siteHasMattressPillowNav(siteSlug);
+  const showCategoryFilters = siteHasFeature(siteSlug, "product-nav");
   let category: "mattress" | "pillow" | "topper" | undefined;
   if (showCategoryFilters) {
     if (

@@ -159,8 +159,6 @@ export type Product = {
   affiliateUrl?: string;
   /** Whether we currently have an active affiliate partnership for this product */
   hasAffiliatePartnership: boolean;
-  /** Overall score on the site’s ratingScale. Unused in Side Sleeper UI. */
-  rating: number;
   badge?: string;
   featuredRank: number | null;
   directoryOrder: number;
@@ -176,7 +174,6 @@ export type SiteData = {
   metaDescription: string;
   niche: string;
   siteUrl: string;
-  ratingScale: 5 | 10;
   /** Optional header logo+wordmark image (e.g. /sites/side-sleeper/header-brand.png) */
   headerBrandImage?: string;
   /** Optional tab icon (e.g. /sites/findworthnow/favicon.png) */

@@ -17,7 +17,6 @@ export const siteSettingsSchema = z.object({
   metaDescription: z.string().trim().min(1).max(500),
   niche: z.string().trim().min(1).max(200),
   siteUrl: z.string().trim().url(),
-  ratingScale: z.union([z.literal(5), z.literal(10)]),
   headerBrandImage: optionalText(500),
   affiliateDisclosure: z.string().trim().min(1).max(4000),
   newsletterTitle: z.string().trim().min(1).max(200),

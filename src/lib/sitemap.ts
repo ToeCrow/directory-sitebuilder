@@ -1,15 +1,13 @@
 import type { MetadataRoute } from "next";
 import { getSiteBySlug, siteSlugs } from "@/data/sites";
-import { siteHasMattressPillowNav } from "@/lib/site";
 import { getPublicAbsoluteUrl, siteUsesPublicPaths } from "@/lib/paths";
-import { siteUsesAboutPage } from "@/lib/about";
 import {
   getDirectoryCategories,
   getDirectoryProducts,
-  siteUsesEditorialCatalog,
 } from "@/lib/directory-catalog";
 import { getDirectoryBlogPosts } from "@/lib/directory-blog";
-import { siteUsesPrivacyPolicy } from "@/lib/privacy-policy";
+import { canAccessRoute } from "@/lib/site-routes";
+import { siteHasFeature } from "@/lib/site-config";
 
 export function buildSiteSitemapEntries(
   siteSlug: string,
@@ -21,7 +19,7 @@ export function buildSiteSitemapEntries(
 
   const now = new Date();
 
-  if (siteUsesEditorialCatalog(siteSlug)) {
+  if (siteHasFeature(siteSlug, "catalog")) {
     const entries: MetadataRoute.Sitemap = [
       {
         url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, "/"),
@@ -118,7 +116,7 @@ export function buildSiteSitemapEntries(
   ];
 
   // Construction-software (and similar) keep /comparisons; Side Sleeper does not.
-  if (!siteHasMattressPillowNav(siteSlug)) {
+  if (canAccessRoute(siteSlug, "comparisons")) {
     entries.push({
       url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, "/comparisons"),
       lastModified: now,
@@ -134,7 +132,7 @@ export function buildSiteSitemapEntries(
     priority: 0.7,
   });
 
-  if (siteUsesAboutPage(siteSlug)) {
+  if (canAccessRoute(siteSlug, "about")) {
     entries.push({
       url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, "/about"),
       lastModified: now,
@@ -143,7 +141,7 @@ export function buildSiteSitemapEntries(
     });
   }
 
-  if (siteUsesPrivacyPolicy(siteSlug)) {
+  if (canAccessRoute(siteSlug, "privacy")) {
     entries.push({
       url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, "/privacy-policy"),
       lastModified: now,

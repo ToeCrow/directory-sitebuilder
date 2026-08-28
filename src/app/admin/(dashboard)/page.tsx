@@ -7,7 +7,7 @@ const contentSections = [
   {
     href: "/admin/products",
     title: "Products",
-    description: "Manage product listings, ratings, and affiliate flags.",
+    description: "Manage product listings and affiliate flags.",
   },
   {
     href: "/admin/top-picks",

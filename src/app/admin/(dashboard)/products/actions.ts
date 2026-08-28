@@ -59,7 +59,7 @@ export async function createProductAction(
     return { ok: false, error: "Site not found" };
   }
 
-  const parsed = buildProductCreateSchema(site.site.ratingScale).safeParse(raw);
+  const parsed = buildProductCreateSchema().safeParse(raw);
   if (!parsed.success) {
     return {
       ok: false,
@@ -86,7 +86,6 @@ export async function createProductAction(
         cons: linesToArray(data.consText),
         affiliateUrl: data.affiliateUrl,
         hasAffiliatePartnership: data.hasAffiliatePartnership,
-        rating: data.rating.toFixed(1),
         badge: data.badge?.trim() ? data.badge.trim() : null,
         comparisonRank: data.comparisonRank,
         directorySortOrder: data.directorySortOrder,
@@ -126,7 +125,7 @@ export async function updateProductAction(
     return { ok: false, error: "Product not found" };
   }
 
-  const parsed = buildProductUpdateSchema(existing.ratingScale).safeParse(raw);
+  const parsed = buildProductUpdateSchema().safeParse(raw);
   if (!parsed.success) {
     return {
       ok: false,
@@ -168,7 +167,6 @@ export async function updateProductAction(
         cons: linesToArray(data.consText),
         affiliateUrl: data.affiliateUrl,
         hasAffiliatePartnership: data.hasAffiliatePartnership,
-        rating: data.rating.toFixed(1),
         badge: data.badge?.trim() ? data.badge.trim() : null,
         comparisonRank: data.comparisonRank,
         directorySortOrder: data.directorySortOrder,

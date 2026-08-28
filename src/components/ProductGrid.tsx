@@ -1,6 +1,6 @@
 "use client";
 
-import { featuredProductsFrom } from "@/lib/site";
+import { featuredProductsFrom } from "@/lib/site-view";
 import { useSiteData } from "@/context/SiteContext";
 import { ProductCard } from "@/components/ProductCard";
 import { cn } from "@/lib/cn";

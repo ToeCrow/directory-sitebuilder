@@ -249,7 +249,6 @@ export async function hydrateSiteData(
           ? row.affiliateUrl
           : undefined,
       hasAffiliatePartnership: row.hasAffiliatePartnership,
-      rating: Number(row.rating),
       badge,
       featuredRank: topPick?.sortOrder ?? null,
       comparisonRank: row.comparisonRank,
@@ -356,7 +355,6 @@ export async function hydrateSiteData(
     metaDescription: site.metaDescription,
     niche: site.niche,
     siteUrl: site.siteUrl,
-    ratingScale: site.ratingScale as 5 | 10,
     headerBrandImage: site.headerBrandImage ?? undefined,
     favicon: site.favicon ?? undefined,
     hero: {

@@ -1,6 +1,6 @@
 "use client";
 
-import { comparisonProductsFrom, getComparisonValue } from "@/lib/site";
+import { comparisonProductsFrom, getComparisonValue } from "@/lib/site-view";
 import { useSiteData } from "@/context/SiteContext";
 import { cn } from "@/lib/cn";
 

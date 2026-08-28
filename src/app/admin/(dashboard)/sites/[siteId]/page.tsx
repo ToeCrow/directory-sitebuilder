@@ -55,7 +55,6 @@ export default async function AdminSiteEditPage({
                 metaDescription: site.metaDescription,
                 niche: site.niche,
                 siteUrl: site.siteUrl,
-                ratingScale: site.ratingScale as 5 | 10,
                 headerBrandImage: site.headerBrandImage ?? "",
                 affiliateDisclosure: site.affiliateDisclosure,
                 newsletterTitle: site.newsletterTitle,

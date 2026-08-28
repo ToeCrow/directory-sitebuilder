@@ -1,13 +1,10 @@
 import { sql } from "drizzle-orm";
 import {
   boolean,
-  check,
   integer,
   jsonb,
-  numeric,
   pgEnum,
   pgTable,
-  smallint,
   text,
   timestamp,
   uniqueIndex,
@@ -43,7 +40,6 @@ export const sites = pgTable(
     metaDescription: text("meta_description").notNull(),
     niche: text("niche").notNull(),
     siteUrl: text("site_url").notNull(),
-    ratingScale: smallint("rating_scale").notNull(),
     headerBrandImage: text("header_brand_image"),
     favicon: text("favicon"),
     affiliateDisclosure: text("affiliate_disclosure").notNull(),
@@ -61,10 +57,7 @@ export const sites = pgTable(
       .default(sql`'{}'::jsonb`),
     ...timestamps,
   },
-  (table) => [
-    uniqueIndex("sites_slug_uidx").on(table.slug),
-    check("sites_rating_scale_check", sql`${table.ratingScale} IN (5, 10)`),
-  ],
+  (table) => [uniqueIndex("sites_slug_uidx").on(table.slug)],
 );
 
 export const siteDomains = pgTable(
@@ -159,7 +152,6 @@ export const products = pgTable(
     hasAffiliatePartnership: boolean("has_affiliate_partnership")
       .notNull()
       .default(false),
-    rating: numeric("rating", { precision: 3, scale: 1 }).notNull(),
     researchScoreBreakdown: jsonb(
       "research_score_breakdown",
     ).$type<Record<string, number>>(),
@@ -178,10 +170,7 @@ export const products = pgTable(
     publishedAt: timestamp("published_at", { withTimezone: true }),
     ...timestamps,
   },
-  (table) => [
-    uniqueIndex("products_site_slug_uidx").on(table.siteId, table.slug),
-    check("products_rating_gte_zero", sql`${table.rating} >= 0`),
-  ],
+  (table) => [uniqueIndex("products_site_slug_uidx").on(table.siteId, table.slug)],
 );
 
 export const siteTopPicks = pgTable(

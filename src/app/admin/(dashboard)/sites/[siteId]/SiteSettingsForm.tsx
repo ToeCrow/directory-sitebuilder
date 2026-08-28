@@ -10,7 +10,6 @@ type SiteSettingsValues = {
   metaDescription: string;
   niche: string;
   siteUrl: string;
-  ratingScale: 5 | 10;
   headerBrandImage: string;
   affiliateDisclosure: string;
   newsletterTitle: string;
@@ -46,7 +45,6 @@ export function SiteSettingsForm({ siteId, initial }: SiteSettingsFormProps) {
     startTransition(async () => {
       const result = await updateSiteSettingsAction(siteId, {
         ...values,
-        ratingScale: Number(values.ratingScale),
         headerBrandImage: values.headerBrandImage || null,
         adsPrimary: values.adsPrimary || null,
         adsSecondary: values.adsSecondary || null,
@@ -118,23 +116,6 @@ export function SiteSettingsForm({ siteId, initial }: SiteSettingsFormProps) {
           value={values.siteUrl}
           onChange={(e) => setValues({ ...values, siteUrl: e.target.value })}
         />
-      </label>
-
-      <label className="block text-sm font-medium text-slate-700">
-        Rating scale
-        <select
-          className={fieldClass}
-          value={values.ratingScale}
-          onChange={(e) =>
-            setValues({
-              ...values,
-              ratingScale: Number(e.target.value) as 5 | 10,
-            })
-          }
-        >
-          <option value={5}>5</option>
-          <option value={10}>10</option>
-        </select>
       </label>
 
       <label className="block text-sm font-medium text-slate-700">

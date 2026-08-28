@@ -35,7 +35,6 @@ export const siteData: SiteData = {
     "Compare mattresses for side sleepers based on pressure relief, cooling, support, trial periods, warranty, and value — researched from specs and owner feedback.",
   niche: "mattresses",
   siteUrl: "https://side-sleepers.com",
-  ratingScale: 5,
   headerBrandImage: "/sites/side-sleeper/header-brand.png",
 
   hero: {

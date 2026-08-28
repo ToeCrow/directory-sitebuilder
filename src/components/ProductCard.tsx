@@ -2,10 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePublicBasePath, useSiteData } from "@/context/SiteContext";
-import { siteShowsProductRatings } from "@/lib/site";
+import { usePublicBasePath } from "@/context/SiteContext";
 import type { Product, ProductCategory } from "@/types/site";
-import { StarRating } from "@/components/StarRating";
 import { cn } from "@/lib/cn";
 import { getProductPath } from "@/lib/paths";
 import { buyLinkRel, getBuyUrl } from "@/lib/product-links";
@@ -76,13 +74,10 @@ function ProductImagePlaceholder({ category }: { category: ProductCategory }) {
 }
 
 export function ProductCard({
-  siteSlug,
   product,
   variant = "featured",
 }: ProductCardProps) {
   const publicBasePath = usePublicBasePath();
-  const siteData = useSiteData();
-  const showRating = siteShowsProductRatings(siteSlug);
   const productHref = getProductPath(publicBasePath, product.slug);
   const buyHref = getBuyUrl(product);
   const isDirectory = variant === "directory";
@@ -133,24 +128,6 @@ export function ProductCard({
           >
             {product.name}
           </h3>
-          {showRating && siteData && (
-            <div
-              className={cn(
-                "mt-2",
-                !isDirectory &&
-                  "border-l-[3px] border-ss-navy/20 bg-ss-mist/80 px-3 py-2",
-              )}
-            >
-              <p className="mb-1 text-xs font-medium uppercase tracking-wide text-ss-navy/60">
-                Rating
-              </p>
-              <StarRating
-                rating={product.rating}
-                maxRating={siteData.ratingScale}
-                label="Rating"
-              />
-            </div>
-          )}
         </div>
 
         <p className="mb-4 flex-1 text-sm leading-relaxed text-ss-ink/75">

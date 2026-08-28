@@ -1,5 +1,5 @@
 {
-  "id": "c17a236a-cb0c-4776-8e9e-b6648cd188b9",
+  "id": "e12d9331-c3d9-47ab-b9a5-150beda16701",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -76,6 +76,18 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true
+        },
+        "product_slug": {
+          "name": "product_slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "product_variant": {
+          "name": "product_variant",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         },
         "sort_order": {
           "name": "sort_order",
@@ -191,6 +203,13 @@
           "type": "text",
           "primaryKey": false,
           "notNull": false
+        },
+        "content": {
+          "name": "content",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{}'::jsonb"
         },
         "status": {
           "name": "status",
@@ -670,12 +689,6 @@
           "notNull": true,
           "default": false
         },
-        "rating": {
-          "name": "rating",
-          "type": "numeric(3, 1)",
-          "primaryKey": false,
-          "notNull": true
-        },
         "research_score_breakdown": {
           "name": "research_score_breakdown",
           "type": "jsonb",
@@ -702,6 +715,13 @@
         },
         "comparison": {
           "name": "comparison",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{}'::jsonb"
+        },
+        "content": {
+          "name": "content",
           "type": "jsonb",
           "primaryKey": false,
           "notNull": true,
@@ -777,12 +797,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
-      "checkConstraints": {
-        "products_rating_gte_zero": {
-          "name": "products_rating_gte_zero",
-          "value": "\"products\".\"rating\" >= 0"
-        }
-      },
+      "checkConstraints": {},
       "isRLSEnabled": false
     },
     "public.site_domains": {
@@ -1251,14 +1266,14 @@
           "primaryKey": false,
           "notNull": true
         },
-        "rating_scale": {
-          "name": "rating_scale",
-          "type": "smallint",
-          "primaryKey": false,
-          "notNull": true
-        },
         "header_brand_image": {
           "name": "header_brand_image",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "favicon": {
+          "name": "favicon",
           "type": "text",
           "primaryKey": false,
           "notNull": false
@@ -1362,12 +1377,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
-      "checkConstraints": {
-        "sites_rating_scale_check": {
-          "name": "sites_rating_scale_check",
-          "value": "\"sites\".\"rating_scale\" IN (5, 10)"
-        }
-      },
+      "checkConstraints": {},
       "isRLSEnabled": false
     }
   },

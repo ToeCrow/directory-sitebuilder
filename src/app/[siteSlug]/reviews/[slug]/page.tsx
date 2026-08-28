@@ -29,13 +29,12 @@ import { RoundupProductHeading } from "@/components/RoundupProductHeading";
 import { RoundupProductPageCta } from "@/components/RoundupProductPageCta";
 import {
   getArticleBySlug,
-  getLegacyDirectorySiteSlugs,
   getSiteBySlug,
   getStaticArticles,
   isValidSiteSlug,
   productBySlugFrom,
 } from "@/lib/site";
-import { siteUsesEditorialCatalog } from "@/lib/directory-catalog";
+import { canAccessRoute, getStaticParamSiteSlugsForRoute } from "@/lib/site-routes";
 import type { EditorialFigure } from "@/types/site";
 
 type ReviewPageProps = {
@@ -43,7 +42,7 @@ type ReviewPageProps = {
 };
 
 export function generateStaticParams() {
-  return getLegacyDirectorySiteSlugs().flatMap((siteSlug) =>
+  return getStaticParamSiteSlugsForRoute("reviews").flatMap((siteSlug) =>
     getStaticArticles(siteSlug).map((article) => ({
       siteSlug,
       slug: article.slug,
@@ -162,7 +161,7 @@ function EditorialFigureBlock({ figure }: { figure: EditorialFigure }) {
 export default async function ReviewPage({ params }: ReviewPageProps) {
   const { siteSlug, slug } = await params;
 
-  if (!(await isValidSiteSlug(siteSlug)) || siteUsesEditorialCatalog(siteSlug)) {
+  if (!(await isValidSiteSlug(siteSlug)) || !canAccessRoute(siteSlug, "reviews")) {
     notFound();
   }
 

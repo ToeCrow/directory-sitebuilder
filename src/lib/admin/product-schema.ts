@@ -4,7 +4,7 @@ export { linesToArray } from "./lines";
 
 export const productStatusSchema = z.enum(["draft", "published"]);
 
-export function buildProductUpdateSchema(ratingScale: number) {
+export function buildProductUpdateSchema() {
   return z.object({
     name: z.string().trim().min(1).max(200),
     slug: z
@@ -21,7 +21,6 @@ export function buildProductUpdateSchema(ratingScale: number) {
     consText: z.string(),
     affiliateUrl: z.string().trim().url(),
     hasAffiliatePartnership: z.boolean(),
-    rating: z.number().min(0).max(ratingScale),
     badge: z.string().trim().max(100).optional().nullable(),
     comparisonRank: z.number().int().min(1),
     directorySortOrder: z.number().int().min(1),
@@ -29,8 +28,8 @@ export function buildProductUpdateSchema(ratingScale: number) {
   });
 }
 
-export function buildProductCreateSchema(ratingScale: number) {
-  return buildProductUpdateSchema(ratingScale).extend({
+export function buildProductCreateSchema() {
+  return buildProductUpdateSchema().extend({
     siteId: z.string().uuid(),
   });
 }

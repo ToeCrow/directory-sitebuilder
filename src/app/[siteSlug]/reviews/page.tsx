@@ -3,15 +3,14 @@ import { notFound } from "next/navigation";
 import { AffiliateDisclosure } from "@/components/AffiliateDisclosure";
 import { ReviewDirectory } from "@/components/ReviewDirectory";
 import {
-  getLegacyDirectorySiteSlugs,
   getSiteBySlug,
   isValidSiteSlug,
-  siteHasMattressPillowNav,
   type SiteSlug,
 } from "@/lib/site";
-import { siteUsesEditorialCatalog } from "@/lib/directory-catalog";
 import { getPublicPath } from "@/lib/paths";
 import { buildPageOpenGraph } from "@/lib/seo";
+import { siteHasFeature } from "@/lib/site-config";
+import { canAccessRoute, getStaticParamSiteSlugsForRoute } from "@/lib/site-routes";
 import type { ReviewCategory } from "@/types/site";
 
 type ReviewsIndexProps = {
@@ -20,7 +19,9 @@ type ReviewsIndexProps = {
 };
 
 export function generateStaticParams() {
-  return getLegacyDirectorySiteSlugs().map((siteSlug) => ({ siteSlug }));
+  return getStaticParamSiteSlugsForRoute("reviews").map((siteSlug) => ({
+    siteSlug,
+  }));
 }
 
 export async function generateMetadata({
@@ -31,8 +32,7 @@ export async function generateMetadata({
   if (!siteData) return { title: "Reviews" };
 
   const path = getPublicPath(siteSlug, "/reviews");
-  const description =
-    siteSlug === "side-sleeper"
+  const description = siteHasFeature(siteSlug, "product-nav")
       ? "Mattress reviews, pillow reviews, and science of sleep guides for side sleepers — researched from specs and owner feedback."
       : `Reviews and guides from ${siteData.title}.`;
   const ogTitle = `Reviews — ${siteData.title}`;
@@ -57,7 +57,7 @@ export default async function ReviewsIndexPage({
   const { siteSlug } = await params;
   const { category: categoryParam } = await searchParams;
 
-  if (!(await isValidSiteSlug(siteSlug)) || siteUsesEditorialCatalog(siteSlug)) {
+  if (!(await isValidSiteSlug(siteSlug)) || !canAccessRoute(siteSlug, "reviews")) {
     notFound();
   }
 
@@ -66,7 +66,7 @@ export default async function ReviewsIndexPage({
     notFound();
   }
 
-  const showCategoryFilters = siteHasMattressPillowNav(siteSlug);
+  const showCategoryFilters = siteHasFeature(siteSlug, "product-nav");
   let category: ReviewCategory | undefined;
   if (showCategoryFilters) {
     if (

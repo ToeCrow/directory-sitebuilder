@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { siteSlugs } from "@/data/sites";
-import { siteUsesEditorialCatalog } from "@/lib/directory-catalog";
 import { getPublicPath, getSitePath } from "@/lib/paths";
 import { getRequestPublicBasePath } from "@/lib/request-paths";
 import { buildPageOpenGraph } from "@/lib/seo";
 import { getSiteBySlug, isValidSiteSlug } from "@/lib/site";
+import { canAccessRoute, getStaticParamSiteSlugsForRoute } from "@/lib/site-routes";
 
 const PAGE_TITLE = "Affiliate Disclosure";
 const PAGE_DESCRIPTION =
@@ -17,9 +16,9 @@ type AffiliateDisclosurePageProps = {
 };
 
 export function generateStaticParams() {
-  return siteSlugs
-    .filter((siteSlug) => siteUsesEditorialCatalog(siteSlug))
-    .map((siteSlug) => ({ siteSlug }));
+  return getStaticParamSiteSlugsForRoute("affiliate-disclosure").map(
+    (siteSlug) => ({ siteSlug }),
+  );
 }
 
 export async function generateMetadata({
@@ -28,7 +27,7 @@ export async function generateMetadata({
   const { siteSlug } = await params;
   const siteData = await getSiteBySlug(siteSlug);
 
-  if (!siteUsesEditorialCatalog(siteSlug) || !siteData) {
+  if (!canAccessRoute(siteSlug, "affiliate-disclosure") || !siteData) {
     return { title: PAGE_TITLE };
   }
 
@@ -52,7 +51,10 @@ export default async function AffiliateDisclosurePage({
 }: AffiliateDisclosurePageProps) {
   const { siteSlug } = await params;
 
-  if (!(await isValidSiteSlug(siteSlug)) || !siteUsesEditorialCatalog(siteSlug)) {
+  if (
+    !(await isValidSiteSlug(siteSlug)) ||
+    !canAccessRoute(siteSlug, "affiliate-disclosure")
+  ) {
     notFound();
   }
 

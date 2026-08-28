@@ -15,9 +15,9 @@ import { getDefaultOgImage } from "@/lib/seo";
 import {
   getSiteBySlug,
   isValidSiteSlug,
-  siteHasMattressPillowNav,
 } from "@/lib/site";
-import { siteUsesEditorialCatalog } from "@/lib/directory-catalog";
+import { getSiteTheme, siteHasFeature } from "@/lib/site-config";
+import { getThemeClasses } from "@/lib/site-theme";
 
 export const dynamic = "force-dynamic";
 
@@ -110,8 +110,7 @@ export default async function SiteLayout({ children, params }: SiteLayoutProps) 
   const host = (await headers()).get("host") ?? "";
   const publicBasePath = resolvePublicBasePath(siteSlug, host);
   const isCustomDomain = publicBasePath === "";
-  const isSideSleeper = siteHasMattressPillowNav(siteSlug);
-  const isEditorial = siteUsesEditorialCatalog(siteSlug);
+  const theme = getThemeClasses(getSiteTheme(siteSlug));
 
   return (
     <SiteProvider
@@ -120,19 +119,11 @@ export default async function SiteLayout({ children, params }: SiteLayoutProps) 
       publicBasePath={publicBasePath}
       isCustomDomain={isCustomDomain}
     >
-      <div
-        className={
-          isSideSleeper
-            ? "flex flex-1 flex-col bg-ss-paper text-ss-ink"
-            : isEditorial
-              ? "flex flex-1 flex-col bg-fwn-void text-fwn-ivory"
-              : "flex flex-1 flex-col"
-        }
-      >
+      <div className={theme.shell}>
         <JsonLd
           data={[buildWebSiteSchema(siteData), buildOrganizationSchema(siteData)]}
         />
-        {!siteUsesEditorialCatalog(siteSlug) && <AdSenseScript />}
+        {siteHasFeature(siteSlug, "ads") && <AdSenseScript />}
         <Header />
         {children}
         <Footer />

@@ -1,4 +1,5 @@
 import { catalog as findworthnowCatalog } from "@/data/sites/findworthnow/catalog";
+import { siteHasFeature } from "@/lib/site-config";
 import type {
   DirectoryCatalog,
   DirectoryCategory,
@@ -23,7 +24,7 @@ const catalogs: Record<string, DirectoryCatalog> = {
 };
 
 export function siteUsesEditorialCatalog(siteSlug: string): boolean {
-  return siteSlug in catalogs;
+  return siteHasFeature(siteSlug, "catalog");
 }
 
 export function getDirectoryCatalog(

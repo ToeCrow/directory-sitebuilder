@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePublicBasePath, useSiteData } from "@/context/SiteContext";
-import { directoryProductsFrom } from "@/lib/site";
+import { directoryProductsFrom } from "@/lib/site-view";
 import type { ProductCategory } from "@/types/site";
 import { ProductCard } from "@/components/ProductCard";
 import { cn } from "@/lib/cn";

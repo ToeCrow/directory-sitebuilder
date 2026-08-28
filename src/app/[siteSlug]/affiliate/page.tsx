@@ -3,16 +3,15 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { SiteSlug } from "@/data/sites";
 import {
-  getLegacyDirectorySiteSlugs,
   getProducts,
   getSiteBySlug,
   isValidSiteSlug,
-  siteHasMattressPillowNav,
 } from "@/lib/site";
-import { siteUsesEditorialCatalog } from "@/lib/directory-catalog";
 import { getProductPath, getPublicPath, getSitePath } from "@/lib/paths";
 import { getRequestPublicBasePath } from "@/lib/request-paths";
 import { buildPageOpenGraph } from "@/lib/seo";
+import { siteHasFeature } from "@/lib/site-config";
+import { canAccessRoute, getStaticParamSiteSlugsForRoute } from "@/lib/site-routes";
 
 const AFFILIATE_TITLE = "How we work with brands";
 const AFFILIATE_DESCRIPTION =
@@ -23,7 +22,9 @@ type AffiliatePageProps = {
 };
 
 export function generateStaticParams() {
-  return getLegacyDirectorySiteSlugs().map((siteSlug) => ({ siteSlug }));
+  return getStaticParamSiteSlugsForRoute("affiliate").map((siteSlug) => ({
+    siteSlug,
+  }));
 }
 
 export async function generateMetadata({
@@ -58,7 +59,7 @@ export async function generateMetadata({
 export default async function AffiliatePage({ params }: AffiliatePageProps) {
   const { siteSlug } = await params;
 
-  if (!(await isValidSiteSlug(siteSlug)) || siteUsesEditorialCatalog(siteSlug)) {
+  if (!(await isValidSiteSlug(siteSlug)) || !canAccessRoute(siteSlug, "affiliate")) {
     notFound();
   }
 
@@ -68,7 +69,7 @@ export default async function AffiliatePage({ params }: AffiliatePageProps) {
   }
 
   const products = await getProducts(siteSlug as SiteSlug);
-  const isSideSleeper = siteHasMattressPillowNav(siteSlug);
+  const isProductNavSite = siteHasFeature(siteSlug, "product-nav");
   const publicBasePath = await getRequestPublicBasePath(siteSlug);
 
   return (
@@ -86,7 +87,7 @@ export default async function AffiliatePage({ params }: AffiliatePageProps) {
             How we work with brands
           </h1>
           <p className="mt-4 text-base leading-relaxed text-slate-600">
-            {isSideSleeper ? (
+            {isProductNavSite ? (
               <>
                 When you buy through some links on {siteData.title}, we may earn
                 a commission at no extra cost to you. That never changes our

@@ -8,7 +8,6 @@ export type AdminSiteListItem = {
   title: string;
   niche: string;
   status: "draft" | "published";
-  ratingScale: number;
 };
 
 export async function listAdminSites(): Promise<AdminSiteListItem[]> {
@@ -20,7 +19,6 @@ export async function listAdminSites(): Promise<AdminSiteListItem[]> {
       title: sites.title,
       niche: sites.niche,
       status: sites.status,
-      ratingScale: sites.ratingScale,
     })
     .from(sites)
     .orderBy(asc(sites.slug));

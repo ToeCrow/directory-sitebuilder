@@ -10,7 +10,6 @@ import { addTopPickAction, removeTopPickAction, updateTopPickAction } from "./ac
 
 type TopPicksManagerProps = {
   siteId: string;
-  ratingScale: number;
   topPicks: AdminTopPickItem[];
   availableProducts: AvailableProduct[];
 };
@@ -20,10 +19,8 @@ const fieldClass =
 
 function TopPickRow({
   topPick,
-  ratingScale,
 }: {
   topPick: AdminTopPickItem;
-  ratingScale: number;
 }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
@@ -69,9 +66,6 @@ function TopPickRow({
         <p className="font-medium text-slate-900">{topPick.productName}</p>
         <p className="text-xs text-slate-500">/{topPick.productSlug}</p>
       </td>
-      <td className="px-4 py-3 text-slate-700">
-        {topPick.rating.toFixed(1)} / {ratingScale}
-      </td>
       <td className="px-4 py-3">
         <input
           type="number"
@@ -116,7 +110,6 @@ function TopPickRow({
 
 export function TopPicksManager({
   siteId,
-  ratingScale,
   topPicks,
   availableProducts,
 }: TopPicksManagerProps) {
@@ -189,7 +182,6 @@ export function TopPicksManager({
             <thead className="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
               <tr>
                 <th className="px-4 py-3 font-medium">Product</th>
-                <th className="px-4 py-3 font-medium">Rating</th>
                 <th className="px-4 py-3 font-medium">Sort order</th>
                 <th className="px-4 py-3 font-medium">Badge override</th>
                 <th className="px-4 py-3 font-medium">Actions</th>
@@ -200,7 +192,6 @@ export function TopPicksManager({
                 <TopPickRow
                   key={topPick.id}
                   topPick={topPick}
-                  ratingScale={ratingScale}
                 />
               ))}
             </tbody>

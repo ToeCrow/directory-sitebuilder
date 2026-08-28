@@ -1,22 +1,21 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { siteSlugs } from "@/data/sites";
 import { getDirectoryBlogPosts } from "@/lib/directory-blog";
-import { siteUsesEditorialCatalog } from "@/lib/directory-catalog";
 import { getBlogPostPath, getPublicPath } from "@/lib/paths";
 import { getRequestPublicBasePath } from "@/lib/request-paths";
 import { buildPageOpenGraph } from "@/lib/seo";
 import { getSiteBySlug, isValidSiteSlug } from "@/lib/site";
+import { canAccessRoute, getStaticParamSiteSlugsForRoute } from "@/lib/site-routes";
 
 type BlogIndexProps = {
   params: Promise<{ siteSlug: string }>;
 };
 
 export function generateStaticParams() {
-  return siteSlugs
-    .filter((siteSlug) => siteUsesEditorialCatalog(siteSlug))
-    .map((siteSlug) => ({ siteSlug }));
+  return getStaticParamSiteSlugsForRoute("blog").map((siteSlug) => ({
+    siteSlug,
+  }));
 }
 
 export async function generateMetadata({
@@ -24,7 +23,7 @@ export async function generateMetadata({
 }: BlogIndexProps): Promise<Metadata> {
   const { siteSlug } = await params;
   const siteData = await getSiteBySlug(siteSlug);
-  if (!siteData || !siteUsesEditorialCatalog(siteSlug)) {
+  if (!siteData || !canAccessRoute(siteSlug, "blog")) {
     return { title: "Blog" };
   }
 
@@ -61,7 +60,7 @@ export default async function DirectoryBlogIndexPage({
 }: BlogIndexProps) {
   const { siteSlug } = await params;
 
-  if (!(await isValidSiteSlug(siteSlug)) || !siteUsesEditorialCatalog(siteSlug)) {
+  if (!(await isValidSiteSlug(siteSlug)) || !canAccessRoute(siteSlug, "blog")) {
     notFound();
   }
 

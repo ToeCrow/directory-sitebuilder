@@ -12,6 +12,8 @@ CREATE TABLE "article_product_sections" (
 	"where_it_falls_short" text[] DEFAULT '{}'::text[] NOT NULL,
 	"best_for" text NOT NULL,
 	"skip_if" text NOT NULL,
+	"product_slug" text,
+	"product_variant" text,
 	"sort_order" integer NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
@@ -29,6 +31,7 @@ CREATE TABLE "articles" (
 	"author" text,
 	"og_image_src" text,
 	"og_image_alt" text,
+	"content" jsonb DEFAULT '{}'::jsonb NOT NULL,
 	"status" "publish_status" DEFAULT 'draft' NOT NULL,
 	"published_at" timestamp with time zone,
 	"content_updated_at" timestamp with time zone,
@@ -90,17 +93,16 @@ CREATE TABLE "products" (
 	"cons" text[] DEFAULT '{}'::text[] NOT NULL,
 	"affiliate_url" text NOT NULL,
 	"has_affiliate_partnership" boolean DEFAULT false NOT NULL,
-	"rating" numeric(3, 1) NOT NULL,
 	"research_score_breakdown" jsonb,
 	"badge" text,
 	"comparison_rank" integer NOT NULL,
 	"directory_sort_order" integer NOT NULL,
 	"comparison" jsonb DEFAULT '{}'::jsonb NOT NULL,
+	"content" jsonb DEFAULT '{}'::jsonb NOT NULL,
 	"status" "publish_status" DEFAULT 'draft' NOT NULL,
 	"published_at" timestamp with time zone,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
-	"updated_at" timestamp with time zone DEFAULT now() NOT NULL,
-	CONSTRAINT "products_rating_gte_zero" CHECK ("products"."rating" >= 0)
+	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "site_domains" (
@@ -158,8 +160,8 @@ CREATE TABLE "sites" (
 	"meta_description" text NOT NULL,
 	"niche" text NOT NULL,
 	"site_url" text NOT NULL,
-	"rating_scale" smallint NOT NULL,
 	"header_brand_image" text,
+	"favicon" text,
 	"affiliate_disclosure" text NOT NULL,
 	"newsletter_title" text NOT NULL,
 	"newsletter_description" text NOT NULL,
@@ -171,8 +173,7 @@ CREATE TABLE "sites" (
 	"published_at" timestamp with time zone,
 	"features" jsonb DEFAULT '{}'::jsonb NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
-	"updated_at" timestamp with time zone DEFAULT now() NOT NULL,
-	CONSTRAINT "sites_rating_scale_check" CHECK ("sites"."rating_scale" IN (5, 10))
+	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 ALTER TABLE "article_product_sections" ADD CONSTRAINT "article_product_sections_article_id_articles_id_fk" FOREIGN KEY ("article_id") REFERENCES "public"."articles"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint

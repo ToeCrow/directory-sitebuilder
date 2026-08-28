@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { siteSlugs } from "@/data/sites";
 import { getSiteBySlug, isValidSiteSlug } from "@/lib/site";
 import { getPublicPath, getSitePath } from "@/lib/paths";
 import { getRequestPublicBasePath } from "@/lib/request-paths";
 import { buildPageOpenGraph } from "@/lib/seo";
-import { siteUsesAboutPage } from "@/lib/about";
+import { canAccessRoute, getStaticParamSiteSlugsForRoute } from "@/lib/site-routes";
 
 const PAGE_TITLE = "About | Side Sleeper Guide";
 const PAGE_DESCRIPTION =
@@ -17,9 +16,9 @@ type AboutPageProps = {
 };
 
 export function generateStaticParams() {
-  return siteSlugs
-    .filter((siteSlug) => siteUsesAboutPage(siteSlug))
-    .map((siteSlug) => ({ siteSlug }));
+  return getStaticParamSiteSlugsForRoute("about").map((siteSlug) => ({
+    siteSlug,
+  }));
 }
 
 export async function generateMetadata({
@@ -28,7 +27,7 @@ export async function generateMetadata({
   const { siteSlug } = await params;
   const siteData = await getSiteBySlug(siteSlug);
 
-  if (!siteUsesAboutPage(siteSlug) || !siteData) {
+  if (!canAccessRoute(siteSlug, "about") || !siteData) {
     return { title: "About" };
   }
 
@@ -58,7 +57,7 @@ export async function generateMetadata({
 export default async function AboutPage({ params }: AboutPageProps) {
   const { siteSlug } = await params;
 
-  if (!(await isValidSiteSlug(siteSlug)) || !siteUsesAboutPage(siteSlug)) {
+  if (!(await isValidSiteSlug(siteSlug)) || !canAccessRoute(siteSlug, "about")) {
     notFound();
   }
 

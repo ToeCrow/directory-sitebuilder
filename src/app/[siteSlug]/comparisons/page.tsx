@@ -2,24 +2,23 @@ import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
 import { ComparisonTable } from "@/components/ComparisonTable";
 import { AffiliateDisclosure } from "@/components/AffiliateDisclosure";
-import {
-  getLegacyDirectorySiteSlugs,
-  getSiteBySlug,
-  isValidSiteSlug,
-  siteHasMattressPillowNav,
-  type SiteSlug,
-} from "@/lib/site";
-import { siteUsesEditorialCatalog } from "@/lib/directory-catalog";
+import { getSiteBySlug, isValidSiteSlug, type SiteSlug } from "@/lib/site";
 import { getProductsIndexPath, getPublicPath } from "@/lib/paths";
 import { getRequestPublicBasePath } from "@/lib/request-paths";
 import { buildPageOpenGraph } from "@/lib/seo";
+import {
+  getRouteAccess,
+  getStaticParamSiteSlugsForRoute,
+} from "@/lib/site-routes";
 
 type ComparisonsPageProps = {
   params: Promise<{ siteSlug: string }>;
 };
 
 export function generateStaticParams() {
-  return getLegacyDirectorySiteSlugs().map((siteSlug) => ({ siteSlug }));
+  return getStaticParamSiteSlugsForRoute("comparisons").map((siteSlug) => ({
+    siteSlug,
+  }));
 }
 
 export async function generateMetadata({
@@ -29,7 +28,7 @@ export async function generateMetadata({
   const siteData = await getSiteBySlug(siteSlug);
   if (!siteData) return { title: "Comparisons" };
 
-  if (siteHasMattressPillowNav(siteSlug)) {
+  if (getRouteAccess(siteSlug, "comparisons") !== "allow") {
     return { title: "Redirecting…" };
   }
 
@@ -53,7 +52,12 @@ export async function generateMetadata({
 export default async function ComparisonsPage({ params }: ComparisonsPageProps) {
   const { siteSlug } = await params;
 
-  if (!(await isValidSiteSlug(siteSlug)) || siteUsesEditorialCatalog(siteSlug)) {
+  if (!(await isValidSiteSlug(siteSlug))) {
+    notFound();
+  }
+
+  const access = getRouteAccess(siteSlug, "comparisons");
+  if (access === "not-found") {
     notFound();
   }
 
@@ -62,8 +66,7 @@ export default async function ComparisonsPage({ params }: ComparisonsPageProps) 
     notFound();
   }
 
-  // Side Sleeper Guide: comparison page retired — send traffic to products.
-  if (siteHasMattressPillowNav(siteSlug)) {
+  if (typeof access === "object") {
     const publicBasePath = await getRequestPublicBasePath(siteSlug);
     permanentRedirect(getProductsIndexPath(publicBasePath));
   }

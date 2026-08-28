@@ -3,23 +3,42 @@ import {
   getSiteBySlug as getStaticSiteBySlug,
   siteSlugs as staticSiteSlugs,
 } from "@/data/sites";
-import { siteUsesEditorialCatalog } from "@/lib/directory-catalog";
 import { hydrateSiteData } from "@/lib/db/hydrate";
+import { getStaticParamSiteSlugsForRoute } from "@/lib/site-routes";
 import {
   countSites,
   findSiteBySlug,
   listPublishedSiteSlugs,
 } from "@/lib/db/repositories/sites";
-import type {
-  Article,
-  Product,
-  ProductCategory,
-  ReviewCategory,
-  SiteData,
-} from "@/types/site";
+import {
+  articleBySlugFrom,
+  articlesByReviewCategoryFrom,
+  articlesFeaturingProductFrom,
+  comparisonProductsFrom,
+  directoryProductsFrom,
+  featuredHomeReviewsFrom,
+  featuredProductsFrom,
+  productBySlugFrom,
+  productsByCategoryFrom,
+} from "@/lib/site-view";
+import type { Article, Product, ProductCategory, ReviewCategory, SiteData } from "@/types/site";
 
-/** Site slug validated against the database (published sites for public). */
+export type { SiteData };
 export type SiteSlug = string;
+
+export {
+  articleBySlugFrom,
+  articlesByReviewCategoryFrom,
+  articlesFeaturingProductFrom,
+  comparisonProductsFrom,
+  directoryProductsFrom,
+  featuredHomeReviewsFrom,
+  featuredProductsFrom,
+  getComparisonValue,
+  productBySlugFrom,
+  productsByCategoryFrom,
+  siteHasMattressPillowNav,
+} from "@/lib/site-view";
 
 export const getSiteData = cache(async (siteSlug: string): Promise<SiteData> => {
   return hydrateSiteData(siteSlug, { publishedOnly: true });
@@ -54,130 +73,6 @@ export async function siteSlugs(): Promise<string[]> {
 export async function isValidSiteSlug(slug: string): Promise<boolean> {
   const site = await findSiteBySlug(slug);
   return site != null && site.status === "published";
-}
-
-export function productBySlugFrom(
-  siteData: SiteData,
-  slug: string,
-): Product | undefined {
-  return siteData.products.find((product) => product.slug === slug);
-}
-
-export function articleBySlugFrom(
-  siteData: SiteData,
-  slug: string,
-): Article | undefined {
-  return siteData.articles.find((article) => article.slug === slug);
-}
-
-export function articlesFeaturingProductFrom(
-  siteData: SiteData,
-  productSlug: string,
-): Article[] {
-  return siteData.articles.filter(
-    (article) =>
-      article.kind === "product-roundup" &&
-      article.products.some((product) => product.productSlug === productSlug),
-  );
-}
-
-export function articlesByReviewCategoryFrom(
-  siteData: SiteData,
-  category?: ReviewCategory,
-): Article[] {
-  if (!category) return siteData.articles;
-  return siteData.articles.filter(
-    (article) => article.reviewCategory === category,
-  );
-}
-
-/**
- * Homepage Featured Reviews: keyword guides + science + latest
- * (if science is latest, use 2nd-latest non-science instead).
- */
-export function featuredHomeReviewsFrom(siteData: SiteData): Article[] {
-  const bySlug = new Map(
-    siteData.articles.map((article) => [article.slug, article]),
-  );
-  const featured: Article[] = [];
-  const seen = new Set<string>();
-
-  const push = (article: Article | undefined) => {
-    if (!article || seen.has(article.slug)) return;
-    seen.add(article.slug);
-    featured.push(article);
-  };
-
-  for (const slug of siteData.featuredReviewSlugs ?? []) {
-    push(bySlug.get(slug));
-  }
-
-  const scienceSlug = siteData.scienceArticleSlug;
-  if (scienceSlug) {
-    push(bySlug.get(scienceSlug));
-  }
-
-  const rankedNewestFirst = siteData.articles
-    .map((article, index) => ({ article, index }))
-    .sort((a, b) => {
-      const dateA = a.article.publishedAt ?? "";
-      const dateB = b.article.publishedAt ?? "";
-      if (dateA !== dateB) {
-        return dateB.localeCompare(dateA);
-      }
-      return b.index - a.index;
-    })
-    .map(({ article }) => article);
-
-  const latest = rankedNewestFirst[0];
-  if (!latest) {
-    return featured;
-  }
-
-  if (scienceSlug && latest.slug === scienceSlug) {
-    const secondLatestNonScience = rankedNewestFirst.find(
-      (article) => article.slug !== scienceSlug,
-    );
-    push(secondLatestNonScience);
-  } else {
-    push(latest);
-  }
-
-  return featured;
-}
-
-export function productsByCategoryFrom(
-  siteData: SiteData,
-  category: ProductCategory,
-): Product[] {
-  return siteData.products.filter((product) => product.category === category);
-}
-
-export function featuredProductsFrom(siteData: SiteData): Product[] {
-  return siteData.products
-    .filter((product) => product.featuredRank !== null)
-    .sort((a, b) => a.featuredRank! - b.featuredRank!);
-}
-
-export function comparisonProductsFrom(siteData: SiteData): Product[] {
-  return siteData.products
-    .filter(
-      (product) =>
-        product.comparison !== undefined &&
-        product.comparisonRank !== undefined &&
-        product.category !== "pillow",
-    )
-    .sort((a, b) => (a.comparisonRank ?? 0) - (b.comparisonRank ?? 0));
-}
-
-export function directoryProductsFrom(
-  siteData: SiteData,
-  category?: ProductCategory,
-): Product[] {
-  const list = category
-    ? productsByCategoryFrom(siteData, category)
-    : siteData.products;
-  return [...list].sort((a, b) => a.directoryOrder - b.directoryOrder);
 }
 
 export async function getProducts(siteSlug: string): Promise<Product[]> {
@@ -246,24 +141,8 @@ export async function getDirectoryProducts(
   return directoryProductsFrom(await getSiteData(siteSlug), category);
 }
 
-export function getComparisonValue(
-  product: Product,
-  rowKey: string,
-): string | boolean | undefined {
-  return product.comparison?.[rowKey];
-}
-
-export function siteHasMattressPillowNav(siteSlug: string): boolean {
-  return siteSlug === "side-sleeper";
-}
-
-/** Editorial star ratings on product cards and product pages (not used on Side Sleeper). */
-export function siteShowsProductRatings(siteSlug: string): boolean {
-  return !siteHasMattressPillowNav(siteSlug);
-}
-
 export function getLegacyDirectorySiteSlugs(): string[] {
-  return staticSiteSlugs.filter((slug) => !siteUsesEditorialCatalog(slug));
+  return getStaticParamSiteSlugsForRoute("product-detail", staticSiteSlugs);
 }
 
 export function getStaticProducts(siteSlug: string): Product[] {

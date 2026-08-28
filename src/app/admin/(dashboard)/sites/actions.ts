@@ -59,7 +59,6 @@ export async function updateSiteSettingsAction(
         metaDescription: data.metaDescription,
         niche: data.niche,
         siteUrl: data.siteUrl,
-        ratingScale: data.ratingScale,
         headerBrandImage: data.headerBrandImage,
         affiliateDisclosure: data.affiliateDisclosure,
         newsletterTitle: data.newsletterTitle,

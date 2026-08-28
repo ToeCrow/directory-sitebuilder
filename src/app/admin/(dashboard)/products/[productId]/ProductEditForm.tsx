@@ -18,7 +18,6 @@ type ProductFormValues = {
   consText: string;
   affiliateUrl: string;
   hasAffiliatePartnership: boolean;
-  rating: number;
   badge: string;
   comparisonRank: number;
   directorySortOrder: number;
@@ -27,7 +26,6 @@ type ProductFormValues = {
 
 type ProductEditFormProps = {
   productId: string;
-  ratingScale: number;
   isTopPick: boolean;
   initial: ProductFormValues;
 };
@@ -37,7 +35,6 @@ const fieldClass =
 
 export function ProductEditForm({
   productId,
-  ratingScale,
   isTopPick,
   initial,
 }: ProductEditFormProps) {
@@ -56,7 +53,6 @@ export function ProductEditForm({
       const result = await updateProductAction(productId, {
         ...values,
         badge: values.badge || null,
-        rating: Number(values.rating),
         comparisonRank: Number(values.comparisonRank),
         directorySortOrder: Number(values.directorySortOrder),
       });
@@ -140,22 +136,6 @@ export function ProductEditForm({
           required
           value={values.priceFrom}
           onChange={(e) => setValues({ ...values, priceFrom: e.target.value })}
-        />
-      </label>
-
-      <label className="block text-sm font-medium text-slate-700">
-        Rating (0–{ratingScale})
-        <input
-          className={fieldClass}
-          type="number"
-          step="0.1"
-          min={0}
-          max={ratingScale}
-          required
-          value={values.rating}
-          onChange={(e) =>
-            setValues({ ...values, rating: Number(e.target.value) })
-          }
         />
       </label>
 

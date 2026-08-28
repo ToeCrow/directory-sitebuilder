@@ -7,7 +7,6 @@ import {
   getDirectoryCategories,
   getDirectoryCategory,
   getDirectoryProducts,
-  siteUsesEditorialCatalog,
 } from "@/lib/directory-catalog";
 import {
   getDirectoryCategoryPath,
@@ -19,6 +18,7 @@ import {
 import { getRequestPublicBasePath } from "@/lib/request-paths";
 import { buildPageOpenGraph } from "@/lib/seo";
 import { getSiteBySlug, isValidSiteSlug } from "@/lib/site";
+import { canAccessRoute } from "@/lib/site-routes";
 import { cn } from "@/lib/cn";
 
 type CategoryPageProps = {
@@ -65,7 +65,7 @@ export default async function DirectoryCategoryPage({
 }: CategoryPageProps) {
   const { siteSlug, categorySlug } = await params;
 
-  if (!(await isValidSiteSlug(siteSlug)) || !siteUsesEditorialCatalog(siteSlug)) {
+  if (!(await isValidSiteSlug(siteSlug)) || !canAccessRoute(siteSlug, "catalog")) {
     notFound();
   }
 

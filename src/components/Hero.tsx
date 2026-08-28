@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePublicBasePath, useSiteData } from "@/context/SiteContext";
-import { siteHasMattressPillowNav } from "@/lib/site";
+import { siteHasFeature } from "@/lib/site-config";
 import { getAppPath, getBuyingGuidePath, getProductsIndexPath } from "@/lib/paths";
 import { InPageHashAnchor } from "@/components/InPageHashAnchor";
 import { cn } from "@/lib/cn";
@@ -125,7 +125,7 @@ function HeroCtaGroup({ siteSlug }: { siteSlug: string }) {
   const publicBasePath = usePublicBasePath();
   const { hero } = useSiteData();
 
-  if (siteHasMattressPillowNav(siteSlug)) {
+  if (siteHasFeature(siteSlug, "product-nav")) {
     return (
       <SideSleeperHeroCtas
         publicBasePath={publicBasePath}

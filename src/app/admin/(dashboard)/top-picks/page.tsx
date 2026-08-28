@@ -96,7 +96,6 @@ export default async function AdminTopPicksPage({
         <div className="mt-8">
           <TopPicksManager
             siteId={activeSite.id}
-            ratingScale={activeSite.ratingScale}
             topPicks={topPicks}
             availableProducts={availableProducts}
           />

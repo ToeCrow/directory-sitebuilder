@@ -1,14 +1,13 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useMemo, useState, useTransition, type FormEvent } from "react";
+import { useState, useTransition, type FormEvent } from "react";
 import { createProductAction } from "../actions";
 
 type SiteOption = {
   id: string;
   title: string;
   slug: string;
-  ratingScale: number;
 };
 
 type ProductCreateFormProps = {
@@ -51,18 +50,11 @@ export function ProductCreateForm({
     consText: "",
     affiliateUrl: "",
     hasAffiliatePartnership: false,
-    rating: 0,
     badge: "",
     comparisonRank: initialComparisonRank,
     directorySortOrder: initialDirectorySortOrder,
     status: "draft" as "draft" | "published",
   });
-
-  const selectedSite = useMemo(
-    () => sites.find((site) => site.id === siteId) ?? sites[0],
-    [sites, siteId],
-  );
-  const ratingScale = selectedSite?.ratingScale ?? 5;
 
   function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -73,7 +65,6 @@ export function ProductCreateForm({
         siteId,
         ...values,
         badge: values.badge || null,
-        rating: Number(values.rating),
         comparisonRank: Number(values.comparisonRank),
         directorySortOrder: Number(values.directorySortOrder),
       });
@@ -170,22 +161,6 @@ export function ProductCreateForm({
           required
           value={values.priceFrom}
           onChange={(e) => setValues({ ...values, priceFrom: e.target.value })}
-        />
-      </label>
-
-      <label className="block text-sm font-medium text-slate-700">
-        Rating (0–{ratingScale})
-        <input
-          className={fieldClass}
-          type="number"
-          step="0.1"
-          min={0}
-          max={ratingScale}
-          required
-          value={values.rating}
-          onChange={(e) =>
-            setValues({ ...values, rating: Number(e.target.value) })
-          }
         />
       </label>
 

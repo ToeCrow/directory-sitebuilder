@@ -8,7 +8,6 @@ export type AdminTopPickItem = {
   productName: string;
   productSlug: string;
   productStatus: "draft" | "published";
-  rating: number;
   sortOrder: number;
   badgeOverride: string | null;
 };
@@ -24,7 +23,6 @@ export async function listTopPicksForSite(
       productName: products.name,
       productSlug: products.slug,
       productStatus: products.status,
-      rating: products.rating,
       sortOrder: siteTopPicks.sortOrder,
       badgeOverride: siteTopPicks.badgeOverride,
     })
@@ -33,10 +31,7 @@ export async function listTopPicksForSite(
     .where(eq(siteTopPicks.siteId, siteId))
     .orderBy(asc(siteTopPicks.sortOrder));
 
-  return rows.map((row) => ({
-    ...row,
-    rating: Number(row.rating),
-  }));
+  return rows;
 }
 
 export type AvailableProduct = {

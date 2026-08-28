@@ -7,15 +7,11 @@ import { ReviewListItem } from "@/components/ReviewListItem";
 import { getDefaultOgImage, OG_IMAGE_HEIGHT, OG_IMAGE_WIDTH } from "@/lib/seo";
 import {
   getArticlesFeaturingProduct,
-  getLegacyDirectorySiteSlugs,
   getProductBySlug,
   getSiteBySlug,
   getStaticProducts,
   isValidSiteSlug,
-  siteHasMattressPillowNav,
-  siteShowsProductRatings,
 } from "@/lib/site";
-import { siteUsesEditorialCatalog } from "@/lib/directory-catalog";
 import {
   getArticlePath,
   getPublicPath,
@@ -23,13 +19,15 @@ import {
 } from "@/lib/paths";
 import { getRequestPublicBasePath } from "@/lib/request-paths";
 import { buyLinkRel, getBuyUrl } from "@/lib/product-links";
+import { siteHasFeature } from "@/lib/site-config";
+import { canAccessRoute, getStaticParamSiteSlugsForRoute } from "@/lib/site-routes";
 
 type ProductPageProps = {
   params: Promise<{ siteSlug: string; slug: string }>;
 };
 
 export function generateStaticParams() {
-  return getLegacyDirectorySiteSlugs().flatMap((siteSlug) =>
+  return getStaticParamSiteSlugsForRoute("product-detail").flatMap((siteSlug) =>
     getStaticProducts(siteSlug).map((product) => ({
       siteSlug,
       slug: product.slug,
@@ -111,7 +109,10 @@ export async function generateMetadata({
 export default async function ProductPage({ params }: ProductPageProps) {
   const { siteSlug, slug } = await params;
 
-  if (!(await isValidSiteSlug(siteSlug)) || siteUsesEditorialCatalog(siteSlug)) {
+  if (
+    !(await isValidSiteSlug(siteSlug)) ||
+    !canAccessRoute(siteSlug, "product-detail")
+  ) {
     notFound();
   }
 
@@ -145,14 +146,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             {product.name}
           </h1>
           <p className="mt-2 text-sm font-medium text-ss-navy/60">
-            {siteShowsProductRatings(siteSlug) ? (
-              <>
-                Rating: {product.rating}/{siteData.ratingScale} ·{" "}
-                {product.priceDisplay}
-              </>
-            ) : (
-              product.priceDisplay
-            )}
+            {product.priceDisplay}
           </p>
           <p className="mt-4 text-lg leading-relaxed text-ss-ink/80">
             {product.shortDescription}
@@ -277,7 +271,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
         <div className="mt-10 bg-ss-navy px-6 py-8 text-ss-paper">
           <p className="text-sm leading-relaxed text-ss-mist">
-            {siteHasMattressPillowNav(siteSlug)
+            {siteHasFeature(siteSlug, "product-nav")
               ? `Ready to try ${product.name}? Visit the official site to check availability and current price.`
               : `Ready to try ${product.name}? Visit the official site to learn more or request a demo.`}
           </p>

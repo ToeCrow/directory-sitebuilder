@@ -68,7 +68,6 @@ export default async function AdminNewProductPage({
               id: site.id,
               title: site.title,
               slug: site.slug,
-              ratingScale: site.ratingScale,
             }))}
             initialSiteId={initialSiteId}
             initialComparisonRank={defaultSort.comparisonRank}

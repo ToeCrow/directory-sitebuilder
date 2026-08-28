@@ -1,6 +1,6 @@
 import { config } from "dotenv";
 config({ override: true });
-import { count, eq, sql } from "drizzle-orm";
+import { count, sql } from "drizzle-orm";
 import { getAllSites, getSiteBySlug } from "@/data/sites";
 import { getDb } from "@/lib/db";
 import { hydrateSiteData } from "@/lib/db/hydrate";
@@ -152,31 +152,6 @@ async function checkTopPicksIntegrity(): Promise<CheckResult> {
   return { ok: true };
 }
 
-async function checkRatingsInRange(): Promise<CheckResult> {
-  const db = getDb();
-  const rows = await db
-    .select({
-      siteSlug: sites.slug,
-      productSlug: products.slug,
-      rating: products.rating,
-      ratingScale: sites.ratingScale,
-    })
-    .from(products)
-    .innerJoin(sites, eq(products.siteId, sites.id));
-
-  for (const row of rows) {
-    const rating = Number(row.rating);
-    if (Number.isNaN(rating) || rating < 0 || rating > row.ratingScale) {
-      return fail(
-        `rating out of range for ${row.siteSlug}/${row.productSlug}: ${row.rating} (scale ${row.ratingScale})`,
-      );
-    }
-  }
-
-  pass("all product ratings are within site rating scale");
-  return { ok: true };
-}
-
 async function checkHydrationAndSpotChecks(): Promise<CheckResult> {
   for (const staticSite of getAllSites()) {
     const hydrated = await hydrateSiteData(staticSite.slug);
@@ -208,10 +183,10 @@ async function checkHydrationAndSpotChecks(): Promise<CheckResult> {
 
   const sideSleeper = await hydrateSiteData("side-sleeper");
   const winkbed = sideSleeper.products.find((product) => product.slug === "winkbed");
-  if (!winkbed || winkbed.rating !== 4.8) {
-    return fail(`side-sleeper/winkbed rating expected 4.8, got ${winkbed?.rating}`);
+  if (!winkbed) {
+    return fail("side-sleeper/winkbed not found in hydrated data");
   }
-  pass("side-sleeper winkbed rating is 4.8");
+  pass("side-sleeper winkbed is present");
 
   const constructionSoftware = await hydrateSiteData("construction-software");
   const procore = constructionSoftware.products.find(
@@ -244,8 +219,13 @@ async function checkHydrationAndSpotChecks(): Promise<CheckResult> {
     return fail("static site data missing for comparison");
   }
 
-  if (sideSleeper.ads !== undefined) {
-    return fail("side-sleeper ads should be omitted when slots are empty");
+  if (!sideSleeper.ads) {
+    return fail("side-sleeper ads should hydrate when slots are set");
+  }
+
+  const findworthnow = await hydrateSiteData("findworthnow");
+  if (findworthnow.ads !== undefined) {
+    return fail("findworthnow ads should be omitted when slots are empty");
   }
 
   pass("hydration spot checks passed");
@@ -257,7 +237,6 @@ async function main() {
     checkTableCounts,
     checkUniqueSlugs,
     checkTopPicksIntegrity,
-    checkRatingsInRange,
     checkHydrationAndSpotChecks,
   ];
 

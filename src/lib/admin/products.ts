@@ -7,10 +7,8 @@ export type AdminProductListItem = {
   siteId: string;
   siteSlug: string;
   siteTitle: string;
-  ratingScale: number;
   name: string;
   slug: string;
-  rating: number;
   hasAffiliatePartnership: boolean;
   status: "draft" | "published";
   isTopPick: boolean;
@@ -28,10 +26,8 @@ export async function listAdminProducts(
       siteId: products.siteId,
       siteSlug: sites.slug,
       siteTitle: sites.title,
-      ratingScale: sites.ratingScale,
       name: products.name,
       slug: products.slug,
-      rating: products.rating,
       hasAffiliatePartnership: products.hasAffiliatePartnership,
       status: products.status,
       topPickId: siteTopPicks.id,
@@ -54,10 +50,8 @@ export async function listAdminProducts(
     siteId: row.siteId,
     siteSlug: row.siteSlug,
     siteTitle: row.siteTitle,
-    ratingScale: row.ratingScale,
     name: row.name,
     slug: row.slug,
-    rating: Number(row.rating),
     hasAffiliatePartnership: row.hasAffiliatePartnership,
     status: row.status,
     isTopPick: row.topPickId != null,
@@ -72,7 +66,6 @@ export async function getAdminProductById(id: string) {
       product: products,
       siteSlug: sites.slug,
       siteTitle: sites.title,
-      ratingScale: sites.ratingScale,
       topPickId: siteTopPicks.id,
     })
     .from(products)
@@ -93,10 +86,8 @@ export async function getAdminProductById(id: string) {
 
   return {
     ...row.product,
-    rating: Number(row.product.rating),
     siteSlug: row.siteSlug,
     siteTitle: row.siteTitle,
-    ratingScale: row.ratingScale,
     isTopPick: row.topPickId != null,
   };
 }

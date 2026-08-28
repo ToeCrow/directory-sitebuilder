@@ -19,6 +19,10 @@ import {
   sites,
 } from "@/lib/db/schema";
 import type { Article, Product, SiteData } from "@/types/site";
+import type { DirectoryBlogPost } from "@/types/directory-blog";
+import type { DirectoryProduct } from "@/types/directory-catalog";
+import { getDirectoryBlogPosts } from "@/lib/directory-blog";
+import { getDirectoryCatalog } from "@/lib/directory-catalog";
 
 export type SeedCounts = {
   sites: number;
@@ -51,10 +55,6 @@ function parseIsoDate(value: string | undefined): Date | null {
   return Number.isNaN(parsed.getTime()) ? null : parsed;
 }
 
-function ratingToNumeric(rating: number): string {
-  return rating.toFixed(1);
-}
-
 type DbClient = Db | Parameters<Parameters<Db["transaction"]>[0]>[0];
 
 async function insertSite(tx: DbClient, siteData: SiteData) {
@@ -68,7 +68,6 @@ async function insertSite(tx: DbClient, siteData: SiteData) {
       metaDescription: siteData.metaDescription,
       niche: siteData.niche,
       siteUrl: siteData.siteUrl,
-      ratingScale: siteData.ratingScale,
       headerBrandImage: siteData.headerBrandImage ?? null,
       favicon: siteData.favicon ?? null,
       affiliateDisclosure: siteData.affiliateDisclosure,
@@ -160,12 +159,22 @@ async function insertSite(tx: DbClient, siteData: SiteData) {
     );
   }
 
+  const catalogBySlug = new Map(
+    (getDirectoryCatalog(siteData.slug)?.products ?? []).map((product) => [
+      product.slug,
+      product,
+    ]),
+  );
+  const blogBySlug = new Map(
+    getDirectoryBlogPosts(siteData.slug).map((post) => [post.slug, post]),
+  );
+
   const productIdBySlug = new Map<string, string>();
 
   for (const product of siteData.products) {
     const [inserted] = await tx
       .insert(products)
-      .values(mapProduct(site.id, product))
+      .values(mapProduct(site.id, product, catalogBySlug.get(product.slug)))
       .returning({ id: products.id, slug: products.slug });
     productIdBySlug.set(inserted.slug, inserted.id);
   }
@@ -227,7 +236,7 @@ async function insertSite(tx: DbClient, siteData: SiteData) {
   for (const article of siteData.articles) {
     const [insertedArticle] = await tx
       .insert(articles)
-      .values(mapArticle(site.id, article))
+      .values(mapArticle(site.id, article, blogBySlug.get(article.slug)))
       .returning({ id: articles.id });
 
     if (article.kind === "product-roundup" && article.products.length > 0) {
@@ -253,7 +262,11 @@ async function insertSite(tx: DbClient, siteData: SiteData) {
   };
 }
 
-function mapProduct(siteId: string, product: Product) {
+function mapProduct(
+  siteId: string,
+  product: Product,
+  catalogProduct?: DirectoryProduct,
+) {
   return {
     siteId,
     name: product.name,
@@ -269,27 +282,40 @@ function mapProduct(siteId: string, product: Product) {
     cons: product.cons,
     affiliateUrl: product.affiliateUrl ?? product.productUrl,
     hasAffiliatePartnership: product.hasAffiliatePartnership,
-    rating: ratingToNumeric(product.rating),
     researchScoreBreakdown: null,
     badge: product.badge ?? null,
     comparisonRank: product.comparisonRank ?? 0,
     directorySortOrder: product.directoryOrder,
     comparison: product.comparison ?? {},
     content: {
-      category: product.category,
+      category: catalogProduct?.categorySlug ?? product.category,
       image: product.image,
       priceDisplay: product.priceDisplay,
       productUrl: product.productUrl,
       metaTitle: product.metaTitle,
       metaDescription: product.metaDescription,
       priceUpdatedAt: product.priceUpdatedAt,
+      ...(catalogProduct
+        ? {
+            typeLabel: catalogProduct.typeLabel,
+            ctaLabel: catalogProduct.ctaLabel,
+            reviewSlug: catalogProduct.reviewSlug,
+            reviewTitle: catalogProduct.reviewTitle,
+            heroDescription: catalogProduct.heroDescription,
+            sections: catalogProduct.sections,
+          }
+        : {}),
     },
     status: "published" as const,
     publishedAt: new Date(),
   };
 }
 
-function mapArticle(siteId: string, article: Article) {
+function mapArticle(
+  siteId: string,
+  article: Article,
+  blogPost?: DirectoryBlogPost,
+) {
   const researchNote =
     article.kind === "product-roundup"
       ? article.researchNote
@@ -314,10 +340,17 @@ function mapArticle(siteId: string, article: Article) {
       inlineRelatedSlug: article.inlineRelatedSlug,
       relatedSlugs: article.relatedSlugs,
       introImage: article.kind === "editorial" ? article.introImage : undefined,
-      sections: article.kind === "editorial" ? article.sections : undefined,
+      sections: blogPost
+        ? blogPost.sections
+        : article.kind === "editorial"
+          ? article.sections
+          : undefined,
       closingGuide:
         article.kind === "product-roundup" ? article.closingGuide : undefined,
       faqs: article.kind === "product-roundup" ? article.faqs : undefined,
+      ...(blogPost
+        ? { relatedProductSlugs: blogPost.relatedProductSlugs }
+        : {}),
     },
     status: "published" as const,
     publishedAt: parseIsoDate(article.publishedAt) ?? new Date(),

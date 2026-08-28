@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "test": "tsx --test src/lib/public-routing.test.ts src/lib/indexnow.test.ts",
+    "test": "tsx --test src/lib/*.test.ts",
     "indexnow:changed": "tsx scripts/indexnow-on-push.ts",
     "indexnow:new": "tsx scripts/indexnow-on-push.ts",
     "db:up": "docker compose up -d",

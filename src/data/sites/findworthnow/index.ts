@@ -1,4 +1,10 @@
 import type { SiteData } from "@/types/site";
+import { catalog } from "./catalog";
+import { posts } from "./blog";
+import {
+  directoryBlogPostToArticle,
+  directoryProductToSiteProduct,
+} from "@/lib/directory-to-site-data";
 
 export const siteData: SiteData = {
   slug: "findworthnow",
@@ -8,7 +14,6 @@ export const siteData: SiteData = {
     "FindWorthNow explores products, tools, programs, and ideas worth considering — sleep, supplements, and more.",
   niche: "affiliate-directory",
   siteUrl: "https://findworthnow.com",
-  ratingScale: 5,
   favicon: "/sites/findworthnow/favicon.png",
 
   hero: {
@@ -30,7 +35,9 @@ export const siteData: SiteData = {
       "Short reviews of products people are comparing. Filter by category, then open one and decide.",
   },
 
-  products: [],
+  products: catalog.products.map((product, index) =>
+    directoryProductToSiteProduct(product, index),
+  ),
 
   comparisonTable: {
     title: "Comparisons",
@@ -43,7 +50,7 @@ export const siteData: SiteData = {
   },
 
   faqs: [],
-  articles: [],
+  articles: posts.map(directoryBlogPostToArticle),
 
   newsletter: {
     title: "",
