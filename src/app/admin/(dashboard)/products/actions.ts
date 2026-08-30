@@ -90,6 +90,10 @@ export async function createProductAction(
         comparisonRank: data.comparisonRank,
         directorySortOrder: data.directorySortOrder,
         comparison: {},
+        content:
+          data.imageSrc && data.imageAlt
+            ? { image: { src: data.imageSrc, alt: data.imageAlt } }
+            : {},
         status: data.status,
         publishedAt,
       })

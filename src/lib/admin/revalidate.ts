@@ -1,4 +1,5 @@
 import { revalidatePath } from "next/cache";
+import { getArticleConfig } from "@/lib/site-config";
 
 /**
  * Revalidate every public path that could render data owned by a site, plus
@@ -7,10 +8,12 @@ import { revalidatePath } from "next/cache";
  * own actions since they need the specific id.
  */
 export function revalidateSitePaths(siteSlug: string): void {
+  const articleRoute = getArticleConfig(siteSlug)?.route ?? "reviews";
+
   revalidatePath(`/${siteSlug}`, "layout");
   revalidatePath(`/${siteSlug}/affiliate`);
   revalidatePath(`/${siteSlug}/research-score`);
-  revalidatePath(`/${siteSlug}/articles`);
+  revalidatePath(`/${siteSlug}/${articleRoute}`);
 
   revalidatePath("/admin/sites");
   revalidatePath("/admin/products");
@@ -20,4 +23,16 @@ export function revalidateSitePaths(siteSlug: string): void {
   revalidatePath("/admin/buying-guide");
   revalidatePath("/admin/footer");
   revalidatePath("/admin/articles");
+}
+
+export function revalidateForArticle(
+  siteSlug: string,
+  articleSlug: string,
+  articleId: string,
+): void {
+  const articleRoute = getArticleConfig(siteSlug)?.route ?? "reviews";
+  revalidateSitePaths(siteSlug);
+  revalidatePath(`/${siteSlug}/${articleRoute}/${articleSlug}`);
+  revalidatePath(`/admin/articles/${articleId}`);
+  revalidatePath("/admin/articles/new");
 }

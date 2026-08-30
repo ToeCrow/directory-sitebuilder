@@ -281,6 +281,9 @@ export const articleProductSections = pgTable("article_product_sections", {
   bestFor: text("best_for").notNull(),
     skipIf: text("skip_if").notNull(),
     productSlug: text("product_slug"),
+    productId: uuid("product_id").references(() => products.id, {
+      onDelete: "restrict",
+    }),
     productVariant: text("product_variant"),
     sortOrder: integer("sort_order").notNull(),
   ...timestamps,

@@ -46,7 +46,10 @@ export async function FindWorthNowHome({
         <CategoryGrid siteSlug={siteSlug} publicBasePath={publicBasePath} />
       )}
       {siteHasHomepageSection(siteSlug, "blog-teasers") && (
-        <BlogTeasers siteSlug={siteSlug} publicBasePath={publicBasePath} />
+        <BlogTeasers
+          articles={siteData.articles}
+          publicBasePath={publicBasePath}
+        />
       )}
     </div>
   );

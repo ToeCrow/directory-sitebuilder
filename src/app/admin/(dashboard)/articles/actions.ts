@@ -1,9 +1,10 @@
 "use server";
 
 import { eq } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
 import { assertAdminSession } from "@/lib/admin-auth";
 import {
+  articleCreateSchema,
+  articleProductSectionCreateSchema,
   articleProductSectionSchema,
   articleStatusSchema,
   articleUpdateSchema,
@@ -13,20 +14,16 @@ import {
   getNextArticleProductSectionSortOrder,
 } from "@/lib/admin/articles";
 import { linesToArray } from "@/lib/admin/lines";
-import { revalidateSitePaths } from "@/lib/admin/revalidate";
+import { revalidateForArticle } from "@/lib/admin/revalidate";
+import { getAdminSiteById } from "@/lib/admin/sites";
 import type { ActionResult } from "@/lib/admin/types";
+import { emptyTiptapDoc, isTiptapDoc } from "@/lib/article-content";
 import { getDb } from "@/lib/db";
 import { articleProductSections, articles } from "@/lib/db/schema";
 
-function revalidateForArticle(
-  siteSlug: string,
-  articleSlug: string,
-  articleId: string,
-) {
-  revalidateSitePaths(siteSlug);
-  revalidatePath(`/${siteSlug}/articles/${articleSlug}`);
-  revalidatePath(`/admin/articles/${articleId}`);
-}
+export type CreateArticleResult =
+  | { ok: true; articleId: string }
+  | { ok: false; error: string };
 
 function parseDate(value: string | null): Date | null {
   if (!value) {
@@ -34,6 +31,70 @@ function parseDate(value: string | null): Date | null {
   }
   const parsed = new Date(value);
   return Number.isNaN(parsed.getTime()) ? null : parsed;
+}
+
+export async function createArticleAction(
+  raw: unknown,
+): Promise<CreateArticleResult> {
+  try {
+    await assertAdminSession();
+  } catch {
+    return { ok: false, error: "Unauthorized" };
+  }
+
+  const parsed = articleCreateSchema.safeParse(raw);
+  if (!parsed.success) {
+    return {
+      ok: false,
+      error: parsed.error.issues[0]?.message ?? "Invalid input",
+    };
+  }
+
+  const data = parsed.data;
+  const site = await getAdminSiteById(data.siteId);
+  if (!site) {
+    return { ok: false, error: "Site not found" };
+  }
+
+  const db = getDb();
+  const isRoundup = data.kind === "product-roundup";
+
+  try {
+    const [inserted] = await db
+      .insert(articles)
+      .values({
+        siteId: data.siteId,
+        title: data.title,
+        slug: data.slug,
+        excerpt: null,
+        intro: [],
+        researchNoteTitle: isRoundup ? "How we chose" : "",
+        researchNoteContent: isRoundup
+          ? "We compared the products on this list against the criteria in this guide."
+          : "",
+        content: {
+          kind: data.kind,
+          relatedArticleIds: [],
+          ...(isRoundup ? {} : { body: emptyTiptapDoc() }),
+        },
+        status: "draft",
+        publishedAt: null,
+      })
+      .returning({ id: articles.id });
+
+    if (!inserted) {
+      return { ok: false, error: "Could not create article." };
+    }
+
+    revalidateForArticle(site.site.slug, data.slug, inserted.id);
+    return { ok: true, articleId: inserted.id };
+  } catch (error) {
+    const message =
+      error instanceof Error && /unique|duplicate/i.test(error.message)
+        ? "An article with this slug already exists for the site."
+        : "Could not create article.";
+    return { ok: false, error: message };
+  }
 }
 
 export async function updateArticleAction(
@@ -60,6 +121,10 @@ export async function updateArticleAction(
   }
 
   const data = parsed.data;
+  if (data.body !== undefined && !isTiptapDoc(data.body)) {
+    return { ok: false, error: "Article body is not valid editor JSON." };
+  }
+
   const publishedAt =
     data.status === "published"
       ? (parseDate(data.publishedAt) ?? existing.publishedAt ?? new Date())
@@ -82,6 +147,12 @@ export async function updateArticleAction(
         author: data.author,
         ogImageSrc: data.ogImageSrc,
         ogImageAlt: data.ogImageAlt,
+        content: {
+          ...existing.content,
+          kind: existing.kind,
+          relatedArticleIds: data.relatedArticleIds,
+          ...(data.body !== undefined ? { body: data.body } : {}),
+        },
         status: data.status,
         publishedAt,
         updatedAtContent,
@@ -98,7 +169,7 @@ export async function updateArticleAction(
 
   revalidateForArticle(existing.siteSlug, data.slug, articleId);
   if (previousSlug !== data.slug) {
-    revalidatePath(`/${existing.siteSlug}/articles/${previousSlug}`);
+    revalidateForArticle(existing.siteSlug, previousSlug, articleId);
   }
 
   return { ok: true };
@@ -181,7 +252,7 @@ export async function addArticleProductSectionAction(
     return { ok: false, error: "Article not found" };
   }
 
-  const parsed = articleProductSectionSchema.safeParse(raw);
+  const parsed = articleProductSectionCreateSchema.safeParse(raw);
   if (!parsed.success) {
     return {
       ok: false,
@@ -205,6 +276,7 @@ export async function addArticleProductSectionAction(
     whereItFallsShort: linesToArray(data.whereItFallsShortText),
     bestFor: data.bestFor,
     skipIf: data.skipIf,
+    productId: data.productId,
     sortOrder,
   });
 
@@ -258,6 +330,7 @@ export async function updateArticleProductSectionAction(
       whereItFallsShort: linesToArray(data.whereItFallsShortText),
       bestFor: data.bestFor,
       skipIf: data.skipIf,
+      productId: data.productId ?? null,
       sortOrder: data.sortOrder,
       updatedAt: new Date(),
     })

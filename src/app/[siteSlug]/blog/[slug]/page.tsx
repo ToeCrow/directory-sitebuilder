@@ -2,37 +2,36 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { DirectoryProductCard } from "@/components/DirectoryProductCard";
-import { siteSlugs } from "@/data/sites";
+import { TiptapArticleBody } from "@/components/TiptapArticleBody";
+import { isTiptapDoc } from "@/lib/article-content";
+import { getDirectoryProductBySlug } from "@/lib/directory-catalog";
 import {
-  getDirectoryBlogPost,
-  getDirectoryBlogPosts,
-  getRelatedDirectoryBlogPosts,
-} from "@/lib/directory-blog";
-import {
-  getDirectoryProductBySlug,
-} from "@/lib/directory-catalog";
-import {
-  getAppPath,
   getBlogIndexPath,
   getBlogPostPath,
   getDirectoryReviewPath,
   getPublicPath,
   getSitePath,
 } from "@/lib/paths";
+import { getBottomRelatedArticles } from "@/lib/related-articles";
 import { getRequestPublicBasePath } from "@/lib/request-paths";
 import { buildPageOpenGraph } from "@/lib/seo";
-import { getSiteBySlug, isValidSiteSlug } from "@/lib/site";
-import { canAccessRoute } from "@/lib/site-routes";
+import {
+  getArticleBySlug,
+  getSiteBySlug,
+  getStaticArticles,
+  isValidSiteSlug,
+} from "@/lib/site";
+import { canAccessRoute, getStaticParamSiteSlugsForRoute } from "@/lib/site-routes";
 
 type BlogPostPageProps = {
   params: Promise<{ siteSlug: string; slug: string }>;
 };
 
 export function generateStaticParams() {
-  return siteSlugs.flatMap((siteSlug) =>
-    getDirectoryBlogPosts(siteSlug).map((post) => ({
+  return getStaticParamSiteSlugsForRoute("blog").flatMap((siteSlug) =>
+    getStaticArticles(siteSlug).map((article) => ({
       siteSlug,
-      slug: post.slug,
+      slug: article.slug,
     })),
   );
 }
@@ -42,22 +41,24 @@ export async function generateMetadata({
 }: BlogPostPageProps): Promise<Metadata> {
   const { siteSlug, slug } = await params;
   const siteData = await getSiteBySlug(siteSlug);
-  const post = getDirectoryBlogPost(siteSlug, slug);
+  const post = await getArticleBySlug(siteSlug, slug);
 
   if (!siteData || !post) {
     return { title: "Post not found" };
   }
 
   const path = getPublicPath(siteSlug, `/blog/${post.slug}`);
+  const title = post.metaTitle ?? post.title;
+  const description = post.metaDescription ?? post.excerpt ?? post.intro[0];
 
   return {
-    title: post.metaTitle,
-    description: post.metaDescription,
+    title,
+    description,
     alternates: { canonical: path },
     openGraph: buildPageOpenGraph({
       site: siteData,
-      title: `${post.metaTitle} | ${siteData.title}`,
-      description: post.metaDescription,
+      title: `${title} | ${siteData.title}`,
+      description,
       path,
       type: "article",
       publishedTime: post.publishedAt,
@@ -85,7 +86,7 @@ export default async function DirectoryBlogPostPage({
     notFound();
   }
 
-  const post = getDirectoryBlogPost(siteSlug, slug);
+  const post = await getArticleBySlug(siteSlug, slug);
   if (!post) {
     notFound();
   }
@@ -96,11 +97,13 @@ export default async function DirectoryBlogPostPage({
   }
 
   const publicBasePath = await getRequestPublicBasePath(siteSlug);
-  const relatedPosts = getRelatedDirectoryBlogPosts(siteSlug, post);
-  const relatedProducts = post.relatedProductSlugs.flatMap((productSlug) => {
-    const product = getDirectoryProductBySlug(siteSlug, productSlug);
-    return product ? [product] : [];
-  });
+  const relatedArticles = getBottomRelatedArticles(siteData, post);
+  const relatedProducts = (post.relatedProductSlugs ?? []).flatMap(
+    (productSlug) => {
+      const product = getDirectoryProductBySlug(siteSlug, productSlug);
+      return product ? [product] : [];
+    },
+  );
   const disclosureHref = getSitePath(publicBasePath, "/affiliate-disclosure");
 
   return (
@@ -114,9 +117,11 @@ export default async function DirectoryBlogPostPage({
 
       <article className="mt-6">
         <header className="border-b border-fwn-gold/15 pb-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-fwn-gold">
-            {formatPublishedDate(post.publishedAt)}
-          </p>
+          {post.publishedAt && (
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-fwn-gold">
+              {formatPublishedDate(post.publishedAt)}
+            </p>
+          )}
           <h1 className="mt-3 text-3xl font-semibold tracking-tight text-fwn-ivory md:text-4xl">
             {post.title}
           </h1>
@@ -144,30 +149,26 @@ export default async function DirectoryBlogPostPage({
           </p>
         </header>
 
-        {post.sections.map((section) => {
-          const ctaAfter = section.cta?.afterParagraph ?? section.paragraphs.length;
-
-          return (
+        {isTiptapDoc(post.body) ? (
+          <TiptapArticleBody
+            doc={post.body}
+            siteSlug={siteSlug}
+            publicBasePath={publicBasePath}
+            articles={siteData.articles}
+          />
+        ) : post.kind === "editorial" ? (
+          post.sections.map((section) => (
             <section key={section.heading} className="mt-10">
               <h2 className="text-2xl font-semibold tracking-tight text-fwn-ivory">
                 {section.heading}
               </h2>
-              {section.paragraphs.map((paragraph, index) => (
-                <div key={paragraph.slice(0, 48)}>
-                  <p className="mt-4 text-base leading-relaxed text-fwn-sand">
-                    {paragraph}
-                  </p>
-                  {section.cta && index + 1 === ctaAfter ? (
-                    <p className="mt-4">
-                      <Link
-                        href={getAppPath(publicBasePath, section.cta.path)}
-                        className="font-medium text-fwn-gold hover:text-fwn-brass"
-                      >
-                        {section.cta.label}
-                      </Link>
-                    </p>
-                  ) : null}
-                </div>
+              {section.paragraphs.map((paragraph) => (
+                <p
+                  key={paragraph.slice(0, 48)}
+                  className="mt-4 text-base leading-relaxed text-fwn-sand"
+                >
+                  {paragraph}
+                </p>
               ))}
               {section.bullets && section.bullets.length > 0 && (
                 <ul className="mt-4 list-disc space-y-2 pl-5 text-base leading-relaxed text-fwn-sand">
@@ -177,8 +178,8 @@ export default async function DirectoryBlogPostPage({
                 </ul>
               )}
             </section>
-          );
-        })}
+          ))
+        ) : null}
       </article>
 
       {relatedProducts.length > 0 && (
@@ -203,13 +204,13 @@ export default async function DirectoryBlogPostPage({
         </section>
       )}
 
-      {relatedPosts.length > 0 && (
+      {relatedArticles.length > 0 && (
         <section className="mt-12 border-t border-fwn-gold/15 pt-8">
           <h2 className="text-2xl font-semibold tracking-tight text-fwn-ivory">
             Related reading
           </h2>
           <ul className="mt-6 space-y-4">
-            {relatedPosts.map((related) => (
+            {relatedArticles.map((related) => (
               <li key={related.slug}>
                 <Link
                   href={getBlogPostPath(publicBasePath, related.slug)}
@@ -218,9 +219,11 @@ export default async function DirectoryBlogPostPage({
                   <h3 className="text-lg font-semibold text-fwn-ivory group-hover:text-fwn-gold">
                     {related.title}
                   </h3>
-                  <p className="mt-1 text-sm leading-relaxed text-fwn-sand">
-                    {related.excerpt}
-                  </p>
+                  {related.excerpt && (
+                    <p className="mt-1 text-sm leading-relaxed text-fwn-sand">
+                      {related.excerpt}
+                    </p>
+                  )}
                 </Link>
               </li>
             ))}

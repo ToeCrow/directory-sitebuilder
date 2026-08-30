@@ -5,16 +5,18 @@ import {
   getArticlePreviewBlurb,
   getArticlePreviewImage,
 } from "@/lib/article-preview";
-import { getArticlePath } from "@/lib/paths";
+import { getSiteArticlePath } from "@/lib/paths";
 
 type RelatedArticlesProps = {
   articles: Article[];
   publicBasePath: string;
+  siteSlug: string;
 };
 
 export function RelatedArticles({
   articles,
   publicBasePath,
+  siteSlug,
 }: RelatedArticlesProps) {
   if (articles.length === 0) {
     return null;
@@ -33,7 +35,7 @@ export function RelatedArticles({
       </h2>
       <ul className="mt-8 grid gap-10 sm:grid-cols-2">
         {articles.map((article) => {
-          const href = getArticlePath(publicBasePath, article.slug);
+          const href = getSiteArticlePath(siteSlug, publicBasePath, article.slug);
           const preview = getArticlePreviewImage(article);
           const blurb = getArticlePreviewBlurb(article);
 

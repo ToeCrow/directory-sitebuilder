@@ -1,5 +1,6 @@
 import { config } from "dotenv";
 config({ override: true });
+import { eq } from "drizzle-orm";
 import { getAllSites } from "@/data/sites";
 import type { Db } from "@/lib/db";
 import { getDb } from "@/lib/db";
@@ -21,6 +22,7 @@ import {
 import type { Article, Product, SiteData } from "@/types/site";
 import type { DirectoryBlogPost } from "@/types/directory-blog";
 import type { DirectoryProduct } from "@/types/directory-catalog";
+import { directoryBlogPostToTiptapDoc } from "@/lib/article-content";
 import { getDirectoryBlogPosts } from "@/lib/directory-blog";
 import { getDirectoryCatalog } from "@/lib/directory-catalog";
 
@@ -232,21 +234,71 @@ async function insertSite(tx: DbClient, siteData: SiteData) {
   }
 
   let articleProductSectionCount = 0;
+  const articleIdBySlug = new Map<string, string>();
 
   for (const article of siteData.articles) {
     const [insertedArticle] = await tx
       .insert(articles)
-      .values(mapArticle(site.id, article, blogBySlug.get(article.slug)))
-      .returning({ id: articles.id });
+      .values(
+        mapArticle(
+          site.id,
+          article,
+          blogBySlug.get(article.slug),
+          articleIdBySlug,
+        ),
+      )
+      .returning({ id: articles.id, slug: articles.slug });
+
+    articleIdBySlug.set(insertedArticle.slug, insertedArticle.id);
 
     if (article.kind === "product-roundup" && article.products.length > 0) {
       await tx.insert(articleProductSections).values(
         article.products.map((section, index) => {
           articleProductSectionCount += 1;
-          return mapArticleProductSection(insertedArticle.id, section, index + 1);
+          return mapArticleProductSection(
+            insertedArticle.id,
+            section,
+            index + 1,
+            productIdBySlug,
+          );
         }),
       );
     }
+  }
+
+  for (const article of siteData.articles) {
+    const articleId = articleIdBySlug.get(article.slug);
+    if (!articleId) continue;
+
+    const relatedArticleIds = (article.relatedSlugs ?? [])
+      .map((slug) => articleIdBySlug.get(slug))
+      .filter((id): id is string => Boolean(id));
+
+    const blogPost = blogBySlug.get(article.slug);
+    const body = blogPost
+      ? directoryBlogPostToTiptapDoc(blogPost, articleIdBySlug)
+      : undefined;
+
+    if (!body && relatedArticleIds.length === 0) {
+      continue;
+    }
+
+    const current = await tx
+      .select({ content: articles.content })
+      .from(articles)
+      .where(eq(articles.id, articleId))
+      .then((rows) => rows[0]?.content ?? {});
+
+    await tx
+      .update(articles)
+      .set({
+        content: {
+          ...(current as Record<string, unknown>),
+          ...(relatedArticleIds.length > 0 ? { relatedArticleIds } : {}),
+          ...(body ? { body } : {}),
+        },
+      })
+      .where(eq(articles.id, articleId));
   }
 
   return {
@@ -315,11 +367,16 @@ function mapArticle(
   siteId: string,
   article: Article,
   blogPost?: DirectoryBlogPost,
+  articleIdBySlug: ReadonlyMap<string, string> = new Map(),
 ) {
   const researchNote =
     article.kind === "product-roundup"
       ? article.researchNote
       : { title: "", content: "" };
+
+  const relatedArticleIds = (article.relatedSlugs ?? [])
+    .map((slug) => articleIdBySlug.get(slug))
+    .filter((id): id is string => Boolean(id));
 
   return {
     siteId,
@@ -339,12 +396,16 @@ function mapArticle(
       metaDescription: article.metaDescription,
       inlineRelatedSlug: article.inlineRelatedSlug,
       relatedSlugs: article.relatedSlugs,
+      ...(relatedArticleIds.length > 0 ? { relatedArticleIds } : {}),
       introImage: article.kind === "editorial" ? article.introImage : undefined,
       sections: blogPost
         ? blogPost.sections
         : article.kind === "editorial"
           ? article.sections
           : undefined,
+      body: blogPost
+        ? directoryBlogPostToTiptapDoc(blogPost, articleIdBySlug)
+        : undefined,
       closingGuide:
         article.kind === "product-roundup" ? article.closingGuide : undefined,
       faqs: article.kind === "product-roundup" ? article.faqs : undefined,
@@ -362,6 +423,7 @@ function mapArticleProductSection(
   articleId: string,
   section: Extract<Article, { kind: "product-roundup" }>["products"][number],
   sortOrder: number,
+  productIdBySlug: ReadonlyMap<string, string>,
 ) {
   return {
     articleId,
@@ -375,6 +437,9 @@ function mapArticleProductSection(
     bestFor: section.bestFor,
     skipIf: section.skipIf,
     productSlug: section.productSlug ?? null,
+    productId: section.productSlug
+      ? (productIdBySlug.get(section.productSlug) ?? null)
+      : null,
     productVariant: section.productVariant ?? null,
     sortOrder,
   };

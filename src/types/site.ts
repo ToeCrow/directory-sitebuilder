@@ -12,6 +12,8 @@ export type ArticleProductSection = {
   skipIf: string;
   /** Catalog product slug when this section maps to a Product. */
   productSlug?: string;
+  /** Stable Product id when this section maps to a Product. */
+  productId?: string;
   /** Variant label when the section describes a specific configuration of the catalog product. */
   productVariant?: string;
 };
@@ -48,6 +50,8 @@ export type EditorialSection = {
 export type ReviewCategory = "mattress" | "pillow" | "science";
 
 type ArticleBase = {
+  /** Present on articles hydrated from Postgres. */
+  id?: string;
   title: string;
   slug: string;
   excerpt?: string;
@@ -68,8 +72,14 @@ type ArticleBase = {
   ogImage?: { src: string; alt: string };
   /** One article slug to show as a mid-article related read. */
   inlineRelatedSlug?: string;
-  /** Ordered slugs for the bottom related list (falls back to the same review category). */
+  /** Ordered article ids for the bottom related list. */
+  relatedArticleIds?: string[];
+  /** Ordered slugs for the bottom related list (legacy; used when ids are absent). */
   relatedSlugs?: string[];
+  /** Catalog product slugs shown as related overviews (editorial-catalog sites). */
+  relatedProductSlugs?: string[];
+  /** Tiptap JSON body. When present, public editorial render prefers this over sections. */
+  body?: import("@/types/tiptap").TiptapDoc;
 };
 
 export type ArticleClosingGuide = {
@@ -130,6 +140,8 @@ export type ProductCategory = "mattress" | "pillow" | "topper" | "software";
 // TODO: load products from PostgreSQL via admin/CMS instead of static site data.
 
 export type Product = {
+  /** Present on products hydrated from Postgres. */
+  id?: string;
   name: string;
   slug: string;
   category: ProductCategory;

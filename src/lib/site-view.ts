@@ -14,6 +14,27 @@ export function productBySlugFrom(
   return siteData.products.find((product) => product.slug === slug);
 }
 
+export function productByIdFrom(
+  siteData: SiteData,
+  productId: string,
+): Product | undefined {
+  return siteData.products.find((product) => product.id === productId);
+}
+
+export function roundupProductFrom(
+  siteData: SiteData,
+  section: { productId?: string; productSlug?: string },
+): Product | undefined {
+  if (section.productId) {
+    const byId = productByIdFrom(siteData, section.productId);
+    if (byId) return byId;
+  }
+  if (section.productSlug) {
+    return productBySlugFrom(siteData, section.productSlug);
+  }
+  return undefined;
+}
+
 export function articleBySlugFrom(
   siteData: SiteData,
   slug: string,
@@ -25,10 +46,15 @@ export function articlesFeaturingProductFrom(
   siteData: SiteData,
   productSlug: string,
 ): Article[] {
+  const product = productBySlugFrom(siteData, productSlug);
   return siteData.articles.filter(
     (article) =>
       article.kind === "product-roundup" &&
-      article.products.some((product) => product.productSlug === productSlug),
+      article.products.some(
+        (section) =>
+          section.productSlug === productSlug ||
+          (product?.id != null && section.productId === product.id),
+      ),
   );
 }
 

@@ -4,7 +4,6 @@ import {
   getDirectoryCategories,
   getDirectoryProducts,
 } from "@/lib/directory-catalog";
-import { getDirectoryBlogPosts } from "@/lib/directory-blog";
 import { getSiteBySlug, isValidSiteSlug } from "@/data/sites";
 import {
   articlesFeaturingProductFrom,
@@ -14,7 +13,7 @@ import {
   productBySlugFrom,
 } from "@/lib/site";
 import { canAccessRoute } from "@/lib/site-routes";
-import { siteHasFeature } from "@/lib/site-config";
+import { getArticleConfig, siteHasFeature } from "@/lib/site-config";
 import type { Article, Product, SiteData } from "@/types/site";
 
 const INDEXNOW_ENDPOINT = "https://api.indexnow.org/indexnow";
@@ -227,8 +226,9 @@ function linkedCatalogProducts(
   }
 
   return article.products.flatMap((section) => {
-    if (!section.productSlug) return [];
-    const product = productBySlugFrom(siteData, section.productSlug);
+    const product = section.productSlug
+      ? productBySlugFrom(siteData, section.productSlug)
+      : undefined;
     return product ? [product] : [];
   });
 }
@@ -286,10 +286,12 @@ export function getIndexNowUrlSnapshots(siteSlug: string): IndexNowUrlSnapshot[]
       );
     }
 
-    const blogPosts = getDirectoryBlogPosts(siteSlug);
-    if (blogPosts.length > 0) {
+    const articleRoute = getArticleConfig(siteSlug)?.route;
+    const blogPosts =
+      articleRoute === "blog" ? siteData.articles : [];
+    if (blogPosts.length > 0 && articleRoute) {
       snapshots.push(
-        snapshotFor(abs("/blog"), chrome, {
+        snapshotFor(abs(`/${articleRoute}`), chrome, {
           posts: blogPosts.map((post) => ({
             slug: post.slug,
             title: post.title,
@@ -301,7 +303,9 @@ export function getIndexNowUrlSnapshots(siteSlug: string): IndexNowUrlSnapshot[]
     }
 
     for (const post of blogPosts) {
-      snapshots.push(snapshotFor(abs(`/blog/${post.slug}`), chrome, post));
+      snapshots.push(
+        snapshotFor(abs(`/${articleRoute}/${post.slug}`), chrome, post),
+      );
     }
 
     return snapshots;

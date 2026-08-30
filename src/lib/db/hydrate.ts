@@ -15,6 +15,7 @@ import type {
   ReviewCategory,
   SiteData,
 } from "@/types/site";
+import { isTiptapDoc, type TiptapDoc } from "@/lib/article-content";
 import { getDb } from "./index";
 import {
   articleProductSections,
@@ -65,11 +66,14 @@ type ArticleContent = {
   metaTitle?: string;
   metaDescription?: string;
   inlineRelatedSlug?: string;
+  relatedArticleIds?: string[];
   relatedSlugs?: string[];
+  relatedProductSlugs?: string[];
   introImage?: EditorialFigure;
   sections?: EditorialSection[];
   closingGuide?: ProductRoundupArticle["closingGuide"];
   faqs?: FAQ[];
+  body?: unknown;
 };
 
 type SiteFeatureFlags = {
@@ -227,6 +231,7 @@ export async function hydrateSiteData(
         : row.affiliateUrl;
 
     return {
+      id: row.id,
       name: row.name,
       slug: row.slug,
       category: isProductCategory(content.category)
@@ -271,6 +276,7 @@ export async function hydrateSiteData(
           bestFor: section.bestFor,
           skipIf: section.skipIf,
           productSlug: section.productSlug ?? undefined,
+          productId: section.productId ?? undefined,
           productVariant: section.productVariant ?? undefined,
         };
 
@@ -285,7 +291,12 @@ export async function hydrateSiteData(
       },
     );
 
+    const body: TiptapDoc | undefined = isTiptapDoc(content.body)
+      ? content.body
+      : undefined;
+
     const base = {
+      id: row.id,
       title: row.title,
       slug: row.slug,
       excerpt: row.excerpt ?? undefined,
@@ -297,7 +308,10 @@ export async function hydrateSiteData(
       updatedAt: toIsoDate(row.updatedAtContent),
       author: row.author ?? undefined,
       inlineRelatedSlug: content.inlineRelatedSlug,
+      relatedArticleIds: content.relatedArticleIds,
       relatedSlugs: content.relatedSlugs,
+      relatedProductSlugs: content.relatedProductSlugs,
+      body,
       ogImage:
         row.ogImageSrc && row.ogImageAlt
           ? { src: row.ogImageSrc, alt: row.ogImageAlt }

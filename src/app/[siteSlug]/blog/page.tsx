@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getDirectoryBlogPosts } from "@/lib/directory-blog";
 import { getBlogPostPath, getPublicPath } from "@/lib/paths";
 import { getRequestPublicBasePath } from "@/lib/request-paths";
 import { buildPageOpenGraph } from "@/lib/seo";
@@ -70,7 +69,11 @@ export default async function DirectoryBlogIndexPage({
   }
 
   const publicBasePath = await getRequestPublicBasePath(siteSlug);
-  const posts = getDirectoryBlogPosts(siteSlug);
+  const posts = [...siteData.articles].sort(
+    (a, b) =>
+      (b.publishedAt ?? "").localeCompare(a.publishedAt ?? "") ||
+      a.slug.localeCompare(b.slug),
+  );
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-12 md:py-16">
@@ -88,9 +91,11 @@ export default async function DirectoryBlogIndexPage({
         <ul className="mt-10 divide-y divide-fwn-gold/15 border-t border-fwn-gold/15">
           {posts.map((post) => (
             <li key={post.slug} className="py-8">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-fwn-gold">
-                {formatPublishedDate(post.publishedAt)}
-              </p>
+              {post.publishedAt && (
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-fwn-gold">
+                  {formatPublishedDate(post.publishedAt)}
+                </p>
+              )}
               <h2 className="mt-2 text-xl font-semibold tracking-tight text-fwn-ivory">
                 <Link
                   href={getBlogPostPath(publicBasePath, post.slug)}
@@ -99,9 +104,11 @@ export default async function DirectoryBlogIndexPage({
                   {post.title}
                 </Link>
               </h2>
-              <p className="mt-3 text-base leading-relaxed text-fwn-sand">
-                {post.excerpt}
-              </p>
+              {post.excerpt && (
+                <p className="mt-3 text-base leading-relaxed text-fwn-sand">
+                  {post.excerpt}
+                </p>
+              )}
               <Link
                 href={getBlogPostPath(publicBasePath, post.slug)}
                 className="mt-4 inline-block text-sm font-medium tracking-wide text-fwn-gold hover:text-fwn-brass"

@@ -35,7 +35,9 @@ export {
   featuredHomeReviewsFrom,
   featuredProductsFrom,
   getComparisonValue,
+  productByIdFrom,
   productBySlugFrom,
+  roundupProductFrom,
   productsByCategoryFrom,
   siteHasMattressPillowNav,
 } from "@/lib/site-view";

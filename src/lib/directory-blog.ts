@@ -2,6 +2,8 @@ import { posts as findworthnowPosts } from "@/data/sites/findworthnow/blog";
 import type { DirectoryBlogPost } from "@/types/directory-blog";
 import { getArticleConfig } from "@/lib/site-config";
 
+/** Seed-only source for FindWorthNow posts. Public /blog reads Postgres articles. */
+
 const postsBySite: Record<string, DirectoryBlogPost[]> = {
   findworthnow: findworthnowPosts,
 };

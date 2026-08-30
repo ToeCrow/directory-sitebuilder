@@ -27,12 +27,14 @@ import {
 } from "@/lib/related-articles";
 import { RoundupProductHeading } from "@/components/RoundupProductHeading";
 import { RoundupProductPageCta } from "@/components/RoundupProductPageCta";
+import { TiptapArticleBody } from "@/components/TiptapArticleBody";
+import { isTiptapDoc } from "@/lib/article-content";
 import {
   getArticleBySlug,
   getSiteBySlug,
   getStaticArticles,
   isValidSiteSlug,
-  productBySlugFrom,
+  roundupProductFrom,
 } from "@/lib/site";
 import { canAccessRoute, getStaticParamSiteSlugsForRoute } from "@/lib/site-routes";
 import type { EditorialFigure } from "@/types/site";
@@ -232,9 +234,8 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
         {isRoundup && article.products.length > 0 && (
           <div className="mt-8 space-y-16">
             {article.products.map((product, index) => {
-              const catalogProduct = product.productSlug
-                ? productBySlugFrom(siteData, product.productSlug)
-                : undefined;
+              const catalogProduct = roundupProductFrom(siteData, product);
+              const image = catalogProduct?.image ?? product.image;
               const showInlineRelated =
                 Boolean(inlineRelated && inlineRelatedHref) &&
                 index ===
@@ -259,7 +260,7 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
                     </p>
                   )}
 
-                  {product.image && (
+                  {image && (
                     <figure className="mt-6 overflow-hidden bg-ss-mist">
                       {catalogProduct ? (
                         <Link
@@ -269,8 +270,8 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
                           )}
                         >
                           <Image
-                            src={product.image.src}
-                            alt={product.image.alt}
+                            src={image.src}
+                            alt={image.alt}
                             width={1200}
                             height={800}
                             className="h-auto w-full"
@@ -278,8 +279,8 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
                         </Link>
                       ) : (
                         <Image
-                          src={product.image.src}
-                          alt={product.image.alt}
+                          src={image.src}
+                          alt={image.alt}
                           width={1200}
                           height={800}
                           className="h-auto w-full"
@@ -366,7 +367,16 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
           <ArticleFaq faqs={article.faqs} />
         )}
 
-        {isEditorial && (
+        {isEditorial && isTiptapDoc(article.body) && (
+          <TiptapArticleBody
+            doc={article.body}
+            siteSlug={siteSlug}
+            publicBasePath={publicBasePath}
+            articles={siteData.articles}
+          />
+        )}
+
+        {isEditorial && !isTiptapDoc(article.body) && (
           <div className="mt-8 space-y-16">
             {article.sections.map((section, index) => {
               const showInlineRelated =
@@ -478,6 +488,7 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
         <RelatedArticles
           articles={relatedArticles}
           publicBasePath={publicBasePath}
+          siteSlug={siteSlug}
         />
 
         <div className="mt-12 border-t border-ss-navy/10 pt-8">

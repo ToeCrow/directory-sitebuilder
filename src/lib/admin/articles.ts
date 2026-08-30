@@ -1,6 +1,9 @@
 import { asc, eq } from "drizzle-orm";
+import { isTiptapDoc, type TiptapDoc } from "@/lib/article-content";
 import { getDb } from "@/lib/db";
 import { articleProductSections, articles, sites } from "@/lib/db/schema";
+
+export type AdminArticleKind = "editorial" | "product-roundup";
 
 export type AdminArticleListItem = {
   id: string;
@@ -9,9 +12,14 @@ export type AdminArticleListItem = {
   siteTitle: string;
   title: string;
   slug: string;
+  kind: AdminArticleKind;
   status: "draft" | "published";
   publishedAt: Date | null;
 };
+
+function kindFromContent(content: Record<string, unknown> | null): AdminArticleKind {
+  return content?.kind === "editorial" ? "editorial" : "product-roundup";
+}
 
 export async function listAdminArticles(
   siteSlug?: string,
@@ -25,6 +33,7 @@ export async function listAdminArticles(
       siteTitle: sites.title,
       title: articles.title,
       slug: articles.slug,
+      content: articles.content,
       status: articles.status,
       publishedAt: articles.publishedAt,
     })
@@ -33,7 +42,43 @@ export async function listAdminArticles(
     .where(siteSlug ? eq(sites.slug, siteSlug) : undefined)
     .orderBy(asc(sites.slug), asc(articles.title));
 
-  return rows;
+  return rows.map((row) => ({
+    id: row.id,
+    siteId: row.siteId,
+    siteSlug: row.siteSlug,
+    siteTitle: row.siteTitle,
+    title: row.title,
+    slug: row.slug,
+    kind: kindFromContent(row.content),
+    status: row.status,
+    publishedAt: row.publishedAt,
+  }));
+}
+
+export type AdminArticlePickerItem = {
+  id: string;
+  title: string;
+  slug: string;
+};
+
+export async function listAdminArticlePickerItems(
+  siteId: string,
+  excludeArticleId?: string,
+): Promise<AdminArticlePickerItem[]> {
+  const db = getDb();
+  const rows = await db
+    .select({
+      id: articles.id,
+      title: articles.title,
+      slug: articles.slug,
+    })
+    .from(articles)
+    .where(eq(articles.siteId, siteId))
+    .orderBy(asc(articles.title));
+
+  return excludeArticleId
+    ? rows.filter((row) => row.id !== excludeArticleId)
+    : rows;
 }
 
 export type AdminArticleProductSection = {
@@ -47,6 +92,8 @@ export type AdminArticleProductSection = {
   whereItFallsShort: string[];
   bestFor: string;
   skipIf: string;
+  productId: string | null;
+  productSlug: string | null;
   sortOrder: number;
 };
 
@@ -59,11 +106,15 @@ export type AdminArticleDetail = {
   slug: string;
   excerpt: string | null;
   intro: string[];
+  kind: AdminArticleKind;
   researchNoteTitle: string;
   researchNoteContent: string;
   author: string | null;
   ogImageSrc: string | null;
   ogImageAlt: string | null;
+  relatedArticleIds: string[];
+  body: TiptapDoc | null;
+  content: Record<string, unknown>;
   status: "draft" | "published";
   publishedAt: Date | null;
   updatedAtContent: Date | null;
@@ -95,6 +146,13 @@ export async function getAdminArticleById(
     .where(eq(articleProductSections.articleId, id))
     .orderBy(asc(articleProductSections.sortOrder));
 
+  const content = (row.article.content ?? {}) as Record<string, unknown>;
+  const relatedArticleIds = Array.isArray(content.relatedArticleIds)
+    ? content.relatedArticleIds.filter(
+        (value): value is string => typeof value === "string",
+      )
+    : [];
+
   return {
     id: row.article.id,
     siteId: row.article.siteId,
@@ -104,15 +162,33 @@ export async function getAdminArticleById(
     slug: row.article.slug,
     excerpt: row.article.excerpt,
     intro: row.article.intro,
+    kind: kindFromContent(content),
     researchNoteTitle: row.article.researchNoteTitle,
     researchNoteContent: row.article.researchNoteContent,
     author: row.article.author,
     ogImageSrc: row.article.ogImageSrc,
     ogImageAlt: row.article.ogImageAlt,
+    relatedArticleIds,
+    body: isTiptapDoc(content.body) ? content.body : null,
+    content,
     status: row.article.status,
     publishedAt: row.article.publishedAt,
     updatedAtContent: row.article.updatedAtContent,
-    productSections: sectionRows,
+    productSections: sectionRows.map((section) => ({
+      id: section.id,
+      heading: section.heading,
+      intro: section.intro,
+      imageSrc: section.imageSrc,
+      imageAlt: section.imageAlt,
+      whatItIs: section.whatItIs,
+      whyItEarnsASpot: section.whyItEarnsASpot,
+      whereItFallsShort: section.whereItFallsShort,
+      bestFor: section.bestFor,
+      skipIf: section.skipIf,
+      productId: section.productId,
+      productSlug: section.productSlug,
+      sortOrder: section.sortOrder,
+    })),
   };
 }
 

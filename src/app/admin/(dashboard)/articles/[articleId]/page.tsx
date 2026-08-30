@@ -1,7 +1,15 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getAdminArticleById } from "@/lib/admin/articles";
+import {
+  getAdminArticleById,
+  listAdminArticlePickerItems,
+} from "@/lib/admin/articles";
 import { arrayToLines } from "@/lib/admin/lines";
+import {
+  getNextProductSortOrders,
+  listAdminProducts,
+} from "@/lib/admin/products";
+import { getArticleConfig } from "@/lib/site-config";
 import { ArticleEditForm } from "./ArticleEditForm";
 import { ArticleProductSectionsEditor } from "./ArticleProductSectionsEditor";
 
@@ -28,25 +36,38 @@ export default async function AdminArticleEditPage({
     notFound();
   }
 
+  const [pickerItems, siteProducts, sortOrders] = await Promise.all([
+    listAdminArticlePickerItems(article.siteId, article.id),
+    listAdminProducts(article.siteSlug),
+    getNextProductSortOrders(article.siteId),
+  ]);
+
+  const articleLabel = getArticleConfig(article.siteSlug)?.label ?? "Articles";
+
   return (
     <div>
       <Link
-        href="/admin/articles"
+        href={`/admin/articles?site=${article.siteSlug}`}
         className="text-sm font-medium text-blue-600 hover:text-blue-700"
       >
-        ← Back to articles
+        ← Back to {articleLabel.toLowerCase()}
       </Link>
       <h1 className="mt-4 text-3xl font-bold tracking-tight text-slate-900">
         Edit {article.title}
       </h1>
       <p className="mt-2 text-sm text-slate-600">
-        {article.siteTitle} · Status:{" "}
-        <span className="font-medium">{article.status}</span>
+        {article.siteTitle} ·{" "}
+        {article.kind === "product-roundup" ? "Product roundup" : "Editorial"} ·
+        Status: <span className="font-medium">{article.status}</span>
       </p>
 
       <div className="mt-8">
         <ArticleEditForm
           articleId={article.id}
+          kind={article.kind}
+          relatedArticles={pickerItems}
+          initialRelatedIds={article.relatedArticleIds}
+          initialBody={article.body}
           initial={{
             title: article.title,
             slug: article.slug,
@@ -64,20 +85,32 @@ export default async function AdminArticleEditPage({
         />
       </div>
 
-      <div className="mt-12">
-        <h2 className="text-xl font-semibold text-slate-900">
-          Product sections
-        </h2>
-        <p className="mt-1 text-sm text-slate-600">
-          Sections shown within the article body, in order.
-        </p>
-        <div className="mt-6">
-          <ArticleProductSectionsEditor
-            articleId={article.id}
-            sections={article.productSections}
-          />
+      {article.kind === "product-roundup" && (
+        <div className="mt-12">
+          <h2 className="text-xl font-semibold text-slate-900">
+            Review products
+          </h2>
+          <p className="mt-1 text-sm text-slate-600">
+            Pick a central product, then write the review copy for this
+            roundup. Images and buy links come from the product.
+          </p>
+          <div className="mt-6">
+            <ArticleProductSectionsEditor
+              articleId={article.id}
+              siteId={article.siteId}
+              sections={article.productSections}
+              products={siteProducts.map((product) => ({
+                id: product.id,
+                name: product.name,
+                slug: product.slug,
+                status: product.status,
+              }))}
+              nextComparisonRank={sortOrders.comparisonRank}
+              nextDirectorySortOrder={sortOrders.directorySortOrder}
+            />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

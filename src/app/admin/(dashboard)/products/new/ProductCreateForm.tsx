@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState, useTransition, type FormEvent } from "react";
+import { slugify } from "@/lib/slug";
 import { createProductAction } from "../actions";
 
 type SiteOption = {
@@ -19,14 +20,6 @@ type ProductCreateFormProps = {
 
 const fieldClass =
   "mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20";
-
-function slugify(value: string): string {
-  return value
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
 
 export function ProductCreateForm({
   sites,

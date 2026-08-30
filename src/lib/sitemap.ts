@@ -5,9 +5,8 @@ import {
   getDirectoryCategories,
   getDirectoryProducts,
 } from "@/lib/directory-catalog";
-import { getDirectoryBlogPosts } from "@/lib/directory-blog";
 import { canAccessRoute } from "@/lib/site-routes";
-import { siteHasFeature } from "@/lib/site-config";
+import { getArticleConfig, siteHasFeature } from "@/lib/site-config";
 
 export function buildSiteSitemapEntries(
   siteSlug: string,
@@ -67,19 +66,25 @@ export function buildSiteSitemapEntries(
       });
     }
 
-    const blogPosts = getDirectoryBlogPosts(siteSlug);
-    if (blogPosts.length > 0) {
+    const articleRoute = getArticleConfig(siteSlug)?.route;
+    const blogArticles =
+      articleRoute === "blog" ? siteData.articles : [];
+    if (blogArticles.length > 0 && articleRoute) {
       entries.push({
-        url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, "/blog"),
+        url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, `/${articleRoute}`),
         lastModified: now,
         changeFrequency: "weekly",
         priority: 0.7,
       });
     }
 
-    for (const post of blogPosts) {
+    for (const post of blogArticles) {
       entries.push({
-        url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, `/blog/${post.slug}`),
+        url: getPublicAbsoluteUrl(
+          siteSlug,
+          siteData.siteUrl,
+          `/${articleRoute}/${post.slug}`,
+        ),
         lastModified: now,
         changeFrequency: "monthly",
         priority: 0.65,

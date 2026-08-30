@@ -22,6 +22,10 @@
   },
   "dependencies": {
     "@next/third-parties": "^16.2.9",
+    "@tiptap/extension-link": "^3.30.5",
+    "@tiptap/pm": "^3.30.5",
+    "@tiptap/react": "^3.30.5",
+    "@tiptap/starter-kit": "^3.30.5",
     "drizzle-orm": "^0.45.2",
     "next": "16.2.9",
     "pg": "^8.22.0",

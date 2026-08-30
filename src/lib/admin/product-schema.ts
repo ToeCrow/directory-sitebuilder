@@ -31,6 +31,20 @@ export function buildProductUpdateSchema() {
 export function buildProductCreateSchema() {
   return buildProductUpdateSchema().extend({
     siteId: z.string().uuid(),
+    imageSrc: z
+      .string()
+      .trim()
+      .max(500)
+      .optional()
+      .nullable()
+      .transform((value) => (value ? value : null)),
+    imageAlt: z
+      .string()
+      .trim()
+      .max(300)
+      .optional()
+      .nullable()
+      .transform((value) => (value ? value : null)),
   });
 }
 

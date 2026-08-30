@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { listAdminArticles } from "@/lib/admin/articles";
 import { listAdminSites } from "@/lib/admin/sites";
+import { getArticleConfig } from "@/lib/site-config";
 import { StatusControls } from "./StatusControls";
 
 export const dynamic = "force-dynamic";
@@ -13,6 +14,9 @@ export default async function AdminArticlesPage({
   searchParams,
 }: ArticlesPageProps) {
   const { site: siteFilter } = await searchParams;
+  const articleLabel = siteFilter
+    ? (getArticleConfig(siteFilter)?.label ?? "Articles")
+    : "Articles";
 
   let articles: Awaited<ReturnType<typeof listAdminArticles>> = [];
   let sites: Awaited<ReturnType<typeof listAdminSites>> = [];
@@ -32,13 +36,27 @@ export default async function AdminArticlesPage({
 
   return (
     <div>
-      <h1 className="text-3xl font-bold tracking-tight text-slate-900">
-        Articles
-      </h1>
-      <p className="mt-2 text-slate-600">
-        Edit article content, product sections, and publish status. Saving a
-        published article updates the public site immediately.
-      </p>
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight text-slate-900">
+            {articleLabel}
+          </h1>
+          <p className="mt-2 text-slate-600">
+            Create and edit editorial posts and product roundups. Saving a
+            published article updates the public site immediately.
+          </p>
+        </div>
+        <Link
+          href={
+            siteFilter
+              ? `/admin/articles/new?site=${siteFilter}`
+              : "/admin/articles/new"
+          }
+          className="rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700"
+        >
+          New {articleLabel.toLowerCase().replace(/s$/, "")}
+        </Link>
+      </div>
 
       <div className="mt-6 flex flex-wrap gap-2">
         <Link
@@ -86,6 +104,7 @@ export default async function AdminArticlesPage({
             <thead className="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
               <tr>
                 <th className="px-4 py-3 font-medium">Article</th>
+                <th className="px-4 py-3 font-medium">Kind</th>
                 <th className="px-4 py-3 font-medium">Site</th>
                 <th className="px-4 py-3 font-medium">Status</th>
                 <th className="px-4 py-3 font-medium">Actions</th>
@@ -102,6 +121,11 @@ export default async function AdminArticlesPage({
                       {article.title}
                     </p>
                     <p className="text-xs text-slate-500">/{article.slug}</p>
+                  </td>
+                  <td className="px-4 py-3 text-slate-600">
+                    {article.kind === "product-roundup"
+                      ? "Roundup"
+                      : "Editorial"}
                   </td>
                   <td className="px-4 py-3 text-slate-600">
                     {article.siteTitle}

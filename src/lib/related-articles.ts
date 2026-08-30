@@ -1,26 +1,8 @@
 import type { Article, SiteData } from "@/types/site";
+import { resolveRelatedArticles } from "@/lib/article-content";
 import { articleBySlugFrom } from "@/lib/site-view";
 
 const BOTTOM_RELATED_LIMIT = 4;
-
-function uniqueExistingArticles(
-  siteData: SiteData,
-  slugs: string[],
-  exclude: Set<string>,
-): Article[] {
-  const seen = new Set<string>();
-  const articles: Article[] = [];
-
-  for (const slug of slugs) {
-    if (exclude.has(slug) || seen.has(slug)) continue;
-    const article = articleBySlugFrom(siteData, slug);
-    if (!article) continue;
-    seen.add(slug);
-    articles.push(article);
-  }
-
-  return articles;
-}
 
 export function getInlineRelatedArticle(
   siteData: SiteData,
@@ -48,12 +30,17 @@ export function getBottomRelatedArticles(
     exclude.add(article.inlineRelatedSlug);
   }
 
-  if (article.relatedSlugs && article.relatedSlugs.length > 0) {
-    return uniqueExistingArticles(
-      siteData,
-      article.relatedSlugs,
-      exclude,
-    ).slice(0, BOTTOM_RELATED_LIMIT);
+  if (
+    (article.relatedArticleIds && article.relatedArticleIds.length > 0) ||
+    (article.relatedSlugs && article.relatedSlugs.length > 0)
+  ) {
+    return resolveRelatedArticles({
+      articles: siteData.articles,
+      relatedArticleIds: article.relatedArticleIds,
+      relatedSlugs: article.relatedSlugs,
+      excludeSlugs: exclude,
+      limit: BOTTOM_RELATED_LIMIT,
+    });
   }
 
   if (!article.reviewCategory) {

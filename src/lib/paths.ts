@@ -1,5 +1,6 @@
 import { DOMAIN_SITE_MAP, getSiteSlugFromHost } from "@/lib/domain-map";
 import { siteSlugs, type SiteSlug } from "@/data/sites";
+import { getArticleConfig, type ArticleRoute } from "@/lib/site-config";
 
 /** Sites that publish on a mapped custom domain without an internal slug prefix. */
 const PUBLIC_PATH_SITE_SLUGS = new Set(Object.values(DOMAIN_SITE_MAP));
@@ -96,8 +97,18 @@ export function getBuyingGuidePath(publicBasePath: string): string {
 export function getArticlePath(
   publicBasePath: string,
   articleSlug: string,
+  route: ArticleRoute = "reviews",
 ): string {
-  return getAppPath(publicBasePath, `/reviews/${articleSlug}`);
+  return getAppPath(publicBasePath, `/${route}/${articleSlug}`);
+}
+
+export function getSiteArticlePath(
+  siteSlug: string,
+  publicBasePath: string,
+  articleSlug: string,
+): string {
+  const route = getArticleConfig(siteSlug)?.route ?? "reviews";
+  return getArticlePath(publicBasePath, articleSlug, route);
 }
 
 export function getReviewsIndexPath(

@@ -1,14 +1,17 @@
 import Link from "next/link";
+import type { Article } from "@/types/site";
 import { getBlogIndexPath, getBlogPostPath } from "@/lib/paths";
-import { getDirectoryBlogPosts } from "@/lib/directory-blog";
 
 type BlogTeasersProps = {
-  siteSlug: string;
+  articles: Article[];
   publicBasePath: string;
 };
 
-export function BlogTeasers({ siteSlug, publicBasePath }: BlogTeasersProps) {
-  const posts = getDirectoryBlogPosts(siteSlug);
+export function BlogTeasers({ articles, publicBasePath }: BlogTeasersProps) {
+  const posts = [...articles].sort((a, b) =>
+    (b.publishedAt ?? "").localeCompare(a.publishedAt ?? "") ||
+    a.slug.localeCompare(b.slug),
+  );
 
   if (posts.length === 0) {
     return null;
@@ -31,7 +34,7 @@ export function BlogTeasers({ siteSlug, publicBasePath }: BlogTeasersProps) {
         </Link>
       </div>
       <ul className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2">
-        {posts.map((post) => (
+        {posts.slice(0, 4).map((post) => (
           <li key={post.slug}>
             <Link
               href={getBlogPostPath(publicBasePath, post.slug)}
