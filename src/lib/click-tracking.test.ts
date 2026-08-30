@@ -10,7 +10,7 @@ import {
   utcDateString,
 } from "./click-tracking";
 import { incrementClick } from "./click-tracking-db";
-import { closeDb, getDb } from "./db";
+import { closeDb, getDb, looksLikeRemoteDatabaseUrl } from "./db";
 import { dailyLinkClicks, sites, trackedLinks } from "./db/schema";
 
 config();
@@ -180,12 +180,7 @@ describe("addUtcDays", () => {
 });
 
 function isLocalDatabaseUrl(url: string): boolean {
-  const lower = url.toLowerCase();
-  if (lower.includes("neon.tech")) return false;
-  if (lower.includes("sslmode=require") && !lower.includes("localhost")) {
-    return false;
-  }
-  return true;
+  return !looksLikeRemoteDatabaseUrl(url);
 }
 
 describe("incrementClick", () => {
@@ -205,7 +200,8 @@ describe("incrementClick", () => {
   });
 
   it("atomically increments total and today's daily bucket", async () => {
-    const databaseUrl = process.env.DATABASE_URL;
+    const databaseUrl =
+      process.env.POSTGRES_URL ?? process.env.DATABASE_URL;
     if (!databaseUrl || !isLocalDatabaseUrl(databaseUrl)) {
       return;
     }

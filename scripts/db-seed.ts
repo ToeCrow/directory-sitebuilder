@@ -1,10 +1,9 @@
 import { config } from "dotenv";
 config({ override: true });
-import { eq } from "drizzle-orm";
+import { count, eq } from "drizzle-orm";
 import { getAllSites } from "@/data/sites";
 import type { Db } from "@/lib/db";
-import { getDb } from "@/lib/db";
-import { countSites } from "@/lib/db/repositories/sites";
+import { getMigrateDb } from "@/lib/db";
 import {
   articleProductSections,
   articles,
@@ -446,7 +445,7 @@ function mapArticleProductSection(
 }
 
 export async function seedDatabase(): Promise<SeedCounts> {
-  const db = getDb();
+  const db = getMigrateDb();
   const staticSites = getAllSites();
 
   const totals: SeedCounts = {
@@ -493,7 +492,9 @@ function printCounts(counts: SeedCounts) {
 }
 
 async function main() {
-  const existingSites = await countSites();
+  const db = getMigrateDb();
+  const [result] = await db.select({ value: count() }).from(sites);
+  const existingSites = Number(result?.value ?? 0);
   if (existingSites > 0) {
     console.error(
       `Seed aborted: database already contains ${existingSites} site(s).`,

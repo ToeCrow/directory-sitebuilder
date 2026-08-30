@@ -1,37 +1,14 @@
-# Neon prep (docs only)
+# Hosted Postgres (Supabase)
 
-Not connected in this MVP. Local development continues to use Docker Postgres via `DATABASE_URL` (see `.env.example` and `docker-compose.yml`).
+Local development continues to use Docker Postgres via `DATABASE_URL` (see `.env.example` and `docker-compose.yml`).
 
-## Dual URL pattern
+On Vercel, use the Supabase integration. It provides `POSTGRES_URL` (pooled) and `POSTGRES_URL_NON_POOLING` (direct). Do **not** add a manual `DATABASE_URL` in Vercel.
 
-Neon (and similar serverless Postgres) typically exposes:
+## URL resolution
 
-| Variable | Use |
-|----------|-----|
-| `DATABASE_URL` | **Pooled** connection string for the Next.js runtime (`getDb()` / server actions). Prefer the pooler endpoint. |
-| `DATABASE_URL_DIRECT` | **Direct** (non-pooled) connection for schema migrations (`drizzle-kit`, `npm run db:migrate`). |
+| Use | Resolution |
+|-----|------------|
+| Next.js runtime (`getDb()`) | `POSTGRES_URL` ?? `DATABASE_URL` |
+| `db:migrate` / `db:seed` / `db:reset` / `db:verify` / drizzle-kit | `POSTGRES_URL_NON_POOLING` ?? `POSTGRES_URL` ?? `DATABASE_URL` |
 
-Why two URLs: migration tools need session-level features that pooled connections may not support; the app benefits from pooling under serverless concurrency.
-
-## Suggested `.env` shape (future)
-
-```bash
-# App / runtime (pooled)
-DATABASE_URL=postgresql://USER:PASS@HOST-pooler/neondb?sslmode=require
-
-# Migrations only (direct)
-DATABASE_URL_DIRECT=postgresql://USER:PASS@HOST/neondb?sslmode=require
-```
-
-When wiring this up:
-
-1. Point `drizzle.config.ts` / migrate scripts at `DATABASE_URL_DIRECT` (fallback to `DATABASE_URL` for local Docker).
-2. Keep `getDb()` on `DATABASE_URL` only.
-3. Never run `npm run db:reset` against Neon — the reset script refuses non-local URLs by design.
-4. After Neon: consider DB-backed sitemap + on-demand revalidation (today sitemap stays on static seed).
-
-## Out of scope for this branch
-
-- Creating a Neon project
-- Vercel env wiring / deploy
-- Merging `backend` into `develop` / `main`
+Never run `npm run db:reset` against Supabase — the reset script refuses remote URLs.

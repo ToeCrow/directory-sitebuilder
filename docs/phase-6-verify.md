@@ -1,12 +1,12 @@
 # Phase 6 verification checklist
 
-Branch: `backend`. Local Docker Postgres + localhost remain the supported runtime. Neon is docs-only.
+Branch: `backend`. Local Docker Postgres + localhost remain the supported runtime. Vercel uses the Supabase integration (`POSTGRES_URL`).
 
 ## Docs delivered
 
 - [README.md](../README.md) — local CMS quick start, scripts, architecture, allowed seed imports
-- [docs/neon.md](./neon.md) — `DATABASE_URL` (pooled) vs `DATABASE_URL_DIRECT` (migrations)
-- [docs/cms-data-contract.md](./cms-data-contract.md) — Neon + allowed `@/data/sites` imports
+- [docs/neon.md](./neon.md) — `POSTGRES_URL` (runtime) vs `POSTGRES_URL_NON_POOLING` (migrations)
+- [docs/cms-data-contract.md](./cms-data-contract.md) — hosted Postgres + allowed `@/data/sites` imports
 
 ## Static seed import audit
 

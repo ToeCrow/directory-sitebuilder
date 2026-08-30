@@ -1,33 +1,15 @@
 import { config } from "dotenv";
 config({ override: true });
 import { sql } from "drizzle-orm";
-import { getDb } from "@/lib/db";
+import {
+  getMigrateDb,
+  looksLikeRemoteDatabaseUrl,
+  requireMigrationDatabaseUrl,
+} from "@/lib/db";
 import { seedDatabase } from "./db-seed";
 
-function getDatabaseUrl(): string {
-  const url = process.env.DATABASE_URL;
-  if (!url) {
-    throw new Error("DATABASE_URL is not set.");
-  }
-  return url;
-}
-
-function isLocalDatabaseUrl(url: string): boolean {
-  const lower = url.toLowerCase();
-
-  if (lower.includes("neon.tech")) {
-    return false;
-  }
-
-  if (lower.includes("sslmode=require") && !lower.includes("localhost")) {
-    return false;
-  }
-
-  return true;
-}
-
 async function resetDatabase() {
-  const db = getDb();
+  const db = getMigrateDb();
 
   await db.execute(sql`
     TRUNCATE TABLE
@@ -50,14 +32,14 @@ async function resetDatabase() {
 }
 
 async function main() {
-  const databaseUrl = getDatabaseUrl();
+  const databaseUrl = requireMigrationDatabaseUrl();
 
-  if (!isLocalDatabaseUrl(databaseUrl)) {
+  if (looksLikeRemoteDatabaseUrl(databaseUrl)) {
     console.error(
-      "Reset refused: DATABASE_URL looks like a remote/production database.",
+      "Reset refused: the migration URL looks like a remote/production database.",
     );
     console.error(
-      "Reset is allowed only for local databases (not neon.tech and not sslmode=require without localhost).",
+      "Reset is allowed only for local databases (not Supabase, not neon.tech, and not sslmode=require without localhost).",
     );
     process.exit(1);
   }

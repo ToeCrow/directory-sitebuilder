@@ -1,4 +1,5 @@
 import { defineConfig } from "drizzle-kit";
+import { resolveMigrationDatabaseUrl } from "./src/lib/db/connection";
 
 export default defineConfig({
   schema: "./src/lib/db/schema.ts",
@@ -6,7 +7,7 @@ export default defineConfig({
   dialect: "postgresql",
   dbCredentials: {
     url:
-      process.env.DATABASE_URL ??
+      resolveMigrationDatabaseUrl() ??
       "postgresql://directory:directory@localhost:5435/directory_cms",
   },
 });

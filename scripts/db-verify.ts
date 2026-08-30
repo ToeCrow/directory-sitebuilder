@@ -2,7 +2,7 @@ import { config } from "dotenv";
 config({ override: true });
 import { count, sql } from "drizzle-orm";
 import { getAllSites, getSiteBySlug } from "@/data/sites";
-import { getDb } from "@/lib/db";
+import { getMigrateDb } from "@/lib/db";
 import { hydrateSiteData } from "@/lib/db/hydrate";
 import {
   articleProductSections,
@@ -46,7 +46,7 @@ function expectedCounts() {
 
 async function checkTableCounts(): Promise<CheckResult> {
   const expected = expectedCounts();
-  const db = getDb();
+  const db = getMigrateDb();
 
   const [siteCount] = await db.select({ value: count() }).from(sites);
   const [productCount] = await db.select({ value: count() }).from(products);
@@ -77,7 +77,7 @@ async function checkTableCounts(): Promise<CheckResult> {
 }
 
 async function checkUniqueSlugs(): Promise<CheckResult> {
-  const db = getDb();
+  const db = getMigrateDb();
 
   const duplicateProductSlugs = await db.execute<{ site_slug: string; slug: string; n: number }>(sql`
     SELECT s.slug AS site_slug, p.slug, COUNT(*)::int AS n
@@ -108,7 +108,7 @@ async function checkUniqueSlugs(): Promise<CheckResult> {
 }
 
 async function checkTopPicksIntegrity(): Promise<CheckResult> {
-  const db = getDb();
+  const db = getMigrateDb();
 
   const missingProducts = await db.execute<{ site_slug: string; product_id: string }>(sql`
     SELECT s.slug AS site_slug, tp.product_id

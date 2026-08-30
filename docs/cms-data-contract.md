@@ -70,15 +70,15 @@ Under `/public/sites/side-sleeper/`: hero, hero-mobile, header-brand, og-default
 
 ## Local Postgres (branch `backend`)
 
-1. Copy `.env.example` → `.env` (set `ADMIN_PASSWORD`, `ADMIN_SESSION_SECRET`, `DATABASE_URL`)
+1. Copy `.env.example` → `.env` (set `ADMIN_PASSWORD`, `ADMIN_SESSION_SECRET`, `DATABASE_URL` for local Docker)
 2. Host port is **5435** (avoids clash with other local Postgres on 5432)
 3. `npm run db:up` → `db:migrate` → `db:seed` → `db:verify`
 4. Public `[siteSlug]` routes read Postgres (`force-dynamic`). Sitemap/robots stay on static seed.
 5. Admin CMS: Sites (settings/hero/sections), Products, Top picks, Comparison, FAQ, Buying guide, Footer, Articles.
 
-## Neon (docs only)
+## Hosted Postgres
 
-See [neon.md](./neon.md). Dual URL (`DATABASE_URL` pooled + `DATABASE_URL_DIRECT` for migrations) is documented but not wired. Local Docker remains the supported runtime.
+On Vercel, the Supabase integration sets `POSTGRES_URL` / `POSTGRES_URL_NON_POOLING`. Do not add a manual `DATABASE_URL` there. Local Docker remains the default runtime via `DATABASE_URL`.
 
 ## Allowed `@/data/sites` imports (Phase 6)
 
