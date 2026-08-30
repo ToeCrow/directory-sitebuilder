@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { DatabaseUnavailable } from "@/components/DatabaseUnavailable";
 import { platformConfig } from "@/config/platform";
+import { formatDatabaseLoadError } from "@/lib/db/connection";
 import { getAllSites } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
@@ -9,11 +11,8 @@ export default async function PlatformHomePage() {
   try {
     sites = await getAllSites();
   } catch (error) {
-    // Local Docker may be down. On Vercel the DB is required — hide nothing.
-    if (process.env.VERCEL) {
-      throw error;
-    }
-    sites = [];
+    console.error("[db] failed to list sites", error);
+    return <DatabaseUnavailable message={formatDatabaseLoadError(error)} />;
   }
 
   return (

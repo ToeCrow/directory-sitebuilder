@@ -1,12 +1,12 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
-  createPoolConfig,
+  createRuntimeClientOptions,
   describeDatabaseTarget,
   looksLikeRemoteDatabaseUrl,
-  rewriteTransactionPoolerToSession,
   resolveMigrationDatabaseUrl,
   resolveRuntimeDatabaseUrl,
+  sanitizeDatabaseError,
 } from "./db/connection";
 
 describe("resolveRuntimeDatabaseUrl", () => {
@@ -89,54 +89,34 @@ describe("looksLikeRemoteDatabaseUrl", () => {
   });
 });
 
-describe("rewriteTransactionPoolerToSession", () => {
-  it("moves shared pooler traffic off transaction port 6543", () => {
-    assert.equal(
-      rewriteTransactionPoolerToSession(
-        "postgresql://postgres.abc:pass@aws-0-us-east-1.pooler.supabase.com:6543/postgres?sslmode=require",
-      ),
-      "postgresql://postgres.abc:pass@aws-0-us-east-1.pooler.supabase.com:5432/postgres?sslmode=require",
-    );
-  });
-
-  it("leaves direct and local URLs unchanged", () => {
-    assert.equal(
-      rewriteTransactionPoolerToSession(
-        "postgresql://postgres:pass@db.abc.supabase.co:5432/postgres?sslmode=require",
-      ),
-      "postgresql://postgres:pass@db.abc.supabase.co:5432/postgres?sslmode=require",
-    );
-    assert.equal(
-      rewriteTransactionPoolerToSession(
-        "postgresql://postgres:pass@db.abc.supabase.co:6543/postgres?sslmode=require",
-      ),
-      "postgresql://postgres:pass@db.abc.supabase.co:6543/postgres?sslmode=require",
-    );
-    assert.equal(
-      rewriteTransactionPoolerToSession(
-        "postgresql://directory:directory@localhost:5435/directory_cms",
-      ),
-      "postgresql://directory:directory@localhost:5435/directory_cms",
-    );
-  });
-});
-
-describe("createPoolConfig", () => {
-  it("uses a single connection on Vercel", () => {
-    const config = createPoolConfig(
+describe("createRuntimeClientOptions", () => {
+  it("disables prepared statements and uses one connection on Vercel", () => {
+    const options = createRuntimeClientOptions(
       "postgresql://directory:directory@localhost:5435/directory_cms",
       { VERCEL: "1" },
     );
-    assert.equal(config.max, 1);
-    assert.equal(config.connectionTimeoutMillis, 8_000);
+    assert.equal(options.prepare, false);
+    assert.equal(options.max, 1);
+    assert.equal(options.ssl, undefined);
   });
 
-  it("keeps a larger local pool", () => {
-    const config = createPoolConfig(
+  it("requires SSL against the Supabase pooler", () => {
+    const options = createRuntimeClientOptions(
+      "postgresql://postgres.abc:pass@aws-0-us-east-1.pooler.supabase.com:6543/postgres?sslmode=require",
+      { VERCEL: "1" },
+    );
+    assert.equal(options.prepare, false);
+    assert.equal(options.ssl, "require");
+    assert.equal(options.max, 1);
+  });
+
+  it("keeps a larger local pool without SSL", () => {
+    const options = createRuntimeClientOptions(
       "postgresql://directory:directory@localhost:5435/directory_cms",
       {},
     );
-    assert.equal(config.max, 10);
+    assert.equal(options.max, 10);
+    assert.equal(options.ssl, undefined);
   });
 });
 
@@ -147,6 +127,17 @@ describe("describeDatabaseTarget", () => {
         "postgresql://postgres.abc:s3cret@aws-0-us-east-1.pooler.supabase.com:6543/postgres",
       ),
       "aws-0-us-east-1.pooler.supabase.com:6543",
+    );
+  });
+});
+
+describe("sanitizeDatabaseError", () => {
+  it("redacts connection strings from driver messages", () => {
+    assert.equal(
+      sanitizeDatabaseError(
+        new Error("connect failed postgres://user:pass@host:6543/postgres"),
+      ),
+      "connect failed postgres://redacted",
     );
   });
 });

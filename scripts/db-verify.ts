@@ -76,31 +76,39 @@ async function checkTableCounts(): Promise<CheckResult> {
   return { ok: true };
 }
 
+function executeRows<T>(result: { rows: T[] } | T[]): T[] {
+  return Array.isArray(result) ? result : result.rows;
+}
+
 async function checkUniqueSlugs(): Promise<CheckResult> {
   const db = getMigrateDb();
 
-  const duplicateProductSlugs = await db.execute<{ site_slug: string; slug: string; n: number }>(sql`
+  const duplicateProductSlugs = executeRows(
+    await db.execute<{ site_slug: string; slug: string; n: number }>(sql`
     SELECT s.slug AS site_slug, p.slug, COUNT(*)::int AS n
     FROM products p
     JOIN sites s ON s.id = p.site_id
     GROUP BY s.slug, p.slug
     HAVING COUNT(*) > 1
-  `);
+  `),
+  );
 
-  if (duplicateProductSlugs.rows.length > 0) {
-    return fail(`duplicate product slugs found: ${JSON.stringify(duplicateProductSlugs.rows)}`);
+  if (duplicateProductSlugs.length > 0) {
+    return fail(`duplicate product slugs found: ${JSON.stringify(duplicateProductSlugs)}`);
   }
 
-  const duplicateArticleSlugs = await db.execute<{ site_slug: string; slug: string; n: number }>(sql`
+  const duplicateArticleSlugs = executeRows(
+    await db.execute<{ site_slug: string; slug: string; n: number }>(sql`
     SELECT s.slug AS site_slug, a.slug, COUNT(*)::int AS n
     FROM articles a
     JOIN sites s ON s.id = a.site_id
     GROUP BY s.slug, a.slug
     HAVING COUNT(*) > 1
-  `);
+  `),
+  );
 
-  if (duplicateArticleSlugs.rows.length > 0) {
-    return fail(`duplicate article slugs found: ${JSON.stringify(duplicateArticleSlugs.rows)}`);
+  if (duplicateArticleSlugs.length > 0) {
+    return fail(`duplicate article slugs found: ${JSON.stringify(duplicateArticleSlugs)}`);
   }
 
   pass("product and article slugs are unique per site");
@@ -110,42 +118,48 @@ async function checkUniqueSlugs(): Promise<CheckResult> {
 async function checkTopPicksIntegrity(): Promise<CheckResult> {
   const db = getMigrateDb();
 
-  const missingProducts = await db.execute<{ site_slug: string; product_id: string }>(sql`
+  const missingProducts = executeRows(
+    await db.execute<{ site_slug: string; product_id: string }>(sql`
     SELECT s.slug AS site_slug, tp.product_id
     FROM site_top_picks tp
     JOIN sites s ON s.id = tp.site_id
     LEFT JOIN products p ON p.id = tp.product_id
     WHERE p.id IS NULL
-  `);
+  `),
+  );
 
-  if (missingProducts.rows.length > 0) {
-    return fail(`top picks reference missing products: ${JSON.stringify(missingProducts.rows)}`);
+  if (missingProducts.length > 0) {
+    return fail(`top picks reference missing products: ${JSON.stringify(missingProducts)}`);
   }
 
-  const draftProductsOnPublishedSites = await db.execute<{ site_slug: string; product_slug: string }>(sql`
+  const draftProductsOnPublishedSites = executeRows(
+    await db.execute<{ site_slug: string; product_slug: string }>(sql`
     SELECT s.slug AS site_slug, p.slug AS product_slug
     FROM site_top_picks tp
     JOIN sites s ON s.id = tp.site_id
     JOIN products p ON p.id = tp.product_id
     WHERE s.status = 'published' AND p.status = 'draft'
-  `);
+  `),
+  );
 
-  if (draftProductsOnPublishedSites.rows.length > 0) {
+  if (draftProductsOnPublishedSites.length > 0) {
     return fail(
-      `published sites have top picks on draft products: ${JSON.stringify(draftProductsOnPublishedSites.rows)}`,
+      `published sites have top picks on draft products: ${JSON.stringify(draftProductsOnPublishedSites)}`,
     );
   }
 
-  const duplicateTopPicks = await db.execute<{ site_slug: string; sort_order: number; n: number }>(sql`
+  const duplicateTopPicks = executeRows(
+    await db.execute<{ site_slug: string; sort_order: number; n: number }>(sql`
     SELECT s.slug AS site_slug, tp.sort_order, COUNT(*)::int AS n
     FROM site_top_picks tp
     JOIN sites s ON s.id = tp.site_id
     GROUP BY s.slug, tp.sort_order
     HAVING COUNT(*) > 1
-  `);
+  `),
+  );
 
-  if (duplicateTopPicks.rows.length > 0) {
-    return fail(`duplicate top pick sort orders: ${JSON.stringify(duplicateTopPicks.rows)}`);
+  if (duplicateTopPicks.length > 0) {
+    return fail(`duplicate top pick sort orders: ${JSON.stringify(duplicateTopPicks)}`);
   }
 
   pass("top picks integrity checks passed");

@@ -1,7 +1,7 @@
-import { drizzle } from "drizzle-orm/node-postgres";
-import { Pool } from "pg";
+import { drizzle } from "drizzle-orm/postgres-js";
+import postgres, { type Sql } from "postgres";
 import {
-  createPoolConfig,
+  createRuntimeClientOptions,
   describeDatabaseTarget,
   requireMigrationDatabaseUrl,
   requireRuntimeDatabaseUrl,
@@ -11,9 +11,9 @@ import * as schema from "./schema";
 type Db = ReturnType<typeof drizzle<typeof schema>>;
 
 const globalForDb = globalThis as unknown as {
-  runtimePool?: Pool;
+  runtimeSql?: Sql;
   runtimeDb?: Db;
-  migratePool?: Pool;
+  migrateSql?: Sql;
   migrateDb?: Db;
 };
 
@@ -21,24 +21,20 @@ function getOrCreateDb(
   url: string,
   slot: "runtime" | "migrate",
 ): Db {
-  const poolKey = slot === "runtime" ? "runtimePool" : "migratePool";
+  const sqlKey = slot === "runtime" ? "runtimeSql" : "migrateSql";
   const dbKey = slot === "runtime" ? "runtimeDb" : "migrateDb";
 
-  if (!globalForDb[poolKey]) {
-    const config = createPoolConfig(url);
-    const pool = new Pool(config);
-    pool.on("error", (error) => {
-      console.error("[db] pool error", error);
-    });
+  if (!globalForDb[sqlKey]) {
+    const sql = postgres(url, createRuntimeClientOptions(url));
     if (slot === "runtime") {
       console.info(
-        `[db] runtime pool → ${describeDatabaseTarget(config.connectionString ?? url)}`,
+        `[db] runtime client → ${describeDatabaseTarget(url)}`,
       );
     }
-    globalForDb[poolKey] = pool;
+    globalForDb[sqlKey] = sql;
   }
   if (!globalForDb[dbKey]) {
-    globalForDb[dbKey] = drizzle(globalForDb[poolKey]!, { schema });
+    globalForDb[dbKey] = drizzle({ client: globalForDb[sqlKey]!, schema });
   }
   return globalForDb[dbKey]!;
 }
@@ -54,25 +50,29 @@ export function getMigrateDb(): Db {
 }
 
 export async function closeDb(): Promise<void> {
-  const runtimePool = globalForDb.runtimePool;
-  const migratePool = globalForDb.migratePool;
-  globalForDb.runtimePool = undefined;
+  const runtimeSql = globalForDb.runtimeSql;
+  const migrateSql = globalForDb.migrateSql;
+  globalForDb.runtimeSql = undefined;
   globalForDb.runtimeDb = undefined;
-  globalForDb.migratePool = undefined;
+  globalForDb.migrateSql = undefined;
   globalForDb.migrateDb = undefined;
-  await Promise.all([runtimePool?.end(), migratePool?.end()]);
+  await Promise.all([
+    runtimeSql?.end({ timeout: 5 }),
+    migrateSql?.end({ timeout: 5 }),
+  ]);
 }
 
 export type { Db };
 export type DbOrTx = Db | Parameters<Parameters<Db["transaction"]>[0]>[0];
 export * from "./schema";
 export {
-  createPoolConfig,
+  createRuntimeClientOptions,
   describeDatabaseTarget,
   looksLikeRemoteDatabaseUrl,
   requireMigrationDatabaseUrl,
   requireRuntimeDatabaseUrl,
   resolveMigrationDatabaseUrl,
   resolveRuntimeDatabaseUrl,
-  rewriteTransactionPoolerToSession,
+  sanitizeDatabaseError,
+  formatDatabaseLoadError,
 } from "./connection";

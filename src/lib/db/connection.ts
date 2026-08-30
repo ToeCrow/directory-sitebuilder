@@ -1,5 +1,3 @@
-import type { PoolConfig } from "pg";
-
 function firstDefined(
   env: NodeJS.Dict<string | undefined>,
   ...keys: string[]
@@ -73,18 +71,6 @@ export function looksLikeRemoteDatabaseUrl(url: string): boolean {
   return false;
 }
 
-/**
- * Vercel POSTGRES_URL is Supavisor transaction mode (:6543). node-pg always
- * prepares parameterized queries, which that mode does not support. Session
- * mode on the same shared pooler host does.
- */
-export function rewriteTransactionPoolerToSession(url: string): string {
-  return url.replace(
-    /pooler\.supabase\.com:6543/gi,
-    "pooler.supabase.com:5432",
-  );
-}
-
 export function describeDatabaseTarget(url: string): string {
   const withoutProtocol = url.replace(/^[a-z]+:\/\//i, "");
   const at = withoutProtocol.lastIndexOf("@");
@@ -93,28 +79,33 @@ export function describeDatabaseTarget(url: string): string {
   return hostPart.split(/[/?]/)[0] || "unknown-host";
 }
 
-function needsExplicitSsl(url: string): boolean {
-  if (!looksLikeRemoteDatabaseUrl(url)) {
-    return false;
-  }
-  return !/sslmode=/i.test(url);
-}
-
-export function createPoolConfig(
+/** postgres.js options: transaction pooler needs prepare: false. */
+export function createRuntimeClientOptions(
   url: string,
   env: NodeJS.Dict<string | undefined> = process.env,
-): PoolConfig {
-  const connectionString = rewriteTransactionPoolerToSession(url);
+) {
   const remote = looksLikeRemoteDatabaseUrl(url);
   const serverless = env.VERCEL === "1";
-  const config: PoolConfig = {
-    connectionString,
+  return {
+    prepare: false as const,
     max: remote || serverless ? 1 : 10,
-    idleTimeoutMillis: remote || serverless ? 10_000 : 30_000,
-    connectionTimeoutMillis: 8_000,
+    idle_timeout: remote || serverless ? 20 : 0,
+    connect_timeout: 10,
+    ...(remote ? { ssl: "require" as const } : {}),
   };
-  if (needsExplicitSsl(url)) {
-    config.ssl = { rejectUnauthorized: true };
-  }
-  return config;
+}
+
+export function sanitizeDatabaseError(error: unknown): string {
+  const message = error instanceof Error ? error.message : String(error);
+  return message
+    .replace(/postgres(?:ql)?:\/\/\S+/gi, "postgres://redacted")
+    .replace(/password[=:]\S+/gi, "password=redacted");
+}
+
+export function formatDatabaseLoadError(error: unknown): string {
+  const url = resolveRuntimeDatabaseUrl();
+  const target = url
+    ? describeDatabaseTarget(url)
+    : "POSTGRES_URL/DATABASE_URL is not set";
+  return `${target}\n${sanitizeDatabaseError(error)}`;
 }

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
+import { DatabaseUnavailable } from "@/components/DatabaseUnavailable";
 import { SiteProvider } from "@/context/SiteContext";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -12,8 +13,10 @@ import {
 } from "@/lib/schema";
 import { resolvePublicBasePath } from "@/lib/paths";
 import { getDefaultOgImage } from "@/lib/seo";
+import { formatDatabaseLoadError } from "@/lib/db/connection";
 import {
   getSiteBySlug,
+  isMissingSiteError,
   isValidSiteSlug,
 } from "@/lib/site";
 import { getSiteTheme, siteHasFeature } from "@/lib/site-config";
@@ -30,7 +33,15 @@ export async function generateMetadata({
   params,
 }: SiteLayoutProps): Promise<Metadata> {
   const { siteSlug } = await params;
-  const siteData = await getSiteBySlug(siteSlug);
+  let siteData;
+  try {
+    siteData = await getSiteBySlug(siteSlug);
+  } catch (error) {
+    if (!isMissingSiteError(error)) {
+      console.error("[db] failed to load site metadata", error);
+    }
+    return {};
+  }
 
   if (!siteData) {
     return {};
@@ -97,11 +108,20 @@ export async function generateMetadata({
 export default async function SiteLayout({ children, params }: SiteLayoutProps) {
   const { siteSlug } = await params;
 
-  if (!(await isValidSiteSlug(siteSlug))) {
-    notFound();
-  }
+  let siteData;
+  try {
+    if (!(await isValidSiteSlug(siteSlug))) {
+      notFound();
+    }
 
-  const siteData = await getSiteBySlug(siteSlug);
+    siteData = await getSiteBySlug(siteSlug);
+  } catch (error) {
+    if (isMissingSiteError(error)) {
+      notFound();
+    }
+    console.error("[db] failed to load site layout", error);
+    return <DatabaseUnavailable message={formatDatabaseLoadError(error)} />;
+  }
 
   if (!siteData) {
     notFound();

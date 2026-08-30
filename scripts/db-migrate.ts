@@ -1,6 +1,6 @@
 import { config } from "dotenv";
 config({ override: true });
-import { migrate } from "drizzle-orm/node-postgres/migrator";
+import { migrate } from "drizzle-orm/postgres-js/migrator";
 import { getMigrateDb } from "@/lib/db";
 
 async function main() {
