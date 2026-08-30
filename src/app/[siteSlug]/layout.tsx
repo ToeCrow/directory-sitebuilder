@@ -14,15 +14,9 @@ import {
 import { resolvePublicBasePath } from "@/lib/paths";
 import { getDefaultOgImage } from "@/lib/seo";
 import { formatDatabaseLoadError } from "@/lib/db/connection";
-import {
-  getSiteBySlug,
-  isMissingSiteError,
-  isValidSiteSlug,
-} from "@/lib/site";
+import { getSiteBySlug, isMissingSiteError } from "@/lib/site";
 import { getSiteTheme, siteHasFeature } from "@/lib/site-config";
 import { getThemeClasses } from "@/lib/site-theme";
-
-export const dynamic = "force-dynamic";
 
 type SiteLayoutProps = {
   children: React.ReactNode;
@@ -110,10 +104,6 @@ export default async function SiteLayout({ children, params }: SiteLayoutProps) 
 
   let siteData;
   try {
-    if (!(await isValidSiteSlug(siteSlug))) {
-      notFound();
-    }
-
     siteData = await getSiteBySlug(siteSlug);
   } catch (error) {
     if (isMissingSiteError(error)) {

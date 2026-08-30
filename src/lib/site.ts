@@ -1,9 +1,11 @@
 import { cache } from "react";
+import { unstable_cache } from "next/cache";
 import {
   getSiteBySlug as getStaticSiteBySlug,
   siteSlugs as staticSiteSlugs,
 } from "@/data/sites";
 import { hydrateSiteData } from "@/lib/db/hydrate";
+import { SITES_LIST_CACHE_TAG, siteCacheTag } from "@/lib/site-cache-tags";
 import { getStaticParamSiteSlugsForRoute } from "@/lib/site-routes";
 import {
   countSites,
@@ -44,7 +46,14 @@ export {
 } from "@/lib/site-view";
 
 export const getSiteData = cache(async (siteSlug: string): Promise<SiteData> => {
-  return hydrateSiteData(siteSlug, { publishedOnly: true });
+  return unstable_cache(
+    async () => hydrateSiteData(siteSlug, { publishedOnly: true }),
+    ["published-site", siteSlug],
+    {
+      tags: [siteCacheTag(siteSlug)],
+      revalidate: 3600,
+    },
+  )();
 });
 
 export function isMissingSiteError(error: unknown): boolean {
@@ -87,7 +96,14 @@ export async function getAllSites(): Promise<SiteData[]> {
 export async function listPublishedSiteLinks(): Promise<
   { slug: string; title: string }[]
 > {
-  return listPublishedSiteSummaries();
+  return unstable_cache(
+    async () => listPublishedSiteSummaries(),
+    ["published-site-links"],
+    {
+      tags: [SITES_LIST_CACHE_TAG],
+      revalidate: 3600,
+    },
+  )();
 }
 
 export async function siteSlugs(): Promise<string[]> {

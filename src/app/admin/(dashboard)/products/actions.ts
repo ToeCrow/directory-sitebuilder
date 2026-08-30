@@ -3,6 +3,7 @@
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { assertAdminSession } from "@/lib/admin-auth";
+import { revalidateSitePaths } from "@/lib/admin/revalidate";
 import {
   buildProductCreateSchema,
   buildProductUpdateSchema,
@@ -26,10 +27,8 @@ function revalidateForProduct(
   productSlug: string,
   productId: string,
 ) {
-  revalidatePath(`/${siteSlug}`);
+  revalidateSitePaths(siteSlug);
   revalidatePath(`/${siteSlug}/products/${productSlug}`);
-  revalidatePath(`/${siteSlug}/affiliate`);
-  revalidatePath("/admin/products");
   revalidatePath(`/admin/products/${productId}`);
   revalidatePath("/admin/products/new");
 }

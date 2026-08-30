@@ -1,5 +1,15 @@
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { getArticleConfig } from "@/lib/site-config";
+import { SITES_LIST_CACHE_TAG, siteCacheTag } from "@/lib/site-cache-tags";
+
+/**
+ * Drop the published hydrate for this site so the next visitor refetches
+ * it. Other sites keep serving from cache and do not touch Postgres.
+ */
+export function revalidatePublishedSite(siteSlug: string): void {
+  revalidateTag(siteCacheTag(siteSlug), { expire: 0 });
+  revalidateTag(SITES_LIST_CACHE_TAG, { expire: 0 });
+}
 
 /**
  * Revalidate every public path that could render data owned by a site, plus
@@ -10,7 +20,9 @@ import { getArticleConfig } from "@/lib/site-config";
 export function revalidateSitePaths(siteSlug: string): void {
   const articleRoute = getArticleConfig(siteSlug)?.route ?? "reviews";
 
+  revalidatePublishedSite(siteSlug);
   revalidatePath(`/${siteSlug}`, "layout");
+  revalidatePath(`/${siteSlug}/products`);
   revalidatePath(`/${siteSlug}/affiliate`);
   revalidatePath(`/${siteSlug}/research-score`);
   revalidatePath(`/${siteSlug}/${articleRoute}`);
