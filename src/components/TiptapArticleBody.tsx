@@ -19,6 +19,7 @@ type BodyTheme = {
   heading: string;
   list: string;
   link: string;
+  quote: string;
 };
 
 function bodyTheme(siteSlug: string): BodyTheme {
@@ -29,6 +30,8 @@ function bodyTheme(siteSlug: string): BodyTheme {
       heading: "mt-10 text-2xl font-semibold tracking-tight text-fwn-ivory",
       list: "mt-4 list-disc space-y-2 pl-5 text-base leading-relaxed text-fwn-sand",
       link: "font-medium text-fwn-gold hover:text-fwn-brass",
+      quote:
+        "mt-4 border-l-2 border-fwn-gold/40 pl-4 text-base leading-relaxed text-fwn-sand",
     };
   }
   if (theme === "paper") {
@@ -37,6 +40,8 @@ function bodyTheme(siteSlug: string): BodyTheme {
       heading: "mt-10 text-2xl font-bold tracking-tight text-ss-navy",
       list: "mt-4 list-disc space-y-2 pl-5 text-base leading-relaxed text-ss-ink/80",
       link: "font-medium text-ss-navy hover:text-ss-blue",
+      quote:
+        "mt-4 border-l-2 border-ss-navy/30 pl-4 text-base leading-relaxed text-ss-ink/80",
     };
   }
   return {
@@ -44,6 +49,8 @@ function bodyTheme(siteSlug: string): BodyTheme {
     heading: "mt-10 text-2xl font-bold tracking-tight text-slate-900",
     list: "mt-4 list-disc space-y-2 pl-5 text-base leading-relaxed text-slate-700",
     link: "font-medium text-blue-600 hover:text-blue-700",
+    quote:
+      "mt-4 border-l-2 border-slate-300 pl-4 text-base leading-relaxed text-slate-700",
   };
 }
 
@@ -160,8 +167,12 @@ function renderNodes(
     if (node.type === "heading") {
       const level = node.attrs?.level === 3 ? 3 : 2;
       const Tag = level === 3 ? "h3" : "h2";
+      const headingClass =
+        level === 3
+          ? ctx.classes.heading.replace("text-2xl", "text-xl").replace("mt-10", "mt-8")
+          : ctx.classes.heading;
       return (
-        <Tag key={key} className={ctx.classes.heading}>
+        <Tag key={key} className={headingClass}>
           {renderNodes(node.content, ctx)}
         </Tag>
       );
@@ -185,7 +196,7 @@ function renderNodes(
     }
     if (node.type === "blockquote") {
       return (
-        <blockquote key={key} className="mt-4 border-l-2 pl-4">
+        <blockquote key={key} className={ctx.classes.quote}>
           {renderNodes(node.content, ctx)}
         </blockquote>
       );

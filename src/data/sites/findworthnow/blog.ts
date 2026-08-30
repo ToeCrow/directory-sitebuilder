@@ -1,6 +1,8 @@
 import type { DirectoryBlogPost } from "@/types/directory-blog";
+import { sleepGuidePosts } from "./blog-sleep-guides";
 
 export const posts: DirectoryBlogPost[] = [
+  ...sleepGuidePosts,
   {
     slug: "why-do-i-keep-waking-up-at-night",
     title: "Why Do I Keep Waking Up at Night? 8 Common Reasons",
@@ -19,6 +21,8 @@ export const posts: DirectoryBlogPost[] = [
     relatedPostSlugs: [
       "why-cant-i-sleep-even-when-im-tired",
       "how-to-fall-asleep-fast",
+      "why-do-i-wake-up-tired-after-8-hours-of-sleep",
+      "how-to-stop-overthinking-at-night",
     ],
     sections: [
       {
@@ -145,6 +149,7 @@ export const posts: DirectoryBlogPost[] = [
       "why-do-i-keep-waking-up-at-night",
       "how-to-fall-asleep-fast",
       "why-sleep-supplements-can-help",
+      "how-to-stop-overthinking-at-night",
     ],
     sections: [
       {
@@ -272,8 +277,8 @@ export const posts: DirectoryBlogPost[] = [
     relatedPostSlugs: [
       "why-do-i-keep-waking-up-at-night",
       "why-cant-i-sleep-even-when-im-tired",
-      "why-sleep-supplements-can-help",
-      "why-try-sleep-programs-beyond-supplements",
+      "how-to-stop-overthinking-at-night",
+      "why-do-i-wake-up-tired-after-8-hours-of-sleep",
     ],
     sections: [
       {

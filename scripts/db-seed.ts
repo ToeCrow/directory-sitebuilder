@@ -3,7 +3,15 @@ config({ override: true });
 import { count, eq, inArray, sql } from "drizzle-orm";
 import { getAllSites } from "@/data/sites";
 import type { Db } from "@/lib/db";
-import { getMigrateDb } from "@/lib/db";
+import {
+  closeDb,
+  describeDatabaseTarget,
+  getDb,
+  getMigrateDb,
+  looksLikeRemoteDatabaseUrl,
+  requireMigrationDatabaseUrl,
+  requireRuntimeDatabaseUrl,
+} from "@/lib/db";
 import { hashPassword } from "@/lib/admin-password";
 import {
   articleProductSections,
@@ -77,6 +85,30 @@ function parseIsoDate(value: string | undefined): Date | null {
 }
 
 type DbClient = Db | Parameters<Parameters<Db["transaction"]>[0]>[0];
+
+/** Prefer local Docker when .env also has a remote migrate URL (Supabase). */
+function getSeedDb(): Db {
+  const runtimeUrl = requireRuntimeDatabaseUrl();
+  const migrateUrl = requireMigrationDatabaseUrl();
+  if (
+    !looksLikeRemoteDatabaseUrl(runtimeUrl) &&
+    looksLikeRemoteDatabaseUrl(migrateUrl)
+  ) {
+    return getDb();
+  }
+  return getMigrateDb();
+}
+
+function seedTargetLabel(): string {
+  const runtimeUrl = requireRuntimeDatabaseUrl();
+  const migrateUrl = requireMigrationDatabaseUrl();
+  const url =
+    !looksLikeRemoteDatabaseUrl(runtimeUrl) &&
+    looksLikeRemoteDatabaseUrl(migrateUrl)
+      ? runtimeUrl
+      : migrateUrl;
+  return describeDatabaseTarget(url);
+}
 
 async function insertSite(tx: DbClient, siteData: SiteData) {
   const now = new Date();
@@ -544,8 +576,107 @@ export async function seedAdminUsers(
   return { users: userCount, userSiteAccess: accessCount };
 }
 
-export async function seedDatabase(): Promise<SeedCounts> {
-  const db = getMigrateDb();
+export async function upsertMissingArticles(
+  db: Db = getMigrateDb(),
+): Promise<{ inserted: number; updatedRelated: number }> {
+  const staticSites = getAllSites();
+  let inserted = 0;
+  let updatedRelated = 0;
+
+  for (const siteData of staticSites) {
+    const [siteRow] = await db
+      .select({ id: sites.id })
+      .from(sites)
+      .where(eq(sites.slug, siteData.slug))
+      .limit(1);
+    if (!siteRow) {
+      continue;
+    }
+
+    const blogBySlug = new Map(
+      getDirectoryBlogPosts(siteData.slug).map((post) => [post.slug, post]),
+    );
+
+    const existingRows = await db
+      .select({
+        id: articles.id,
+        slug: articles.slug,
+        content: articles.content,
+      })
+      .from(articles)
+      .where(eq(articles.siteId, siteRow.id));
+
+    const articleIdBySlug = new Map(
+      existingRows.map((row) => [row.slug, row.id]),
+    );
+    const missing = siteData.articles.filter(
+      (article) => !articleIdBySlug.has(article.slug),
+    );
+
+    for (const article of missing) {
+      const [row] = await db
+        .insert(articles)
+        .values(
+          mapArticle(
+            siteRow.id,
+            article,
+            blogBySlug.get(article.slug),
+            articleIdBySlug,
+          ),
+        )
+        .returning({ id: articles.id, slug: articles.slug });
+      articleIdBySlug.set(row.slug, row.id);
+      inserted += 1;
+    }
+
+    for (const article of siteData.articles) {
+      const articleId = articleIdBySlug.get(article.slug);
+      if (!articleId) {
+        continue;
+      }
+
+      const relatedArticleIds = (article.relatedSlugs ?? [])
+        .map((slug) => articleIdBySlug.get(slug))
+        .filter((id): id is string => Boolean(id));
+      const blogPost = blogBySlug.get(article.slug);
+      const wasInserted = missing.some((item) => item.slug === article.slug);
+
+      if (wasInserted) {
+        const mapped = mapArticle(
+          siteRow.id,
+          article,
+          blogPost,
+          articleIdBySlug,
+        );
+        await db
+          .update(articles)
+          .set({ content: mapped.content })
+          .where(eq(articles.id, articleId));
+        continue;
+      }
+
+      const existing = existingRows.find((row) => row.slug === article.slug);
+      const current = (existing?.content ?? {}) as Record<string, unknown>;
+      await db
+        .update(articles)
+        .set({
+          content: {
+            ...current,
+            relatedArticleIds,
+            relatedSlugs: article.relatedSlugs,
+          },
+        })
+        .where(eq(articles.id, articleId));
+      updatedRelated += 1;
+    }
+  }
+
+  return { inserted, updatedRelated };
+}
+
+export async function seedDatabase(
+  db: Db = getMigrateDb(),
+): Promise<SeedCounts> {
   const staticSites = getAllSites();
 
   const totals: SeedCounts = {
@@ -598,28 +729,34 @@ function printCounts(counts: SeedCounts) {
 }
 
 async function main() {
-  const db = getMigrateDb();
+  const db = getSeedDb();
+  console.log(`Seed target: ${seedTargetLabel()}`);
   const [result] = await db.select({ value: count() }).from(sites);
   const existingSites = Number(result?.value ?? 0);
   if (existingSites > 0) {
     const userCounts = await seedAdminUsers(db);
+    const articleCounts = await upsertMissingArticles(db);
     console.log(
-      "Sites already present; seeded admin users only (existing passwords were kept):",
+      "Sites already present; seeded admin users and missing articles (existing passwords and article bodies were kept):",
     );
     console.log(`  users: ${userCounts.users}`);
     console.log(`  userSiteAccess: ${userCounts.userSiteAccess}`);
+    console.log(`  articlesInserted: ${articleCounts.inserted}`);
+    console.log(`  articleRelatedUpdated: ${articleCounts.updatedRelated}`);
     return;
   }
 
-  const counts = await seedDatabase();
+  const counts = await seedDatabase(db);
   printCounts(counts);
 }
 
 const isDirectRun = process.argv[1]?.replace(/\\/g, "/").endsWith("scripts/db-seed.ts");
 
 if (isDirectRun) {
-  main().catch((error: unknown) => {
-    console.error("Seed failed:", error);
-    process.exit(1);
-  });
+  main()
+    .catch((error: unknown) => {
+      console.error("Seed failed:", error);
+      process.exitCode = 1;
+    })
+    .finally(() => closeDb());
 }

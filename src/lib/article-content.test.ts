@@ -21,6 +21,7 @@ import {
   internalLinkAttrsSchema,
 } from "./admin/article-schema";
 import { slugify } from "./slug";
+import { sleepGuidePosts } from "@/data/sites/findworthnow/blog-sleep-guides";
 
 const ARTICLE_A = "11111111-1111-4111-8111-111111111111";
 const ARTICLE_B = "22222222-2222-4222-8222-222222222222";
@@ -226,6 +227,87 @@ describe("directoryBlogPostToTiptapDoc", () => {
       { type: "link", attrs: { href: "/sleep" } },
     ]);
     assert.deepEqual(collectInternalLinkIds(doc), []);
+  });
+
+  it("turns markdown bold and blog links into marks", () => {
+    const linked: DirectoryBlogPost = {
+      ...post,
+      sections: [
+        {
+          heading: "Quality matters",
+          paragraphs: [
+            "Hours slept matter, but **sleep quality matters too**.",
+            "If this sounds familiar, read [Why Do I Keep Waking Up at Night?](/blog/why-do-i-keep-waking-up-at-night).",
+            "> How continuous was that sleep?",
+          ],
+          headingLevel: 2,
+        },
+        {
+          heading: "Why do I wake up tired after 8 hours of sleep?",
+          headingLevel: 3,
+          paragraphs: ["Eight hours may still be fragmented."],
+        },
+      ],
+    };
+
+    const doc = directoryBlogPostToTiptapDoc(
+      linked,
+      new Map([["why-do-i-keep-waking-up-at-night", ARTICLE_A]]),
+    );
+
+    const boldParagraph = doc.content?.[1];
+    assert.equal(
+      boldParagraph?.content?.some(
+        (node) => node.marks?.[0]?.type === "bold" && node.text === "sleep quality matters too",
+      ),
+      true,
+    );
+
+    const linkParagraph = doc.content?.[2];
+    assert.deepEqual(collectInternalLinkIds(doc), [ARTICLE_A]);
+    assert.equal(
+      linkParagraph?.content?.some((node) => node.marks?.[0]?.type === "internalLink"),
+      true,
+    );
+
+    const quote = doc.content?.[3];
+    assert.equal(quote?.type, "blockquote");
+
+    const faqHeading = doc.content?.[4];
+    assert.equal(faqHeading?.attrs?.level, 3);
+  });
+
+  it("wires FindWorthNow sleep-guide posts to sibling blog articles and /sleep", () => {
+    const ids = new Map([
+      ["why-do-i-keep-waking-up-at-night", ARTICLE_A],
+      ["why-cant-i-sleep-even-when-im-tired", ARTICLE_B],
+      ["how-to-fall-asleep-fast", ARTICLE_C],
+    ]);
+
+    const tired = sleepGuidePosts.find(
+      (post) => post.slug === "why-do-i-wake-up-tired-after-8-hours-of-sleep",
+    );
+    const overthinking = sleepGuidePosts.find(
+      (post) => post.slug === "how-to-stop-overthinking-at-night",
+    );
+    assert.ok(tired);
+    assert.ok(overthinking);
+
+    const tiredDoc = directoryBlogPostToTiptapDoc(tired, ids);
+    const overthinkingDoc = directoryBlogPostToTiptapDoc(overthinking, ids);
+
+    assert.deepEqual(collectInternalLinkIds(tiredDoc).sort(), [
+      ARTICLE_A,
+      ARTICLE_B,
+      ARTICLE_C,
+    ]);
+    assert.deepEqual(collectInternalLinkIds(overthinkingDoc).sort(), [
+      ARTICLE_B,
+      ARTICLE_C,
+    ]);
+
+    assert.equal(JSON.stringify(tiredDoc).includes('"/sleep"'), true);
+    assert.equal(JSON.stringify(overthinkingDoc).includes('"/sleep"'), true);
   });
 });
 

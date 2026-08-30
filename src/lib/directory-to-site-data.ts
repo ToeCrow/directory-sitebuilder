@@ -44,6 +44,7 @@ export function directoryBlogPostToArticle(
     publishedAt: post.publishedAt,
     intro: post.intro,
     relatedSlugs: post.relatedPostSlugs,
+    author: post.author,
     sections: post.sections.map((section) => ({
       heading: section.heading,
       paragraphs: section.paragraphs,

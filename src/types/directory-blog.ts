@@ -1,5 +1,7 @@
 export type DirectoryBlogSection = {
   heading: string;
+  /** Defaults to 2. Use 3 for FAQ questions and mid-section subheads. */
+  headingLevel?: 2 | 3;
   paragraphs: string[];
   bullets?: string[];
   cta?: {
@@ -20,4 +22,6 @@ export type DirectoryBlogPost = {
   sections: DirectoryBlogSection[];
   relatedProductSlugs: string[];
   relatedPostSlugs: string[];
+  /** Display name on the article. */
+  author?: string;
 };

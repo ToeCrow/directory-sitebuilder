@@ -491,6 +491,16 @@ describe("sitemap", () => {
     );
     assert.ok(
       urls.includes(
+        "https://findworthnow.com/blog/why-do-i-wake-up-tired-after-8-hours-of-sleep",
+      ),
+    );
+    assert.ok(
+      urls.includes(
+        "https://findworthnow.com/blog/how-to-stop-overthinking-at-night",
+      ),
+    );
+    assert.ok(
+      urls.includes(
         "https://findworthnow.com/blog/why-sleep-supplements-can-help",
       ),
     );

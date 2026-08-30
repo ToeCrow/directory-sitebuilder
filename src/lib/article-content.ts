@@ -99,6 +99,64 @@ function paragraphFromText(text: string, marks?: TiptapMark[]): TiptapNode {
   };
 }
 
+/** Split `**bold**` and `[label](href)` into Tiptap text nodes with marks. */
+export function inlineNodesFromMarkdown(
+  text: string,
+  articleIdsBySlug: ReadonlyMap<string, string> = new Map(),
+): TiptapNode[] {
+  const nodes: TiptapNode[] = [];
+  const pattern = /\*\*(.+?)\*\*|\[([^\]]+)\]\(([^)]+)\)/g;
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+
+  while ((match = pattern.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      nodes.push(textNode(text.slice(lastIndex, match.index)));
+    }
+
+    if (match[1] !== undefined) {
+      nodes.push(textNode(match[1], [{ type: "bold" }]));
+    } else {
+      const label = match[2] ?? "";
+      const href = match[3] ?? "";
+      const slug = articleSlugFromCtaPath(href);
+      const articleId = slug ? articleIdsBySlug.get(slug) : undefined;
+      if (articleId) {
+        nodes.push(
+          textNode(label, [{ type: "internalLink", attrs: { articleId } }]),
+        );
+      } else {
+        nodes.push(textNode(label, [{ type: "link", attrs: { href } }]));
+      }
+    }
+
+    lastIndex = match.index + match[0].length;
+  }
+
+  if (lastIndex < text.length) {
+    nodes.push(textNode(text.slice(lastIndex)));
+  }
+
+  return nodes.length > 0 ? nodes : [];
+}
+
+function paragraphFromMarkdown(
+  text: string,
+  articleIdsBySlug: ReadonlyMap<string, string>,
+): TiptapNode {
+  const quoted = text.startsWith("> ");
+  const raw = quoted ? text.slice(2) : text;
+  const content = inlineNodesFromMarkdown(raw, articleIdsBySlug);
+  const paragraph: TiptapNode = {
+    type: "paragraph",
+    content: content.length > 0 ? content : undefined,
+  };
+  if (quoted) {
+    return { type: "blockquote", content: [paragraph] };
+  }
+  return paragraph;
+}
+
 export function articleSlugFromCtaPath(path: string): string | undefined {
   const trimmed = path.trim();
   const blogMatch = trimmed.match(/^\/blog\/([a-z0-9]+(?:-[a-z0-9]+)*)$/);
@@ -138,14 +196,14 @@ export function directoryBlogPostToTiptapDoc(
   for (const section of post.sections) {
     content.push({
       type: "heading",
-      attrs: { level: 2 },
+      attrs: { level: section.headingLevel === 3 ? 3 : 2 },
       content: [textNode(section.heading)],
     });
 
     const ctaAfter = section.cta?.afterParagraph ?? section.paragraphs.length;
 
     section.paragraphs.forEach((paragraph, index) => {
-      content.push(paragraphFromText(paragraph));
+      content.push(paragraphFromMarkdown(paragraph, articleIdsBySlug));
       if (section.cta && index + 1 === ctaAfter) {
         content.push(ctaParagraph(section.cta, articleIdsBySlug));
       }
@@ -156,7 +214,7 @@ export function directoryBlogPostToTiptapDoc(
         type: "bulletList",
         content: section.bullets.map((item) => ({
           type: "listItem",
-          content: [paragraphFromText(item)],
+          content: [paragraphFromMarkdown(item, articleIdsBySlug)],
         })),
       });
     }
