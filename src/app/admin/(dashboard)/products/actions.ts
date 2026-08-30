@@ -2,7 +2,8 @@
 
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { assertAdminSession } from "@/lib/admin-auth";
+import { userCanAccessSite } from "@/lib/admin-access";
+import { adminGuard } from "@/lib/admin/session";
 import { revalidateSitePaths } from "@/lib/admin/revalidate";
 import {
   buildProductCreateSchema,
@@ -36,10 +37,9 @@ function revalidateForProduct(
 export async function createProductAction(
   raw: unknown,
 ): Promise<ActionResult> {
-  try {
-    await assertAdminSession();
-  } catch {
-    return { ok: false, error: "Unauthorized" };
+  const auth = await adminGuard();
+  if (!auth.ok) {
+    return auth;
   }
 
   const siteId =
@@ -55,7 +55,7 @@ export async function createProductAction(
   }
 
   const site = await getAdminSiteById(siteId);
-  if (!site) {
+  if (!site || !userCanAccessSite(auth.user, site.site.slug)) {
     return { ok: false, error: "Site not found" };
   }
 
@@ -120,14 +120,13 @@ export async function updateProductAction(
   productId: string,
   raw: unknown,
 ): Promise<ActionResult> {
-  try {
-    await assertAdminSession();
-  } catch {
-    return { ok: false, error: "Unauthorized" };
+  const auth = await adminGuard();
+  if (!auth.ok) {
+    return auth;
   }
 
   const existing = await getAdminProductById(productId);
-  if (!existing) {
+  if (!existing || !userCanAccessSite(auth.user, existing.siteSlug)) {
     return { ok: false, error: "Product not found" };
   }
 
@@ -212,14 +211,13 @@ export async function setProductAffiliateAction(
   productId: string,
   hasAffiliatePartnership: boolean,
 ): Promise<ActionResult> {
-  try {
-    await assertAdminSession();
-  } catch {
-    return { ok: false, error: "Unauthorized" };
+  const auth = await adminGuard();
+  if (!auth.ok) {
+    return auth;
   }
 
   const existing = await getAdminProductById(productId);
-  if (!existing) {
+  if (!existing || !userCanAccessSite(auth.user, existing.siteSlug)) {
     return { ok: false, error: "Product not found" };
   }
 
@@ -240,14 +238,13 @@ export async function setProductStatusAction(
   productId: string,
   status: "draft" | "published",
 ): Promise<ActionResult> {
-  try {
-    await assertAdminSession();
-  } catch {
-    return { ok: false, error: "Unauthorized" };
+  const auth = await adminGuard();
+  if (!auth.ok) {
+    return auth;
   }
 
   const existing = await getAdminProductById(productId);
-  if (!existing) {
+  if (!existing || !userCanAccessSite(auth.user, existing.siteSlug)) {
     return { ok: false, error: "Product not found" };
   }
 
@@ -280,14 +277,13 @@ export async function setProductStatusAction(
 export async function deleteProductAction(
   productId: string,
 ): Promise<ActionResult> {
-  try {
-    await assertAdminSession();
-  } catch {
-    return { ok: false, error: "Unauthorized" };
+  const auth = await adminGuard();
+  if (!auth.ok) {
+    return auth;
   }
 
   const existing = await getAdminProductById(productId);
-  if (!existing) {
+  if (!existing || !userCanAccessSite(auth.user, existing.siteSlug)) {
     return { ok: false, error: "Product not found" };
   }
 

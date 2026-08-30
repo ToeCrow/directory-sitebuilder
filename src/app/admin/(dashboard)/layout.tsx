@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { requireAdminUser } from "@/lib/admin/session";
 
 const adminNav = [
   { href: "/admin", label: "Dashboard" },
@@ -13,20 +14,22 @@ const adminNav = [
   { href: "/admin/clicks", label: "Clicks" },
 ];
 
-export default function AdminDashboardLayout({
+export default async function AdminDashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const user = await requireAdminUser();
+
   return (
     <div className="flex min-h-full flex-col bg-slate-50">
       <header className="border-b border-slate-200 bg-white">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4">
           <Link href="/admin" className="text-lg font-semibold text-slate-900">
             Admin
           </Link>
           <nav aria-label="Admin navigation">
-            <ul className="flex flex-wrap gap-4">
+            <ul className="flex flex-wrap items-center gap-4">
               {adminNav.map((item) => (
                 <li key={item.href}>
                   <Link
@@ -37,6 +40,14 @@ export default function AdminDashboardLayout({
                   </Link>
                 </li>
               ))}
+              <li>
+                <Link
+                  href="/admin/settings"
+                  className="text-sm font-medium text-slate-600 hover:text-blue-600"
+                >
+                  {user.displayName}
+                </Link>
+              </li>
             </ul>
           </nav>
         </div>

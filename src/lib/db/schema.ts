@@ -314,6 +314,51 @@ export const trackedLinks = pgTable(
   (table) => [unique("tracked_links_link_key_uidx").on(table.linkKey)],
 );
 
+export const userRoleEnum = pgEnum("user_role", ["superadmin", "admin"]);
+
+export const users = pgTable(
+  "users",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    username: text("username").notNull(),
+    displayName: text("display_name").notNull(),
+    role: userRoleEnum("role").notNull(),
+    passwordSalt: text("password_salt").notNull(),
+    passwordHash: text("password_hash").notNull(),
+    passwordKdf: text("password_kdf").notNull().default("scrypt"),
+    profile: jsonb("profile")
+      .$type<Record<string, unknown>>()
+      .notNull()
+      .default(sql`'{}'::jsonb`),
+    ...timestamps,
+  },
+  (table) => [
+    uniqueIndex("users_username_lower_uidx").on(sql`lower(${table.username})`),
+    uniqueIndex("users_display_name_uidx").on(table.displayName),
+  ],
+);
+
+export const userSiteAccess = pgTable(
+  "user_site_access",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    siteId: uuid("site_id")
+      .notNull()
+      .references(() => sites.id, { onDelete: "cascade" }),
+    ...timestamps,
+  },
+  (table) => [
+    uniqueIndex("user_site_access_user_site_uidx").on(
+      table.userId,
+      table.siteId,
+    ),
+    index("user_site_access_site_id_idx").on(table.siteId),
+  ],
+);
+
 export const media = pgTable(
   "media",
   {

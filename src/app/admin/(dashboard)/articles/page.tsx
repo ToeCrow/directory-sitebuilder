@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { listAdminArticles } from "@/lib/admin/articles";
+import { requireAdminUser } from "@/lib/admin/session";
 import { listAdminSites } from "@/lib/admin/sites";
 import { getArticleConfig } from "@/lib/site-config";
 import { StatusControls } from "./StatusControls";
@@ -14,6 +15,7 @@ export default async function AdminArticlesPage({
   searchParams,
 }: ArticlesPageProps) {
   const { site: siteFilter } = await searchParams;
+  const user = await requireAdminUser();
   const articleLabel = siteFilter
     ? (getArticleConfig(siteFilter)?.label ?? "Articles")
     : "Articles";
@@ -24,8 +26,8 @@ export default async function AdminArticlesPage({
 
   try {
     [articles, sites] = await Promise.all([
-      listAdminArticles(siteFilter || undefined),
-      listAdminSites(),
+      listAdminArticles(user, siteFilter || undefined),
+      listAdminSites(user),
     ]);
   } catch (error) {
     loadError =

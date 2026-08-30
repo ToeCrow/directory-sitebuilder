@@ -1,4 +1,7 @@
 import { and, asc, count, eq, max } from "drizzle-orm";
+import type { AdminUser } from "@/lib/admin-access";
+import { requestedSiteSlugOrDenied } from "@/lib/admin-access";
+import { siteAccessCondition } from "@/lib/admin/sites";
 import { getDb } from "@/lib/db";
 import { products, siteTopPicks, sites } from "@/lib/db/schema";
 
@@ -16,9 +19,14 @@ export type AdminProductListItem = {
 };
 
 export async function listAdminProducts(
+  user: AdminUser,
   siteSlug?: string,
 ): Promise<AdminProductListItem[]> {
   const db = getDb();
+  const allowedSlug = requestedSiteSlugOrDenied(user, siteSlug);
+  if (allowedSlug === null) {
+    return [];
+  }
 
   const rows = await db
     .select({
@@ -42,7 +50,12 @@ export async function listAdminProducts(
         eq(siteTopPicks.siteId, products.siteId),
       ),
     )
-    .where(siteSlug ? eq(sites.slug, siteSlug) : undefined)
+    .where(
+      and(
+        allowedSlug ? eq(sites.slug, allowedSlug) : undefined,
+        siteAccessCondition(user),
+      ),
+    )
     .orderBy(asc(sites.slug), asc(products.directorySortOrder));
 
   return rows.map((row) => ({

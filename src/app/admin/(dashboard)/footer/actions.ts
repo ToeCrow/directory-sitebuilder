@@ -2,7 +2,7 @@
 
 import { eq } from "drizzle-orm";
 import { z } from "zod";
-import { assertAdminSession } from "@/lib/admin-auth";
+import { adminGuard, adminSiteGuard } from "@/lib/admin/session";
 import { footerTaglineSchema } from "@/lib/admin/site-schema";
 import { upsertSiteSection } from "@/lib/admin/sections";
 import { getNextFooterLinkSortOrder } from "@/lib/admin/footer";
@@ -23,10 +23,9 @@ export async function updateFooterTaglineAction(
   siteId: string,
   raw: unknown,
 ): Promise<ActionResult> {
-  try {
-    await assertAdminSession();
-  } catch {
-    return { ok: false, error: "Unauthorized" };
+  const guard = await adminSiteGuard(siteId);
+  if (!guard.ok) {
+    return guard;
   }
 
   const parsed = footerTaglineSchema.safeParse(raw);
@@ -65,10 +64,9 @@ export async function addFooterLinkAction(
   siteId: string,
   raw: unknown,
 ): Promise<ActionResult> {
-  try {
-    await assertAdminSession();
-  } catch {
-    return { ok: false, error: "Unauthorized" };
+  const guard = await adminSiteGuard(siteId);
+  if (!guard.ok) {
+    return guard;
   }
 
   const parsed = footerLinkSchema.safeParse(raw);
@@ -99,10 +97,9 @@ export async function updateFooterLinkAction(
   linkId: string,
   raw: unknown,
 ): Promise<ActionResult> {
-  try {
-    await assertAdminSession();
-  } catch {
-    return { ok: false, error: "Unauthorized" };
+  const auth = await adminGuard();
+  if (!auth.ok) {
+    return auth;
   }
 
   const parsed = footerLinkSchema.safeParse(raw);
@@ -123,6 +120,11 @@ export async function updateFooterLinkAction(
     return { ok: false, error: "Link not found" };
   }
 
+  const access = await adminSiteGuard(existing.siteId);
+  if (!access.ok) {
+    return access;
+  }
+
   const data = parsed.data;
   await db
     .update(footerLinks)
@@ -141,10 +143,9 @@ export async function updateFooterLinkAction(
 export async function deleteFooterLinkAction(
   linkId: string,
 ): Promise<ActionResult> {
-  try {
-    await assertAdminSession();
-  } catch {
-    return { ok: false, error: "Unauthorized" };
+  const auth = await adminGuard();
+  if (!auth.ok) {
+    return auth;
   }
 
   const db = getDb();
@@ -155,6 +156,11 @@ export async function deleteFooterLinkAction(
     .limit(1);
   if (!existing) {
     return { ok: false, error: "Link not found" };
+  }
+
+  const access = await adminSiteGuard(existing.siteId);
+  if (!access.ok) {
+    return access;
   }
 
   await db.delete(footerLinks).where(eq(footerLinks.id, linkId));

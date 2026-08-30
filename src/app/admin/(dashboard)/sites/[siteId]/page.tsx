@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { userCanAccessSite } from "@/lib/admin-access";
+import { requireAdminUser } from "@/lib/admin/session";
 import { getAdminSiteById } from "@/lib/admin/sites";
 import { SiteSettingsForm } from "./SiteSettingsForm";
 import { SiteHeroForm } from "./SiteHeroForm";
@@ -15,9 +17,10 @@ export default async function AdminSiteEditPage({
   params,
 }: SiteEditPageProps) {
   const { siteId } = await params;
+  const user = await requireAdminUser();
   const detail = await getAdminSiteById(siteId).catch(() => null);
 
-  if (!detail) {
+  if (!detail || !userCanAccessSite(user, detail.site.slug)) {
     notFound();
   }
 

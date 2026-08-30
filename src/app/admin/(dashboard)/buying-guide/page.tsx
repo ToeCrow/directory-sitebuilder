@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { requireAdminUser } from "@/lib/admin/session";
 import { listAdminSites } from "@/lib/admin/sites";
 import { getBuyingGuideTitle, listBuyingGuideSections } from "@/lib/admin/buying-guide";
 import { BuyingGuideManager } from "./BuyingGuideManager";
@@ -13,12 +14,13 @@ export default async function AdminBuyingGuidePage({
   searchParams,
 }: BuyingGuidePageProps) {
   const { site: siteSlug } = await searchParams;
+  const user = await requireAdminUser();
 
   let sites: Awaited<ReturnType<typeof listAdminSites>> = [];
   let loadError: string | null = null;
 
   try {
-    sites = await listAdminSites();
+    sites = await listAdminSites(user);
   } catch (error) {
     loadError =
       error instanceof Error

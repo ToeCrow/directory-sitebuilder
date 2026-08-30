@@ -1,7 +1,7 @@
 "use server";
 
 import { eq } from "drizzle-orm";
-import { assertAdminSession } from "@/lib/admin-auth";
+import { adminGuard, adminSiteGuard } from "@/lib/admin/session";
 import { revalidateSitePaths } from "@/lib/admin/revalidate";
 import { getAdminSiteSlug } from "@/lib/admin/sites";
 import { getNextTopPickSortOrder } from "@/lib/admin/top-picks";
@@ -20,10 +20,9 @@ export async function addTopPickAction(
   siteId: string,
   productId: string,
 ): Promise<ActionResult> {
-  try {
-    await assertAdminSession();
-  } catch {
-    return { ok: false, error: "Unauthorized" };
+  const guard = await adminSiteGuard(siteId);
+  if (!guard.ok) {
+    return guard;
   }
 
   const db = getDb();
@@ -68,10 +67,9 @@ export async function updateTopPickAction(
   topPickId: string,
   data: { sortOrder: number; badgeOverride: string | null },
 ): Promise<ActionResult> {
-  try {
-    await assertAdminSession();
-  } catch {
-    return { ok: false, error: "Unauthorized" };
+  const auth = await adminGuard();
+  if (!auth.ok) {
+    return auth;
   }
 
   const db = getDb();
@@ -83,6 +81,11 @@ export async function updateTopPickAction(
 
   if (!existing) {
     return { ok: false, error: "Top pick not found" };
+  }
+
+  const guard = await adminSiteGuard(existing.siteId);
+  if (!guard.ok) {
+    return guard;
   }
 
   await db
@@ -101,10 +104,9 @@ export async function updateTopPickAction(
 export async function removeTopPickAction(
   topPickId: string,
 ): Promise<ActionResult> {
-  try {
-    await assertAdminSession();
-  } catch {
-    return { ok: false, error: "Unauthorized" };
+  const auth = await adminGuard();
+  if (!auth.ok) {
+    return auth;
   }
 
   const db = getDb();
@@ -116,6 +118,11 @@ export async function removeTopPickAction(
 
   if (!existing) {
     return { ok: false, error: "Top pick not found" };
+  }
+
+  const guard = await adminSiteGuard(existing.siteId);
+  if (!guard.ok) {
+    return guard;
   }
 
   await db.delete(siteTopPicks).where(eq(siteTopPicks.id, topPickId));

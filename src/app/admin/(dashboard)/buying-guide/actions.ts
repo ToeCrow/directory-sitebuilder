@@ -2,7 +2,7 @@
 
 import { eq } from "drizzle-orm";
 import { z } from "zod";
-import { assertAdminSession } from "@/lib/admin-auth";
+import { adminGuard, adminSiteGuard } from "@/lib/admin/session";
 import { buyingGuideTitleSchema } from "@/lib/admin/site-schema";
 import { upsertSiteSection } from "@/lib/admin/sections";
 import { getNextBuyingGuideSortOrder } from "@/lib/admin/buying-guide";
@@ -23,10 +23,9 @@ export async function updateBuyingGuideTitleAction(
   siteId: string,
   raw: unknown,
 ): Promise<ActionResult> {
-  try {
-    await assertAdminSession();
-  } catch {
-    return { ok: false, error: "Unauthorized" };
+  const guard = await adminSiteGuard(siteId);
+  if (!guard.ok) {
+    return guard;
   }
 
   const parsed = buyingGuideTitleSchema.safeParse(raw);
@@ -65,10 +64,9 @@ export async function addBuyingGuideSectionAction(
   siteId: string,
   raw: unknown,
 ): Promise<ActionResult> {
-  try {
-    await assertAdminSession();
-  } catch {
-    return { ok: false, error: "Unauthorized" };
+  const guard = await adminSiteGuard(siteId);
+  if (!guard.ok) {
+    return guard;
   }
 
   const parsed = buyingGuideSectionSchema.safeParse(raw);
@@ -99,10 +97,9 @@ export async function updateBuyingGuideSectionAction(
   sectionId: string,
   raw: unknown,
 ): Promise<ActionResult> {
-  try {
-    await assertAdminSession();
-  } catch {
-    return { ok: false, error: "Unauthorized" };
+  const auth = await adminGuard();
+  if (!auth.ok) {
+    return auth;
   }
 
   const parsed = buyingGuideSectionSchema.safeParse(raw);
@@ -123,6 +120,11 @@ export async function updateBuyingGuideSectionAction(
     return { ok: false, error: "Section not found" };
   }
 
+  const access = await adminSiteGuard(existing.siteId);
+  if (!access.ok) {
+    return access;
+  }
+
   const data = parsed.data;
   await db
     .update(buyingGuideSections)
@@ -141,10 +143,9 @@ export async function updateBuyingGuideSectionAction(
 export async function deleteBuyingGuideSectionAction(
   sectionId: string,
 ): Promise<ActionResult> {
-  try {
-    await assertAdminSession();
-  } catch {
-    return { ok: false, error: "Unauthorized" };
+  const auth = await adminGuard();
+  if (!auth.ok) {
+    return auth;
   }
 
   const db = getDb();
@@ -155,6 +156,11 @@ export async function deleteBuyingGuideSectionAction(
     .limit(1);
   if (!existing) {
     return { ok: false, error: "Section not found" };
+  }
+
+  const access = await adminSiteGuard(existing.siteId);
+  if (!access.ok) {
+    return access;
   }
 
   await db

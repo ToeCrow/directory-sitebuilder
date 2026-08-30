@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { requireAdminUser } from "@/lib/admin/session";
 import { listAdminSites } from "@/lib/admin/sites";
 import { getFooterTagline, listFooterLinks } from "@/lib/admin/footer";
 import { FooterManager } from "./FooterManager";
@@ -13,12 +14,13 @@ export default async function AdminFooterPage({
   searchParams,
 }: FooterPageProps) {
   const { site: siteSlug } = await searchParams;
+  const user = await requireAdminUser();
 
   let sites: Awaited<ReturnType<typeof listAdminSites>> = [];
   let loadError: string | null = null;
 
   try {
-    sites = await listAdminSites();
+    sites = await listAdminSites(user);
   } catch (error) {
     loadError =
       error instanceof Error

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { requireAdminUser } from "@/lib/admin/session";
 import { listAdminSites } from "@/lib/admin/sites";
 import { listFaqsForSite } from "@/lib/admin/faq";
 import { FaqManager } from "./FaqManager";
@@ -11,12 +12,13 @@ type FaqPageProps = {
 
 export default async function AdminFaqPage({ searchParams }: FaqPageProps) {
   const { site: siteSlug } = await searchParams;
+  const user = await requireAdminUser();
 
   let sites: Awaited<ReturnType<typeof listAdminSites>> = [];
   let loadError: string | null = null;
 
   try {
-    sites = await listAdminSites();
+    sites = await listAdminSites(user);
   } catch (error) {
     loadError =
       error instanceof Error

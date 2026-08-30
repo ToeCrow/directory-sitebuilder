@@ -6,6 +6,7 @@ import Link from "next/link";
 
 export default function AdminLoginPage() {
   const router = useRouter();
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -18,7 +19,7 @@ export default function AdminLoginPage() {
     const response = await fetch("/api/admin/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ password }),
+      body: JSON.stringify({ username, password }),
     });
 
     if (response.ok) {
@@ -27,7 +28,7 @@ export default function AdminLoginPage() {
       return;
     }
 
-    let message = "Invalid password";
+    let message = "Invalid username or password";
     try {
       const body = (await response.json()) as { error?: string };
       if (body.error) {
@@ -47,16 +48,34 @@ export default function AdminLoginPage() {
       <div className="w-full max-w-sm rounded-xl border border-slate-200 bg-white p-8 shadow-sm">
         <h1 className="text-2xl font-bold text-slate-900">Admin login</h1>
         <p className="mt-2 text-sm text-slate-600">
-          Enter the admin password to access the dashboard.
+          Sign in with your username and password.
         </p>
         <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+          <div>
+            <label htmlFor="username" className="sr-only">
+              Username
+            </label>
+            <input
+              id="username"
+              name="username"
+              type="text"
+              autoComplete="username"
+              required
+              value={username}
+              onChange={(event) => setUsername(event.target.value)}
+              placeholder="Username"
+              className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+            />
+          </div>
           <div>
             <label htmlFor="password" className="sr-only">
               Password
             </label>
             <input
               id="password"
+              name="password"
               type="password"
+              autoComplete="current-password"
               required
               value={password}
               onChange={(event) => setPassword(event.target.value)}

@@ -29,6 +29,13 @@
       "when": 1788105017785,
       "tag": "0003_red_richard_fisk",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1788115309510,
+      "tag": "0004_last_pandemic",
+      "breakpoints": true
     }
   ]
 }

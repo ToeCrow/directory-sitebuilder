@@ -1,25 +1,37 @@
 import { NextResponse } from "next/server";
-import { assertAdminSession } from "@/lib/admin-auth";
+import { userCanAccessSite } from "@/lib/admin-access";
+import { requireAdminUser } from "@/lib/admin/session";
+import { getAdminSiteSlug } from "@/lib/admin/sites";
 import { isMediaKind } from "@/lib/media";
 import { listMediaForSite, uploadImage } from "@/lib/media/server";
 
-async function requireAdmin(): Promise<NextResponse | null> {
+async function requireAdminForSite(
+  siteId: string,
+): Promise<{ error: NextResponse } | { user: Awaited<ReturnType<typeof requireAdminUser>> }> {
   try {
-    await assertAdminSession();
-    return null;
+    const user = await requireAdminUser();
+    const siteSlug = await getAdminSiteSlug(siteId);
+    if (!siteSlug || !userCanAccessSite(user, siteSlug)) {
+      return {
+        error: NextResponse.json({ error: "Site not found" }, { status: 404 }),
+      };
+    }
+    return { user };
   } catch {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    return {
+      error: NextResponse.json({ error: "Unauthorized" }, { status: 401 }),
+    };
   }
 }
 
 export async function GET(request: Request) {
-  const denied = await requireAdmin();
-  if (denied) return denied;
-
   const siteId = new URL(request.url).searchParams.get("siteId");
   if (!siteId) {
     return NextResponse.json({ error: "siteId is required" }, { status: 400 });
   }
+
+  const access = await requireAdminForSite(siteId);
+  if ("error" in access) return access.error;
 
   try {
     const items = await listMediaForSite(siteId);
@@ -32,9 +44,6 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const denied = await requireAdmin();
-  if (denied) return denied;
-
   let form: FormData;
   try {
     form = await request.formData();
@@ -50,6 +59,10 @@ export async function POST(request: Request) {
   if (!siteId) {
     return NextResponse.json({ error: "siteId is required" }, { status: 400 });
   }
+
+  const access = await requireAdminForSite(siteId);
+  if ("error" in access) return access.error;
+
   if (!isMediaKind(kind)) {
     return NextResponse.json({ error: "kind is required" }, { status: 400 });
   }

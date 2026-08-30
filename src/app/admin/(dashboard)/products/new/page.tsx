@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { listAdminSites } from "@/lib/admin/sites";
 import { getNextProductSortOrders } from "@/lib/admin/products";
+import { requireAdminUser } from "@/lib/admin/session";
 import { ProductCreateForm } from "./ProductCreateForm";
 
 export const dynamic = "force-dynamic";
@@ -13,12 +14,13 @@ export default async function AdminNewProductPage({
   searchParams,
 }: NewProductPageProps) {
   const { site: siteSlugFilter } = await searchParams;
+  const user = await requireAdminUser();
   let sites: Awaited<ReturnType<typeof listAdminSites>> = [];
   let loadError: string | null = null;
   let defaultSort = { comparisonRank: 1, directorySortOrder: 1 };
 
   try {
-    sites = await listAdminSites();
+    sites = await listAdminSites(user);
     const preferred =
       sites.find((s) => s.slug === siteSlugFilter) ?? sites[0] ?? null;
     if (preferred) {

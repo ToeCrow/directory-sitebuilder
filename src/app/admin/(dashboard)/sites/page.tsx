@@ -1,14 +1,16 @@
 import Link from "next/link";
+import { requireAdminUser } from "@/lib/admin/session";
 import { listAdminSites } from "@/lib/admin/sites";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminSitesPage() {
+  const user = await requireAdminUser();
   let sites: Awaited<ReturnType<typeof listAdminSites>> = [];
   let loadError: string | null = null;
 
   try {
-    sites = await listAdminSites();
+    sites = await listAdminSites(user);
   } catch (error) {
     loadError =
       error instanceof Error

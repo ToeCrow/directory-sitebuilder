@@ -1,10 +1,14 @@
 /**
  * Admin session helpers — Web Crypto so proxy (Edge) and Node routes share one impl.
- * Cookie never stores ADMIN_PASSWORD.
+ * Cookie never stores the password.
  *
  * Access cookie: 15 minutes. Refresh cookie: 4 hours.
  * A valid refresh token can mint a new access token without the password.
+ * Token payload: nonce.exp.kind.userId.sig
  */
+
+const USER_ID_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 export const ADMIN_SESSION_COOKIE = "admin_session";
 export const ADMIN_REFRESH_COOKIE = "admin_refresh";
@@ -92,18 +96,38 @@ export function adminCookieOptions(maxAgeSeconds: number) {
   };
 }
 
-/** Create a signed session token (never stores ADMIN_PASSWORD). */
+function isUserId(value: string | undefined): boolean {
+  return Boolean(value && USER_ID_RE.test(value));
+}
+
+/** Create a signed session token (never stores the password). */
 export async function createAdminSessionToken(
-  kind: AdminTokenKind = "access",
+  kind: AdminTokenKind,
+  userId: string,
   now: number = Date.now(),
 ): Promise<string> {
+  if (!isUserId(userId)) {
+    throw new Error("Session token requires a user id.");
+  }
   const nonceBytes = new Uint8Array(16);
   crypto.getRandomValues(nonceBytes);
   const nonce = bytesToBase64Url(nonceBytes);
   const exp = now + ttlForKind(kind);
-  const payload = `${nonce}.${exp}.${kind}`;
+  const payload = `${nonce}.${exp}.${kind}.${userId}`;
   const sig = await signPayload(payload);
   return `${payload}.${sig}`;
+}
+
+export function parseAdminTokenUserId(token: string | undefined): string | null {
+  if (!token) {
+    return null;
+  }
+  const parts = token.split(".");
+  if (parts.length !== 5) {
+    return null;
+  }
+  const userId = parts[3];
+  return isUserId(userId) ? userId : null;
 }
 
 export async function isValidAdminToken(
@@ -121,12 +145,19 @@ export async function isValidAdminToken(
   }
 
   const parts = token.split(".");
-  if (parts.length !== 4) {
+  if (parts.length !== 5) {
     return false;
   }
 
-  const [nonce, expStr, tokenKind, sig] = parts;
-  if (!nonce || !expStr || !tokenKind || !sig || tokenKind !== kind) {
+  const [nonce, expStr, tokenKind, userId, sig] = parts;
+  if (
+    !nonce ||
+    !expStr ||
+    !tokenKind ||
+    !sig ||
+    tokenKind !== kind ||
+    !isUserId(userId)
+  ) {
     return false;
   }
 
@@ -135,7 +166,7 @@ export async function isValidAdminToken(
     return false;
   }
 
-  const payload = `${nonce}.${expStr}.${tokenKind}`;
+  const payload = `${nonce}.${expStr}.${tokenKind}.${userId}`;
   let expected: string;
   try {
     expected = await signPayload(payload);
@@ -160,7 +191,7 @@ export async function isValidAdminSession(
 }
 
 export type AdminAuthResult =
-  | { ok: true; newAccess?: string }
+  | { ok: true; userId: string; newAccess?: string }
   | { ok: false };
 
 export async function resolveAdminAuth(
@@ -169,28 +200,27 @@ export async function resolveAdminAuth(
   now: number = Date.now(),
 ): Promise<AdminAuthResult> {
   if (await isValidAdminToken(access, "access", now)) {
-    return { ok: true };
+    const userId = parseAdminTokenUserId(access);
+    if (!userId) {
+      return { ok: false };
+    }
+    return { ok: true, userId };
   }
   if (await isValidAdminToken(refresh, "refresh", now)) {
+    const userId = parseAdminTokenUserId(refresh);
+    if (!userId) {
+      return { ok: false };
+    }
     return {
       ok: true,
-      newAccess: await createAdminSessionToken("access", now),
+      userId,
+      newAccess: await createAdminSessionToken("access", userId, now),
     };
   }
   return { ok: false };
 }
 
-export function verifyAdminPassword(password: string | undefined): boolean {
-  const expected = process.env.ADMIN_PASSWORD;
-  if (!expected || !password) {
-    return false;
-  }
-  const a = new TextEncoder().encode(password);
-  const b = new TextEncoder().encode(expected);
-  return timingSafeEqualBytes(a, b);
-}
-
-/** For Server Actions — throws if not authenticated. */
+/** For Server Actions — throws if the session cookies are not valid. */
 export async function assertAdminSession(): Promise<void> {
   const { cookies } = await import("next/headers");
   const jar = await cookies();

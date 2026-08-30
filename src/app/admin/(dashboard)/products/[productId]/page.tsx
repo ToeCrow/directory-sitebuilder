@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { userCanAccessSite } from "@/lib/admin-access";
 import { getAdminProductById } from "@/lib/admin/products";
+import { requireAdminUser } from "@/lib/admin/session";
 import { imageFromUnknown } from "@/lib/media";
 import { ProductEditForm } from "./ProductEditForm";
 
@@ -14,9 +16,10 @@ export default async function AdminProductEditPage({
   params,
 }: ProductEditPageProps) {
   const { productId } = await params;
+  const user = await requireAdminUser();
   const product = await getAdminProductById(productId).catch(() => null);
 
-  if (!product) {
+  if (!product || !userCanAccessSite(user, product.siteSlug)) {
     notFound();
   }
 

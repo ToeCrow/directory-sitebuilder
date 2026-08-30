@@ -27,6 +27,8 @@ async function resetDatabase() {
       faqs,
       buying_guide_sections,
       footer_links,
+      user_site_access,
+      users,
       sites
     RESTART IDENTITY CASCADE
   `);

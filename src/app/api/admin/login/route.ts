@@ -6,27 +6,58 @@ import {
   REFRESH_COOKIE_MAX_AGE_SECONDS,
   adminCookieOptions,
   createAdminSessionToken,
-  verifyAdminPassword,
 } from "@/lib/admin-auth";
+import { authenticateAdmin } from "@/lib/admin/session";
 
 export async function POST(request: Request) {
+  let username: string | undefined;
   let password: string | undefined;
   try {
-    const body = (await request.json()) as { password?: string };
+    const body = (await request.json()) as {
+      username?: string;
+      password?: string;
+    };
+    username = body.username;
     password = body.password;
   } catch {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
 
-  if (!verifyAdminPassword(password)) {
-    return NextResponse.json({ error: "Invalid password" }, { status: 401 });
+  if (!username?.trim() || !password) {
+    return NextResponse.json(
+      { error: "Username and password are required" },
+      { status: 400 },
+    );
+  }
+
+  let user;
+  try {
+    user = await authenticateAdmin(username, password);
+  } catch (error) {
+    const missingSecret =
+      error instanceof Error && error.message.includes("ADMIN_SESSION_SECRET");
+    return NextResponse.json(
+      {
+        error: missingSecret
+          ? "ADMIN_SESSION_SECRET must be set (at least 16 characters) for this Vercel environment"
+          : "Server misconfigured",
+      },
+      { status: 500 },
+    );
+  }
+
+  if (!user) {
+    return NextResponse.json(
+      { error: "Invalid username or password" },
+      { status: 401 },
+    );
   }
 
   let access: string;
   let refresh: string;
   try {
-    access = await createAdminSessionToken("access");
-    refresh = await createAdminSessionToken("refresh");
+    access = await createAdminSessionToken("access", user.id);
+    refresh = await createAdminSessionToken("refresh", user.id);
   } catch (error) {
     const missingSecret =
       error instanceof Error && error.message.includes("ADMIN_SESSION_SECRET");

@@ -1,6 +1,17 @@
-import { asc, eq } from "drizzle-orm";
+import { asc, eq, inArray, sql } from "drizzle-orm";
+import type { AdminUser } from "@/lib/admin-access";
 import { getDb } from "@/lib/db";
 import { siteHeroes, siteSections, sites } from "@/lib/db/schema";
+
+export function siteAccessCondition(user: AdminUser) {
+  if (user.role === "superadmin") {
+    return undefined;
+  }
+  if (user.siteSlugs.length === 0) {
+    return sql`false`;
+  }
+  return inArray(sites.slug, user.siteSlugs);
+}
 
 export type AdminSiteListItem = {
   id: string;
@@ -10,7 +21,9 @@ export type AdminSiteListItem = {
   status: "draft" | "published";
 };
 
-export async function listAdminSites(): Promise<AdminSiteListItem[]> {
+export async function listAdminSites(
+  user: AdminUser,
+): Promise<AdminSiteListItem[]> {
   const db = getDb();
   const rows = await db
     .select({
@@ -21,6 +34,7 @@ export async function listAdminSites(): Promise<AdminSiteListItem[]> {
       status: sites.status,
     })
     .from(sites)
+    .where(siteAccessCondition(user))
     .orderBy(asc(sites.slug));
 
   return rows;

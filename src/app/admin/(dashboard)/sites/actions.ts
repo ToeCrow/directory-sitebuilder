@@ -1,7 +1,7 @@
 "use server";
 
 import { eq } from "drizzle-orm";
-import { assertAdminSession } from "@/lib/admin-auth";
+import { adminSiteGuard } from "@/lib/admin/session";
 import { revalidateSitePaths } from "@/lib/admin/revalidate";
 import { upsertSiteSection } from "@/lib/admin/sections";
 import {
@@ -19,10 +19,9 @@ export async function updateSiteSettingsAction(
   siteId: string,
   raw: unknown,
 ): Promise<ActionResult> {
-  try {
-    await assertAdminSession();
-  } catch {
-    return { ok: false, error: "Unauthorized" };
+  const guard = await adminSiteGuard(siteId);
+  if (!guard.ok) {
+    return guard;
   }
 
   const parsed = siteSettingsSchema.safeParse(raw);
@@ -96,10 +95,9 @@ export async function updateSiteHeroAction(
   siteId: string,
   raw: unknown,
 ): Promise<ActionResult> {
-  try {
-    await assertAdminSession();
-  } catch {
-    return { ok: false, error: "Unauthorized" };
+  const guard = await adminSiteGuard(siteId);
+  if (!guard.ok) {
+    return guard;
   }
 
   const parsed = siteHeroSchema.safeParse(raw);
@@ -168,10 +166,9 @@ export async function updateSiteSectionsAction(
   siteId: string,
   raw: unknown,
 ): Promise<ActionResult> {
-  try {
-    await assertAdminSession();
-  } catch {
-    return { ok: false, error: "Unauthorized" };
+  const guard = await adminSiteGuard(siteId);
+  if (!guard.ok) {
+    return guard;
   }
 
   const parsed = siteSectionsSchema.safeParse(raw);

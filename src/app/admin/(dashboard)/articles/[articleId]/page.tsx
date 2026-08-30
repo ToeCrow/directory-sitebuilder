@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { userCanAccessSite } from "@/lib/admin-access";
 import {
   getAdminArticleById,
   listAdminArticlePickerItems,
@@ -11,6 +12,7 @@ import {
 } from "@/lib/admin/products";
 import { getArticleConfig } from "@/lib/site-config";
 import { imageFromUnknown } from "@/lib/media";
+import { requireAdminUser } from "@/lib/admin/session";
 import { ArticleEditForm } from "./ArticleEditForm";
 import { ArticleProductSectionsEditor } from "./ArticleProductSectionsEditor";
 
@@ -31,15 +33,16 @@ export default async function AdminArticleEditPage({
   params,
 }: ArticleEditPageProps) {
   const { articleId } = await params;
+  const user = await requireAdminUser();
   const article = await getAdminArticleById(articleId).catch(() => null);
 
-  if (!article) {
+  if (!article || !userCanAccessSite(user, article.siteSlug)) {
     notFound();
   }
 
   const [pickerItems, siteProducts, sortOrders] = await Promise.all([
     listAdminArticlePickerItems(article.siteId, article.id),
-    listAdminProducts(article.siteSlug),
+    listAdminProducts(user, article.siteSlug),
     getNextProductSortOrders(article.siteId),
   ]);
 

@@ -1,5 +1,8 @@
-import { asc, eq } from "drizzle-orm";
+import { and, asc, eq } from "drizzle-orm";
+import type { AdminUser } from "@/lib/admin-access";
+import { requestedSiteSlugOrDenied } from "@/lib/admin-access";
 import { isTiptapDoc, type TiptapDoc } from "@/lib/article-content";
+import { siteAccessCondition } from "@/lib/admin/sites";
 import { getDb } from "@/lib/db";
 import { articleProductSections, articles, sites } from "@/lib/db/schema";
 
@@ -22,9 +25,15 @@ function kindFromContent(content: Record<string, unknown> | null): AdminArticleK
 }
 
 export async function listAdminArticles(
+  user: AdminUser,
   siteSlug?: string,
 ): Promise<AdminArticleListItem[]> {
   const db = getDb();
+  const allowedSlug = requestedSiteSlugOrDenied(user, siteSlug);
+  if (allowedSlug === null) {
+    return [];
+  }
+
   const rows = await db
     .select({
       id: articles.id,
@@ -39,7 +48,12 @@ export async function listAdminArticles(
     })
     .from(articles)
     .innerJoin(sites, eq(articles.siteId, sites.id))
-    .where(siteSlug ? eq(sites.slug, siteSlug) : undefined)
+    .where(
+      and(
+        allowedSlug ? eq(sites.slug, allowedSlug) : undefined,
+        siteAccessCondition(user),
+      ),
+    )
     .orderBy(asc(sites.slug), asc(articles.title));
 
   return rows.map((row) => ({

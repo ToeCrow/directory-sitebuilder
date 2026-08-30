@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { listAdminProducts } from "@/lib/admin/products";
+import { requireAdminUser } from "@/lib/admin/session";
 import { listAdminSites } from "@/lib/admin/sites";
 import { AffiliateToggle } from "./AffiliateToggle";
 import { StatusControls } from "./StatusControls";
@@ -14,14 +15,15 @@ export default async function AdminProductsPage({
   searchParams,
 }: ProductsPageProps) {
   const { site: siteFilter } = await searchParams;
+  const user = await requireAdminUser();
   let products: Awaited<ReturnType<typeof listAdminProducts>> = [];
   let sites: Awaited<ReturnType<typeof listAdminSites>> = [];
   let loadError: string | null = null;
 
   try {
     [products, sites] = await Promise.all([
-      listAdminProducts(siteFilter || undefined),
-      listAdminSites(),
+      listAdminProducts(user, siteFilter || undefined),
+      listAdminSites(user),
     ]);
   } catch (error) {
     loadError =

@@ -1,7 +1,7 @@
 "use server";
 
 import { eq } from "drizzle-orm";
-import { assertAdminSession } from "@/lib/admin-auth";
+import { adminGuard, adminSiteGuard } from "@/lib/admin/session";
 import { comparisonSectionSchema } from "@/lib/admin/site-schema";
 import { upsertSiteSection } from "@/lib/admin/sections";
 import { getAdminSiteSlug } from "@/lib/admin/sites";
@@ -23,10 +23,9 @@ export async function updateComparisonSectionAction(
   siteId: string,
   raw: unknown,
 ): Promise<ActionResult> {
-  try {
-    await assertAdminSession();
-  } catch {
-    return { ok: false, error: "Unauthorized" };
+  const guard = await adminSiteGuard(siteId);
+  if (!guard.ok) {
+    return guard;
   }
 
   const parsed = comparisonSectionSchema.safeParse(raw);
@@ -74,10 +73,9 @@ export async function addComparisonRowAction(
   siteId: string,
   raw: unknown,
 ): Promise<ActionResult> {
-  try {
-    await assertAdminSession();
-  } catch {
-    return { ok: false, error: "Unauthorized" };
+  const guard = await adminSiteGuard(siteId);
+  if (!guard.ok) {
+    return guard;
   }
 
   const parsed = comparisonRowSchema.safeParse(raw);
@@ -116,10 +114,9 @@ export async function updateComparisonRowAction(
   rowId: string,
   raw: unknown,
 ): Promise<ActionResult> {
-  try {
-    await assertAdminSession();
-  } catch {
-    return { ok: false, error: "Unauthorized" };
+  const auth = await adminGuard();
+  if (!auth.ok) {
+    return auth;
   }
 
   const parsed = comparisonRowSchema.safeParse(raw);
@@ -138,6 +135,11 @@ export async function updateComparisonRowAction(
     .limit(1);
   if (!existing) {
     return { ok: false, error: "Row not found" };
+  }
+
+  const access = await adminSiteGuard(existing.siteId);
+  if (!access.ok) {
+    return access;
   }
 
   const data = parsed.data;
@@ -167,10 +169,9 @@ export async function updateComparisonRowAction(
 export async function deleteComparisonRowAction(
   rowId: string,
 ): Promise<ActionResult> {
-  try {
-    await assertAdminSession();
-  } catch {
-    return { ok: false, error: "Unauthorized" };
+  const auth = await adminGuard();
+  if (!auth.ok) {
+    return auth;
   }
 
   const db = getDb();
@@ -181,6 +182,11 @@ export async function deleteComparisonRowAction(
     .limit(1);
   if (!existing) {
     return { ok: false, error: "Row not found" };
+  }
+
+  const access = await adminSiteGuard(existing.siteId);
+  if (!access.ok) {
+    return access;
   }
 
   await db.delete(comparisonRows).where(eq(comparisonRows.id, rowId));

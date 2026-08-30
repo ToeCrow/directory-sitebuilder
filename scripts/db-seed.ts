@@ -1,9 +1,10 @@
 import { config } from "dotenv";
 config({ override: true });
-import { count, eq } from "drizzle-orm";
+import { count, eq, inArray, sql } from "drizzle-orm";
 import { getAllSites } from "@/data/sites";
 import type { Db } from "@/lib/db";
 import { getMigrateDb } from "@/lib/db";
+import { hashPassword } from "@/lib/admin-password";
 import {
   articleProductSections,
   articles,
@@ -17,6 +18,8 @@ import {
   siteSections,
   siteTopPicks,
   sites,
+  users,
+  userSiteAccess,
 } from "@/lib/db/schema";
 import type { Article, Product, SiteData } from "@/types/site";
 import type { DirectoryBlogPost } from "@/types/directory-blog";
@@ -38,7 +41,24 @@ export type SeedCounts = {
   footerLinks: number;
   articles: number;
   articleProductSections: number;
+  users: number;
+  userSiteAccess: number;
 };
+
+const SEEDED_ADMIN_USERS = [
+  {
+    username: "ToeCrow",
+    displayName: "Thomas",
+    role: "superadmin" as const,
+    siteSlugs: [] as string[],
+  },
+  {
+    username: "DaMaNi",
+    displayName: "George",
+    role: "admin" as const,
+    siteSlugs: ["construction-software", "side-sleeper"],
+  },
+];
 
 function parseHost(siteUrl: string): string | null {
   try {
@@ -444,6 +464,86 @@ function mapArticleProductSection(
   };
 }
 
+export async function seedAdminUsers(
+  db: Db = getMigrateDb(),
+): Promise<{ users: number; userSiteAccess: number }> {
+  const password = process.env.ADMIN_PASSWORD;
+  if (!password) {
+    throw new Error("ADMIN_PASSWORD must be set to seed admin users.");
+  }
+
+  let userCount = 0;
+  let accessCount = 0;
+
+  for (const seed of SEEDED_ADMIN_USERS) {
+    const [existing] = await db
+      .select()
+      .from(users)
+      .where(sql`lower(${users.username}) = lower(${seed.username})`)
+      .limit(1);
+
+    let userId: string;
+    if (existing) {
+      await db
+        .update(users)
+        .set({
+          username: seed.username,
+          displayName: seed.displayName,
+          role: seed.role,
+          updatedAt: new Date(),
+        })
+        .where(eq(users.id, existing.id));
+      userId = existing.id;
+    } else {
+      const hashed = await hashPassword(password);
+      const [inserted] = await db
+        .insert(users)
+        .values({
+          username: seed.username,
+          displayName: seed.displayName,
+          role: seed.role,
+          passwordSalt: hashed.salt,
+          passwordHash: hashed.hash,
+          passwordKdf: hashed.kdf,
+          profile: {},
+        })
+        .returning({ id: users.id });
+      if (!inserted) {
+        throw new Error(`Could not insert user ${seed.username}`);
+      }
+      userId = inserted.id;
+    }
+    userCount += 1;
+
+    await db.delete(userSiteAccess).where(eq(userSiteAccess.userId, userId));
+    if (seed.siteSlugs.length === 0) {
+      continue;
+    }
+
+    const siteRows = await db
+      .select({ id: sites.id, slug: sites.slug })
+      .from(sites)
+      .where(inArray(sites.slug, seed.siteSlugs));
+    if (siteRows.length !== seed.siteSlugs.length) {
+      const found = new Set(siteRows.map((row) => row.slug));
+      const missing = seed.siteSlugs.filter((slug) => !found.has(slug));
+      throw new Error(
+        `Cannot grant site access; missing sites: ${missing.join(", ")}`,
+      );
+    }
+
+    await db.insert(userSiteAccess).values(
+      siteRows.map((site) => ({
+        userId,
+        siteId: site.id,
+      })),
+    );
+    accessCount += siteRows.length;
+  }
+
+  return { users: userCount, userSiteAccess: accessCount };
+}
+
 export async function seedDatabase(): Promise<SeedCounts> {
   const db = getMigrateDb();
   const staticSites = getAllSites();
@@ -461,6 +561,8 @@ export async function seedDatabase(): Promise<SeedCounts> {
     footerLinks: 0,
     articles: 0,
     articleProductSections: 0,
+    users: 0,
+    userSiteAccess: 0,
   };
 
   await db.transaction(async (tx) => {
@@ -481,6 +583,10 @@ export async function seedDatabase(): Promise<SeedCounts> {
     }
   });
 
+  const userCounts = await seedAdminUsers(db);
+  totals.users = userCounts.users;
+  totals.userSiteAccess = userCounts.userSiteAccess;
+
   return totals;
 }
 
@@ -496,10 +602,13 @@ async function main() {
   const [result] = await db.select({ value: count() }).from(sites);
   const existingSites = Number(result?.value ?? 0);
   if (existingSites > 0) {
-    console.error(
-      `Seed aborted: database already contains ${existingSites} site(s).`,
+    const userCounts = await seedAdminUsers(db);
+    console.log(
+      "Sites already present; seeded admin users only (existing passwords were kept):",
     );
-    process.exit(1);
+    console.log(`  users: ${userCounts.users}`);
+    console.log(`  userSiteAccess: ${userCounts.userSiteAccess}`);
+    return;
   }
 
   const counts = await seedDatabase();

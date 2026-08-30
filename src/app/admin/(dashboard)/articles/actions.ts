@@ -1,7 +1,8 @@
 "use server";
 
 import { eq } from "drizzle-orm";
-import { assertAdminSession } from "@/lib/admin-auth";
+import { userCanAccessSite } from "@/lib/admin-access";
+import { adminGuard } from "@/lib/admin/session";
 import {
   articleCreateSchema,
   articleProductSectionCreateSchema,
@@ -36,10 +37,9 @@ function parseDate(value: string | null): Date | null {
 export async function createArticleAction(
   raw: unknown,
 ): Promise<CreateArticleResult> {
-  try {
-    await assertAdminSession();
-  } catch {
-    return { ok: false, error: "Unauthorized" };
+  const auth = await adminGuard();
+  if (!auth.ok) {
+    return auth;
   }
 
   const parsed = articleCreateSchema.safeParse(raw);
@@ -52,7 +52,7 @@ export async function createArticleAction(
 
   const data = parsed.data;
   const site = await getAdminSiteById(data.siteId);
-  if (!site) {
+  if (!site || !userCanAccessSite(auth.user, site.site.slug)) {
     return { ok: false, error: "Site not found" };
   }
 
@@ -72,6 +72,7 @@ export async function createArticleAction(
         researchNoteContent: isRoundup
           ? "We compared the products on this list against the criteria in this guide."
           : "",
+        author: auth.user.displayName,
         content: {
           kind: data.kind,
           relatedArticleIds: [],
@@ -101,14 +102,13 @@ export async function updateArticleAction(
   articleId: string,
   raw: unknown,
 ): Promise<ActionResult> {
-  try {
-    await assertAdminSession();
-  } catch {
-    return { ok: false, error: "Unauthorized" };
+  const auth = await adminGuard();
+  if (!auth.ok) {
+    return auth;
   }
 
   const existing = await getAdminArticleById(articleId);
-  if (!existing) {
+  if (!existing || !userCanAccessSite(auth.user, existing.siteSlug)) {
     return { ok: false, error: "Article not found" };
   }
 
@@ -196,10 +196,9 @@ export async function setArticleStatusAction(
   articleId: string,
   status: "draft" | "published",
 ): Promise<ActionResult> {
-  try {
-    await assertAdminSession();
-  } catch {
-    return { ok: false, error: "Unauthorized" };
+  const auth = await adminGuard();
+  if (!auth.ok) {
+    return auth;
   }
 
   const parsedStatus = articleStatusSchema.safeParse(status);
@@ -208,7 +207,7 @@ export async function setArticleStatusAction(
   }
 
   const existing = await getAdminArticleById(articleId);
-  if (!existing) {
+  if (!existing || !userCanAccessSite(auth.user, existing.siteSlug)) {
     return { ok: false, error: "Article not found" };
   }
 
@@ -232,14 +231,13 @@ export async function setArticleStatusAction(
 export async function deleteArticleAction(
   articleId: string,
 ): Promise<ActionResult> {
-  try {
-    await assertAdminSession();
-  } catch {
-    return { ok: false, error: "Unauthorized" };
+  const auth = await adminGuard();
+  if (!auth.ok) {
+    return auth;
   }
 
   const existing = await getAdminArticleById(articleId);
-  if (!existing) {
+  if (!existing || !userCanAccessSite(auth.user, existing.siteSlug)) {
     return { ok: false, error: "Article not found" };
   }
 
@@ -258,14 +256,13 @@ export async function addArticleProductSectionAction(
   articleId: string,
   raw: unknown,
 ): Promise<ActionResult> {
-  try {
-    await assertAdminSession();
-  } catch {
-    return { ok: false, error: "Unauthorized" };
+  const auth = await adminGuard();
+  if (!auth.ok) {
+    return auth;
   }
 
   const existing = await getAdminArticleById(articleId);
-  if (!existing) {
+  if (!existing || !userCanAccessSite(auth.user, existing.siteSlug)) {
     return { ok: false, error: "Article not found" };
   }
 
@@ -305,10 +302,9 @@ export async function updateArticleProductSectionAction(
   sectionId: string,
   raw: unknown,
 ): Promise<ActionResult> {
-  try {
-    await assertAdminSession();
-  } catch {
-    return { ok: false, error: "Unauthorized" };
+  const auth = await adminGuard();
+  if (!auth.ok) {
+    return auth;
   }
 
   const db = getDb();
@@ -322,7 +318,7 @@ export async function updateArticleProductSectionAction(
   }
 
   const existing = await getAdminArticleById(existingSection.articleId);
-  if (!existing) {
+  if (!existing || !userCanAccessSite(auth.user, existing.siteSlug)) {
     return { ok: false, error: "Article not found" };
   }
 
@@ -360,10 +356,9 @@ export async function updateArticleProductSectionAction(
 export async function deleteArticleProductSectionAction(
   sectionId: string,
 ): Promise<ActionResult> {
-  try {
-    await assertAdminSession();
-  } catch {
-    return { ok: false, error: "Unauthorized" };
+  const auth = await adminGuard();
+  if (!auth.ok) {
+    return auth;
   }
 
   const db = getDb();
@@ -377,6 +372,9 @@ export async function deleteArticleProductSectionAction(
   }
 
   const existing = await getAdminArticleById(existingSection.articleId);
+  if (!existing || !userCanAccessSite(auth.user, existing.siteSlug)) {
+    return { ok: false, error: "Article not found" };
+  }
 
   await db
     .delete(articleProductSections)

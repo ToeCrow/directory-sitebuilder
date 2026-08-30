@@ -1,4 +1,7 @@
-import { desc, eq, sql } from "drizzle-orm";
+import { and, desc, eq, sql } from "drizzle-orm";
+import type { AdminUser } from "@/lib/admin-access";
+import { requestedSiteSlugOrDenied } from "@/lib/admin-access";
+import { siteAccessCondition } from "@/lib/admin/sites";
 import { addUtcDays, utcDateString } from "@/lib/click-tracking";
 import { getDb } from "@/lib/db";
 import { dailyLinkClicks, sites, trackedLinks } from "@/lib/db/schema";
@@ -20,10 +23,16 @@ export type AdminClickedLink = {
 };
 
 export async function listTopClickedLinks(
+  user: AdminUser,
   siteSlug?: string,
   limit = 50,
 ): Promise<AdminClickedLink[]> {
   const db = getDb();
+  const allowedSlug = requestedSiteSlugOrDenied(user, siteSlug);
+  if (allowedSlug === null) {
+    return [];
+  }
+
   const today = utcDateString();
   const since7 = addUtcDays(today, -6);
   const since30 = addUtcDays(today, -29);
@@ -47,7 +56,12 @@ export async function listTopClickedLinks(
     .from(trackedLinks)
     .innerJoin(sites, eq(trackedLinks.siteId, sites.id))
     .leftJoin(dailyLinkClicks, eq(dailyLinkClicks.linkId, trackedLinks.id))
-    .where(siteSlug ? eq(sites.slug, siteSlug) : undefined)
+    .where(
+      and(
+        allowedSlug ? eq(sites.slug, allowedSlug) : undefined,
+        siteAccessCondition(user),
+      ),
+    )
     .groupBy(
       trackedLinks.id,
       sites.id,

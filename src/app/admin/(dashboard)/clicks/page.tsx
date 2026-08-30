@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { formatClickedLinkLabel, listTopClickedLinks } from "@/lib/admin/clicks";
+import { requireAdminUser } from "@/lib/admin/session";
 import { listAdminSites } from "@/lib/admin/sites";
 
 export const dynamic = "force-dynamic";
@@ -12,14 +13,15 @@ export default async function AdminClicksPage({
   searchParams,
 }: ClicksPageProps) {
   const { site: siteFilter } = await searchParams;
+  const user = await requireAdminUser();
   let links: Awaited<ReturnType<typeof listTopClickedLinks>> = [];
   let sites: Awaited<ReturnType<typeof listAdminSites>> = [];
   let loadError: string | null = null;
 
   try {
     [links, sites] = await Promise.all([
-      listTopClickedLinks(siteFilter || undefined),
-      listAdminSites(),
+      listTopClickedLinks(user, siteFilter || undefined),
+      listAdminSites(user),
     ]);
   } catch (error) {
     loadError =

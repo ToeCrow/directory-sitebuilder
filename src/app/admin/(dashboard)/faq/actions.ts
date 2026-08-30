@@ -2,7 +2,7 @@
 
 import { eq } from "drizzle-orm";
 import { z } from "zod";
-import { assertAdminSession } from "@/lib/admin-auth";
+import { adminGuard, adminSiteGuard } from "@/lib/admin/session";
 import { getNextFaqSortOrder } from "@/lib/admin/faq";
 import { revalidateSitePaths } from "@/lib/admin/revalidate";
 import { getAdminSiteSlug } from "@/lib/admin/sites";
@@ -27,10 +27,9 @@ export async function addFaqAction(
   siteId: string,
   raw: unknown,
 ): Promise<ActionResult> {
-  try {
-    await assertAdminSession();
-  } catch {
-    return { ok: false, error: "Unauthorized" };
+  const guard = await adminSiteGuard(siteId);
+  if (!guard.ok) {
+    return guard;
   }
 
   const parsed = faqSchema.safeParse(raw);
@@ -60,10 +59,9 @@ export async function updateFaqAction(
   faqId: string,
   raw: unknown,
 ): Promise<ActionResult> {
-  try {
-    await assertAdminSession();
-  } catch {
-    return { ok: false, error: "Unauthorized" };
+  const auth = await adminGuard();
+  if (!auth.ok) {
+    return auth;
   }
 
   const parsed = faqSchema.safeParse(raw);
@@ -84,6 +82,11 @@ export async function updateFaqAction(
     return { ok: false, error: "FAQ not found" };
   }
 
+  const guard = await adminSiteGuard(existing.siteId);
+  if (!guard.ok) {
+    return guard;
+  }
+
   const data = parsed.data;
   await db
     .update(faqs)
@@ -100,10 +103,9 @@ export async function updateFaqAction(
 }
 
 export async function deleteFaqAction(faqId: string): Promise<ActionResult> {
-  try {
-    await assertAdminSession();
-  } catch {
-    return { ok: false, error: "Unauthorized" };
+  const auth = await adminGuard();
+  if (!auth.ok) {
+    return auth;
   }
 
   const db = getDb();
@@ -114,6 +116,11 @@ export async function deleteFaqAction(faqId: string): Promise<ActionResult> {
     .limit(1);
   if (!existing) {
     return { ok: false, error: "FAQ not found" };
+  }
+
+  const guard = await adminSiteGuard(existing.siteId);
+  if (!guard.ok) {
+    return guard;
   }
 
   await db.delete(faqs).where(eq(faqs.id, faqId));
