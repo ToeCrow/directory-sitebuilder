@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import { TrackedLink } from "@/components/TrackedLink";
 import { usePublicBasePath } from "@/context/SiteContext";
 import type { Product, ProductCategory } from "@/types/site";
 import { cn } from "@/lib/cn";
@@ -85,13 +85,16 @@ export function ProductCard({
 
   return (
     <article className="group relative flex flex-col overflow-hidden border border-ss-navy/10 bg-ss-paper transition-colors duration-200 hover:border-ss-navy/25">
-      <Link
+      <TrackedLink
         href={productHref}
+        placement="product-card"
+        target={product.id ? { type: "product", id: product.id } : { type: "path" }}
+        source={{ type: "page" }}
+        label={`View ${product.name}`}
         className="absolute inset-0 z-0"
-        aria-labelledby={headingId}
       >
         <span className="sr-only">View {product.name}</span>
-      </Link>
+      </TrackedLink>
 
       <div className="pointer-events-none relative mb-4 aspect-4/3 overflow-hidden bg-ss-mist">
         {product.image ? (
@@ -150,14 +153,22 @@ export function ProductCard({
         </dl>
 
         <div className="pointer-events-auto relative z-10 mt-auto">
-          <a
+          <TrackedLink
             href={buyHref}
-            target="_blank"
+            external
             rel={buyLinkRel(product)}
+            placement="product-card-cta"
+            target={
+              product.id
+                ? { type: "product", id: product.id }
+                : { type: "external" }
+            }
+            source={{ type: "page" }}
+            label="Check price & availability"
             className="inline-flex w-full items-center justify-center rounded-lg bg-ss-navy px-4 py-2 text-sm font-semibold text-ss-paper transition-colors hover:bg-ss-navy/90"
           >
             Check price & availability
-          </a>
+          </TrackedLink>
         </div>
       </div>
     </article>

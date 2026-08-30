@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import { TrackedLink } from "@/components/TrackedLink";
 import type { Article } from "@/types/site";
 import {
   getArticlePreviewBlurb,
@@ -41,7 +41,17 @@ export function RelatedArticles({
 
           return (
             <li key={article.slug}>
-              <Link href={href} className="group block">
+              <TrackedLink
+                href={href}
+                className="group block"
+                placement="related-articles"
+                target={
+                  article.id
+                    ? { type: "article", id: article.id }
+                    : { type: "path" }
+                }
+                label={article.title}
+              >
                 {preview && (
                   <figure className="relative aspect-4/3 overflow-hidden bg-ss-mist">
                     <Image
@@ -64,7 +74,7 @@ export function RelatedArticles({
                 <span className="mt-3 inline-block text-sm font-medium text-ss-blue">
                   Read guide
                 </span>
-              </Link>
+              </TrackedLink>
             </li>
           );
         })}

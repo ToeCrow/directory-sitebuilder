@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { TrackedLink } from "@/components/TrackedLink";
 import {
   getDirectoryCategories,
   getDirectoryProducts,
@@ -26,8 +26,12 @@ export function CategoryGrid({ siteSlug, publicBasePath }: CategoryGridProps) {
           const count = getDirectoryProducts(siteSlug, category.slug).length;
           return (
             <li key={category.slug}>
-              <Link
+              <TrackedLink
                 href={getDirectoryCategoryPath(publicBasePath, category.slug)}
+                placement="category-grid"
+                target={{ type: "path" }}
+                source={{ type: "page" }}
+                label={category.name}
                 className="flex h-full flex-col rounded-sm border border-fwn-gold/20 bg-fwn-panel p-6 transition-[border-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:border-fwn-gold/50 hover:shadow-[0_24px_48px_-24px_rgba(196,163,106,0.45)]"
               >
                 <h3 className="text-xl font-semibold text-fwn-ivory">
@@ -39,7 +43,7 @@ export function CategoryGrid({ siteSlug, publicBasePath }: CategoryGridProps) {
                 <p className="mt-4 text-sm font-medium tracking-wide text-fwn-gold">
                   {count} {count === 1 ? "review" : "reviews"} →
                 </p>
-              </Link>
+              </TrackedLink>
             </li>
           );
         })}

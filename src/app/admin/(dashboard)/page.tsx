@@ -39,6 +39,11 @@ const contentSections = [
     title: "Articles",
     description: "Write and publish long-form articles.",
   },
+  {
+    href: "/admin/clicks",
+    title: "Clicks",
+    description: "See which public links get clicks.",
+  },
 ];
 
 export default async function AdminDashboardPage() {

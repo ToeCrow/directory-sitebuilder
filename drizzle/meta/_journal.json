@@ -15,6 +15,13 @@
       "when": 1788081259205,
       "tag": "0001_article_product_id",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1788087382374,
+      "tag": "0002_misty_pandemic",
+      "breakpoints": true
     }
   ]
 }

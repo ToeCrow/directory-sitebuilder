@@ -3,6 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { DirectoryProductCard } from "@/components/DirectoryProductCard";
 import { TiptapArticleBody } from "@/components/TiptapArticleBody";
+import { TrackedLink } from "@/components/TrackedLink";
+import { TrackingSourceProvider } from "@/context/TrackingSourceContext";
 import { isTiptapDoc } from "@/lib/article-content";
 import { getDirectoryProductBySlug } from "@/lib/directory-catalog";
 import {
@@ -105,8 +107,10 @@ export default async function DirectoryBlogPostPage({
     },
   );
   const disclosureHref = getSitePath(publicBasePath, "/affiliate-disclosure");
+  const path = getPublicPath(siteSlug, `/blog/${post.slug}`);
 
   return (
+    <TrackingSourceProvider source={{ type: "article", id: post.id, path }}>
     <main className="mx-auto max-w-3xl px-4 py-12 md:py-16">
       <Link
         href={getBlogIndexPath(publicBasePath)}
@@ -155,6 +159,7 @@ export default async function DirectoryBlogPostPage({
             siteSlug={siteSlug}
             publicBasePath={publicBasePath}
             articles={siteData.articles}
+            sourceArticleId={post.id}
           />
         ) : post.kind === "editorial" ? (
           post.sections.map((section) => (
@@ -212,8 +217,15 @@ export default async function DirectoryBlogPostPage({
           <ul className="mt-6 space-y-4">
             {relatedArticles.map((related) => (
               <li key={related.slug}>
-                <Link
+                <TrackedLink
                   href={getBlogPostPath(publicBasePath, related.slug)}
+                  placement="related-articles"
+                  target={
+                    related.id
+                      ? { type: "article", id: related.id }
+                      : { type: "path" }
+                  }
+                  label={related.title}
                   className="group block"
                 >
                   <h3 className="text-lg font-semibold text-fwn-ivory group-hover:text-fwn-gold">
@@ -224,12 +236,13 @@ export default async function DirectoryBlogPostPage({
                       {related.excerpt}
                     </p>
                   )}
-                </Link>
+                </TrackedLink>
               </li>
             ))}
           </ul>
         </section>
       )}
     </main>
+    </TrackingSourceProvider>
   );
 }

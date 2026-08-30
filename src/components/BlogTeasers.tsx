@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { TrackedLink } from "@/components/TrackedLink";
 import type { Article } from "@/types/site";
 import { getBlogIndexPath, getBlogPostPath } from "@/lib/paths";
 
@@ -26,18 +26,26 @@ export function BlogTeasers({ articles, publicBasePath }: BlogTeasersProps) {
         >
           From the blog
         </h2>
-        <Link
+        <TrackedLink
           href={getBlogIndexPath(publicBasePath)}
+          placement="blog-index"
+          target={{ type: "path" }}
+          source={{ type: "page" }}
+          label="View all posts"
           className="text-sm font-medium text-fwn-gold hover:text-fwn-brass"
         >
           View all posts →
-        </Link>
+        </TrackedLink>
       </div>
       <ul className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2">
         {posts.slice(0, 4).map((post) => (
           <li key={post.slug}>
-            <Link
+            <TrackedLink
               href={getBlogPostPath(publicBasePath, post.slug)}
+              placement="blog-teaser"
+              target={post.id ? { type: "article", id: post.id } : { type: "path" }}
+              source={{ type: "page" }}
+              label={post.title}
               className="flex h-full flex-col rounded-sm border border-fwn-gold/20 bg-fwn-panel p-6 transition-[border-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:border-fwn-gold/50 hover:shadow-[0_24px_48px_-24px_rgba(196,163,106,0.45)]"
             >
               <h3 className="text-xl font-semibold text-fwn-ivory">
@@ -49,7 +57,7 @@ export function BlogTeasers({ articles, publicBasePath }: BlogTeasersProps) {
               <p className="mt-4 text-sm font-medium tracking-wide text-fwn-gold">
                 Read post →
               </p>
-            </Link>
+            </TrackedLink>
           </li>
         ))}
       </ul>

@@ -4,6 +4,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AffiliateDisclosure } from "@/components/AffiliateDisclosure";
 import { ReviewListItem } from "@/components/ReviewListItem";
+import { TrackedLink } from "@/components/TrackedLink";
+import { TrackingSourceProvider } from "@/context/TrackingSourceContext";
 import { getDefaultOgImage, OG_IMAGE_HEIGHT, OG_IMAGE_WIDTH } from "@/lib/seo";
 import {
   getArticlesFeaturingProduct,
@@ -125,8 +127,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   const publicBasePath = await getRequestPublicBasePath(siteSlug);
   const featuredGuides = await getArticlesFeaturingProduct(siteSlug, product.slug);
+  const path = getPublicPath(siteSlug, `/products/${product.slug}`);
 
   return (
+    <TrackingSourceProvider
+      source={{ type: "product", id: product.id, path }}
+    >
     <main className="py-12 md:py-16">
       <article className="mx-auto max-w-3xl px-4">
         <Link
@@ -262,6 +268,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   <ReviewListItem
                     article={article}
                     href={getArticlePath(publicBasePath, article.slug)}
+                    placement="featured-guides"
                   />
                 </li>
               ))}
@@ -275,16 +282,24 @@ export default async function ProductPage({ params }: ProductPageProps) {
               ? `Ready to try ${product.name}? Visit the official site to check availability and current price.`
               : `Ready to try ${product.name}? Visit the official site to learn more or request a demo.`}
           </p>
-          <a
+          <TrackedLink
             href={getBuyUrl(product)}
-            target="_blank"
+            external
             rel={buyLinkRel(product)}
+            placement="hub-cta"
+            target={
+              product.id
+                ? { type: "product", id: product.id }
+                : { type: "external" }
+            }
+            label={`Visit ${product.name}`}
             className="mt-4 inline-flex items-center rounded-lg bg-ss-paper px-6 py-3 text-sm font-semibold text-ss-navy transition-colors hover:bg-ss-mist"
           >
             Visit {product.name}
-          </a>
+          </TrackedLink>
         </div>
       </article>
     </main>
+    </TrackingSourceProvider>
   );
 }

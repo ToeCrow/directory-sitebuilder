@@ -31,6 +31,8 @@ async function resetDatabase() {
 
   await db.execute(sql`
     TRUNCATE TABLE
+      daily_link_clicks,
+      tracked_links,
       article_product_sections,
       articles,
       site_top_picks,

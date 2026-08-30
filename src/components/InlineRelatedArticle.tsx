@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import { TrackedLink } from "@/components/TrackedLink";
 import type { Article } from "@/types/site";
 import {
   getArticlePreviewBlurb,
@@ -17,6 +17,9 @@ export function InlineRelatedArticle({
 }: InlineRelatedArticleProps) {
   const blurb = getArticlePreviewBlurb(article);
   const preview = getArticlePreviewImage(article);
+  const target = article.id
+    ? { type: "article", id: article.id }
+    : { type: "path" };
 
   return (
     <aside
@@ -28,8 +31,11 @@ export function InlineRelatedArticle({
       </p>
       <div className="mt-4 flex flex-col gap-5 sm:flex-row sm:items-start">
         {preview && (
-          <Link
+          <TrackedLink
             href={href}
+            placement="related-articles-inline"
+            target={target}
+            label={article.title}
             className="relative aspect-4/3 w-full shrink-0 overflow-hidden sm:w-44"
           >
             <Image
@@ -39,28 +45,37 @@ export function InlineRelatedArticle({
               sizes="(max-width: 640px) 100vw, 11rem"
               className="object-cover"
             />
-          </Link>
+          </TrackedLink>
         )}
         <div className="min-w-0 flex-1">
           <p
             id={`related-read-${article.slug}`}
             className="text-xl font-semibold tracking-tight text-ss-navy"
           >
-            <Link href={href} className="hover:text-ss-blue">
+            <TrackedLink
+              href={href}
+              placement="related-articles-inline"
+              target={target}
+              label={article.title}
+              className="hover:text-ss-blue"
+            >
               {article.title}
-            </Link>
+            </TrackedLink>
           </p>
           {blurb && (
             <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-ss-ink/75">
               {blurb}
             </p>
           )}
-          <Link
+          <TrackedLink
             href={href}
+            placement="related-articles-inline"
+            target={target}
+            label={article.title}
             className="mt-3 inline-block text-sm font-medium text-ss-navy underline decoration-ss-blue/50 underline-offset-4 hover:text-ss-blue"
           >
             Continue reading
-          </Link>
+          </TrackedLink>
         </div>
       </div>
     </aside>

@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { TrackedLink } from "@/components/TrackedLink";
 import { useSiteContext } from "@/context/SiteContext";
 import { getSitePath } from "@/lib/paths";
 import { getSiteTheme } from "@/lib/site-config";
@@ -15,23 +15,17 @@ function FooterNavLink({
   label: string;
   hoverClass: string;
 }) {
-  const isExternal =
-    href.startsWith("mailto:") ||
-    href.startsWith("http://") ||
-    href.startsWith("https://");
-
-  if (isExternal) {
-    return (
-      <a href={href} className={hoverClass}>
-        {label}
-      </a>
-    );
-  }
-
   return (
-    <Link href={href} className={hoverClass}>
+    <TrackedLink
+      href={href}
+      placement="footer-nav"
+      source={{ type: "nav", path: "" }}
+      target={{ type: href.startsWith("http") ? "external" : "path" }}
+      label={label}
+      className={hoverClass}
+    >
       {label}
-    </Link>
+    </TrackedLink>
   );
 }
 
@@ -68,12 +62,11 @@ export function Footer() {
                 );
               })}
               <li>
-                <Link
+                <FooterNavLink
                   href={getSitePath(publicBasePath)}
-                  className={theme.footerHover}
-                >
-                  Home
-                </Link>
+                  label="Home"
+                  hoverClass={theme.footerHover}
+                />
               </li>
             </ul>
           </nav>

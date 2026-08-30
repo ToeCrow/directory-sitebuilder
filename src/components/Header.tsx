@@ -8,6 +8,7 @@ import { getSitePath } from "@/lib/paths";
 import { getDirectoryCategories } from "@/lib/directory-catalog";
 import { featuredProductsFrom } from "@/lib/site-view";
 import { HashNavLink } from "@/components/HashNavLink";
+import { TrackedLink } from "@/components/TrackedLink";
 import { getHashSectionId } from "@/lib/hash-nav";
 import { getSiteTheme } from "@/lib/site-config";
 import { getSiteNavigation } from "@/lib/site-navigation";
@@ -83,8 +84,12 @@ export function Header() {
   return (
     <header className={theme.header}>
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 md:py-4">
-        <Link
+        <TrackedLink
           href={homeHref}
+          placement="header-home"
+          source={{ type: "nav", path: "" }}
+          target={{ type: "path" }}
+          label={siteData.title}
           className="min-w-0 shrink"
           aria-label={siteData.title}
         >
@@ -100,7 +105,7 @@ export function Header() {
           ) : (
             <span className={theme.headerBrand}>{siteData.title}</span>
           )}
-        </Link>
+        </TrackedLink>
 
         <nav aria-label="Main navigation" className="hidden md:block">
           <ul className="flex items-center gap-6">
@@ -169,9 +174,16 @@ export function Header() {
                     {link.label}
                   </HashNavLink>
                 ) : (
-                  <Link href={link.href} className={theme.navLink}>
+                  <TrackedLink
+                    href={link.href}
+                    placement="header-nav"
+                    source={{ type: "nav", path: "" }}
+                    target={{ type: "path" }}
+                    label={link.label}
+                    className={theme.navLink}
+                  >
                     {link.label}
-                  </Link>
+                  </TrackedLink>
                 )}
               </li>
             ))}
@@ -272,13 +284,17 @@ export function Header() {
                     {link.label}
                   </HashNavLink>
                 ) : (
-                  <Link
+                  <TrackedLink
                     href={link.href}
+                    placement="header-nav"
+                    source={{ type: "nav", path: "" }}
+                    target={{ type: "path" }}
+                    label={link.label}
                     className={theme.mobileLink}
                     onClick={closeMenu}
                   >
                     {link.label}
-                  </Link>
+                  </TrackedLink>
                 )}
               </li>
             ))}

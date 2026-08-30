@@ -10,6 +10,7 @@ const adminNav = [
   { href: "/admin/buying-guide", label: "Buying guide" },
   { href: "/admin/footer", label: "Footer" },
   { href: "/admin/articles", label: "Articles" },
+  { href: "/admin/clicks", label: "Clicks" },
 ];
 
 export default function AdminDashboardLayout({

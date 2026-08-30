@@ -1,6 +1,6 @@
-import Link from "next/link";
-import { CategoryGrid } from "@/components/CategoryGrid";
 import { BlogTeasers } from "@/components/BlogTeasers";
+import { CategoryGrid } from "@/components/CategoryGrid";
+import { TrackedLink } from "@/components/TrackedLink";
 import { getProductsIndexPath } from "@/lib/paths";
 import { getSiteData } from "@/lib/site";
 import { siteHasHomepageSection } from "@/lib/site-config";
@@ -34,12 +34,16 @@ export async function FindWorthNowHome({
         {siteData.hero.subheadline}
       </p>
       <p className="relative mt-10">
-        <Link
+        <TrackedLink
           href={getProductsIndexPath(publicBasePath)}
+          placement="hero-cta"
+          target={{ type: "path" }}
+          source={{ type: "page" }}
+          label="Browse all products"
           className="inline-flex items-center rounded-sm bg-fwn-gold px-6 py-3 text-sm font-semibold tracking-wide text-fwn-void shadow-[0_12px_32px_-12px_rgba(196,163,106,0.7)] transition-colors hover:bg-fwn-brass"
         >
           Browse all products
-        </Link>
+        </TrackedLink>
       </p>
 
       {siteHasHomepageSection(siteSlug, "category-grid") && (

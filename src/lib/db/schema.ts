@@ -1,12 +1,14 @@
 import { sql } from "drizzle-orm";
 import {
   boolean,
+  date,
   integer,
   jsonb,
   pgEnum,
   pgTable,
   text,
   timestamp,
+  unique,
   uniqueIndex,
   uuid,
 } from "drizzle-orm/pg-core";
@@ -288,3 +290,41 @@ export const articleProductSections = pgTable("article_product_sections", {
     sortOrder: integer("sort_order").notNull(),
   ...timestamps,
 });
+
+export const trackedLinks = pgTable(
+  "tracked_links",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    linkKey: text("link_key").notNull(),
+    siteId: uuid("site_id")
+      .notNull()
+      .references(() => sites.id, { onDelete: "cascade" }),
+    sourceType: text("source_type").notNull(),
+    sourceId: text("source_id"),
+    sourcePath: text("source_path"),
+    placement: text("placement").notNull(),
+    targetType: text("target_type").notNull(),
+    targetId: text("target_id"),
+    targetUrl: text("target_url"),
+    label: text("label"),
+    totalClicks: integer("total_clicks").notNull().default(0),
+    ...timestamps,
+  },
+  (table) => [unique("tracked_links_link_key_uidx").on(table.linkKey)],
+);
+
+export const dailyLinkClicks = pgTable(
+  "daily_link_clicks",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    linkId: uuid("link_id")
+      .notNull()
+      .references(() => trackedLinks.id, { onDelete: "cascade" }),
+    date: date("date").notNull(),
+    clicks: integer("clicks").notNull().default(0),
+    ...timestamps,
+  },
+  (table) => [
+    unique("daily_link_clicks_link_date_uidx").on(table.linkId, table.date),
+  ],
+);

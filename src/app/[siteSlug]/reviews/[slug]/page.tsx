@@ -28,6 +28,8 @@ import {
 import { RoundupProductHeading } from "@/components/RoundupProductHeading";
 import { RoundupProductPageCta } from "@/components/RoundupProductPageCta";
 import { TiptapArticleBody } from "@/components/TiptapArticleBody";
+import { TrackedLink } from "@/components/TrackedLink";
+import { TrackingSourceProvider } from "@/context/TrackingSourceContext";
 import { isTiptapDoc } from "@/lib/article-content";
 import {
   getArticleBySlug,
@@ -186,6 +188,9 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
   const relatedArticles = getBottomRelatedArticles(siteData, article);
 
   return (
+    <TrackingSourceProvider
+      source={{ type: "article", id: article.id, path }}
+    >
     <main className="py-12 md:py-16">
       <JsonLd
         data={buildArticleSchema({
@@ -263,11 +268,18 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
                   {image && (
                     <figure className="mt-6 overflow-hidden bg-ss-mist">
                       {catalogProduct ? (
-                        <Link
+                        <TrackedLink
                           href={getProductPath(
                             publicBasePath,
                             catalogProduct.slug,
                           )}
+                          placement="roundup-product-image"
+                          target={
+                            catalogProduct.id
+                              ? { type: "product", id: catalogProduct.id }
+                              : { type: "path" }
+                          }
+                          label={catalogProduct.name}
                         >
                           <Image
                             src={image.src}
@@ -276,7 +288,7 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
                             height={800}
                             className="h-auto w-full"
                           />
-                        </Link>
+                        </TrackedLink>
                       ) : (
                         <Image
                           src={image.src}
@@ -373,6 +385,7 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
             siteSlug={siteSlug}
             publicBasePath={publicBasePath}
             articles={siteData.articles}
+            sourceArticleId={article.id}
           />
         )}
 
@@ -501,5 +514,6 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
         </div>
       </article>
     </main>
+    </TrackingSourceProvider>
   );
 }

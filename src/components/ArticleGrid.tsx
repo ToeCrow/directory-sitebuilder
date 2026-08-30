@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { ReviewListItem } from "@/components/ReviewListItem";
+import { TrackedLink } from "@/components/TrackedLink";
 import { usePublicBasePath, useSiteData } from "@/context/SiteContext";
 import { featuredHomeReviewsFrom } from "@/lib/site-view";
 import { cn } from "@/lib/cn";
@@ -40,12 +40,16 @@ export function ArticleGrid({ siteSlug, className }: ArticleGridProps) {
           <h2 id="reviews-heading" className={theme.articleHeading}>
             {heading}
           </h2>
-          <Link
+          <TrackedLink
             href={getReviewsIndexPath(publicBasePath)}
+            placement="home-reviews-index"
+            target={{ type: "path" }}
+            source={{ type: "page" }}
+            label="View all reviews"
             className={theme.articleLink}
           >
             View all reviews →
-          </Link>
+          </TrackedLink>
         </div>
         <ul className={theme.articleList}>
           {reviews.map((article) => (

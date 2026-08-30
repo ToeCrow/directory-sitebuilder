@@ -2,11 +2,11 @@
 
 import type { ReactNode } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { usePublicBasePath, useSiteData } from "@/context/SiteContext";
 import { siteHasFeature } from "@/lib/site-config";
 import { getAppPath, getBuyingGuidePath, getProductsIndexPath } from "@/lib/paths";
 import { InPageHashAnchor } from "@/components/InPageHashAnchor";
+import { TrackedLink } from "@/components/TrackedLink";
 import { cn } from "@/lib/cn";
 
 type HeroProps = {
@@ -51,9 +51,15 @@ function CtaLink({
     );
   }
   return (
-    <Link href={href} className={className}>
+    <TrackedLink
+      href={href}
+      className={className}
+      placement="hero-cta"
+      target={{ type: "path" }}
+      source={{ type: "page" }}
+    >
       {children}
-    </Link>
+    </TrackedLink>
   );
 }
 
@@ -66,24 +72,36 @@ function SideSleeperHeroCtas({
 }) {
   return (
     <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-      <Link
+      <TrackedLink
         href={getProductsIndexPath(publicBasePath, "mattress")}
+        placement="hero-cta"
+        target={{ type: "path" }}
+        source={{ type: "page" }}
+        label="Browse Mattresses"
         className="inline-flex items-center rounded-lg bg-ss-navy px-6 py-3 text-sm font-semibold text-ss-paper transition-colors hover:bg-ss-navy/90"
       >
         Browse Mattresses
-      </Link>
-      <Link
+      </TrackedLink>
+      <TrackedLink
         href={getProductsIndexPath(publicBasePath, "pillow")}
+        placement="hero-cta"
+        target={{ type: "path" }}
+        source={{ type: "page" }}
+        label="Browse Pillows"
         className="inline-flex items-center rounded-lg bg-ss-navy px-6 py-3 text-sm font-semibold text-ss-paper transition-colors hover:bg-ss-navy/90"
       >
         Browse Pillows
-      </Link>
-      <Link
+      </TrackedLink>
+      <TrackedLink
         href={getBuyingGuidePath(publicBasePath)}
+        placement="hero-cta"
+        target={{ type: "path" }}
+        source={{ type: "page" }}
+        label={buyingGuideLabel}
         className="inline-flex items-center rounded-lg border border-ss-navy/20 px-6 py-3 text-sm font-semibold text-ss-navy transition-colors hover:bg-ss-mist"
       >
         {buyingGuideLabel}
-      </Link>
+      </TrackedLink>
     </div>
   );
 }

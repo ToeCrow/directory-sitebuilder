@@ -1,5 +1,5 @@
-import Link from "next/link";
 import type { ReactNode } from "react";
+import { TrackedLink } from "@/components/TrackedLink";
 import type { Article } from "@/types/site";
 import type { TiptapDoc, TiptapMark, TiptapNode } from "@/types/tiptap";
 import { resolveInternalLinkHref } from "@/lib/article-content";
@@ -10,6 +10,7 @@ type TiptapArticleBodyProps = {
   siteSlug: string;
   publicBasePath: string;
   articles: Article[];
+  sourceArticleId?: string;
 };
 
 type BodyTheme = {
@@ -55,12 +56,14 @@ function TextInline({
   publicBasePath,
   route,
   classes,
+  sourceArticleId,
 }: {
   node: TiptapNode;
   articlesById: Map<string, { slug: string }>;
   publicBasePath: string;
   route: ArticleRoute;
   classes: BodyTheme;
+  sourceArticleId?: string;
 }) {
   const text = node.text ?? "";
   if (!text) return null;
@@ -87,25 +90,42 @@ function TextInline({
   if (markOf(node, "bold")) content = <strong>{content}</strong>;
   if (markOf(node, "italic")) content = <em>{content}</em>;
 
-  if (href) {
+  if (href && articleId) {
     return (
-      <Link href={href} className={classes.link}>
+      <TrackedLink
+        href={href}
+        className={classes.link}
+        placement="tiptap-internal-link"
+        target={{ type: "article", id: articleId }}
+        source={
+          sourceArticleId
+            ? { type: "article", id: sourceArticleId }
+            : undefined
+        }
+        label={text}
+      >
         {content}
-      </Link>
+      </TrackedLink>
     );
   }
   if (externalHref) {
     const isExternal = /^https?:\/\//.test(externalHref);
     return (
-      <a
+      <TrackedLink
         href={externalHref}
         className={classes.link}
-        {...(isExternal
-          ? { target: "_blank", rel: "noopener noreferrer" }
-          : {})}
+        placement="tiptap-external-link"
+        target={{ type: isExternal ? "external" : "path" }}
+        source={
+          sourceArticleId
+            ? { type: "article", id: sourceArticleId }
+            : undefined
+        }
+        external={isExternal}
+        label={text}
       >
         {content}
-      </a>
+      </TrackedLink>
     );
   }
   return <>{content}</>;
@@ -118,6 +138,7 @@ function renderNodes(
     publicBasePath: string;
     route: ArticleRoute;
     classes: BodyTheme;
+    sourceArticleId?: string;
   },
 ): ReactNode {
   return nodes?.map((node, index) => {
@@ -177,6 +198,7 @@ export function TiptapArticleBody({
   siteSlug,
   publicBasePath,
   articles,
+  sourceArticleId,
 }: TiptapArticleBodyProps) {
   const route = getArticleConfig(siteSlug)?.route ?? "reviews";
   const articlesById = new Map(
@@ -192,6 +214,7 @@ export function TiptapArticleBody({
         publicBasePath,
         route,
         classes: bodyTheme(siteSlug),
+        sourceArticleId,
       })}
     </div>
   );

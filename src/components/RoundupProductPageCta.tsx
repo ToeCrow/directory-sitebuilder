@@ -1,3 +1,4 @@
+import { TrackedLink } from "@/components/TrackedLink";
 import type { Product } from "@/types/site";
 import { buyLinkRel, getBuyUrl } from "@/lib/product-links";
 
@@ -6,16 +7,25 @@ type RoundupProductPageCtaProps = {
 };
 
 export function RoundupProductPageCta({ product }: RoundupProductPageCtaProps) {
+  const label = `Check price & availability for ${product.name}`;
+
   return (
     <p className="mt-6">
-      <a
+      <TrackedLink
         href={getBuyUrl(product)}
-        target="_blank"
+        external
         rel={buyLinkRel(product)}
+        placement="roundup-product-cta"
+        target={
+          product.id
+            ? { type: "product", id: product.id }
+            : { type: "external" }
+        }
+        label={label}
         className="text-sm font-medium text-ss-navy hover:text-ss-blue"
       >
-        Check price & availability for {product.name}
-      </a>
+        {label}
+      </TrackedLink>
     </p>
   );
 }

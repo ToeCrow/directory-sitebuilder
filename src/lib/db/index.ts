@@ -34,6 +34,15 @@ export function getDb(): Db {
   return globalForDb.drizzleDb;
 }
 
+export async function closeDb(): Promise<void> {
+  const pool = globalForDb.pgPool;
+  globalForDb.pgPool = undefined;
+  globalForDb.drizzleDb = undefined;
+  if (pool) {
+    await pool.end();
+  }
+}
+
 export type { Db };
 export type DbOrTx = Db | Parameters<Parameters<Db["transaction"]>[0]>[0];
 export * from "./schema";
