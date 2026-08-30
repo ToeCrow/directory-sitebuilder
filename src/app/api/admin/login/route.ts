@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import {
+  ACCESS_COOKIE_MAX_AGE_SECONDS,
+  ADMIN_REFRESH_COOKIE,
   ADMIN_SESSION_COOKIE,
+  REFRESH_COOKIE_MAX_AGE_SECONDS,
+  adminCookieOptions,
   createAdminSessionToken,
   verifyAdminPassword,
 } from "@/lib/admin-auth";
@@ -18,24 +22,35 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid password" }, { status: 401 });
   }
 
-  let token: string;
+  let access: string;
+  let refresh: string;
   try {
-    token = await createAdminSessionToken();
-  } catch {
+    access = await createAdminSessionToken("access");
+    refresh = await createAdminSessionToken("refresh");
+  } catch (error) {
+    const missingSecret =
+      error instanceof Error && error.message.includes("ADMIN_SESSION_SECRET");
     return NextResponse.json(
-      { error: "Server misconfigured" },
+      {
+        error: missingSecret
+          ? "ADMIN_SESSION_SECRET must be set (at least 16 characters) for this Vercel environment"
+          : "Server misconfigured",
+      },
       { status: 500 },
     );
   }
 
   const response = NextResponse.json({ ok: true });
-  response.cookies.set(ADMIN_SESSION_COOKIE, token, {
-    httpOnly: true,
-    sameSite: "lax",
-    path: "/",
-    secure: process.env.NODE_ENV === "production",
-    maxAge: 60 * 60 * 24 * 7,
-  });
+  response.cookies.set(
+    ADMIN_SESSION_COOKIE,
+    access,
+    adminCookieOptions(ACCESS_COOKIE_MAX_AGE_SECONDS),
+  );
+  response.cookies.set(
+    ADMIN_REFRESH_COOKIE,
+    refresh,
+    adminCookieOptions(REFRESH_COOKIE_MAX_AGE_SECONDS),
+  );
 
   return response;
 }

@@ -1,11 +1,20 @@
 /**
  * Admin session helpers — Web Crypto so proxy (Edge) and Node routes share one impl.
  * Cookie never stores ADMIN_PASSWORD.
+ *
+ * Access cookie: 15 minutes. Refresh cookie: 4 hours.
+ * A valid refresh token can mint a new access token without the password.
  */
 
 export const ADMIN_SESSION_COOKIE = "admin_session";
+export const ADMIN_REFRESH_COOKIE = "admin_refresh";
 
-const SESSION_TTL_MS = 1000 * 60 * 60 * 24 * 7; // 7 days
+export type AdminTokenKind = "access" | "refresh";
+
+export const ACCESS_TTL_MS = 15 * 60 * 1000;
+export const REFRESH_TTL_MS = 4 * 60 * 60 * 1000;
+export const ACCESS_COOKIE_MAX_AGE_SECONDS = 15 * 60;
+export const REFRESH_COOKIE_MAX_AGE_SECONDS = 4 * 60 * 60;
 
 function getSessionSecret(): string {
   const secret = process.env.ADMIN_SESSION_SECRET;
@@ -69,19 +78,38 @@ function timingSafeEqualBytes(a: Uint8Array, b: Uint8Array): boolean {
   return diff === 0;
 }
 
+function ttlForKind(kind: AdminTokenKind): number {
+  return kind === "refresh" ? REFRESH_TTL_MS : ACCESS_TTL_MS;
+}
+
+export function adminCookieOptions(maxAgeSeconds: number) {
+  return {
+    httpOnly: true as const,
+    sameSite: "lax" as const,
+    path: "/",
+    secure: process.env.NODE_ENV === "production",
+    maxAge: maxAgeSeconds,
+  };
+}
+
 /** Create a signed session token (never stores ADMIN_PASSWORD). */
-export async function createAdminSessionToken(): Promise<string> {
+export async function createAdminSessionToken(
+  kind: AdminTokenKind = "access",
+  now: number = Date.now(),
+): Promise<string> {
   const nonceBytes = new Uint8Array(16);
   crypto.getRandomValues(nonceBytes);
   const nonce = bytesToBase64Url(nonceBytes);
-  const exp = Date.now() + SESSION_TTL_MS;
-  const payload = `${nonce}.${exp}`;
+  const exp = now + ttlForKind(kind);
+  const payload = `${nonce}.${exp}.${kind}`;
   const sig = await signPayload(payload);
   return `${payload}.${sig}`;
 }
 
-export async function isValidAdminSession(
+export async function isValidAdminToken(
   token: string | undefined,
+  kind: AdminTokenKind,
+  now: number = Date.now(),
 ): Promise<boolean> {
   if (!token) {
     return false;
@@ -93,21 +121,21 @@ export async function isValidAdminSession(
   }
 
   const parts = token.split(".");
-  if (parts.length !== 3) {
+  if (parts.length !== 4) {
     return false;
   }
 
-  const [nonce, expStr, sig] = parts;
-  if (!nonce || !expStr || !sig) {
+  const [nonce, expStr, tokenKind, sig] = parts;
+  if (!nonce || !expStr || !tokenKind || !sig || tokenKind !== kind) {
     return false;
   }
 
   const exp = Number(expStr);
-  if (!Number.isFinite(exp) || Date.now() > exp) {
+  if (!Number.isFinite(exp) || now > exp) {
     return false;
   }
 
-  const payload = `${nonce}.${expStr}`;
+  const payload = `${nonce}.${expStr}.${tokenKind}`;
   let expected: string;
   try {
     expected = await signPayload(payload);
@@ -125,6 +153,33 @@ export async function isValidAdminSession(
   }
 }
 
+export async function isValidAdminSession(
+  token: string | undefined,
+): Promise<boolean> {
+  return isValidAdminToken(token, "access");
+}
+
+export type AdminAuthResult =
+  | { ok: true; newAccess?: string }
+  | { ok: false };
+
+export async function resolveAdminAuth(
+  access: string | undefined,
+  refresh: string | undefined,
+  now: number = Date.now(),
+): Promise<AdminAuthResult> {
+  if (await isValidAdminToken(access, "access", now)) {
+    return { ok: true };
+  }
+  if (await isValidAdminToken(refresh, "refresh", now)) {
+    return {
+      ok: true,
+      newAccess: await createAdminSessionToken("access", now),
+    };
+  }
+  return { ok: false };
+}
+
 export function verifyAdminPassword(password: string | undefined): boolean {
   const expected = process.env.ADMIN_PASSWORD;
   if (!expected || !password) {
@@ -139,8 +194,10 @@ export function verifyAdminPassword(password: string | undefined): boolean {
 export async function assertAdminSession(): Promise<void> {
   const { cookies } = await import("next/headers");
   const jar = await cookies();
-  const token = jar.get(ADMIN_SESSION_COOKIE)?.value;
-  if (!(await isValidAdminSession(token))) {
+  const access = jar.get(ADMIN_SESSION_COOKIE)?.value;
+  const refresh = jar.get(ADMIN_REFRESH_COOKIE)?.value;
+  const auth = await resolveAdminAuth(access, refresh);
+  if (!auth.ok) {
     throw new Error("Unauthorized");
   }
 }

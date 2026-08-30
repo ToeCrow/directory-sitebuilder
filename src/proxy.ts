@@ -1,6 +1,12 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { ADMIN_SESSION_COOKIE, isValidAdminSession } from "@/lib/admin-auth";
+import {
+  ACCESS_COOKIE_MAX_AGE_SECONDS,
+  ADMIN_REFRESH_COOKIE,
+  ADMIN_SESSION_COOKIE,
+  adminCookieOptions,
+  resolveAdminAuth,
+} from "@/lib/admin-auth";
 import { getArticlesToReviewsRedirectPath } from "@/lib/articles-redirect";
 import { getResearchScoreRedirectPath } from "@/lib/research-score-redirect";
 import { getSiteSlugFromHost } from "@/lib/domain-map";
@@ -9,6 +15,24 @@ import {
   getCustomDomainStripRedirectPath,
   shouldRewriteCustomDomainPath,
 } from "@/lib/custom-domain";
+
+function withRefreshedAccess(response: NextResponse, newAccess?: string) {
+  if (newAccess) {
+    response.cookies.set(
+      ADMIN_SESSION_COOKIE,
+      newAccess,
+      adminCookieOptions(ACCESS_COOKIE_MAX_AGE_SECONDS),
+    );
+  }
+  return response;
+}
+
+function adminAuthFromRequest(request: NextRequest) {
+  return resolveAdminAuth(
+    request.cookies.get(ADMIN_SESSION_COOKIE)?.value,
+    request.cookies.get(ADMIN_REFRESH_COOKIE)?.value,
+  );
+}
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -21,14 +45,23 @@ export async function proxy(request: NextRequest) {
   }
 
   if (pathname === "/admin/login") {
+    const auth = await adminAuthFromRequest(request);
+    if (auth.ok) {
+      return withRefreshedAccess(
+        NextResponse.redirect(new URL("/admin", request.url)),
+        auth.newAccess,
+      );
+    }
     return NextResponse.next();
   }
 
   if (pathname.startsWith("/admin")) {
-    const session = request.cookies.get(ADMIN_SESSION_COOKIE)?.value;
-
-    if (!(await isValidAdminSession(session))) {
+    const auth = await adminAuthFromRequest(request);
+    if (!auth.ok) {
       return NextResponse.redirect(new URL("/admin/login", request.url));
+    }
+    if (auth.newAccess) {
+      return withRefreshedAccess(NextResponse.next(), auth.newAccess);
     }
   }
 
