@@ -9,18 +9,13 @@ import { ProductsDirectoryScroll } from "@/components/ProductsDirectoryScroll";
 import {
   getDirectoryCategories,
   getDirectoryProducts,
-  siteUsesEditorialCatalog,
 } from "@/lib/directory-catalog";
-import {
-  getSiteBySlug,
-  isValidSiteSlug,
-  siteHasMattressPillowNav,
-  siteSlugs,
-  type SiteSlug,
-} from "@/lib/site";
+import { siteSlugs, type SiteSlug } from "@/data/sites";
+import { getSiteBySlug, isValidSiteSlug } from "@/lib/site";
 import { getPublicPath } from "@/lib/paths";
 import { getRequestPublicBasePath } from "@/lib/request-paths";
 import { buildPageOpenGraph } from "@/lib/seo";
+import { siteHasFeature } from "@/lib/site-config";
 
 type ProductsIndexProps = {
   params: Promise<{ siteSlug: string }>;
@@ -35,11 +30,11 @@ export async function generateMetadata({
   params,
 }: ProductsIndexProps): Promise<Metadata> {
   const { siteSlug } = await params;
-  const siteData = getSiteBySlug(siteSlug);
+  const siteData = await getSiteBySlug(siteSlug);
   if (!siteData) return { title: "Products" };
 
   const path = getPublicPath(siteSlug, "/products");
-  const description = siteUsesEditorialCatalog(siteSlug)
+  const description = siteHasFeature(siteSlug, "catalog")
     ? (siteData.productDirectory.description ??
       "Browse product reviews and filter by category.")
     : (siteData.productDirectory.description ?? "");
@@ -65,16 +60,16 @@ export default async function ProductsIndexPage({
   const { siteSlug } = await params;
   const { category: categoryParam } = await searchParams;
 
-  if (!isValidSiteSlug(siteSlug)) {
+  if (!(await isValidSiteSlug(siteSlug))) {
     notFound();
   }
 
-  const siteData = getSiteBySlug(siteSlug);
+  const siteData = await getSiteBySlug(siteSlug);
   if (!siteData) {
     notFound();
   }
 
-  if (siteUsesEditorialCatalog(siteSlug)) {
+  if (siteHasFeature(siteSlug, "catalog")) {
     const publicBasePath = await getRequestPublicBasePath(siteSlug);
     const categories = getDirectoryCategories(siteSlug);
     const activeCategory = categories.find(
@@ -118,7 +113,7 @@ export default async function ProductsIndexPage({
     );
   }
 
-  const showCategoryFilters = siteHasMattressPillowNav(siteSlug);
+  const showCategoryFilters = siteHasFeature(siteSlug, "product-nav");
   let category: "mattress" | "pillow" | "topper" | undefined;
   if (showCategoryFilters) {
     if (

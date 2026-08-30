@@ -1,12 +1,10 @@
 "use client";
 
 import { createContext, useContext } from "react";
-import type { SiteSlug } from "@/data/sites";
-import { getSiteData } from "@/lib/site";
 import type { SiteData } from "@/types/site";
 
 type SiteContextValue = {
-  siteSlug: SiteSlug;
+  siteSlug: string;
   siteData: SiteData;
   /** "" on mapped custom domain; "/{siteSlug}" on platform. */
   publicBasePath: string;
@@ -16,7 +14,8 @@ type SiteContextValue = {
 const SiteContext = createContext<SiteContextValue | null>(null);
 
 type SiteProviderProps = {
-  siteSlug: SiteSlug;
+  siteSlug: string;
+  siteData: SiteData;
   publicBasePath: string;
   isCustomDomain: boolean;
   children: React.ReactNode;
@@ -24,12 +23,11 @@ type SiteProviderProps = {
 
 export function SiteProvider({
   siteSlug,
+  siteData,
   publicBasePath,
   isCustomDomain,
   children,
 }: SiteProviderProps) {
-  const siteData = getSiteData(siteSlug);
-
   return (
     <SiteContext.Provider
       value={{ siteSlug, siteData, publicBasePath, isCustomDomain }}
@@ -58,7 +56,7 @@ export function useSiteConfig(): SiteData {
   return useSiteData();
 }
 
-export function useSiteSlug(): SiteSlug {
+export function useSiteSlug(): string {
   return useSiteContext().siteSlug;
 }
 

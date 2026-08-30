@@ -1,13 +1,15 @@
 import { posts as findworthnowPosts } from "@/data/sites/findworthnow/blog";
 import type { DirectoryBlogPost } from "@/types/directory-blog";
-import { siteUsesEditorialCatalog } from "@/lib/directory-catalog";
+import { getArticleConfig } from "@/lib/site-config";
+
+/** Seed-only source for FindWorthNow posts. Public /blog reads Postgres articles. */
 
 const postsBySite: Record<string, DirectoryBlogPost[]> = {
   findworthnow: findworthnowPosts,
 };
 
 export function getDirectoryBlogPosts(siteSlug: string): DirectoryBlogPost[] {
-  if (!siteUsesEditorialCatalog(siteSlug)) {
+  if (getArticleConfig(siteSlug)?.route !== "blog") {
     return [];
   }
   return (postsBySite[siteSlug] ?? [])

@@ -2,14 +2,12 @@
 
 import type { ReactNode } from "react";
 import Link from "next/link";
-import type { SiteSlug } from "@/data/sites";
-import { usePublicBasePath } from "@/context/SiteContext";
-import { getSiteData } from "@/lib/site";
+import { usePublicBasePath, useSiteData } from "@/context/SiteContext";
 import { getArticlePath } from "@/lib/paths";
 import { cn } from "@/lib/cn";
 
 type FAQProps = {
-  siteSlug: SiteSlug;
+  siteSlug: string;
   className?: string;
 };
 
@@ -84,7 +82,7 @@ function FaqAnswerBody({
 
 export function FAQ({ siteSlug, className }: FAQProps) {
   const publicBasePath = usePublicBasePath();
-  const siteData = getSiteData(siteSlug);
+  const siteData = useSiteData();
 
   return (
     <section

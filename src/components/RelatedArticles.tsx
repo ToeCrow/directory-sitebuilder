@@ -1,20 +1,22 @@
 import Image from "next/image";
-import Link from "next/link";
+import { TrackedLink } from "@/components/TrackedLink";
 import type { Article } from "@/types/site";
 import {
   getArticlePreviewBlurb,
   getArticlePreviewImage,
 } from "@/lib/article-preview";
-import { getArticlePath } from "@/lib/paths";
+import { getSiteArticlePath } from "@/lib/paths";
 
 type RelatedArticlesProps = {
   articles: Article[];
   publicBasePath: string;
+  siteSlug: string;
 };
 
 export function RelatedArticles({
   articles,
   publicBasePath,
+  siteSlug,
 }: RelatedArticlesProps) {
   if (articles.length === 0) {
     return null;
@@ -33,13 +35,23 @@ export function RelatedArticles({
       </h2>
       <ul className="mt-8 grid gap-10 sm:grid-cols-2">
         {articles.map((article) => {
-          const href = getArticlePath(publicBasePath, article.slug);
+          const href = getSiteArticlePath(siteSlug, publicBasePath, article.slug);
           const preview = getArticlePreviewImage(article);
           const blurb = getArticlePreviewBlurb(article);
 
           return (
             <li key={article.slug}>
-              <Link href={href} className="group block">
+              <TrackedLink
+                href={href}
+                className="group block"
+                placement="related-articles"
+                target={
+                  article.id
+                    ? { type: "article", id: article.id }
+                    : { type: "path" }
+                }
+                label={article.title}
+              >
                 {preview && (
                   <figure className="relative aspect-4/3 overflow-hidden bg-ss-mist">
                     <Image
@@ -62,7 +74,7 @@ export function RelatedArticles({
                 <span className="mt-3 inline-block text-sm font-medium text-ss-blue">
                   Read guide
                 </span>
-              </Link>
+              </TrackedLink>
             </li>
           );
         })}

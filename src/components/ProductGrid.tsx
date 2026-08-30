@@ -1,10 +1,12 @@
-import type { SiteSlug } from "@/data/sites";
-import { getFeaturedProducts, getSiteData } from "@/lib/site";
+"use client";
+
+import { featuredProductsFrom } from "@/lib/site-view";
+import { useSiteData } from "@/context/SiteContext";
 import { ProductCard } from "@/components/ProductCard";
 import { cn } from "@/lib/cn";
 
 type ProductGridProps = {
-  siteSlug: SiteSlug;
+  siteSlug: string;
   className?: string;
   titleOverride?: string;
 };
@@ -14,8 +16,8 @@ export function ProductGrid({
   className,
   titleOverride,
 }: ProductGridProps) {
-  const siteData = getSiteData(siteSlug);
-  const featuredProducts = getFeaturedProducts(siteSlug);
+  const siteData = useSiteData();
+  const featuredProducts = featuredProductsFrom(siteData);
 
   if (featuredProducts.length === 0) {
     return null;

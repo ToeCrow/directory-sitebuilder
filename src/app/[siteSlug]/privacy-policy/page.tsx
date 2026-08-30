@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { siteSlugs } from "@/data/sites";
 import { getSiteBySlug, isValidSiteSlug } from "@/lib/site";
 import { getPublicPath, getSitePath } from "@/lib/paths";
 import { getRequestPublicBasePath } from "@/lib/request-paths";
 import { buildPageOpenGraph } from "@/lib/seo";
-import { siteUsesPrivacyPolicy } from "@/lib/privacy-policy";
+import { canAccessRoute, getStaticParamSiteSlugsForRoute } from "@/lib/site-routes";
 
 const CONTACT_EMAIL = "side.sleepers.admin@gmail.com";
 const PAGE_TITLE = "Privacy Policy | Side Sleeper Guide";
@@ -18,18 +17,18 @@ type PrivacyPolicyPageProps = {
 };
 
 export function generateStaticParams() {
-  return siteSlugs
-    .filter((siteSlug) => siteUsesPrivacyPolicy(siteSlug))
-    .map((siteSlug) => ({ siteSlug }));
+  return getStaticParamSiteSlugsForRoute("privacy").map((siteSlug) => ({
+    siteSlug,
+  }));
 }
 
 export async function generateMetadata({
   params,
 }: PrivacyPolicyPageProps): Promise<Metadata> {
   const { siteSlug } = await params;
-  const siteData = getSiteBySlug(siteSlug);
+  const siteData = await getSiteBySlug(siteSlug);
 
-  if (!siteUsesPrivacyPolicy(siteSlug) || !siteData) {
+  if (!canAccessRoute(siteSlug, "privacy") || !siteData) {
     return { title: "Privacy Policy" };
   }
 
@@ -61,11 +60,11 @@ export default async function PrivacyPolicyPage({
 }: PrivacyPolicyPageProps) {
   const { siteSlug } = await params;
 
-  if (!isValidSiteSlug(siteSlug) || !siteUsesPrivacyPolicy(siteSlug)) {
+  if (!(await isValidSiteSlug(siteSlug)) || !canAccessRoute(siteSlug, "privacy")) {
     notFound();
   }
 
-  const siteData = getSiteBySlug(siteSlug);
+  const siteData = await getSiteBySlug(siteSlug);
   if (!siteData) {
     notFound();
   }

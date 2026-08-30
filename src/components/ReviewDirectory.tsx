@@ -1,16 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import type { SiteSlug } from "@/data/sites";
 import { ReviewListItem } from "@/components/ReviewListItem";
-import { usePublicBasePath } from "@/context/SiteContext";
-import { getArticlesByReviewCategory, getSiteData } from "@/lib/site";
+import { usePublicBasePath, useSiteData } from "@/context/SiteContext";
+import { articlesByReviewCategoryFrom } from "@/lib/site-view";
 import type { ReviewCategory } from "@/types/site";
 import { cn } from "@/lib/cn";
 import { getArticlePath, getReviewsIndexPath } from "@/lib/paths";
 
 type ReviewDirectoryProps = {
-  siteSlug: SiteSlug;
+  siteSlug: string;
   className?: string;
   category?: ReviewCategory;
   showCategoryFilters?: boolean;
@@ -23,8 +22,8 @@ export function ReviewDirectory({
   showCategoryFilters = false,
 }: ReviewDirectoryProps) {
   const publicBasePath = usePublicBasePath();
-  const siteData = getSiteData(siteSlug);
-  const reviews = getArticlesByReviewCategory(siteSlug, category);
+  const siteData = useSiteData();
+  const reviews = articlesByReviewCategoryFrom(siteData, category);
 
   const filters = [
     { key: undefined, label: "All", href: getReviewsIndexPath(publicBasePath) },

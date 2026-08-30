@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
-import type { SiteSlug } from "@/data/sites";
+import { DatabaseUnavailable } from "@/components/DatabaseUnavailable";
 import { SiteProvider } from "@/context/SiteContext";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -13,8 +13,16 @@ import {
 } from "@/lib/schema";
 import { resolvePublicBasePath } from "@/lib/paths";
 import { getDefaultOgImage } from "@/lib/seo";
-import { getSiteBySlug, isValidSiteSlug, siteHasMattressPillowNav } from "@/lib/site";
-import { siteUsesEditorialCatalog } from "@/lib/directory-catalog";
+import { formatDatabaseLoadError } from "@/lib/db/connection";
+import {
+  getSiteBySlug,
+  isMissingSiteError,
+  isValidSiteSlug,
+} from "@/lib/site";
+import { getSiteTheme, siteHasFeature } from "@/lib/site-config";
+import { getThemeClasses } from "@/lib/site-theme";
+
+export const dynamic = "force-dynamic";
 
 type SiteLayoutProps = {
   children: React.ReactNode;
@@ -25,7 +33,15 @@ export async function generateMetadata({
   params,
 }: SiteLayoutProps): Promise<Metadata> {
   const { siteSlug } = await params;
-  const siteData = getSiteBySlug(siteSlug);
+  let siteData;
+  try {
+    siteData = await getSiteBySlug(siteSlug);
+  } catch (error) {
+    if (!isMissingSiteError(error)) {
+      console.error("[db] failed to load site metadata", error);
+    }
+    return {};
+  }
 
   if (!siteData) {
     return {};
@@ -92,11 +108,20 @@ export async function generateMetadata({
 export default async function SiteLayout({ children, params }: SiteLayoutProps) {
   const { siteSlug } = await params;
 
-  if (!isValidSiteSlug(siteSlug)) {
-    notFound();
-  }
+  let siteData;
+  try {
+    if (!(await isValidSiteSlug(siteSlug))) {
+      notFound();
+    }
 
-  const siteData = getSiteBySlug(siteSlug);
+    siteData = await getSiteBySlug(siteSlug);
+  } catch (error) {
+    if (isMissingSiteError(error)) {
+      notFound();
+    }
+    console.error("[db] failed to load site layout", error);
+    return <DatabaseUnavailable message={formatDatabaseLoadError(error)} />;
+  }
 
   if (!siteData) {
     notFound();
@@ -105,31 +130,23 @@ export default async function SiteLayout({ children, params }: SiteLayoutProps) 
   const host = (await headers()).get("host") ?? "";
   const publicBasePath = resolvePublicBasePath(siteSlug, host);
   const isCustomDomain = publicBasePath === "";
-  const isSideSleeper = siteHasMattressPillowNav(siteSlug);
-  const isEditorial = siteUsesEditorialCatalog(siteSlug);
+  const theme = getThemeClasses(getSiteTheme(siteSlug));
 
   return (
     <SiteProvider
-      siteSlug={siteSlug as SiteSlug}
+      siteSlug={siteSlug}
+      siteData={siteData}
       publicBasePath={publicBasePath}
       isCustomDomain={isCustomDomain}
     >
-      <div
-        className={
-          isSideSleeper
-            ? "flex flex-1 flex-col bg-ss-paper text-ss-ink"
-            : isEditorial
-              ? "flex flex-1 flex-col bg-fwn-void text-fwn-ivory"
-              : "flex flex-1 flex-col"
-        }
-      >
-      <JsonLd
-        data={[buildWebSiteSchema(siteData), buildOrganizationSchema(siteData)]}
-      />
-      {!siteUsesEditorialCatalog(siteSlug) && <AdSenseScript />}
-      <Header />
-      {children}
-      <Footer />
+      <div className={theme.shell}>
+        <JsonLd
+          data={[buildWebSiteSchema(siteData), buildOrganizationSchema(siteData)]}
+        />
+        {siteHasFeature(siteSlug, "ads") && <AdSenseScript />}
+        <Header />
+        {children}
+        <Footer />
       </div>
     </SiteProvider>
   );

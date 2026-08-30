@@ -3,12 +3,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AffiliateCtaLink } from "@/components/AffiliateCtaLink";
 import { ProductMediaImage } from "@/components/ProductMediaImage";
+import { TrackingSourceProvider } from "@/context/TrackingSourceContext";
 import { siteSlugs } from "@/data/sites";
 import {
   getDirectoryCategory,
   getDirectoryProductByReviewSlug,
   getDirectoryProducts,
-  siteUsesEditorialCatalog,
 } from "@/lib/directory-catalog";
 import {
   getDirectoryCategoryPath,
@@ -18,6 +18,7 @@ import {
 import { getRequestPublicBasePath } from "@/lib/request-paths";
 import { buildPageOpenGraph } from "@/lib/seo";
 import { getSiteBySlug, isValidSiteSlug } from "@/lib/site";
+import { canAccessRoute } from "@/lib/site-routes";
 
 type ReviewPageProps = {
   params: Promise<{
@@ -41,7 +42,7 @@ export async function generateMetadata({
   params,
 }: ReviewPageProps): Promise<Metadata> {
   const { siteSlug, categorySlug, reviewSlug } = await params;
-  const siteData = getSiteBySlug(siteSlug);
+  const siteData = await getSiteBySlug(siteSlug);
   const product = getDirectoryProductByReviewSlug(
     siteSlug,
     categorySlug,
@@ -73,7 +74,7 @@ export async function generateMetadata({
 export default async function DirectoryReviewPage({ params }: ReviewPageProps) {
   const { siteSlug, categorySlug, reviewSlug } = await params;
 
-  if (!isValidSiteSlug(siteSlug) || !siteUsesEditorialCatalog(siteSlug)) {
+  if (!(await isValidSiteSlug(siteSlug)) || !canAccessRoute(siteSlug, "catalog")) {
     notFound();
   }
 
@@ -86,7 +87,7 @@ export default async function DirectoryReviewPage({ params }: ReviewPageProps) {
     notFound();
   }
 
-  const siteData = getSiteBySlug(siteSlug);
+  const siteData = await getSiteBySlug(siteSlug);
   if (!siteData) {
     notFound();
   }
@@ -99,8 +100,19 @@ export default async function DirectoryReviewPage({ params }: ReviewPageProps) {
     product.categorySlug,
   );
   const categoryName = category?.name ?? "category";
+  const cmsProduct = siteData.products.find((item) => item.slug === product.slug);
+  const path = getPublicPath(
+    siteSlug,
+    `/${product.categorySlug}/${product.reviewSlug}`,
+  );
+  const productTarget = cmsProduct?.id
+    ? { type: "product", id: cmsProduct.id }
+    : { type: "external" as const };
 
   return (
+    <TrackingSourceProvider
+      source={{ type: "product", id: cmsProduct?.id, path }}
+    >
     <main className="mx-auto max-w-3xl px-4 py-12 md:py-16">
       <Link
         href={categoryHref}
@@ -145,7 +157,12 @@ export default async function DirectoryReviewPage({ params }: ReviewPageProps) {
           .
         </p>
         <div className="mt-6">
-          <AffiliateCtaLink href={product.affiliateUrl}>
+          <AffiliateCtaLink
+            href={product.affiliateUrl}
+            placement="catalog-hero-cta"
+            target={productTarget}
+            label={product.ctaLabel}
+          >
             {product.ctaLabel}
           </AffiliateCtaLink>
         </div>
@@ -183,11 +200,17 @@ export default async function DirectoryReviewPage({ params }: ReviewPageProps) {
           earn a commission if you buy, at no extra cost to you.
         </p>
         <div className="mt-6">
-          <AffiliateCtaLink href={product.affiliateUrl}>
+          <AffiliateCtaLink
+            href={product.affiliateUrl}
+            placement="catalog-footer-cta"
+            target={productTarget}
+            label={product.ctaLabel}
+          >
             {product.ctaLabel}
           </AffiliateCtaLink>
         </div>
       </section>
     </main>
+    </TrackingSourceProvider>
   );
 }

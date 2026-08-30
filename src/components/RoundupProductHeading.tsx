@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { TrackedLink } from "@/components/TrackedLink";
 import type { Product } from "@/types/site";
 import { getProductPath } from "@/lib/paths";
 
@@ -49,12 +49,19 @@ export function RoundupProductHeading({
       {index + 1}){" "}
       {product ? (
         <>
-          <Link
+          <TrackedLink
             href={getProductPath(publicBasePath, product.slug)}
+            placement="roundup-product-heading"
+            target={
+              product.id
+                ? { type: "product", id: product.id }
+                : { type: "path" }
+            }
+            label={name}
             className="text-ss-navy hover:text-ss-blue"
           >
             {name}
-          </Link>
+          </TrackedLink>
           {rest}
         </>
       ) : (

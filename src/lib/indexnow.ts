@@ -1,26 +1,19 @@
 import { createHash } from "node:crypto";
 import { getPublicAbsoluteUrl } from "@/lib/paths";
-import { siteUsesAboutPage } from "@/lib/about";
 import {
   getDirectoryCategories,
   getDirectoryProducts,
-  siteUsesEditorialCatalog,
 } from "@/lib/directory-catalog";
-import { getDirectoryBlogPosts } from "@/lib/directory-blog";
-import { siteUsesPrivacyPolicy } from "@/lib/privacy-policy";
+import { getSiteBySlug, isValidSiteSlug } from "@/data/sites";
 import {
-  getArticles,
-  getArticlesFeaturingProduct,
-  getComparisonProducts,
-  getFeaturedHomeReviews,
-  getFeaturedProducts,
-  getProductBySlug,
-  getProducts,
-  getSiteBySlug,
-  isValidSiteSlug,
-  siteHasMattressPillowNav,
-  type SiteSlug,
+  articlesFeaturingProductFrom,
+  comparisonProductsFrom,
+  featuredHomeReviewsFrom,
+  featuredProductsFrom,
+  productBySlugFrom,
 } from "@/lib/site";
+import { canAccessRoute } from "@/lib/site-routes";
+import { getArticleConfig, siteHasFeature } from "@/lib/site-config";
 import type { Article, Product, SiteData } from "@/types/site";
 
 const INDEXNOW_ENDPOINT = "https://api.indexnow.org/indexnow";
@@ -200,7 +193,6 @@ function siteChrome(siteData: SiteData) {
     headerBrandImage: siteData.headerBrandImage,
     footer: siteData.footer,
     siteUrl: siteData.siteUrl,
-    ratingScale: siteData.ratingScale,
   };
 }
 
@@ -226,7 +218,7 @@ function articleListPayload(article: Article) {
 }
 
 function linkedCatalogProducts(
-  siteSlug: SiteSlug,
+  siteData: SiteData,
   article: Article,
 ): Product[] {
   if (article.kind !== "product-roundup") {
@@ -234,8 +226,9 @@ function linkedCatalogProducts(
   }
 
   return article.products.flatMap((section) => {
-    if (!section.productSlug) return [];
-    const product = getProductBySlug(siteSlug, section.productSlug);
+    const product = section.productSlug
+      ? productBySlugFrom(siteData, section.productSlug)
+      : undefined;
     return product ? [product] : [];
   });
 }
@@ -258,7 +251,7 @@ export function getIndexNowUrlSnapshots(siteSlug: string): IndexNowUrlSnapshot[]
   const abs = (path: string) =>
     getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, path);
 
-  if (siteUsesEditorialCatalog(siteSlug)) {
+  if (siteHasFeature(siteSlug, "catalog")) {
     const snapshots: IndexNowUrlSnapshot[] = [
       snapshotFor(abs("/"), chrome, {
         hero: siteData.hero,
@@ -293,10 +286,12 @@ export function getIndexNowUrlSnapshots(siteSlug: string): IndexNowUrlSnapshot[]
       );
     }
 
-    const blogPosts = getDirectoryBlogPosts(siteSlug);
-    if (blogPosts.length > 0) {
+    const articleRoute = getArticleConfig(siteSlug)?.route;
+    const blogPosts =
+      articleRoute === "blog" ? siteData.articles : [];
+    if (blogPosts.length > 0 && articleRoute) {
       snapshots.push(
-        snapshotFor(abs("/blog"), chrome, {
+        snapshotFor(abs(`/${articleRoute}`), chrome, {
           posts: blogPosts.map((post) => ({
             slug: post.slug,
             title: post.title,
@@ -308,14 +303,16 @@ export function getIndexNowUrlSnapshots(siteSlug: string): IndexNowUrlSnapshot[]
     }
 
     for (const post of blogPosts) {
-      snapshots.push(snapshotFor(abs(`/blog/${post.slug}`), chrome, post));
+      snapshots.push(
+        snapshotFor(abs(`/${articleRoute}/${post.slug}`), chrome, post),
+      );
     }
 
     return snapshots;
   }
 
-  const products = getProducts(siteSlug);
-  const articles = getArticles(siteSlug);
+  const products = siteData.products;
+  const articles = siteData.articles;
   const snapshots: IndexNowUrlSnapshot[] = [
     snapshotFor(abs("/"), chrome, {
       hero: siteData.hero,
@@ -324,8 +321,8 @@ export function getIndexNowUrlSnapshots(siteSlug: string): IndexNowUrlSnapshot[]
       newsletter: siteData.newsletter,
       featuredReviewSlugs: siteData.featuredReviewSlugs,
       scienceArticleSlug: siteData.scienceArticleSlug,
-      featuredProducts: getFeaturedProducts(siteSlug),
-      featuredReviews: getFeaturedHomeReviews(siteSlug),
+      featuredProducts: featuredProductsFrom(siteData),
+      featuredReviews: featuredHomeReviewsFrom(siteData),
     }),
     snapshotFor(abs("/products"), chrome, {
       productDirectory: siteData.productDirectory,
@@ -333,11 +330,11 @@ export function getIndexNowUrlSnapshots(siteSlug: string): IndexNowUrlSnapshot[]
     }),
   ];
 
-  if (!siteHasMattressPillowNav(siteSlug)) {
+  if (canAccessRoute(siteSlug, "comparisons")) {
     snapshots.push(
       snapshotFor(abs("/comparisons"), chrome, {
         comparisonTable: siteData.comparisonTable,
-        products: getComparisonProducts(siteSlug),
+        products: comparisonProductsFrom(siteData),
       }),
     );
   }
@@ -346,11 +343,11 @@ export function getIndexNowUrlSnapshots(siteSlug: string): IndexNowUrlSnapshot[]
     snapshotFor(abs("/buying-guide"), chrome, siteData.buyingGuide),
   );
 
-  if (siteUsesAboutPage(siteSlug)) {
+  if (canAccessRoute(siteSlug, "about")) {
     snapshots.push(snapshotFor(abs("/about"), chrome, { page: "about" }));
   }
 
-  if (siteUsesPrivacyPolicy(siteSlug)) {
+  if (canAccessRoute(siteSlug, "privacy")) {
     snapshots.push(
       snapshotFor(abs("/privacy-policy"), chrome, { page: "privacy-policy" }),
     );
@@ -366,8 +363,8 @@ export function getIndexNowUrlSnapshots(siteSlug: string): IndexNowUrlSnapshot[]
     snapshots.push(
       snapshotFor(abs(`/products/${product.slug}`), chrome, {
         product,
-        featuredGuideSlugs: getArticlesFeaturingProduct(
-          siteSlug,
+        featuredGuideSlugs: articlesFeaturingProductFrom(
+          siteData,
           product.slug,
         ).map((article) => article.slug),
       }),
@@ -386,7 +383,7 @@ export function getIndexNowUrlSnapshots(siteSlug: string): IndexNowUrlSnapshot[]
     snapshots.push(
       snapshotFor(abs(`/reviews/${article.slug}`), chrome, {
         article,
-        catalogProducts: linkedCatalogProducts(siteSlug, article),
+        catalogProducts: linkedCatalogProducts(siteData, article),
       }),
     );
   }

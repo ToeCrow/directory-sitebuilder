@@ -1,19 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import type { SiteSlug } from "@/data/sites";
-import { usePublicBasePath } from "@/context/SiteContext";
-import {
-  getDirectoryProducts,
-  getSiteData,
-} from "@/lib/site";
+import { usePublicBasePath, useSiteData } from "@/context/SiteContext";
+import { directoryProductsFrom } from "@/lib/site-view";
 import type { ProductCategory } from "@/types/site";
 import { ProductCard } from "@/components/ProductCard";
 import { cn } from "@/lib/cn";
 import { getProductsIndexPath } from "@/lib/paths";
 
 type ProductDirectoryProps = {
-  siteSlug: SiteSlug;
+  siteSlug: string;
   className?: string;
   category?: Extract<ProductCategory, "mattress" | "pillow" | "topper">;
   showCategoryFilters?: boolean;
@@ -26,11 +22,8 @@ export function ProductDirectory({
   showCategoryFilters = false,
 }: ProductDirectoryProps) {
   const publicBasePath = usePublicBasePath();
-  const siteData = getSiteData(siteSlug);
-  const directoryProducts = getDirectoryProducts(
-    siteSlug,
-    category,
-  );
+  const siteData = useSiteData();
+  const directoryProducts = directoryProductsFrom(siteData, category);
   const { productDirectory } = siteData;
 
   const filters = [

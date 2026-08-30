@@ -27,15 +27,18 @@ import {
 } from "@/lib/related-articles";
 import { RoundupProductHeading } from "@/components/RoundupProductHeading";
 import { RoundupProductPageCta } from "@/components/RoundupProductPageCta";
+import { TiptapArticleBody } from "@/components/TiptapArticleBody";
+import { TrackedLink } from "@/components/TrackedLink";
+import { TrackingSourceProvider } from "@/context/TrackingSourceContext";
+import { isTiptapDoc } from "@/lib/article-content";
 import {
   getArticleBySlug,
-  getArticles,
-  getLegacyDirectorySiteSlugs,
-  getProductBySlug,
   getSiteBySlug,
+  getStaticArticles,
   isValidSiteSlug,
+  roundupProductFrom,
 } from "@/lib/site";
-import { siteUsesEditorialCatalog } from "@/lib/directory-catalog";
+import { canAccessRoute, getStaticParamSiteSlugsForRoute } from "@/lib/site-routes";
 import type { EditorialFigure } from "@/types/site";
 
 type ReviewPageProps = {
@@ -43,8 +46,8 @@ type ReviewPageProps = {
 };
 
 export function generateStaticParams() {
-  return getLegacyDirectorySiteSlugs().flatMap((siteSlug) =>
-    getArticles(siteSlug).map((article) => ({
+  return getStaticParamSiteSlugsForRoute("reviews").flatMap((siteSlug) =>
+    getStaticArticles(siteSlug).map((article) => ({
       siteSlug,
       slug: article.slug,
     })),
@@ -56,12 +59,12 @@ export async function generateMetadata({
 }: ReviewPageProps): Promise<Metadata> {
   const { siteSlug, slug } = await params;
 
-  if (!isValidSiteSlug(siteSlug)) {
+  if (!(await isValidSiteSlug(siteSlug))) {
     return { title: "Review not found" };
   }
 
-  const article = getArticleBySlug(siteSlug, slug);
-  const siteData = getSiteBySlug(siteSlug);
+  const article = await getArticleBySlug(siteSlug, slug);
+  const siteData = await getSiteBySlug(siteSlug);
 
   if (!article || !siteData) {
     return { title: "Review not found" };
@@ -162,12 +165,12 @@ function EditorialFigureBlock({ figure }: { figure: EditorialFigure }) {
 export default async function ReviewPage({ params }: ReviewPageProps) {
   const { siteSlug, slug } = await params;
 
-  if (!isValidSiteSlug(siteSlug) || siteUsesEditorialCatalog(siteSlug)) {
+  if (!(await isValidSiteSlug(siteSlug)) || !canAccessRoute(siteSlug, "reviews")) {
     notFound();
   }
 
-  const article = getArticleBySlug(siteSlug, slug);
-  const siteData = getSiteBySlug(siteSlug);
+  const article = await getArticleBySlug(siteSlug, slug);
+  const siteData = await getSiteBySlug(siteSlug);
 
   if (!article || !siteData) {
     notFound();
@@ -178,13 +181,16 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
   const isRoundup = article.kind === "product-roundup";
   const publicBasePath = await getRequestPublicBasePath(siteSlug);
   const reviewsHref = getReviewsIndexPath(publicBasePath);
-  const inlineRelated = getInlineRelatedArticle(siteSlug, article);
+  const inlineRelated = getInlineRelatedArticle(siteData, article);
   const inlineRelatedHref = inlineRelated
     ? getArticlePath(publicBasePath, inlineRelated.slug)
     : null;
-  const relatedArticles = getBottomRelatedArticles(siteSlug, article);
+  const relatedArticles = getBottomRelatedArticles(siteData, article);
 
   return (
+    <TrackingSourceProvider
+      source={{ type: "article", id: article.id, path }}
+    >
     <main className="py-12 md:py-16">
       <JsonLd
         data={buildArticleSchema({
@@ -233,9 +239,8 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
         {isRoundup && article.products.length > 0 && (
           <div className="mt-8 space-y-16">
             {article.products.map((product, index) => {
-              const catalogProduct = product.productSlug
-                ? getProductBySlug(siteSlug, product.productSlug)
-                : undefined;
+              const catalogProduct = roundupProductFrom(siteData, product);
+              const image = catalogProduct?.image ?? product.image;
               const showInlineRelated =
                 Boolean(inlineRelated && inlineRelatedHref) &&
                 index ===
@@ -260,27 +265,34 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
                     </p>
                   )}
 
-                  {product.image && (
+                  {image && (
                     <figure className="mt-6 overflow-hidden bg-ss-mist">
                       {catalogProduct ? (
-                        <Link
+                        <TrackedLink
                           href={getProductPath(
                             publicBasePath,
                             catalogProduct.slug,
                           )}
+                          placement="roundup-product-image"
+                          target={
+                            catalogProduct.id
+                              ? { type: "product", id: catalogProduct.id }
+                              : { type: "path" }
+                          }
+                          label={catalogProduct.name}
                         >
                           <Image
-                            src={product.image.src}
-                            alt={product.image.alt}
+                            src={image.src}
+                            alt={image.alt}
                             width={1200}
                             height={800}
                             className="h-auto w-full"
                           />
-                        </Link>
+                        </TrackedLink>
                       ) : (
                         <Image
-                          src={product.image.src}
-                          alt={product.image.alt}
+                          src={image.src}
+                          alt={image.alt}
                           width={1200}
                           height={800}
                           className="h-auto w-full"
@@ -367,7 +379,17 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
           <ArticleFaq faqs={article.faqs} />
         )}
 
-        {isEditorial && (
+        {isEditorial && isTiptapDoc(article.body) && (
+          <TiptapArticleBody
+            doc={article.body}
+            siteSlug={siteSlug}
+            publicBasePath={publicBasePath}
+            articles={siteData.articles}
+            sourceArticleId={article.id}
+          />
+        )}
+
+        {isEditorial && !isTiptapDoc(article.body) && (
           <div className="mt-8 space-y-16">
             {article.sections.map((section, index) => {
               const showInlineRelated =
@@ -479,6 +501,7 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
         <RelatedArticles
           articles={relatedArticles}
           publicBasePath={publicBasePath}
+          siteSlug={siteSlug}
         />
 
         <div className="mt-12 border-t border-ss-navy/10 pt-8">
@@ -491,5 +514,6 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
         </div>
       </article>
     </main>
+    </TrackingSourceProvider>
   );
 }

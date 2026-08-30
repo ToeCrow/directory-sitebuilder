@@ -1,171 +1,175 @@
-import { siteUsesEditorialCatalog } from "@/lib/directory-catalog";
-import type {
-  Article,
-  Product,
-  ProductCategory,
-  ReviewCategory,
-} from "@/types/site";
+import { cache } from "react";
 import {
-  getSiteBySlug,
-  siteSlugs,
-  type SiteSlug,
+  getSiteBySlug as getStaticSiteBySlug,
+  siteSlugs as staticSiteSlugs,
 } from "@/data/sites";
+import { hydrateSiteData } from "@/lib/db/hydrate";
+import { getStaticParamSiteSlugsForRoute } from "@/lib/site-routes";
+import {
+  countSites,
+  findSiteBySlug,
+  listPublishedSiteSlugs,
+} from "@/lib/db/repositories/sites";
+import {
+  articleBySlugFrom,
+  articlesByReviewCategoryFrom,
+  articlesFeaturingProductFrom,
+  comparisonProductsFrom,
+  directoryProductsFrom,
+  featuredHomeReviewsFrom,
+  featuredProductsFrom,
+  productBySlugFrom,
+  productsByCategoryFrom,
+} from "@/lib/site-view";
+import type { Article, Product, ProductCategory, ReviewCategory, SiteData } from "@/types/site";
 
-export { getSiteBySlug, isValidSiteSlug, siteSlugs, getAllSites } from "@/data/sites";
-export type { SiteSlug } from "@/data/sites";
+export type { SiteData };
+export type SiteSlug = string;
 
-export function getSiteData(siteSlug: SiteSlug) {
-  return getSiteBySlug(siteSlug)!;
-}
+export {
+  articleBySlugFrom,
+  articlesByReviewCategoryFrom,
+  articlesFeaturingProductFrom,
+  comparisonProductsFrom,
+  directoryProductsFrom,
+  featuredHomeReviewsFrom,
+  featuredProductsFrom,
+  getComparisonValue,
+  productByIdFrom,
+  productBySlugFrom,
+  roundupProductFrom,
+  productsByCategoryFrom,
+  siteHasMattressPillowNav,
+} from "@/lib/site-view";
 
-export function getProducts(siteSlug: SiteSlug): Product[] {
-  return getSiteData(siteSlug).products;
-}
+export const getSiteData = cache(async (siteSlug: string): Promise<SiteData> => {
+  return hydrateSiteData(siteSlug, { publishedOnly: true });
+});
 
-export function getProductBySlug(
-  siteSlug: SiteSlug,
-  slug: string,
-): Product | undefined {
-  return getProducts(siteSlug).find((product) => product.slug === slug);
-}
-
-export function getArticles(siteSlug: SiteSlug): Article[] {
-  return getSiteData(siteSlug).articles;
-}
-
-export function getArticleBySlug(
-  siteSlug: SiteSlug,
-  slug: string,
-): Article | undefined {
-  return getArticles(siteSlug).find((article) => article.slug === slug);
-}
-
-/** Roundup guides that reference a catalog product via productSlug. */
-export function getArticlesFeaturingProduct(
-  siteSlug: SiteSlug,
-  productSlug: string,
-): Article[] {
-  return getArticles(siteSlug).filter(
-    (article) =>
-      article.kind === "product-roundup" &&
-      article.products.some((product) => product.productSlug === productSlug),
+export function isMissingSiteError(error: unknown): boolean {
+  if (!(error instanceof Error)) {
+    return false;
+  }
+  return (
+    error.message.startsWith("Site not found:") ||
+    error.message.startsWith("Site is not published:")
   );
 }
 
-export function getArticlesByReviewCategory(
-  siteSlug: SiteSlug,
+export async function getSiteBySlug(
+  slug: string,
+): Promise<SiteData | undefined> {
+  try {
+    return await getSiteData(slug);
+  } catch (error) {
+    if (isMissingSiteError(error)) {
+      return undefined;
+    }
+    console.error(`[db] failed to load site "${slug}"`, error);
+    throw error;
+  }
+}
+
+export async function getAllSites(): Promise<SiteData[]> {
+  const slugs = await listPublishedSiteSlugs();
+  const sites: SiteData[] = [];
+  for (const slug of slugs) {
+    const site = await getSiteBySlug(slug);
+    if (site) {
+      sites.push(site);
+    }
+  }
+  return sites;
+}
+
+export async function siteSlugs(): Promise<string[]> {
+  return listPublishedSiteSlugs();
+}
+
+export async function isValidSiteSlug(slug: string): Promise<boolean> {
+  const site = await findSiteBySlug(slug);
+  return site != null && site.status === "published";
+}
+
+export async function getProducts(siteSlug: string): Promise<Product[]> {
+  return (await getSiteData(siteSlug)).products;
+}
+
+export async function getProductBySlug(
+  siteSlug: string,
+  slug: string,
+): Promise<Product | undefined> {
+  return productBySlugFrom(await getSiteData(siteSlug), slug);
+}
+
+export async function getArticles(siteSlug: string): Promise<Article[]> {
+  return (await getSiteData(siteSlug)).articles;
+}
+
+export async function getArticleBySlug(
+  siteSlug: string,
+  slug: string,
+): Promise<Article | undefined> {
+  return articleBySlugFrom(await getSiteData(siteSlug), slug);
+}
+
+export async function getArticlesFeaturingProduct(
+  siteSlug: string,
+  productSlug: string,
+): Promise<Article[]> {
+  return articlesFeaturingProductFrom(await getSiteData(siteSlug), productSlug);
+}
+
+export async function getArticlesByReviewCategory(
+  siteSlug: string,
   category?: ReviewCategory,
-): Article[] {
-  const articles = getArticles(siteSlug);
-  if (!category) return articles;
-  return articles.filter((article) => article.reviewCategory === category);
+): Promise<Article[]> {
+  return articlesByReviewCategoryFrom(await getSiteData(siteSlug), category);
 }
 
-/**
- * Homepage Featured Reviews: keyword guides + science + latest
- * (if science is latest, use 2nd-latest non-science instead).
- */
-export function getFeaturedHomeReviews(siteSlug: SiteSlug): Article[] {
-  const siteData = getSiteData(siteSlug);
-  const articles = getArticles(siteSlug);
-  const bySlug = new Map(articles.map((article) => [article.slug, article]));
-  const featured: Article[] = [];
-  const seen = new Set<string>();
-
-  const push = (article: Article | undefined) => {
-    if (!article || seen.has(article.slug)) return;
-    seen.add(article.slug);
-    featured.push(article);
-  };
-
-  for (const slug of siteData.featuredReviewSlugs ?? []) {
-    push(bySlug.get(slug));
-  }
-
-  const scienceSlug = siteData.scienceArticleSlug;
-  if (scienceSlug) {
-    push(bySlug.get(scienceSlug));
-  }
-
-  const rankedNewestFirst = articles
-    .map((article, index) => ({ article, index }))
-    .sort((a, b) => {
-      const dateA = a.article.publishedAt ?? "";
-      const dateB = b.article.publishedAt ?? "";
-      if (dateA !== dateB) {
-        return dateB.localeCompare(dateA);
-      }
-      return b.index - a.index;
-    })
-    .map(({ article }) => article);
-
-  const latest = rankedNewestFirst[0];
-  if (!latest) {
-    return featured;
-  }
-
-  if (scienceSlug && latest.slug === scienceSlug) {
-    const secondLatestNonScience = rankedNewestFirst.find(
-      (article) => article.slug !== scienceSlug,
-    );
-    push(secondLatestNonScience);
-  } else {
-    push(latest);
-  }
-
-  return featured;
+export async function getFeaturedHomeReviews(
+  siteSlug: string,
+): Promise<Article[]> {
+  return featuredHomeReviewsFrom(await getSiteData(siteSlug));
 }
 
-export function getProductsByCategory(
-  siteSlug: SiteSlug,
+export async function getProductsByCategory(
+  siteSlug: string,
   category: ProductCategory,
-): Product[] {
-  return getProducts(siteSlug).filter((product) => product.category === category);
+): Promise<Product[]> {
+  return productsByCategoryFrom(await getSiteData(siteSlug), category);
 }
 
-export function getFeaturedProducts(siteSlug: SiteSlug): Product[] {
-  return getProducts(siteSlug)
-    .filter((product) => product.featuredRank !== null)
-    .sort((a, b) => a.featuredRank! - b.featuredRank!);
+export async function getFeaturedProducts(siteSlug: string): Promise<Product[]> {
+  return featuredProductsFrom(await getSiteData(siteSlug));
 }
 
-export function getComparisonProducts(siteSlug: SiteSlug): Product[] {
-  return getProducts(siteSlug)
-    .filter(
-      (product) =>
-        product.comparison !== undefined &&
-        product.comparisonRank !== undefined &&
-        (product.category !== "pillow"),
-    )
-    .sort((a, b) => (a.comparisonRank ?? 0) - (b.comparisonRank ?? 0));
+export async function getComparisonProducts(
+  siteSlug: string,
+): Promise<Product[]> {
+  return comparisonProductsFrom(await getSiteData(siteSlug));
 }
 
-export function getDirectoryProducts(
-  siteSlug: SiteSlug,
+export async function getDirectoryProducts(
+  siteSlug: string,
   category?: ProductCategory,
-): Product[] {
-  const list = category
-    ? getProductsByCategory(siteSlug, category)
-    : getProducts(siteSlug);
-  return [...list].sort((a, b) => a.directoryOrder - b.directoryOrder);
+): Promise<Product[]> {
+  return directoryProductsFrom(await getSiteData(siteSlug), category);
 }
 
-export function getComparisonValue(
-  product: Product,
-  rowKey: string,
-): string | boolean | undefined {
-  return product.comparison?.[rowKey];
+export function getLegacyDirectorySiteSlugs(): string[] {
+  return getStaticParamSiteSlugsForRoute("product-detail", staticSiteSlugs);
 }
 
-export function siteHasMattressPillowNav(siteSlug: string): boolean {
-  return siteSlug === "side-sleeper";
+export function getStaticProducts(siteSlug: string): Product[] {
+  return getStaticSiteBySlug(siteSlug)?.products ?? [];
 }
 
-/** Editorial star ratings on product cards and product pages (not used on Side Sleeper). */
-export function siteShowsProductRatings(siteSlug: string): boolean {
-  return !siteHasMattressPillowNav(siteSlug);
+export function getStaticArticles(siteSlug: string): Article[] {
+  return getStaticSiteBySlug(siteSlug)?.articles ?? [];
 }
 
-export function getLegacyDirectorySiteSlugs(): SiteSlug[] {
-  return siteSlugs.filter((slug) => !siteUsesEditorialCatalog(slug));
+/** Admin / tooling — includes draft sites if needed later. */
+export async function getSiteCount(): Promise<number> {
+  return countSites();
 }

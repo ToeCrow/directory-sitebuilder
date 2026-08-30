@@ -4,18 +4,16 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AffiliateDisclosure } from "@/components/AffiliateDisclosure";
 import { ReviewListItem } from "@/components/ReviewListItem";
+import { TrackedLink } from "@/components/TrackedLink";
+import { TrackingSourceProvider } from "@/context/TrackingSourceContext";
 import { getDefaultOgImage, OG_IMAGE_HEIGHT, OG_IMAGE_WIDTH } from "@/lib/seo";
 import {
   getArticlesFeaturingProduct,
-  getLegacyDirectorySiteSlugs,
   getProductBySlug,
-  getProducts,
   getSiteBySlug,
+  getStaticProducts,
   isValidSiteSlug,
-  siteHasMattressPillowNav,
-  siteShowsProductRatings,
 } from "@/lib/site";
-import { siteUsesEditorialCatalog } from "@/lib/directory-catalog";
 import {
   getArticlePath,
   getPublicPath,
@@ -23,14 +21,16 @@ import {
 } from "@/lib/paths";
 import { getRequestPublicBasePath } from "@/lib/request-paths";
 import { buyLinkRel, getBuyUrl } from "@/lib/product-links";
+import { siteHasFeature } from "@/lib/site-config";
+import { canAccessRoute, getStaticParamSiteSlugsForRoute } from "@/lib/site-routes";
 
 type ProductPageProps = {
   params: Promise<{ siteSlug: string; slug: string }>;
 };
 
 export function generateStaticParams() {
-  return getLegacyDirectorySiteSlugs().flatMap((siteSlug) =>
-    getProducts(siteSlug).map((product) => ({
+  return getStaticParamSiteSlugsForRoute("product-detail").flatMap((siteSlug) =>
+    getStaticProducts(siteSlug).map((product) => ({
       siteSlug,
       slug: product.slug,
     })),
@@ -42,12 +42,12 @@ export async function generateMetadata({
 }: ProductPageProps): Promise<Metadata> {
   const { siteSlug, slug } = await params;
 
-  if (!isValidSiteSlug(siteSlug)) {
+  if (!(await isValidSiteSlug(siteSlug))) {
     return { title: "Product not found" };
   }
 
-  const product = getProductBySlug(siteSlug, slug);
-  const siteData = getSiteBySlug(siteSlug);
+  const product = await getProductBySlug(siteSlug, slug);
+  const siteData = await getSiteBySlug(siteSlug);
 
   if (!product || !siteData) {
     return { title: "Product not found" };
@@ -111,21 +111,28 @@ export async function generateMetadata({
 export default async function ProductPage({ params }: ProductPageProps) {
   const { siteSlug, slug } = await params;
 
-  if (!isValidSiteSlug(siteSlug) || siteUsesEditorialCatalog(siteSlug)) {
+  if (
+    !(await isValidSiteSlug(siteSlug)) ||
+    !canAccessRoute(siteSlug, "product-detail")
+  ) {
     notFound();
   }
 
-  const product = getProductBySlug(siteSlug, slug);
-  const siteData = getSiteBySlug(siteSlug);
+  const product = await getProductBySlug(siteSlug, slug);
+  const siteData = await getSiteBySlug(siteSlug);
 
   if (!product || !siteData) {
     notFound();
   }
 
   const publicBasePath = await getRequestPublicBasePath(siteSlug);
-  const featuredGuides = getArticlesFeaturingProduct(siteSlug, product.slug);
+  const featuredGuides = await getArticlesFeaturingProduct(siteSlug, product.slug);
+  const path = getPublicPath(siteSlug, `/products/${product.slug}`);
 
   return (
+    <TrackingSourceProvider
+      source={{ type: "product", id: product.id, path }}
+    >
     <main className="py-12 md:py-16">
       <article className="mx-auto max-w-3xl px-4">
         <Link
@@ -145,14 +152,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             {product.name}
           </h1>
           <p className="mt-2 text-sm font-medium text-ss-navy/60">
-            {siteShowsProductRatings(siteSlug) ? (
-              <>
-                Rating: {product.rating}/{siteData.ratingScale} ·{" "}
-                {product.priceDisplay}
-              </>
-            ) : (
-              product.priceDisplay
-            )}
+            {product.priceDisplay}
           </p>
           <p className="mt-4 text-lg leading-relaxed text-ss-ink/80">
             {product.shortDescription}
@@ -268,6 +268,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   <ReviewListItem
                     article={article}
                     href={getArticlePath(publicBasePath, article.slug)}
+                    placement="featured-guides"
                   />
                 </li>
               ))}
@@ -277,20 +278,28 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
         <div className="mt-10 bg-ss-navy px-6 py-8 text-ss-paper">
           <p className="text-sm leading-relaxed text-ss-mist">
-            {siteHasMattressPillowNav(siteSlug)
+            {siteHasFeature(siteSlug, "product-nav")
               ? `Ready to try ${product.name}? Visit the official site to check availability and current price.`
               : `Ready to try ${product.name}? Visit the official site to learn more or request a demo.`}
           </p>
-          <a
+          <TrackedLink
             href={getBuyUrl(product)}
-            target="_blank"
+            external
             rel={buyLinkRel(product)}
+            placement="hub-cta"
+            target={
+              product.id
+                ? { type: "product", id: product.id }
+                : { type: "external" }
+            }
+            label={`Visit ${product.name}`}
             className="mt-4 inline-flex items-center rounded-lg bg-ss-paper px-6 py-3 text-sm font-semibold text-ss-navy transition-colors hover:bg-ss-mist"
           >
             Visit {product.name}
-          </a>
+          </TrackedLink>
         </div>
       </article>
     </main>
+    </TrackingSourceProvider>
   );
 }

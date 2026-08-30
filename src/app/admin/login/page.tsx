@@ -27,7 +27,18 @@ export default function AdminLoginPage() {
       return;
     }
 
-    setError("Invalid password");
+    let message = "Invalid password";
+    try {
+      const body = (await response.json()) as { error?: string };
+      if (body.error) {
+        message = body.error;
+      }
+    } catch {
+      if (response.status >= 500) {
+        message = "Server misconfigured";
+      }
+    }
+    setError(message);
     setLoading(false);
   }
 

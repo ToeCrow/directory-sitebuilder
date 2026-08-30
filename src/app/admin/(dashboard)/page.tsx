@@ -1,14 +1,63 @@
 import Link from "next/link";
-import { getAllSites } from "@/data/sites";
+import { listAdminSites } from "@/lib/admin/sites";
 
-const placeholderSections = [
-  { href: "/admin/products", title: "Products", description: "Manage product listings across sites." },
-  { href: "/admin/faq", title: "FAQ", description: "Edit FAQ entries per directory site." },
-  { href: "/admin/settings", title: "Settings", description: "Platform and site configuration." },
+export const dynamic = "force-dynamic";
+
+const contentSections = [
+  {
+    href: "/admin/products",
+    title: "Products",
+    description: "Manage product listings and affiliate flags.",
+  },
+  {
+    href: "/admin/top-picks",
+    title: "Top picks",
+    description: "Feature published products and control sort order.",
+  },
+  {
+    href: "/admin/comparison",
+    title: "Comparison",
+    description: "Edit the comparison table title and rows.",
+  },
+  {
+    href: "/admin/faq",
+    title: "FAQ",
+    description: "Edit FAQ entries per directory site.",
+  },
+  {
+    href: "/admin/buying-guide",
+    title: "Buying guide",
+    description: "Manage buying guide title and sections.",
+  },
+  {
+    href: "/admin/footer",
+    title: "Footer",
+    description: "Edit footer tagline and links.",
+  },
+  {
+    href: "/admin/articles",
+    title: "Articles",
+    description: "Write and publish long-form articles.",
+  },
+  {
+    href: "/admin/clicks",
+    title: "Clicks",
+    description: "See which public links get clicks.",
+  },
 ];
 
-export default function AdminDashboardPage() {
-  const sites = getAllSites();
+export default async function AdminDashboardPage() {
+  let sites: Awaited<ReturnType<typeof listAdminSites>> = [];
+  let loadError: string | null = null;
+
+  try {
+    sites = await listAdminSites();
+  } catch (error) {
+    loadError =
+      error instanceof Error
+        ? error.message
+        : "Could not load sites from the database.";
+  }
 
   return (
     <div>
@@ -31,23 +80,54 @@ export default function AdminDashboardPage() {
             Manage sites
           </Link>
         </div>
-        <ul className="mt-4 grid gap-4 sm:grid-cols-2">
-          {sites.map((site) => (
-            <li
-              key={site.slug}
-              className="rounded-xl border border-slate-200 bg-white p-5"
-            >
-              <p className="font-medium text-slate-900">{site.title}</p>
-              <p className="mt-1 text-sm text-slate-500">/{site.slug}</p>
-              <Link
-                href={`/${site.slug}`}
-                className="mt-4 inline-block text-sm font-medium text-blue-600 hover:text-blue-700"
+
+        {loadError && (
+          <p className="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+            {loadError} Start Postgres with <code>npm run db:up</code>, then{" "}
+            <code>npm run db:migrate</code> and <code>npm run db:seed</code>.
+          </p>
+        )}
+
+        {!loadError && (
+          <ul className="mt-4 grid gap-4 sm:grid-cols-2">
+            {sites.map((site) => (
+              <li
+                key={site.id}
+                className="rounded-xl border border-slate-200 bg-white p-5"
               >
-                View public site →
-              </Link>
-            </li>
-          ))}
-        </ul>
+                <p className="font-medium text-slate-900">{site.title}</p>
+                <p className="mt-1 text-sm text-slate-500">
+                  /{site.slug} ·{" "}
+                  <span
+                    className={
+                      site.status === "published"
+                        ? "text-green-700"
+                        : "text-slate-500"
+                    }
+                  >
+                    {site.status}
+                  </span>
+                </p>
+                <div className="mt-4 flex gap-4">
+                  {site.status === "published" && (
+                    <Link
+                      href={`/${site.slug}`}
+                      className="text-sm font-medium text-blue-600 hover:text-blue-700"
+                    >
+                      View public site →
+                    </Link>
+                  )}
+                  <Link
+                    href={`/admin/sites/${site.id}`}
+                    className="text-sm font-medium text-blue-600 hover:text-blue-700"
+                  >
+                    Edit
+                  </Link>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
       </section>
 
       <section className="mt-10" aria-labelledby="sections-heading">
@@ -55,7 +135,7 @@ export default function AdminDashboardPage() {
           Content management
         </h2>
         <ul className="mt-4 grid gap-4 sm:grid-cols-3">
-          {placeholderSections.map((section) => (
+          {contentSections.map((section) => (
             <li key={section.href}>
               <Link
                 href={section.href}

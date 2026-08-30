@@ -2,9 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BuyingGuide } from "@/components/BuyingGuide";
-import { siteUsesEditorialCatalog } from "@/lib/directory-catalog";
 import {
-  getLegacyDirectorySiteSlugs,
   getSiteBySlug,
   isValidSiteSlug,
   type SiteSlug,
@@ -12,21 +10,24 @@ import {
 import { getPublicPath, getSitePath } from "@/lib/paths";
 import { getRequestPublicBasePath } from "@/lib/request-paths";
 import { buildPageOpenGraph } from "@/lib/seo";
+import { canAccessRoute, getStaticParamSiteSlugsForRoute } from "@/lib/site-routes";
 
 type BuyingGuidePageProps = {
   params: Promise<{ siteSlug: string }>;
 };
 
 export function generateStaticParams() {
-  return getLegacyDirectorySiteSlugs().map((siteSlug) => ({ siteSlug }));
+  return getStaticParamSiteSlugsForRoute("buying-guide").map((siteSlug) => ({
+    siteSlug,
+  }));
 }
 
 export async function generateMetadata({
   params,
 }: BuyingGuidePageProps): Promise<Metadata> {
   const { siteSlug } = await params;
-  const siteData = getSiteBySlug(siteSlug);
-  if (!siteData || siteUsesEditorialCatalog(siteSlug)) {
+  const siteData = await getSiteBySlug(siteSlug);
+  if (!siteData || !canAccessRoute(siteSlug, "buying-guide")) {
     return { title: "Buying guide" };
   }
 
@@ -54,11 +55,11 @@ export async function generateMetadata({
 export default async function BuyingGuidePage({ params }: BuyingGuidePageProps) {
   const { siteSlug } = await params;
 
-  if (!isValidSiteSlug(siteSlug) || siteUsesEditorialCatalog(siteSlug)) {
+  if (!(await isValidSiteSlug(siteSlug)) || !canAccessRoute(siteSlug, "buying-guide")) {
     notFound();
   }
 
-  const siteData = getSiteBySlug(siteSlug);
+  const siteData = await getSiteBySlug(siteSlug);
   if (!siteData) {
     notFound();
   }

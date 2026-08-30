@@ -1,0 +1,26 @@
+---
+description: Do not add site-slug special cases; use site capabilities instead
+globs: "src/**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# Site capabilities, not slug checks
+
+New site behavior goes through [`src/lib/site-config.ts`](../../src/lib/site-config.ts). See [docs/site-architecture.md](../../docs/site-architecture.md).
+
+```ts
+// BAD
+if (siteSlug === "side-sleeper") { ... }
+if (siteSlug === "findworthnow") { ... }
+
+// GOOD
+if (siteHasFeature(site, "articles")) { ... }
+if (getSiteTheme(site) === "paper") { ... }
+if (getArticleConfig(site)?.route === "blog") { ... }
+```
+
+- `articles` is one content system. Public name/path come from `articleConfig` (`Reviews`/`/reviews` vs `Blog`/`/blog`), not from separate `blog`/`reviews` features.
+- Catalog product reviews (`/{category}/{slug}`) are the `catalog` feature, not Articles.
+- Themes (`default` | `paper` | `editorial-dark`) are presentation. Do not key CSS off slug.
+- Templates/presets are start config only. Do not add `site.type === "findworthnow"`.
+- The only slug→behavior table is `SITE_CAPABILITIES`. Do not scatter new slug checks.

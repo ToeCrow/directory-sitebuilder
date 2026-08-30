@@ -1,6 +1,6 @@
 import type { Article, SiteData } from "@/types/site";
 import type { Metadata } from "next";
-import { siteUsesEditorialCatalog } from "@/lib/directory-catalog";
+import { siteHasFeature } from "@/lib/site-config";
 
 export const OG_IMAGE_WIDTH = 1200;
 export const OG_IMAGE_HEIGHT = 630;
@@ -14,7 +14,7 @@ export type OgImage = {
 
 /** Relative path resolved to an absolute URL via site metadataBase. */
 export function getDefaultOgImage(site: SiteData): OgImage | undefined {
-  if (siteUsesEditorialCatalog(site.slug)) {
+  if (siteHasFeature(site.slug, "catalog")) {
     return undefined;
   }
 

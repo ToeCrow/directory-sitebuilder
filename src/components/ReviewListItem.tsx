@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import { TrackedLink } from "@/components/TrackedLink";
 import type { Article } from "@/types/site";
 import {
   getArticlePreviewBlurb,
@@ -9,15 +9,23 @@ import {
 type ReviewListItemProps = {
   article: Article;
   href: string;
+  placement?: string;
 };
 
-export function ReviewListItem({ article, href }: ReviewListItemProps) {
+export function ReviewListItem({
+  article,
+  href,
+  placement = "article-list",
+}: ReviewListItemProps) {
   const preview = getArticlePreviewImage(article);
   const blurb = getArticlePreviewBlurb(article);
 
   return (
-    <Link
+    <TrackedLink
       href={href}
+      placement={placement}
+      target={article.id ? { type: "article", id: article.id } : { type: "path" }}
+      label={article.title}
       className="group grid gap-5 border-b border-ss-navy/10 py-8 last:border-b-0 md:grid-cols-[minmax(0,1fr)_16rem] md:items-start md:gap-8 lg:grid-cols-[minmax(0,1fr)_18rem]"
     >
       <div className={preview ? undefined : "md:col-span-2"}>
@@ -44,6 +52,6 @@ export function ReviewListItem({ article, href }: ReviewListItemProps) {
           />
         </figure>
       )}
-    </Link>
+    </TrackedLink>
   );
 }

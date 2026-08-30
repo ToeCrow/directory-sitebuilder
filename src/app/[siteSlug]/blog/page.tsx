@@ -1,30 +1,28 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { siteSlugs } from "@/data/sites";
-import { getDirectoryBlogPosts } from "@/lib/directory-blog";
-import { siteUsesEditorialCatalog } from "@/lib/directory-catalog";
 import { getBlogPostPath, getPublicPath } from "@/lib/paths";
 import { getRequestPublicBasePath } from "@/lib/request-paths";
 import { buildPageOpenGraph } from "@/lib/seo";
 import { getSiteBySlug, isValidSiteSlug } from "@/lib/site";
+import { canAccessRoute, getStaticParamSiteSlugsForRoute } from "@/lib/site-routes";
 
 type BlogIndexProps = {
   params: Promise<{ siteSlug: string }>;
 };
 
 export function generateStaticParams() {
-  return siteSlugs
-    .filter((siteSlug) => siteUsesEditorialCatalog(siteSlug))
-    .map((siteSlug) => ({ siteSlug }));
+  return getStaticParamSiteSlugsForRoute("blog").map((siteSlug) => ({
+    siteSlug,
+  }));
 }
 
 export async function generateMetadata({
   params,
 }: BlogIndexProps): Promise<Metadata> {
   const { siteSlug } = await params;
-  const siteData = getSiteBySlug(siteSlug);
-  if (!siteData || !siteUsesEditorialCatalog(siteSlug)) {
+  const siteData = await getSiteBySlug(siteSlug);
+  if (!siteData || !canAccessRoute(siteSlug, "blog")) {
     return { title: "Blog" };
   }
 
@@ -61,17 +59,21 @@ export default async function DirectoryBlogIndexPage({
 }: BlogIndexProps) {
   const { siteSlug } = await params;
 
-  if (!isValidSiteSlug(siteSlug) || !siteUsesEditorialCatalog(siteSlug)) {
+  if (!(await isValidSiteSlug(siteSlug)) || !canAccessRoute(siteSlug, "blog")) {
     notFound();
   }
 
-  const siteData = getSiteBySlug(siteSlug);
+  const siteData = await getSiteBySlug(siteSlug);
   if (!siteData) {
     notFound();
   }
 
   const publicBasePath = await getRequestPublicBasePath(siteSlug);
-  const posts = getDirectoryBlogPosts(siteSlug);
+  const posts = [...siteData.articles].sort(
+    (a, b) =>
+      (b.publishedAt ?? "").localeCompare(a.publishedAt ?? "") ||
+      a.slug.localeCompare(b.slug),
+  );
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-12 md:py-16">
@@ -89,9 +91,11 @@ export default async function DirectoryBlogIndexPage({
         <ul className="mt-10 divide-y divide-fwn-gold/15 border-t border-fwn-gold/15">
           {posts.map((post) => (
             <li key={post.slug} className="py-8">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-fwn-gold">
-                {formatPublishedDate(post.publishedAt)}
-              </p>
+              {post.publishedAt && (
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-fwn-gold">
+                  {formatPublishedDate(post.publishedAt)}
+                </p>
+              )}
               <h2 className="mt-2 text-xl font-semibold tracking-tight text-fwn-ivory">
                 <Link
                   href={getBlogPostPath(publicBasePath, post.slug)}
@@ -100,9 +104,11 @@ export default async function DirectoryBlogIndexPage({
                   {post.title}
                 </Link>
               </h2>
-              <p className="mt-3 text-base leading-relaxed text-fwn-sand">
-                {post.excerpt}
-              </p>
+              {post.excerpt && (
+                <p className="mt-3 text-base leading-relaxed text-fwn-sand">
+                  {post.excerpt}
+                </p>
+              )}
               <Link
                 href={getBlogPostPath(publicBasePath, post.slug)}
                 className="mt-4 inline-block text-sm font-medium tracking-wide text-fwn-gold hover:text-fwn-brass"

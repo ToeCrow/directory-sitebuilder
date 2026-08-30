@@ -1,24 +1,25 @@
 "use client";
 
-import Link from "next/link";
-import type { SiteSlug } from "@/data/sites";
 import { ReviewListItem } from "@/components/ReviewListItem";
-import { usePublicBasePath } from "@/context/SiteContext";
-import { getFeaturedHomeReviews, getSiteData, siteHasMattressPillowNav } from "@/lib/site";
+import { TrackedLink } from "@/components/TrackedLink";
+import { usePublicBasePath, useSiteData } from "@/context/SiteContext";
+import { featuredHomeReviewsFrom } from "@/lib/site-view";
 import { cn } from "@/lib/cn";
 import { getArticlePath, getReviewsIndexPath } from "@/lib/paths";
+import { getSiteTheme } from "@/lib/site-config";
+import { getThemeClasses } from "@/lib/site-theme";
 
 type ArticleGridProps = {
-  siteSlug: SiteSlug;
+  siteSlug: string;
   className?: string;
 };
 
 export function ArticleGrid({ siteSlug, className }: ArticleGridProps) {
   const publicBasePath = usePublicBasePath();
-  const siteData = getSiteData(siteSlug);
-  const isSideSleeper = siteHasMattressPillowNav(siteSlug);
+  const siteData = useSiteData();
+  const theme = getThemeClasses(getSiteTheme(siteSlug));
   const reviews = siteData.featuredReviewSlugs
-    ? getFeaturedHomeReviews(siteSlug)
+    ? featuredHomeReviewsFrom(siteData)
     : siteData.articles.slice(0, 6);
   const heading = siteData.featuredReviewSlugs
     ? "Featured Reviews"
@@ -31,44 +32,26 @@ export function ArticleGrid({ siteSlug, className }: ArticleGridProps) {
   return (
     <section
       id="reviews"
-      className={cn(
-        isSideSleeper
-          ? "border-t border-ss-navy/10 bg-ss-mist/60 py-16 md:py-20"
-          : "border-t border-slate-200 bg-slate-50 py-16 md:py-20",
-        className,
-      )}
+      className={cn(theme.articleSection, className)}
       aria-labelledby="reviews-heading"
     >
       <div className="mx-auto max-w-6xl px-4">
         <div className="flex flex-wrap items-end justify-between gap-4">
-          <h2
-            id="reviews-heading"
-            className={
-              isSideSleeper
-                ? "text-2xl font-bold tracking-tight text-ss-navy md:text-3xl"
-                : "text-2xl font-bold tracking-tight text-slate-900 md:text-3xl"
-            }
-          >
+          <h2 id="reviews-heading" className={theme.articleHeading}>
             {heading}
           </h2>
-          <Link
+          <TrackedLink
             href={getReviewsIndexPath(publicBasePath)}
-            className={
-              isSideSleeper
-                ? "text-sm font-medium text-ss-navy hover:text-ss-blue"
-                : "text-sm font-medium text-blue-600 hover:text-blue-700"
-            }
+            placement="home-reviews-index"
+            target={{ type: "path" }}
+            source={{ type: "page" }}
+            label="View all reviews"
+            className={theme.articleLink}
           >
             View all reviews →
-          </Link>
+          </TrackedLink>
         </div>
-        <ul
-          className={
-            isSideSleeper
-              ? "mt-6 border-t border-ss-navy/10"
-              : "mt-6 border-t border-slate-200"
-          }
-        >
+        <ul className={theme.articleList}>
           {reviews.map((article) => (
             <li key={article.slug}>
               <ReviewListItem

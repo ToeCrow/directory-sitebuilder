@@ -1,17 +1,17 @@
 "use client";
 
-import type { SiteSlug } from "@/data/sites";
-import { getComparisonProducts, getComparisonValue, getSiteData } from "@/lib/site";
+import { comparisonProductsFrom, getComparisonValue } from "@/lib/site-view";
+import { useSiteData } from "@/context/SiteContext";
 import { cn } from "@/lib/cn";
 
 type ComparisonTableProps = {
-  siteSlug: SiteSlug;
+  siteSlug: string;
   className?: string;
 };
 
 export function ComparisonTable({ siteSlug, className }: ComparisonTableProps) {
-  const siteData = getSiteData(siteSlug);
-  const products = getComparisonProducts(siteSlug);
+  const siteData = useSiteData();
+  const products = comparisonProductsFrom(siteData);
   const { comparisonTable } = siteData;
 
   return (

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { siteSlugs } from "@/data/sites";
 import { HomePageLayout } from "@/components/HomePageLayout";
 import type { SiteSlug } from "@/data/sites";
-import { siteUsesEditorialCatalog } from "@/lib/directory-catalog";
+import { siteHasFeature } from "@/lib/site-config";
 import { getPublicPath } from "@/lib/paths";
 import { buildPageOpenGraph } from "@/lib/seo";
 import { getSiteBySlug } from "@/lib/site";
@@ -19,7 +19,7 @@ export async function generateMetadata({
   params,
 }: SitePageProps): Promise<Metadata> {
   const { siteSlug } = await params;
-  const siteData = getSiteBySlug(siteSlug);
+  const siteData = await getSiteBySlug(siteSlug);
 
   if (!siteData) {
     return {};
@@ -27,8 +27,7 @@ export async function generateMetadata({
 
   // Public homepage path: `/` on custom-domain sites, `/{siteSlug}` on platform-only sites.
   const path = getPublicPath(siteSlug, "/");
-  const isEditorial = siteUsesEditorialCatalog(siteSlug);
-  const title = isEditorial
+  const title = siteHasFeature(siteSlug, "catalog")
     ? { absolute: siteData.metaTitle }
     : siteData.title;
 

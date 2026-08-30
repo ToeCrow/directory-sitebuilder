@@ -1,21 +1,12 @@
 import type { MetadataRoute } from "next";
-import {
-  getArticles,
-  getProducts,
-  getSiteBySlug,
-  siteHasMattressPillowNav,
-  siteSlugs,
-  type SiteSlug,
-} from "@/lib/site";
+import { getSiteBySlug, siteSlugs } from "@/data/sites";
 import { getPublicAbsoluteUrl, siteUsesPublicPaths } from "@/lib/paths";
-import { siteUsesAboutPage } from "@/lib/about";
 import {
   getDirectoryCategories,
   getDirectoryProducts,
-  siteUsesEditorialCatalog,
 } from "@/lib/directory-catalog";
-import { getDirectoryBlogPosts } from "@/lib/directory-blog";
-import { siteUsesPrivacyPolicy } from "@/lib/privacy-policy";
+import { canAccessRoute } from "@/lib/site-routes";
+import { getArticleConfig, siteHasFeature } from "@/lib/site-config";
 
 export function buildSiteSitemapEntries(
   siteSlug: string,
@@ -27,7 +18,7 @@ export function buildSiteSitemapEntries(
 
   const now = new Date();
 
-  if (siteUsesEditorialCatalog(siteSlug)) {
+  if (siteHasFeature(siteSlug, "catalog")) {
     const entries: MetadataRoute.Sitemap = [
       {
         url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, "/"),
@@ -75,19 +66,25 @@ export function buildSiteSitemapEntries(
       });
     }
 
-    const blogPosts = getDirectoryBlogPosts(siteSlug);
-    if (blogPosts.length > 0) {
+    const articleRoute = getArticleConfig(siteSlug)?.route;
+    const blogArticles =
+      articleRoute === "blog" ? siteData.articles : [];
+    if (blogArticles.length > 0 && articleRoute) {
       entries.push({
-        url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, "/blog"),
+        url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, `/${articleRoute}`),
         lastModified: now,
         changeFrequency: "weekly",
         priority: 0.7,
       });
     }
 
-    for (const post of blogPosts) {
+    for (const post of blogArticles) {
       entries.push({
-        url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, `/blog/${post.slug}`),
+        url: getPublicAbsoluteUrl(
+          siteSlug,
+          siteData.siteUrl,
+          `/${articleRoute}/${post.slug}`,
+        ),
         lastModified: now,
         changeFrequency: "monthly",
         priority: 0.65,
@@ -124,7 +121,7 @@ export function buildSiteSitemapEntries(
   ];
 
   // Construction-software (and similar) keep /comparisons; Side Sleeper does not.
-  if (!siteHasMattressPillowNav(siteSlug)) {
+  if (canAccessRoute(siteSlug, "comparisons")) {
     entries.push({
       url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, "/comparisons"),
       lastModified: now,
@@ -140,7 +137,7 @@ export function buildSiteSitemapEntries(
     priority: 0.7,
   });
 
-  if (siteUsesAboutPage(siteSlug)) {
+  if (canAccessRoute(siteSlug, "about")) {
     entries.push({
       url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, "/about"),
       lastModified: now,
@@ -149,7 +146,7 @@ export function buildSiteSitemapEntries(
     });
   }
 
-  if (siteUsesPrivacyPolicy(siteSlug)) {
+  if (canAccessRoute(siteSlug, "privacy")) {
     entries.push({
       url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, "/privacy-policy"),
       lastModified: now,
@@ -165,7 +162,7 @@ export function buildSiteSitemapEntries(
     priority: 0.4,
   });
 
-  for (const product of getProducts(siteSlug as SiteSlug)) {
+  for (const product of siteData.products) {
     entries.push({
       url: getPublicAbsoluteUrl(
         siteSlug,
@@ -178,7 +175,7 @@ export function buildSiteSitemapEntries(
     });
   }
 
-  if (getArticles(siteSlug as SiteSlug).length > 0) {
+  if (siteData.articles.length > 0) {
     entries.push({
       url: getPublicAbsoluteUrl(siteSlug, siteData.siteUrl, "/reviews"),
       lastModified: now,
@@ -187,7 +184,7 @@ export function buildSiteSitemapEntries(
     });
   }
 
-  for (const article of getArticles(siteSlug as SiteSlug)) {
+  for (const article of siteData.articles) {
     entries.push({
       url: getPublicAbsoluteUrl(
         siteSlug,

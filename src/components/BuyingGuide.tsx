@@ -1,14 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import type { SiteSlug } from "@/data/sites";
-import { usePublicBasePath } from "@/context/SiteContext";
-import { getSiteData } from "@/lib/site";
+import { usePublicBasePath, useSiteData } from "@/context/SiteContext";
 import { getProductsIndexPath } from "@/lib/paths";
 import { cn } from "@/lib/cn";
 
 type BuyingGuideProps = {
-  siteSlug: SiteSlug;
+  siteSlug: string;
   className?: string;
   /** When true, the guide title is rendered as H1 for a dedicated page. */
   asPage?: boolean;
@@ -26,7 +24,7 @@ export function BuyingGuide({
   asPage = false,
 }: BuyingGuideProps) {
   const publicBasePath = usePublicBasePath();
-  const siteData = getSiteData(siteSlug);
+  const siteData = useSiteData();
   const { buyingGuide } = siteData;
   const TitleTag = asPage ? "h1" : "h2";
   const useHierarchy =
