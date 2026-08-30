@@ -46,13 +46,27 @@ export const getSiteData = cache(async (siteSlug: string): Promise<SiteData> => 
   return hydrateSiteData(siteSlug, { publishedOnly: true });
 });
 
+export function isMissingSiteError(error: unknown): boolean {
+  if (!(error instanceof Error)) {
+    return false;
+  }
+  return (
+    error.message.startsWith("Site not found:") ||
+    error.message.startsWith("Site is not published:")
+  );
+}
+
 export async function getSiteBySlug(
   slug: string,
 ): Promise<SiteData | undefined> {
   try {
     return await getSiteData(slug);
-  } catch {
-    return undefined;
+  } catch (error) {
+    if (isMissingSiteError(error)) {
+      return undefined;
+    }
+    console.error(`[db] failed to load site "${slug}"`, error);
+    throw error;
   }
 }
 

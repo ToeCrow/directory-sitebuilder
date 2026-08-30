@@ -1,6 +1,8 @@
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
 import {
+  createPoolConfig,
+  describeDatabaseTarget,
   requireMigrationDatabaseUrl,
   requireRuntimeDatabaseUrl,
 } from "./connection";
@@ -23,7 +25,17 @@ function getOrCreateDb(
   const dbKey = slot === "runtime" ? "runtimeDb" : "migrateDb";
 
   if (!globalForDb[poolKey]) {
-    globalForDb[poolKey] = new Pool({ connectionString: url });
+    const config = createPoolConfig(url);
+    const pool = new Pool(config);
+    pool.on("error", (error) => {
+      console.error("[db] pool error", error);
+    });
+    if (slot === "runtime") {
+      console.info(
+        `[db] runtime pool → ${describeDatabaseTarget(config.connectionString ?? url)}`,
+      );
+    }
+    globalForDb[poolKey] = pool;
   }
   if (!globalForDb[dbKey]) {
     globalForDb[dbKey] = drizzle(globalForDb[poolKey]!, { schema });
@@ -55,9 +67,12 @@ export type { Db };
 export type DbOrTx = Db | Parameters<Parameters<Db["transaction"]>[0]>[0];
 export * from "./schema";
 export {
+  createPoolConfig,
+  describeDatabaseTarget,
   looksLikeRemoteDatabaseUrl,
   requireMigrationDatabaseUrl,
   requireRuntimeDatabaseUrl,
   resolveMigrationDatabaseUrl,
   resolveRuntimeDatabaseUrl,
+  rewriteTransactionPoolerToSession,
 } from "./connection";

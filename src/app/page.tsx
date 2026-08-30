@@ -8,8 +8,11 @@ export default async function PlatformHomePage() {
   let sites: Awaited<ReturnType<typeof getAllSites>> = [];
   try {
     sites = await getAllSites();
-  } catch {
-    // DB optional on the platform hub (e.g. Postgres not running).
+  } catch (error) {
+    // Local Docker may be down. On Vercel the DB is required — hide nothing.
+    if (process.env.VERCEL) {
+      throw error;
+    }
     sites = [];
   }
 

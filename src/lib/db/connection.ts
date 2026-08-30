@@ -1,3 +1,5 @@
+import type { PoolConfig } from "pg";
+
 function firstDefined(
   env: NodeJS.Dict<string | undefined>,
   ...keys: string[]
@@ -59,7 +61,7 @@ export function requireMigrationDatabaseUrl(
 
 export function looksLikeRemoteDatabaseUrl(url: string): boolean {
   const lower = url.toLowerCase();
-  if (lower.includes("supabase.co")) {
+  if (lower.includes("supabase.co") || lower.includes("supabase.com")) {
     return true;
   }
   if (lower.includes("neon.tech")) {
@@ -69,4 +71,50 @@ export function looksLikeRemoteDatabaseUrl(url: string): boolean {
     return true;
   }
   return false;
+}
+
+/**
+ * Vercel POSTGRES_URL is Supavisor transaction mode (:6543). node-pg always
+ * prepares parameterized queries, which that mode does not support. Session
+ * mode on the same shared pooler host does.
+ */
+export function rewriteTransactionPoolerToSession(url: string): string {
+  return url.replace(
+    /pooler\.supabase\.com:6543/gi,
+    "pooler.supabase.com:5432",
+  );
+}
+
+export function describeDatabaseTarget(url: string): string {
+  const withoutProtocol = url.replace(/^[a-z]+:\/\//i, "");
+  const at = withoutProtocol.lastIndexOf("@");
+  const hostPart =
+    at === -1 ? withoutProtocol : withoutProtocol.slice(at + 1);
+  return hostPart.split(/[/?]/)[0] || "unknown-host";
+}
+
+function needsExplicitSsl(url: string): boolean {
+  if (!looksLikeRemoteDatabaseUrl(url)) {
+    return false;
+  }
+  return !/sslmode=/i.test(url);
+}
+
+export function createPoolConfig(
+  url: string,
+  env: NodeJS.Dict<string | undefined> = process.env,
+): PoolConfig {
+  const connectionString = rewriteTransactionPoolerToSession(url);
+  const remote = looksLikeRemoteDatabaseUrl(url);
+  const serverless = env.VERCEL === "1";
+  const config: PoolConfig = {
+    connectionString,
+    max: remote || serverless ? 1 : 10,
+    idleTimeoutMillis: remote || serverless ? 10_000 : 30_000,
+    connectionTimeoutMillis: 8_000,
+  };
+  if (needsExplicitSsl(url)) {
+    config.ssl = { rejectUnauthorized: true };
+  }
+  return config;
 }
