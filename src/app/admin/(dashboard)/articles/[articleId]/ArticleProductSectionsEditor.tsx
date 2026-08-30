@@ -126,8 +126,19 @@ function InFlowProductCreate({
     imageAlt: "",
   });
 
-  function onSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  function createDraft() {
+    if (
+      !values.name.trim() ||
+      !values.slug.trim() ||
+      !values.shortDescription.trim() ||
+      !values.bestFor.trim() ||
+      !values.priceFrom.trim() ||
+      !values.affiliateUrl.trim()
+    ) {
+      setError("Fill in name, slug, description, best for, price, and URL.");
+      return;
+    }
+
     setError(null);
     startTransition(async () => {
       const result = await createProductAction({
@@ -186,9 +197,18 @@ function InFlowProductCreate({
   }
 
   return (
-    <form
-      onSubmit={onSubmit}
+    <div
       className="space-y-3 rounded-lg border border-dashed border-slate-300 bg-slate-50 p-4"
+      onKeyDown={(event) => {
+        if (
+          event.key === "Enter" &&
+          event.target instanceof HTMLInputElement
+        ) {
+          event.preventDefault();
+          event.stopPropagation();
+          createDraft();
+        }
+      }}
     >
       <p className="text-sm font-semibold text-slate-900">
         Create draft product
@@ -200,7 +220,6 @@ function InFlowProductCreate({
         Name
         <input
           className={fieldClass}
-          required
           value={values.name}
           onChange={(event) => {
             const name = event.target.value;
@@ -216,7 +235,6 @@ function InFlowProductCreate({
         Slug
         <input
           className={fieldClass}
-          required
           value={values.slug}
           onChange={(event) => {
             setSlugTouched(true);
@@ -228,7 +246,6 @@ function InFlowProductCreate({
         Short description
         <textarea
           className={fieldClass}
-          required
           rows={2}
           value={values.shortDescription}
           onChange={(event) =>
@@ -240,7 +257,6 @@ function InFlowProductCreate({
         Best for
         <input
           className={fieldClass}
-          required
           value={values.bestFor}
           onChange={(event) =>
             setValues({ ...values, bestFor: event.target.value })
@@ -251,7 +267,6 @@ function InFlowProductCreate({
         Price from
         <input
           className={fieldClass}
-          required
           value={values.priceFrom}
           onChange={(event) =>
             setValues({ ...values, priceFrom: event.target.value })
@@ -262,7 +277,6 @@ function InFlowProductCreate({
         Affiliate or product URL
         <input
           className={fieldClass}
-          required
           type="url"
           value={values.affiliateUrl}
           onChange={(event) =>
@@ -295,8 +309,9 @@ function InFlowProductCreate({
       {error && <p className="text-sm text-red-600">{error}</p>}
       <div className="flex gap-2">
         <button
-          type="submit"
+          type="button"
           disabled={pending}
+          onClick={createDraft}
           className="rounded-lg bg-slate-900 px-3 py-2 text-sm font-semibold text-white disabled:opacity-50"
         >
           {pending ? "Creating…" : "Create draft"}
@@ -309,7 +324,7 @@ function InFlowProductCreate({
           Cancel
         </button>
       </div>
-    </form>
+    </div>
   );
 }
 
