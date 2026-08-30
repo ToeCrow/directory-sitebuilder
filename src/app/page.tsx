@@ -2,14 +2,14 @@ import Link from "next/link";
 import { DatabaseUnavailable } from "@/components/DatabaseUnavailable";
 import { platformConfig } from "@/config/platform";
 import { formatDatabaseLoadError } from "@/lib/db/connection";
-import { getAllSites } from "@/lib/site";
+import { listPublishedSiteLinks } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 
 export default async function PlatformHomePage() {
-  let sites: Awaited<ReturnType<typeof getAllSites>> = [];
+  let sites: Awaited<ReturnType<typeof listPublishedSiteLinks>> = [];
   try {
-    sites = await getAllSites();
+    sites = await listPublishedSiteLinks();
   } catch (error) {
     console.error("[db] failed to list sites", error);
     return <DatabaseUnavailable message={formatDatabaseLoadError(error)} />;

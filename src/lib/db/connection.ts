@@ -86,12 +86,23 @@ export function createRuntimeClientOptions(
 ) {
   const remote = looksLikeRemoteDatabaseUrl(url);
   const serverless = env.VERCEL === "1";
+  const constrained = remote || serverless;
   return {
     prepare: false as const,
-    max: remote || serverless ? 1 : 10,
-    idle_timeout: remote || serverless ? 20 : 0,
+    max: constrained ? 1 : 10,
+    idle_timeout: constrained ? 20 : 0,
     connect_timeout: 10,
-    ...(remote ? { ssl: "require" as const } : {}),
+    ...(remote
+      ? {
+          ssl: "require" as const,
+          // Fail instead of spinning until the Vercel/function timeout when
+          // the SQL editor or a migration holds a lock.
+          connection: {
+            statement_timeout: 15000,
+            lock_timeout: 8000,
+          },
+        }
+      : {}),
   };
 }
 

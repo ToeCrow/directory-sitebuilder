@@ -9,6 +9,7 @@ import {
   countSites,
   findSiteBySlug,
   listPublishedSiteSlugs,
+  listPublishedSiteSummaries,
 } from "@/lib/db/repositories/sites";
 import {
   articleBySlugFrom,
@@ -70,6 +71,7 @@ export async function getSiteBySlug(
   }
 }
 
+/** Full hydrate of every published site — expensive; prefer listPublishedSiteLinks. */
 export async function getAllSites(): Promise<SiteData[]> {
   const slugs = await listPublishedSiteSlugs();
   const sites: SiteData[] = [];
@@ -80,6 +82,12 @@ export async function getAllSites(): Promise<SiteData[]> {
     }
   }
   return sites;
+}
+
+export async function listPublishedSiteLinks(): Promise<
+  { slug: string; title: string }[]
+> {
+  return listPublishedSiteSummaries();
 }
 
 export async function siteSlugs(): Promise<string[]> {

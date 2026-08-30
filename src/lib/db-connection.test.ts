@@ -108,6 +108,18 @@ describe("createRuntimeClientOptions", () => {
     assert.equal(options.prepare, false);
     assert.equal(options.ssl, "require");
     assert.equal(options.max, 1);
+    assert.deepEqual(options.connection, {
+      statement_timeout: 15000,
+      lock_timeout: 8000,
+    });
+  });
+
+  it("does not set lock timeouts against local Docker", () => {
+    const options = createRuntimeClientOptions(
+      "postgresql://directory:directory@localhost:5435/directory_cms",
+      {},
+    );
+    assert.equal("connection" in options, false);
   });
 
   it("keeps a larger local pool without SSL", () => {

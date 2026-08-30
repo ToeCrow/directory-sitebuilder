@@ -39,12 +39,18 @@ export async function countSites(): Promise<number> {
 }
 
 export async function listPublishedSiteSlugs(): Promise<string[]> {
+  const rows = await listPublishedSiteSummaries();
+  return rows.map((row) => row.slug);
+}
+
+export async function listPublishedSiteSummaries(): Promise<
+  { slug: string; title: string }[]
+> {
   const db = getDb();
-  const rows = await db
-    .select({ slug: sites.slug })
+  return db
+    .select({ slug: sites.slug, title: sites.title })
     .from(sites)
     .where(eq(sites.status, "published"));
-  return rows.map((row) => row.slug);
 }
 
 export async function siteExistsBySlugOrId(idOrSlug: string): Promise<boolean> {
