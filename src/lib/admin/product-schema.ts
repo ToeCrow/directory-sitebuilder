@@ -1,8 +1,32 @@
 import { z } from "zod";
+import {
+  IMAGE_ALT_MAX,
+  IMAGE_URL_MAX,
+  isOptionalImageReference,
+} from "@/lib/media";
 
 export { linesToArray } from "./lines";
 
 export const productStatusSchema = z.enum(["draft", "published"]);
+
+const optionalImageSrc = z
+  .string()
+  .trim()
+  .max(IMAGE_URL_MAX)
+  .optional()
+  .nullable()
+  .transform((value) => (value ? value : null))
+  .refine(isOptionalImageReference, {
+    message: "Image must be a relative path or http(s) URL.",
+  });
+
+const optionalImageAlt = z
+  .string()
+  .trim()
+  .max(IMAGE_ALT_MAX)
+  .optional()
+  .nullable()
+  .transform((value) => (value ? value : null));
 
 export function buildProductUpdateSchema() {
   return z.object({
@@ -25,26 +49,14 @@ export function buildProductUpdateSchema() {
     comparisonRank: z.number().int().min(1),
     directorySortOrder: z.number().int().min(1),
     status: productStatusSchema,
+    imageSrc: optionalImageSrc,
+    imageAlt: optionalImageAlt,
   });
 }
 
 export function buildProductCreateSchema() {
   return buildProductUpdateSchema().extend({
     siteId: z.string().uuid(),
-    imageSrc: z
-      .string()
-      .trim()
-      .max(500)
-      .optional()
-      .nullable()
-      .transform((value) => (value ? value : null)),
-    imageAlt: z
-      .string()
-      .trim()
-      .max(300)
-      .optional()
-      .nullable()
-      .transform((value) => (value ? value : null)),
   });
 }
 

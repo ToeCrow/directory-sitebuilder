@@ -1,4 +1,9 @@
 import { z } from "zod";
+import {
+  IMAGE_ALT_MAX,
+  IMAGE_URL_MAX,
+  isOptionalImageReference,
+} from "@/lib/media";
 
 export const siteStatusSchema = z.enum(["draft", "published"]);
 
@@ -11,13 +16,19 @@ const optionalText = (max: number) =>
     .nullable()
     .transform((value) => (value ? value : null));
 
+const optionalImageUrl = optionalText(IMAGE_URL_MAX).refine(
+  isOptionalImageReference,
+  { message: "Image must be a relative path or http(s) URL." },
+);
+
 export const siteSettingsSchema = z.object({
   title: z.string().trim().min(1).max(200),
   metaTitle: z.string().trim().min(1).max(200),
   metaDescription: z.string().trim().min(1).max(500),
   niche: z.string().trim().min(1).max(200),
   siteUrl: z.string().trim().url(),
-  headerBrandImage: optionalText(500),
+  headerBrandImage: optionalImageUrl,
+  favicon: optionalImageUrl,
   affiliateDisclosure: z.string().trim().min(1).max(4000),
   newsletterTitle: z.string().trim().min(1).max(200),
   newsletterDescription: z.string().trim().min(1).max(1000),
@@ -38,9 +49,9 @@ export const siteHeroSchema = z.object({
   primaryCta: z.string().trim().min(1).max(100),
   secondaryCta: optionalText(100),
   secondaryCtaHref: optionalText(500),
-  imageSrc: optionalText(500),
-  imageSrcMobile: optionalText(500),
-  imageAlt: optionalText(300),
+  imageSrc: optionalImageUrl,
+  imageSrcMobile: optionalImageUrl,
+  imageAlt: optionalText(IMAGE_ALT_MAX),
 });
 
 export type SiteHeroInput = z.infer<typeof siteHeroSchema>;

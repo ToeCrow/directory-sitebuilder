@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState, useTransition, type FormEvent } from "react";
 import { updateSiteSettingsAction } from "../actions";
+import { ImageField } from "@/components/admin/ImageField";
 
 type SiteSettingsValues = {
   title: string;
@@ -11,6 +12,7 @@ type SiteSettingsValues = {
   niche: string;
   siteUrl: string;
   headerBrandImage: string;
+  favicon: string;
   affiliateDisclosure: string;
   newsletterTitle: string;
   newsletterDescription: string;
@@ -46,6 +48,7 @@ export function SiteSettingsForm({ siteId, initial }: SiteSettingsFormProps) {
       const result = await updateSiteSettingsAction(siteId, {
         ...values,
         headerBrandImage: values.headerBrandImage || null,
+        favicon: values.favicon || null,
         adsPrimary: values.adsPrimary || null,
         adsSecondary: values.adsSecondary || null,
       });
@@ -118,16 +121,23 @@ export function SiteSettingsForm({ siteId, initial }: SiteSettingsFormProps) {
         />
       </label>
 
-      <label className="block text-sm font-medium text-slate-700">
-        Header brand image (path or URL)
-        <input
-          className={fieldClass}
-          value={values.headerBrandImage}
-          onChange={(e) =>
-            setValues({ ...values, headerBrandImage: e.target.value })
-          }
-        />
-      </label>
+      <ImageField
+        siteId={siteId}
+        kind="general"
+        label="Header brand image"
+        src={values.headerBrandImage}
+        onSrcChange={(headerBrandImage) =>
+          setValues({ ...values, headerBrandImage })
+        }
+      />
+
+      <ImageField
+        siteId={siteId}
+        kind="general"
+        label="Favicon"
+        src={values.favicon}
+        onSrcChange={(favicon) => setValues({ ...values, favicon })}
+      />
 
       <label className="block text-sm font-medium text-slate-700">
         Affiliate disclosure

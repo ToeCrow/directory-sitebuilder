@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getAdminProductById } from "@/lib/admin/products";
+import { imageFromUnknown } from "@/lib/media";
 import { ProductEditForm } from "./ProductEditForm";
 
 export const dynamic = "force-dynamic";
@@ -18,6 +19,12 @@ export default async function AdminProductEditPage({
   if (!product) {
     notFound();
   }
+
+  const image = imageFromUnknown(
+    product.content && typeof product.content === "object"
+      ? (product.content as { image?: unknown }).image
+      : undefined,
+  );
 
   return (
     <div>
@@ -40,6 +47,7 @@ export default async function AdminProductEditPage({
       <div className="mt-8">
         <ProductEditForm
           productId={product.id}
+          siteId={product.siteId}
           isTopPick={product.isTopPick}
           initial={{
             name: product.name,
@@ -56,6 +64,8 @@ export default async function AdminProductEditPage({
             comparisonRank: product.comparisonRank,
             directorySortOrder: product.directorySortOrder,
             status: product.status,
+            imageSrc: image.src,
+            imageAlt: image.alt,
           }}
         />
       </div>

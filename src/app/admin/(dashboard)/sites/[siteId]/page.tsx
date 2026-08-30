@@ -56,6 +56,7 @@ export default async function AdminSiteEditPage({
                 niche: site.niche,
                 siteUrl: site.siteUrl,
                 headerBrandImage: site.headerBrandImage ?? "",
+                favicon: site.favicon ?? "",
                 affiliateDisclosure: site.affiliateDisclosure,
                 newsletterTitle: site.newsletterTitle,
                 newsletterDescription: site.newsletterDescription,

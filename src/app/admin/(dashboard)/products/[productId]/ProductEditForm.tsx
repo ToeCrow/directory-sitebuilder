@@ -6,6 +6,7 @@ import {
   deleteProductAction,
   updateProductAction,
 } from "../actions";
+import { ImageField } from "@/components/admin/ImageField";
 
 type ProductFormValues = {
   name: string;
@@ -22,10 +23,13 @@ type ProductFormValues = {
   comparisonRank: number;
   directorySortOrder: number;
   status: "draft" | "published";
+  imageSrc: string;
+  imageAlt: string;
 };
 
 type ProductEditFormProps = {
   productId: string;
+  siteId: string;
   isTopPick: boolean;
   initial: ProductFormValues;
 };
@@ -35,6 +39,7 @@ const fieldClass =
 
 export function ProductEditForm({
   productId,
+  siteId,
   isTopPick,
   initial,
 }: ProductEditFormProps) {
@@ -55,6 +60,8 @@ export function ProductEditForm({
         badge: values.badge || null,
         comparisonRank: Number(values.comparisonRank),
         directorySortOrder: Number(values.directorySortOrder),
+        imageSrc: values.imageSrc || null,
+        imageAlt: values.imageAlt || values.name || null,
       });
 
       if (!result.ok) {
@@ -258,6 +265,17 @@ export function ProductEditForm({
           onChange={(e) => setValues({ ...values, consText: e.target.value })}
         />
       </label>
+
+      <ImageField
+        siteId={siteId}
+        kind="products"
+        label="Image"
+        src={values.imageSrc}
+        alt={values.imageAlt}
+        showAlt
+        onSrcChange={(imageSrc) => setValues({ ...values, imageSrc })}
+        onAltChange={(imageAlt) => setValues({ ...values, imageAlt })}
+      />
 
       {error && (
         <p className="text-sm text-red-600" role="alert">

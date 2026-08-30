@@ -55,6 +55,18 @@ export function collectInternalLinkIds(doc: TiptapDoc): string[] {
   return ids;
 }
 
+export function collectImageSrcs(doc: TiptapDoc): string[] {
+  const srcs: string[] = [];
+  walkNodes(doc.content, (node) => {
+    if (node.type !== "image") return;
+    const src = node.attrs?.src;
+    if (typeof src === "string" && src) {
+      srcs.push(src);
+    }
+  });
+  return srcs;
+}
+
 export function resolveInternalLinkHref(options: {
   articleId: string;
   articlesById: ReadonlyMap<string, { slug: string }>;

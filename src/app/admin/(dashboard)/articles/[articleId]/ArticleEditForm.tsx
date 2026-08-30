@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition, type FormEvent } from "react";
 import type { AdminArticleKind, AdminArticlePickerItem } from "@/lib/admin/articles";
 import { emptyTiptapDoc, type TiptapDoc } from "@/lib/article-content";
+import { ImageField } from "@/components/admin/ImageField";
 import { ArticleBodyEditor } from "../ArticleBodyEditor";
 import { ArticlePicker } from "../ArticlePicker";
 import { deleteArticleAction, updateArticleAction } from "../actions";
@@ -18,6 +19,8 @@ type ArticleFormValues = {
   author: string;
   ogImageSrc: string;
   ogImageAlt: string;
+  introImageSrc: string;
+  introImageAlt: string;
   status: "draft" | "published";
   publishedAt: string;
   updatedAtContent: string;
@@ -25,6 +28,7 @@ type ArticleFormValues = {
 
 type ArticleEditFormProps = {
   articleId: string;
+  siteId: string;
   kind: AdminArticleKind;
   relatedArticles: AdminArticlePickerItem[];
   initialRelatedIds: string[];
@@ -37,6 +41,7 @@ const fieldClass =
 
 export function ArticleEditForm({
   articleId,
+  siteId,
   kind,
   relatedArticles,
   initialRelatedIds,
@@ -62,7 +67,9 @@ export function ArticleEditForm({
         excerpt: values.excerpt || null,
         author: values.author || null,
         ogImageSrc: values.ogImageSrc || null,
-        ogImageAlt: values.ogImageAlt || null,
+        ogImageAlt: values.ogImageAlt || values.title || null,
+        introImageSrc: values.introImageSrc || null,
+        introImageAlt: values.introImageAlt || values.title || null,
         publishedAt: values.publishedAt || null,
         updatedAtContent: values.updatedAtContent || null,
         relatedArticleIds,
@@ -179,6 +186,7 @@ export function ArticleEditForm({
           <ArticleBodyEditor
             initial={body}
             articles={relatedArticles}
+            siteId={siteId}
             onChange={setBody}
           />
         </div>
@@ -234,28 +242,33 @@ export function ArticleEditForm({
         />
       </label>
 
-      <div className="grid gap-4 sm:grid-cols-2">
-        <label className="block text-sm font-medium text-slate-700">
-          OG image path
-          <input
-            className={fieldClass}
-            value={values.ogImageSrc}
-            onChange={(e) =>
-              setValues({ ...values, ogImageSrc: e.target.value })
-            }
-          />
-        </label>
-        <label className="block text-sm font-medium text-slate-700">
-          OG image alt
-          <input
-            className={fieldClass}
-            value={values.ogImageAlt}
-            onChange={(e) =>
-              setValues({ ...values, ogImageAlt: e.target.value })
-            }
-          />
-        </label>
-      </div>
+      {kind === "editorial" && (
+        <ImageField
+          siteId={siteId}
+          kind="articles"
+          label="Intro image"
+          src={values.introImageSrc}
+          alt={values.introImageAlt}
+          showAlt
+          onSrcChange={(introImageSrc) =>
+            setValues({ ...values, introImageSrc })
+          }
+          onAltChange={(introImageAlt) =>
+            setValues({ ...values, introImageAlt })
+          }
+        />
+      )}
+
+      <ImageField
+        siteId={siteId}
+        kind="articles"
+        label="OG image"
+        src={values.ogImageSrc}
+        alt={values.ogImageAlt}
+        showAlt
+        onSrcChange={(ogImageSrc) => setValues({ ...values, ogImageSrc })}
+        onAltChange={(ogImageAlt) => setValues({ ...values, ogImageAlt })}
+      />
 
       <label className="block text-sm font-medium text-slate-700">
         Status

@@ -1,4 +1,9 @@
 import { z } from "zod";
+import {
+  IMAGE_ALT_MAX,
+  IMAGE_URL_MAX,
+  isOptionalImageReference,
+} from "@/lib/media";
 import { ARTICLE_SLUG_PATTERN } from "@/lib/slug";
 
 export const articleStatusSchema = z.enum(["draft", "published"]);
@@ -53,8 +58,14 @@ export const articleUpdateSchema = z.object({
   researchNoteTitle: z.string().trim().max(200).optional().default(""),
   researchNoteContent: z.string().trim().max(4000).optional().default(""),
   author: optionalText(200),
-  ogImageSrc: optionalText(500),
-  ogImageAlt: optionalText(300),
+  ogImageSrc: optionalText(IMAGE_URL_MAX).refine(isOptionalImageReference, {
+    message: "Image must be a relative path or http(s) URL.",
+  }),
+  ogImageAlt: optionalText(IMAGE_ALT_MAX),
+  introImageSrc: optionalText(IMAGE_URL_MAX).refine(isOptionalImageReference, {
+    message: "Image must be a relative path or http(s) URL.",
+  }),
+  introImageAlt: optionalText(IMAGE_ALT_MAX),
   status: articleStatusSchema,
   publishedAt: optionalDate,
   updatedAtContent: optionalDate,
@@ -67,8 +78,10 @@ export type ArticleUpdateInput = z.infer<typeof articleUpdateSchema>;
 export const articleProductSectionSchema = z.object({
   heading: z.string().trim().min(1).max(300),
   intro: optionalText(1000),
-  imageSrc: optionalText(500),
-  imageAlt: optionalText(300),
+  imageSrc: optionalText(IMAGE_URL_MAX).refine(isOptionalImageReference, {
+    message: "Image must be a relative path or http(s) URL.",
+  }),
+  imageAlt: optionalText(IMAGE_ALT_MAX),
   whatItIs: z.string().trim().min(1).max(4000),
   whyItEarnsASpotText: z.string(),
   whereItFallsShortText: z.string(),

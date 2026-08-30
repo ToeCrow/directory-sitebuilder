@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState, useTransition, type FormEvent } from "react";
 import { slugify } from "@/lib/slug";
+import { ImageField } from "@/components/admin/ImageField";
 import { createProductAction } from "../actions";
 
 type SiteOption = {
@@ -47,6 +48,8 @@ export function ProductCreateForm({
     comparisonRank: initialComparisonRank,
     directorySortOrder: initialDirectorySortOrder,
     status: "draft" as "draft" | "published",
+    imageSrc: "",
+    imageAlt: "",
   });
 
   function onSubmit(event: FormEvent<HTMLFormElement>) {
@@ -60,6 +63,8 @@ export function ProductCreateForm({
         badge: values.badge || null,
         comparisonRank: Number(values.comparisonRank),
         directorySortOrder: Number(values.directorySortOrder),
+        imageSrc: values.imageSrc || null,
+        imageAlt: values.imageAlt || values.name || null,
       });
 
       if (!result.ok) {
@@ -277,6 +282,17 @@ export function ProductCreateForm({
           onChange={(e) => setValues({ ...values, consText: e.target.value })}
         />
       </label>
+
+      <ImageField
+        siteId={siteId}
+        kind="products"
+        label="Image"
+        src={values.imageSrc}
+        alt={values.imageAlt}
+        showAlt
+        onSrcChange={(imageSrc) => setValues({ ...values, imageSrc })}
+        onAltChange={(imageAlt) => setValues({ ...values, imageAlt })}
+      />
 
       {error && (
         <p className="text-sm text-red-600" role="alert">

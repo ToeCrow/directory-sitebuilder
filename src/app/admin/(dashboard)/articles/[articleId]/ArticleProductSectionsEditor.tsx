@@ -5,6 +5,7 @@ import { useMemo, useState, useTransition, type FormEvent } from "react";
 import type { AdminArticleProductSection } from "@/lib/admin/articles";
 import { arrayToLines } from "@/lib/admin/lines";
 import { slugify } from "@/lib/slug";
+import { ImageField } from "@/components/admin/ImageField";
 import { createProductAction } from "../../products/actions";
 import {
   addArticleProductSectionAction,
@@ -158,7 +159,7 @@ function InFlowProductCreate({
         directorySortOrder: nextDirectorySortOrder,
         status: "draft",
         imageSrc: values.imageSrc || null,
-        imageAlt: values.imageAlt || null,
+        imageAlt: values.imageAlt || values.name || null,
       });
       if (!result.ok || !result.productId) {
         setError(result.ok ? "Could not create product." : result.error);
@@ -284,28 +285,16 @@ function InFlowProductCreate({
           }
         />
       </label>
-      <div className="grid gap-3 sm:grid-cols-2">
-        <label className="block text-sm font-medium text-slate-700">
-          Image path
-          <input
-            className={fieldClass}
-            value={values.imageSrc}
-            onChange={(event) =>
-              setValues({ ...values, imageSrc: event.target.value })
-            }
-          />
-        </label>
-        <label className="block text-sm font-medium text-slate-700">
-          Image alt
-          <input
-            className={fieldClass}
-            value={values.imageAlt}
-            onChange={(event) =>
-              setValues({ ...values, imageAlt: event.target.value })
-            }
-          />
-        </label>
-      </div>
+      <ImageField
+        siteId={siteId}
+        kind="products"
+        label="Image"
+        src={values.imageSrc}
+        alt={values.imageAlt}
+        showAlt
+        onSrcChange={(imageSrc) => setValues({ ...values, imageSrc })}
+        onAltChange={(imageAlt) => setValues({ ...values, imageAlt })}
+      />
       {error && <p className="text-sm text-red-600">{error}</p>}
       <div className="flex gap-2">
         <button

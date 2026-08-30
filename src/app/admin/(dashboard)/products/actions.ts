@@ -8,6 +8,7 @@ import {
   buildProductUpdateSchema,
   linesToArray,
 } from "@/lib/admin/product-schema";
+import { mergeProductImage } from "@/lib/media";
 import {
   countTopPicksForProduct,
   getAdminProductById,
@@ -90,10 +91,12 @@ export async function createProductAction(
         comparisonRank: data.comparisonRank,
         directorySortOrder: data.directorySortOrder,
         comparison: {},
-        content:
+        content: mergeProductImage(
+          {},
           data.imageSrc && data.imageAlt
-            ? { image: { src: data.imageSrc, alt: data.imageAlt } }
-            : {},
+            ? { src: data.imageSrc, alt: data.imageAlt }
+            : null,
+        ),
         status: data.status,
         publishedAt,
       })
@@ -157,6 +160,11 @@ export async function updateProductAction(
       ? (existing.publishedAt ?? new Date())
       : null;
 
+  const existingContent =
+    existing.content && typeof existing.content === "object"
+      ? (existing.content as Record<string, unknown>)
+      : {};
+
   try {
     await db
       .update(products)
@@ -174,6 +182,12 @@ export async function updateProductAction(
         badge: data.badge?.trim() ? data.badge.trim() : null,
         comparisonRank: data.comparisonRank,
         directorySortOrder: data.directorySortOrder,
+        content: mergeProductImage(
+          existingContent,
+          data.imageSrc && data.imageAlt
+            ? { src: data.imageSrc, alt: data.imageAlt }
+            : null,
+        ),
         status: data.status,
         publishedAt,
         updatedAt: new Date(),

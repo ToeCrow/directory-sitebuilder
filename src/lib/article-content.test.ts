@@ -5,6 +5,7 @@ import type { EditorialArticle } from "@/types/site";
 import {
   articleSlugFromCtaPath,
   collectInternalLinkIds,
+  collectImageSrcs,
   directoryBlogPostToTiptapDoc,
   emptyTiptapDoc,
   isTiptapDoc,
@@ -102,6 +103,43 @@ describe("collectInternalLinkIds", () => {
       ],
     });
     assert.deepEqual(ids, []);
+  });
+});
+
+describe("collectImageSrcs", () => {
+  it("collects image node srcs nested in the document", () => {
+    const srcs = collectImageSrcs({
+      type: "doc",
+      content: [
+        {
+          type: "image",
+          attrs: { src: "/sites/side-sleeper/articles/pillow.png", alt: "Pillow" },
+        },
+        {
+          type: "paragraph",
+          content: [{ type: "text", text: "Caption" }],
+        },
+        {
+          type: "image",
+          attrs: {
+            src: "https://example.supabase.co/storage/v1/object/public/media/x.webp",
+            alt: "Remote",
+          },
+        },
+      ],
+    });
+    assert.deepEqual(srcs, [
+      "/sites/side-sleeper/articles/pillow.png",
+      "https://example.supabase.co/storage/v1/object/public/media/x.webp",
+    ]);
+  });
+
+  it("skips image nodes without a src", () => {
+    const srcs = collectImageSrcs({
+      type: "doc",
+      content: [{ type: "image", attrs: { alt: "Missing" } }],
+    });
+    assert.deepEqual(srcs, []);
   });
 });
 
@@ -252,11 +290,33 @@ describe("Zod article schemas", () => {
       author: null,
       ogImageSrc: null,
       ogImageAlt: null,
+      introImageSrc: null,
+      introImageAlt: null,
       status: "draft",
       publishedAt: null,
       updatedAtContent: null,
     });
     assert.equal(parsed.success, true);
+  });
+
+  it("rejects javascript image URLs on update", () => {
+    const parsed = articleUpdateSchema.safeParse({
+      title: "Updated",
+      slug: "updated",
+      excerpt: null,
+      introText: "Hello",
+      researchNoteTitle: "",
+      researchNoteContent: "",
+      author: null,
+      ogImageSrc: "javascript:alert(1)",
+      ogImageAlt: "x",
+      introImageSrc: null,
+      introImageAlt: null,
+      status: "draft",
+      publishedAt: null,
+      updatedAtContent: null,
+    });
+    assert.equal(parsed.success, false);
   });
 
   it("requires productId when creating a product section", () => {

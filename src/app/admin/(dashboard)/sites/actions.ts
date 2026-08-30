@@ -60,6 +60,7 @@ export async function updateSiteSettingsAction(
         niche: data.niche,
         siteUrl: data.siteUrl,
         headerBrandImage: data.headerBrandImage,
+        favicon: data.favicon,
         affiliateDisclosure: data.affiliateDisclosure,
         newsletterTitle: data.newsletterTitle,
         newsletterDescription: data.newsletterDescription,

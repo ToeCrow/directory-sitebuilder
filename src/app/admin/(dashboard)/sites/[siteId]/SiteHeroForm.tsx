@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState, useTransition, type FormEvent } from "react";
 import { updateSiteHeroAction } from "../actions";
+import { ImageField } from "@/components/admin/ImageField";
 
 type SiteHeroValues = {
   eyebrow: string;
@@ -128,37 +129,25 @@ export function SiteHeroForm({ siteId, initial }: SiteHeroFormProps) {
         />
       </label>
 
-      <div className="grid gap-4 sm:grid-cols-2">
-        <label className="block text-sm font-medium text-slate-700">
-          Image (desktop path)
-          <input
-            className={fieldClass}
-            value={values.imageSrc}
-            onChange={(e) =>
-              setValues({ ...values, imageSrc: e.target.value })
-            }
-          />
-        </label>
-        <label className="block text-sm font-medium text-slate-700">
-          Image (mobile path)
-          <input
-            className={fieldClass}
-            value={values.imageSrcMobile}
-            onChange={(e) =>
-              setValues({ ...values, imageSrcMobile: e.target.value })
-            }
-          />
-        </label>
-      </div>
-
-      <label className="block text-sm font-medium text-slate-700">
-        Image alt text
-        <input
-          className={fieldClass}
-          value={values.imageAlt}
-          onChange={(e) => setValues({ ...values, imageAlt: e.target.value })}
-        />
-      </label>
+      <ImageField
+        siteId={siteId}
+        kind="general"
+        label="Hero image (desktop)"
+        src={values.imageSrc}
+        alt={values.imageAlt}
+        showAlt
+        onSrcChange={(imageSrc) => setValues({ ...values, imageSrc })}
+        onAltChange={(imageAlt) => setValues({ ...values, imageAlt })}
+      />
+      <ImageField
+        siteId={siteId}
+        kind="general"
+        label="Hero image (mobile)"
+        src={values.imageSrcMobile}
+        onSrcChange={(imageSrcMobile) =>
+          setValues({ ...values, imageSrcMobile })
+        }
+      />
 
       {error && (
         <p className="text-sm text-red-600" role="alert">

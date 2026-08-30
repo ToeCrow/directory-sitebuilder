@@ -2,6 +2,7 @@ import { sql } from "drizzle-orm";
 import {
   boolean,
   date,
+  index,
   integer,
   jsonb,
   pgEnum,
@@ -311,6 +312,30 @@ export const trackedLinks = pgTable(
     ...timestamps,
   },
   (table) => [unique("tracked_links_link_key_uidx").on(table.linkKey)],
+);
+
+export const media = pgTable(
+  "media",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    siteId: uuid("site_id")
+      .notNull()
+      .references(() => sites.id, { onDelete: "cascade" }),
+    storageKey: text("storage_key").notNull(),
+    publicUrl: text("public_url").notNull(),
+    originalFilename: text("original_filename").notNull(),
+    mimeType: text("mime_type").notNull(),
+    width: integer("width").notNull(),
+    height: integer("height").notNull(),
+    altText: text("alt_text"),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (table) => [
+    uniqueIndex("media_storage_key_uidx").on(table.storageKey),
+    index("media_site_created_idx").on(table.siteId, table.createdAt),
+  ],
 );
 
 export const dailyLinkClicks = pgTable(

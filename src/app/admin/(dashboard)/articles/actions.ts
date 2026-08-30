@@ -147,12 +147,29 @@ export async function updateArticleAction(
         author: data.author,
         ogImageSrc: data.ogImageSrc,
         ogImageAlt: data.ogImageAlt,
-        content: {
-          ...existing.content,
-          kind: existing.kind,
-          relatedArticleIds: data.relatedArticleIds,
-          ...(data.body !== undefined ? { body: data.body } : {}),
-        },
+        content: (() => {
+          const nextContent: Record<string, unknown> = {
+            ...existing.content,
+            kind: existing.kind,
+            relatedArticleIds: data.relatedArticleIds,
+            ...(data.body !== undefined ? { body: data.body } : {}),
+          };
+          if (data.introImageSrc && data.introImageAlt) {
+            const previous =
+              existing.content.introImage &&
+              typeof existing.content.introImage === "object"
+                ? (existing.content.introImage as Record<string, unknown>)
+                : {};
+            nextContent.introImage = {
+              ...previous,
+              src: data.introImageSrc,
+              alt: data.introImageAlt,
+            };
+          } else {
+            delete nextContent.introImage;
+          }
+          return nextContent;
+        })(),
         status: data.status,
         publishedAt,
         updatedAtContent,

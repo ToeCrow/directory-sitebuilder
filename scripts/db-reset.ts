@@ -15,6 +15,7 @@ async function resetDatabase() {
     TRUNCATE TABLE
       daily_link_clicks,
       tracked_links,
+      media,
       article_product_sections,
       articles,
       site_top_picks,

@@ -10,6 +10,7 @@ import {
   listAdminProducts,
 } from "@/lib/admin/products";
 import { getArticleConfig } from "@/lib/site-config";
+import { imageFromUnknown } from "@/lib/media";
 import { ArticleEditForm } from "./ArticleEditForm";
 import { ArticleProductSectionsEditor } from "./ArticleProductSectionsEditor";
 
@@ -64,6 +65,7 @@ export default async function AdminArticleEditPage({
       <div className="mt-8">
         <ArticleEditForm
           articleId={article.id}
+          siteId={article.siteId}
           kind={article.kind}
           relatedArticles={pickerItems}
           initialRelatedIds={article.relatedArticleIds}
@@ -78,6 +80,8 @@ export default async function AdminArticleEditPage({
             author: article.author ?? "",
             ogImageSrc: article.ogImageSrc ?? "",
             ogImageAlt: article.ogImageAlt ?? "",
+            introImageSrc: imageFromUnknown(article.content.introImage).src,
+            introImageAlt: imageFromUnknown(article.content.introImage).alt,
             status: article.status,
             publishedAt: toDateInputValue(article.publishedAt),
             updatedAtContent: toDateInputValue(article.updatedAtContent),

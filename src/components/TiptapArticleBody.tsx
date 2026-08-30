@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import Image from "next/image";
 import { TrackedLink } from "@/components/TrackedLink";
 import type { Article } from "@/types/site";
 import type { TiptapDoc, TiptapMark, TiptapNode } from "@/types/tiptap";
@@ -187,6 +188,22 @@ function renderNodes(
         <blockquote key={key} className="mt-4 border-l-2 pl-4">
           {renderNodes(node.content, ctx)}
         </blockquote>
+      );
+    }
+    if (node.type === "image") {
+      const src = typeof node.attrs?.src === "string" ? node.attrs.src : "";
+      const alt = typeof node.attrs?.alt === "string" ? node.attrs.alt : "";
+      if (!src) return null;
+      return (
+        <figure key={key} className="mt-6 overflow-hidden">
+          <Image
+            src={src}
+            alt={alt}
+            width={1200}
+            height={800}
+            className="h-auto w-full"
+          />
+        </figure>
       );
     }
     return <div key={key}>{renderNodes(node.content, ctx)}</div>;

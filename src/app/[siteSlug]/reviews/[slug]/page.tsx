@@ -38,6 +38,7 @@ import {
   isValidSiteSlug,
   roundupProductFrom,
 } from "@/lib/site";
+import { resolveRoundupSectionImage } from "@/lib/media";
 import { canAccessRoute, getStaticParamSiteSlugsForRoute } from "@/lib/site-routes";
 import type { EditorialFigure } from "@/types/site";
 
@@ -240,7 +241,7 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
           <div className="mt-8 space-y-16">
             {article.products.map((product, index) => {
               const catalogProduct = roundupProductFrom(siteData, product);
-              const image = catalogProduct?.image ?? product.image;
+              const image = resolveRoundupSectionImage(catalogProduct, product);
               const showInlineRelated =
                 Boolean(inlineRelated && inlineRelatedHref) &&
                 index ===
