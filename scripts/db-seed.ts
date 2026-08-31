@@ -579,6 +579,49 @@ export async function seedAdminUsers(
   return { users: userCount, userSiteAccess: accessCount };
 }
 
+export async function upsertMissingProducts(
+  db: Db = getMigrateDb(),
+): Promise<{ inserted: number }> {
+  const staticSites = getAllSites();
+  let inserted = 0;
+
+  for (const siteData of staticSites) {
+    const [siteRow] = await db
+      .select({ id: sites.id })
+      .from(sites)
+      .where(eq(sites.slug, siteData.slug))
+      .limit(1);
+    if (!siteRow) {
+      continue;
+    }
+
+    const catalogBySlug = new Map(
+      (getDirectoryCatalog(siteData.slug)?.products ?? []).map((product) => [
+        product.slug,
+        product,
+      ]),
+    );
+
+    const existingRows = await db
+      .select({ slug: products.slug })
+      .from(products)
+      .where(eq(products.siteId, siteRow.id));
+    const existingSlugs = new Set(existingRows.map((row) => row.slug));
+
+    for (const product of siteData.products) {
+      if (existingSlugs.has(product.slug)) {
+        continue;
+      }
+      await db
+        .insert(products)
+        .values(mapProduct(siteRow.id, product, catalogBySlug.get(product.slug)));
+      inserted += 1;
+    }
+  }
+
+  return { inserted };
+}
+
 export async function upsertMissingArticles(
   db: Db = getMigrateDb(),
 ): Promise<{ inserted: number; updatedRelated: number }> {
@@ -738,12 +781,14 @@ async function main() {
   const existingSites = Number(result?.value ?? 0);
   if (existingSites > 0) {
     const userCounts = await seedAdminUsers(db);
+    const productCounts = await upsertMissingProducts(db);
     const articleCounts = await upsertMissingArticles(db);
     console.log(
-      "Sites already present; seeded admin users and missing articles (existing passwords and article bodies were kept):",
+      "Sites already present; seeded admin users and missing catalog rows (existing passwords, products, and article bodies were kept):",
     );
     console.log(`  users: ${userCounts.users}`);
     console.log(`  userSiteAccess: ${userCounts.userSiteAccess}`);
+    console.log(`  productsInserted: ${productCounts.inserted}`);
     console.log(`  articlesInserted: ${articleCounts.inserted}`);
     console.log(`  articleRelatedUpdated: ${articleCounts.updatedRelated}`);
     return;

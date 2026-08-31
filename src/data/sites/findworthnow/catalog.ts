@@ -1,6 +1,7 @@
 import type { DirectoryCatalog } from "@/types/directory-catalog";
 import { additionalOffers } from "./offers";
 import { batchTwoOffers } from "./offers-batch2";
+import { womensHealthOffers } from "./offers-womens-health";
 
 export const catalog: DirectoryCatalog = {
   categories: [
@@ -58,6 +59,17 @@ export const catalog: DirectoryCatalog = {
       metaTitle: "Men's Health Products",
       metaDescription:
         "Prostate, testosterone, and men’s wellness supplements — formulas, packages, and current prices.",
+    },
+    {
+      slug: "womens-health",
+      name: "Women's Health",
+      description:
+        "Thyroid support, menopause tools, and self-help guides women are comparing.",
+      intro:
+        "Capsules, a pelvic-floor program, a morning powder, and a downloadable guide — current offers in one aisle.",
+      metaTitle: "Women's Health Products",
+      metaDescription:
+        "Women’s health capsules, programs, and guides — what they contain, what they cost, and how to buy.",
     },
     {
       slug: "mental-health",
@@ -307,5 +319,6 @@ export const catalog: DirectoryCatalog = {
     },
     ...additionalOffers,
     ...batchTwoOffers,
+    ...womensHealthOffers,
   ],
 };

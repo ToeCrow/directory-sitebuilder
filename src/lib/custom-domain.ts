@@ -43,6 +43,7 @@ export function shouldRewriteCustomDomainPath(
     !pathname.startsWith("/dietary-supplements") &&
     !pathname.startsWith("/diets-weight-loss") &&
     !pathname.startsWith("/mens-health") &&
+    !pathname.startsWith("/womens-health") &&
     !pathname.startsWith("/mental-health") &&
     !pathname.startsWith("/health-fitness")
   ) {

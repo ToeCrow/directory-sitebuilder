@@ -469,6 +469,7 @@ describe("sitemap", () => {
     assert.ok(urls.includes("https://findworthnow.com/products"));
     assert.ok(urls.includes("https://findworthnow.com/dental-health"));
     assert.ok(urls.includes("https://findworthnow.com/diets-weight-loss"));
+    assert.ok(urls.includes("https://findworthnow.com/womens-health"));
     assert.ok(
       urls.includes("https://findworthnow.com/sleep/sleep-revive-review"),
     );
@@ -526,6 +527,24 @@ describe("sitemap", () => {
     );
     assert.ok(
       urls.includes("https://findworthnow.com/dental-health/prodentim-review"),
+    );
+    assert.ok(
+      urls.includes("https://findworthnow.com/womens-health/biovanish-review"),
+    );
+    assert.ok(
+      urls.includes(
+        "https://findworthnow.com/womens-health/thyrafemme-balance-review",
+      ),
+    );
+    assert.ok(
+      urls.includes(
+        "https://findworthnow.com/womens-health/menopause-cooch-ball-review",
+      ),
+    );
+    assert.ok(
+      urls.includes(
+        "https://findworthnow.com/womens-health/yeast-infection-no-more-review",
+      ),
     );
     assert.equal(urls.includes("https://findworthnow.com/buying-guide"), false);
     assert.equal(urls.includes("https://findworthnow.com/comparisons"), false);
