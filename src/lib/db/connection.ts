@@ -105,9 +105,20 @@ export function looksLikeSessionPooler(url: string): boolean {
 }
 
 export const RUNTIME_PING_TIMEOUT_MS = 2000;
+export const RUNTIME_RECENT_LIVE_MS = 15_000;
 export const RUNTIME_CONNECT_TIMEOUT_S = 5;
 export const LOCAL_STATEMENT_TIMEOUT_MS = 8000;
 export const LOCAL_LOCK_TIMEOUT_MS = 5000;
+
+/** `next build` / prerender — not a frozen serverless isolate. */
+export function isProductionBuild(
+  env: NodeJS.Dict<string | undefined> = process.env,
+): boolean {
+  return (
+    env.NEXT_PHASE === "phase-production-build" ||
+    env.NEXT_PHASE === "phase-export"
+  );
+}
 
 const NON_RETRYABLE_SQLSTATES = new Set([
   "23505",
@@ -159,23 +170,64 @@ function errorCode(error: unknown): string | undefined {
   return typeof code === "string" ? code : undefined;
 }
 
+function flattenErrors(error: unknown): unknown[] {
+  const out: unknown[] = [];
+  const seen = new Set<unknown>();
+  let current: unknown = error;
+  while (current && !seen.has(current)) {
+    out.push(current);
+    seen.add(current);
+    if (typeof current === "object" && current !== null && "cause" in current) {
+      current = (current as { cause?: unknown }).cause;
+    } else {
+      break;
+    }
+  }
+  return out;
+}
+
+function errorMessage(error: unknown): string {
+  if (error instanceof Error) {
+    return error.message;
+  }
+  if (typeof error === "object" && error !== null && "message" in error) {
+    const message = (error as { message?: unknown }).message;
+    if (typeof message === "string") {
+      return message;
+    }
+  }
+  return String(error);
+}
+
+const RETRYABLE_DRIVER_CODES = new Set([
+  "CONNECTION_DESTROYED",
+  "CONNECTION_CLOSED",
+  "CONNECT_TIMEOUT",
+  "53300",
+  "57P01",
+  "57P02",
+  "57P03",
+]);
+
 export function isRetryableDbError(error: unknown): boolean {
-  if (error instanceof TimeoutError) {
+  const chain = flattenErrors(error);
+  if (chain.some((item) => item instanceof TimeoutError)) {
     return true;
   }
 
-  const code = errorCode(error);
-  if (code && NON_RETRYABLE_SQLSTATES.has(code)) {
+  const codes = chain.map(errorCode).filter((code): code is string => Boolean(code));
+  if (codes.some((code) => NON_RETRYABLE_SQLSTATES.has(code))) {
     return false;
   }
-  if (code?.startsWith("08") || code === "57P01" || code === "57P02" || code === "57P03") {
-    return true;
-  }
-  if (code === "53300" || code === "57P01") {
+  if (
+    codes.some(
+      (code) => code.startsWith("08") || RETRYABLE_DRIVER_CODES.has(code),
+    )
+  ) {
     return true;
   }
 
-  const message = error instanceof Error ? error.message : String(error);
+  const message = chain.map(errorMessage).join("\n");
   if (
     /unique violation|duplicate key|foreign key|violates foreign key constraint|syntax error|invalid input syntax/i.test(
       message,
@@ -184,7 +236,7 @@ export function isRetryableDbError(error: unknown): boolean {
     return false;
   }
 
-  return /ECONNRESET|ECONNREFUSED|ETIMEDOUT|ENOTFOUND|CONNECT_TIMEOUT|connection terminated|connection closed|Client has already been closed|too many clients|liveness ping|timed out after/i.test(
+  return /ECONNRESET|ECONNREFUSED|ETIMEDOUT|ENOTFOUND|CONNECT_TIMEOUT|CONNECTION_DESTROYED|CONNECTION_CLOSED|connection terminated|connection closed|Client has already been closed|too many clients|liveness ping|timed out after/i.test(
     message,
   );
 }
@@ -198,14 +250,16 @@ export function createRuntimeClientOptions(
   const serverless = env.VERCEL === "1";
   const constrained = remote || serverless;
   const sessionTimeoutsReliable = !remote;
+  const productionBuild = isProductionBuild(env);
+  const lifetimeCaps = constrained && !productionBuild;
 
   return {
     prepare: false as const,
     fetch_types: false as const,
     max: constrained ? 3 : 10,
-    idle_timeout: constrained ? 20 : 0,
+    idle_timeout: lifetimeCaps ? 20 : 0,
     connect_timeout: RUNTIME_CONNECT_TIMEOUT_S,
-    ...(constrained ? { max_lifetime: 60 as const } : {}),
+    ...(lifetimeCaps ? { max_lifetime: 60 as const } : {}),
     ...(remote ? { ssl: "require" as const } : {}),
     ...(sessionTimeoutsReliable
       ? {

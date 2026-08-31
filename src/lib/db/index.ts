@@ -3,6 +3,7 @@ import postgres, { type Sql } from "postgres";
 import {
   createRuntimeClientOptions,
   describeDatabaseTarget,
+  isProductionBuild,
   looksLikeSessionPooler,
   requireMigrationDatabaseUrl,
   requireRuntimeDatabaseUrl,
@@ -87,6 +88,7 @@ const runtimeLifecycle = createRuntimeLifecycle<Db>({
   ping: pingRuntimeSql,
   recycle: recycleRuntimeClient,
   getDb,
+  shouldPing: () => !isProductionBuild(),
 });
 
 /**
@@ -114,6 +116,7 @@ export * from "./schema";
 export {
   createRuntimeClientOptions,
   describeDatabaseTarget,
+  isProductionBuild,
   isRetryableDbError,
   looksLikeRemoteDatabaseUrl,
   looksLikeSessionPooler,

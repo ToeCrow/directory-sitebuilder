@@ -166,6 +166,16 @@ describe("createRuntimeClientOptions", () => {
     assert.equal(options.max, 10);
     assert.equal(options.ssl, undefined);
   });
+
+  it("skips idle and max lifetime caps during next build", () => {
+    const options = createRuntimeClientOptions(
+      "postgresql://postgres.abc:pass@aws-0-us-east-1.pooler.supabase.com:6543/postgres?sslmode=require",
+      { VERCEL: "1", NEXT_PHASE: "phase-production-build" },
+    );
+    assert.equal(options.max, 3);
+    assert.equal(options.idle_timeout, 0);
+    assert.equal("max_lifetime" in options, false);
+  });
 });
 
 describe("describeDatabaseTarget", () => {
