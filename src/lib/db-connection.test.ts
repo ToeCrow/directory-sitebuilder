@@ -4,6 +4,8 @@ import {
   createRuntimeClientOptions,
   describeDatabaseTarget,
   looksLikeRemoteDatabaseUrl,
+  looksLikeSessionPooler,
+  looksLikeTransactionPooler,
   resolveMigrationDatabaseUrl,
   resolveRuntimeDatabaseUrl,
   sanitizeDatabaseError,
@@ -89,37 +91,71 @@ describe("looksLikeRemoteDatabaseUrl", () => {
   });
 });
 
+describe("looksLikeTransactionPooler", () => {
+  it("detects Supabase transaction pooler on port 6543", () => {
+    assert.equal(
+      looksLikeTransactionPooler(
+        "postgresql://postgres.abc:pass@aws-0-us-east-1.pooler.supabase.com:6543/postgres?sslmode=require",
+      ),
+      true,
+    );
+    assert.equal(
+      looksLikeSessionPooler(
+        "postgresql://postgres.abc:pass@aws-0-us-east-1.pooler.supabase.com:5432/postgres",
+      ),
+      true,
+    );
+    assert.equal(
+      looksLikeTransactionPooler(
+        "postgresql://postgres.abc:pass@aws-0-us-east-1.pooler.supabase.com:5432/postgres",
+      ),
+      false,
+    );
+    assert.equal(
+      looksLikeTransactionPooler(
+        "postgresql://directory:directory@localhost:5435/directory_cms",
+      ),
+      false,
+    );
+  });
+});
+
 describe("createRuntimeClientOptions", () => {
-  it("disables prepared statements and uses one connection on Vercel", () => {
+  it("disables prepared statements and uses three connections on Vercel", () => {
     const options = createRuntimeClientOptions(
       "postgresql://directory:directory@localhost:5435/directory_cms",
       { VERCEL: "1" },
     );
     assert.equal(options.prepare, false);
-    assert.equal(options.max, 1);
+    assert.equal(options.fetch_types, false);
+    assert.equal(options.max, 3);
+    assert.equal(options.connect_timeout, 5);
     assert.equal(options.ssl, undefined);
   });
 
-  it("requires SSL against the Supabase pooler", () => {
+  it("requires SSL against the Supabase pooler and skips session timeouts", () => {
     const options = createRuntimeClientOptions(
       "postgresql://postgres.abc:pass@aws-0-us-east-1.pooler.supabase.com:6543/postgres?sslmode=require",
       { VERCEL: "1" },
     );
     assert.equal(options.prepare, false);
+    assert.equal(options.fetch_types, false);
     assert.equal(options.ssl, "require");
-    assert.equal(options.max, 1);
-    assert.deepEqual(options.connection, {
-      statement_timeout: 15000,
-      lock_timeout: 8000,
-    });
+    assert.equal(options.max, 3);
+    assert.equal(options.idle_timeout, 20);
+    assert.equal(options.max_lifetime, 60);
+    assert.equal("connection" in options, false);
   });
 
-  it("does not set lock timeouts against local Docker", () => {
+  it("sets statement and lock timeouts only on local Docker", () => {
     const options = createRuntimeClientOptions(
       "postgresql://directory:directory@localhost:5435/directory_cms",
       {},
     );
-    assert.equal("connection" in options, false);
+    assert.deepEqual(options.connection, {
+      statement_timeout: 8000,
+      lock_timeout: 5000,
+    });
   });
 
   it("keeps a larger local pool without SSL", () => {

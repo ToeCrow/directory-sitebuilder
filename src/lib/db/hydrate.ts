@@ -16,7 +16,7 @@ import type {
   SiteData,
 } from "@/types/site";
 import { isTiptapDoc, type TiptapDoc } from "@/lib/article-content";
-import { getDb } from "./index";
+import { getDb, withRuntimeDb } from "./index";
 import {
   articleProductSections,
   articles,
@@ -105,6 +105,13 @@ function isProductCategory(value: unknown): value is ProductCategory {
 export async function hydrateSiteData(
   siteIdOrSlug: string,
   options: HydrateOptions = {},
+): Promise<SiteData> {
+  return withRuntimeDb(async () => hydrateSiteDataOnce(siteIdOrSlug, options));
+}
+
+async function hydrateSiteDataOnce(
+  siteIdOrSlug: string,
+  options: HydrateOptions,
 ): Promise<SiteData> {
   const { publishedOnly = true } = options;
   const site = await findSiteByIdOrSlug(siteIdOrSlug);

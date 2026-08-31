@@ -3,9 +3,11 @@ import postgres, { type Sql } from "postgres";
 import {
   createRuntimeClientOptions,
   describeDatabaseTarget,
+  looksLikeSessionPooler,
   requireMigrationDatabaseUrl,
   requireRuntimeDatabaseUrl,
 } from "./connection";
+import { createRuntimeLifecycle } from "./runtime-lifecycle";
 import * as schema from "./schema";
 
 type Db = ReturnType<typeof drizzle<typeof schema>>;
@@ -15,6 +17,7 @@ const globalForDb = globalThis as unknown as {
   runtimeDb?: Db;
   migrateSql?: Sql;
   migrateDb?: Db;
+  warnedSessionPooler?: boolean;
 };
 
 function getOrCreateDb(
@@ -30,6 +33,12 @@ function getOrCreateDb(
       console.info(
         `[db] runtime client → ${describeDatabaseTarget(url)}`,
       );
+      if (looksLikeSessionPooler(url) && !globalForDb.warnedSessionPooler) {
+        globalForDb.warnedSessionPooler = true;
+        console.warn(
+          "[db] POSTGRES_URL looks like a session-mode pooler (:5432). Use the transaction pooler (:6543) for the Next.js runtime.",
+        );
+      }
     }
     globalForDb[sqlKey] = sql;
   }
@@ -48,6 +57,43 @@ export function getDb(): Db {
 export function getMigrateDb(): Db {
   return getOrCreateDb(requireMigrationDatabaseUrl(), "migrate");
 }
+
+async function pingRuntimeSql(): Promise<void> {
+  const sql = globalForDb.runtimeSql;
+  if (!sql) {
+    throw new Error("runtime db client is missing");
+  }
+  await sql`SELECT 1`;
+}
+
+export async function recycleRuntimeClient(): Promise<void> {
+  const sql = globalForDb.runtimeSql;
+  globalForDb.runtimeSql = undefined;
+  globalForDb.runtimeDb = undefined;
+  if (!sql) {
+    return;
+  }
+  try {
+    await sql.end({ timeout: 1 });
+  } catch {
+    // The socket may already be dead; a new client is created on next use.
+  }
+}
+
+const runtimeLifecycle = createRuntimeLifecycle<Db>({
+  create: () => {
+    getDb();
+  },
+  ping: pingRuntimeSql,
+  recycle: recycleRuntimeClient,
+  getDb,
+});
+
+/**
+ * Run a runtime DB operation after a 2s liveness ping.
+ * On a retryable connection failure: recycle the client and retry once.
+ */
+export const withRuntimeDb = runtimeLifecycle.withRuntimeDb;
 
 export async function closeDb(): Promise<void> {
   const runtimeSql = globalForDb.runtimeSql;
@@ -68,7 +114,10 @@ export * from "./schema";
 export {
   createRuntimeClientOptions,
   describeDatabaseTarget,
+  isRetryableDbError,
   looksLikeRemoteDatabaseUrl,
+  looksLikeSessionPooler,
+  looksLikeTransactionPooler,
   requireMigrationDatabaseUrl,
   requireRuntimeDatabaseUrl,
   resolveMigrationDatabaseUrl,

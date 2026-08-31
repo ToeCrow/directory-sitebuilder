@@ -9,33 +9,34 @@ import {
   type AdminUser,
 } from "@/lib/admin-access";
 import { hashPassword, verifyPassword } from "@/lib/admin-password";
-import { getDb } from "@/lib/db";
+import { getDb, withRuntimeDb } from "@/lib/db";
 import { sites, users, userSiteAccess } from "@/lib/db/schema";
 import { getAdminSiteSlug } from "@/lib/admin/sites";
 
 export type { AdminUser };
 
 export async function loadAdminUser(id: string): Promise<AdminUser | null> {
-  const db = getDb();
-  const [row] = await db.select().from(users).where(eq(users.id, id)).limit(1);
-  if (!row) {
-    return null;
-  }
+  return withRuntimeDb(async (db) => {
+    const [row] = await db.select().from(users).where(eq(users.id, id)).limit(1);
+    if (!row) {
+      return null;
+    }
 
-  const accessRows = await db
-    .select({ slug: sites.slug })
-    .from(userSiteAccess)
-    .innerJoin(sites, eq(userSiteAccess.siteId, sites.id))
-    .where(eq(userSiteAccess.userId, row.id));
+    const accessRows = await db
+      .select({ slug: sites.slug })
+      .from(userSiteAccess)
+      .innerJoin(sites, eq(userSiteAccess.siteId, sites.id))
+      .where(eq(userSiteAccess.userId, row.id));
 
-  return {
-    id: row.id,
-    username: row.username,
-    displayName: row.displayName,
-    role: row.role,
-    siteSlugs: accessRows.map((access) => access.slug),
-    profile: (row.profile ?? {}) as Record<string, unknown>,
-  };
+    return {
+      id: row.id,
+      username: row.username,
+      displayName: row.displayName,
+      role: row.role,
+      siteSlugs: accessRows.map((access) => access.slug),
+      profile: (row.profile ?? {}) as Record<string, unknown>,
+    };
+  });
 }
 
 export async function authenticateAdmin(
