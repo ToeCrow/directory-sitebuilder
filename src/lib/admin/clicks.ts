@@ -22,10 +22,13 @@ export type AdminClickedLink = {
   siteTitle: string;
 };
 
+/** Admin UI groups this result set; it is not a full export of tracked_links. */
+export const TOP_CLICKED_LINKS_LIMIT = 50;
+
 export async function listTopClickedLinks(
   user: AdminUser,
   siteSlug?: string,
-  limit = 50,
+  limit = TOP_CLICKED_LINKS_LIMIT,
 ): Promise<AdminClickedLink[]> {
   const db = getDb();
   const allowedSlug = requestedSiteSlugOrDenied(user, siteSlug);
