@@ -1,8 +1,10 @@
 import type { DirectoryBlogPost } from "@/types/directory-blog";
 import { sleepGuidePosts } from "./blog-sleep-guides";
+import { spartamaxEndopeakPost } from "./blog-spartamax-endopeak";
 
 export const posts: DirectoryBlogPost[] = [
   ...sleepGuidePosts,
+  spartamaxEndopeakPost,
   {
     slug: "why-do-i-keep-waking-up-at-night",
     title: "Why Do I Keep Waking Up at Night? 8 Common Reasons",

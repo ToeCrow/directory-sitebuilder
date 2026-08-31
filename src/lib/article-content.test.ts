@@ -22,6 +22,7 @@ import {
 } from "./admin/article-schema";
 import { slugify } from "./slug";
 import { sleepGuidePosts } from "@/data/sites/findworthnow/blog-sleep-guides";
+import { spartamaxEndopeakPost } from "@/data/sites/findworthnow/blog-spartamax-endopeak";
 
 const ARTICLE_A = "11111111-1111-4111-8111-111111111111";
 const ARTICLE_B = "22222222-2222-4222-8222-222222222222";
@@ -290,11 +291,16 @@ describe("directoryBlogPostToTiptapDoc", () => {
     const overthinking = sleepGuidePosts.find(
       (post) => post.slug === "how-to-stop-overthinking-at-night",
     );
+    const stayAsleep = sleepGuidePosts.find(
+      (post) => post.slug === "how-to-stay-asleep-all-night",
+    );
     assert.ok(tired);
     assert.ok(overthinking);
+    assert.ok(stayAsleep);
 
     const tiredDoc = directoryBlogPostToTiptapDoc(tired, ids);
     const overthinkingDoc = directoryBlogPostToTiptapDoc(overthinking, ids);
+    const stayAsleepDoc = directoryBlogPostToTiptapDoc(stayAsleep, ids);
 
     assert.deepEqual(collectInternalLinkIds(tiredDoc).sort(), [
       ARTICLE_A,
@@ -305,9 +311,27 @@ describe("directoryBlogPostToTiptapDoc", () => {
       ARTICLE_B,
       ARTICLE_C,
     ]);
+    assert.deepEqual(collectInternalLinkIds(stayAsleepDoc).sort(), [
+      ARTICLE_A,
+      ARTICLE_B,
+      ARTICLE_C,
+    ]);
 
     assert.equal(JSON.stringify(tiredDoc).includes('"/sleep"'), true);
     assert.equal(JSON.stringify(overthinkingDoc).includes('"/sleep"'), true);
+    assert.equal(JSON.stringify(stayAsleepDoc).includes('"/sleep"'), true);
+  });
+
+  it("keeps SpartaMax and EndoPeak catalog reviews as path links", () => {
+    const sexualWellnessId = "55555555-5555-4555-8555-555555555555";
+    const doc = directoryBlogPostToTiptapDoc(
+      spartamaxEndopeakPost,
+      new Map([["sexual-wellness-what-you-can-do-yourself", sexualWellnessId]]),
+    );
+    const json = JSON.stringify(doc);
+    assert.equal(json.includes("/mens-health/spartamax-review"), true);
+    assert.equal(json.includes("/mens-health/endopeak-review"), true);
+    assert.deepEqual(collectInternalLinkIds(doc), [sexualWellnessId]);
   });
 });
 

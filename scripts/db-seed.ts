@@ -86,27 +86,30 @@ function parseIsoDate(value: string | undefined): Date | null {
 
 type DbClient = Db | Parameters<Parameters<Db["transaction"]>[0]>[0];
 
-/** Prefer local Docker when .env also has a remote migrate URL (Supabase). */
-function getSeedDb(): Db {
+/**
+ * Prefer local Docker when .env also has a remote migrate URL (Supabase).
+ * Set SEED_REMOTE=1 to seed the hosted database instead.
+ */
+function preferLocalSeedTarget(): boolean {
+  if (process.env.SEED_REMOTE === "1") {
+    return false;
+  }
   const runtimeUrl = requireRuntimeDatabaseUrl();
   const migrateUrl = requireMigrationDatabaseUrl();
-  if (
+  return (
     !looksLikeRemoteDatabaseUrl(runtimeUrl) &&
     looksLikeRemoteDatabaseUrl(migrateUrl)
-  ) {
-    return getDb();
-  }
-  return getMigrateDb();
+  );
+}
+
+function getSeedDb(): Db {
+  return preferLocalSeedTarget() ? getDb() : getMigrateDb();
 }
 
 function seedTargetLabel(): string {
-  const runtimeUrl = requireRuntimeDatabaseUrl();
-  const migrateUrl = requireMigrationDatabaseUrl();
-  const url =
-    !looksLikeRemoteDatabaseUrl(runtimeUrl) &&
-    looksLikeRemoteDatabaseUrl(migrateUrl)
-      ? runtimeUrl
-      : migrateUrl;
+  const url = preferLocalSeedTarget()
+    ? requireRuntimeDatabaseUrl()
+    : requireMigrationDatabaseUrl();
   return describeDatabaseTarget(url);
 }
 
